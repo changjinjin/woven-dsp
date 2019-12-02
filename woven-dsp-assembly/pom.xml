@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.merce.woven</groupId>
+		<artifactId>woven-dsp</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>woven-dsp-assembly</artifactId>
+	<name>woven-dsp-assembly</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<assembly.name>woven-dsp-v${project.version}</assembly.name>
+		<assembly.format>tar.gz</assembly.format>
+		<skipDeploy>true</skipDeploy>
+	</properties>
+	<dependencies>
+		<!-- <dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>woven-dsp-access-platform</artifactId>
+			<version>${project.version}</version>
+		</dependency> -->
+	</dependencies>
+	<profiles>
+		<profile>
+			<id>hadoop2.7</id>
+			<properties>
+				<profileActive>hadoop2</profileActive>
+				<hadoop.version>2.7.3</hadoop.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>hadoop3.1</id>
+			<properties>
+				<profileActive>hadoop3</profileActive>
+				<hadoop.version>3.1.1</hadoop.version>
+			</properties>
+		</profile>
+	</profiles>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

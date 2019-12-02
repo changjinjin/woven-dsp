@@ -1,0 +1,139 @@
+spring:
+  application:
+    name: woven-dsp-auth-server
+  profiles:
+    active: '@profileActive@'
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      indent-output: false
+      fail-on-empty-beans: false
+    default-property-inclusion: always
+    generator:
+      ignore-unknown: true
+    deserialization:
+      fail-on-ignored-properties: false
+      fail-on-unknown-properties: false
+    parser:
+      allow-unquoted-control-chars: true
+      allow-single-quotes: true
+      ignore-undefined: true
+      auto-close-source: true
+  mvc:
+    locale: zh_CN
+    static-path-pattern: /**
+    throw-exception-if-no-handler-found: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    favicon:
+      enabled: true
+  resources:
+    add-mappings: false
+    static-locations:
+    - classpath:/META-INF/resources/
+    - classpath:/resources/
+    - classpath:/static/
+    - classpath:/public/
+    - file:${system.file.upload.root}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2000MB
+      max-request-size: 10MB
+      resolve-lazily: true
+      file-size-threshold: 0
+  http:
+    converters:
+      preferred-json-mapper: jackson
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+      force-request: true
+      force-response: true
+  pid:
+    file: target/${spring.application.name}.pid
+    fail-on-write-error: true
+  main:
+    allow-bean-definition-overriding: true
+feign:
+  httpclient:
+    connection-timeout: 6000
+    enabled: true
+    disable-ssl-validation: true
+  compression:
+    request:
+      enabled: true
+      min-request-size: 2048
+    response:
+      enabled: false
+  hystrix:
+    enabled: false
+ribbon:
+  eureka:
+    enabled: true
+  http:
+    client:
+      enabled: true
+  restclient:
+    enabled: true
+  MaxAutoRetriesNextServer: 0
+  ReadTimeout: 4000
+  ConnectTimeout: 3000
+hystrix:
+  metrics:
+    enabled: true
+    polling-interval-ms: 10000
+  shareSecurityContext: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+mybatis:
+  mapper-locations:
+  - classpath:mybatis/mappers/*Mapper.xml
+mapper:
+  not-empty: false
+  identity: MYSQL
+  style: camelhumpanduppercase
+  enable-method-annotation: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+server:
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types:
+    - application/json
+    - application/xml
+    - text/html
+    - text/xml
+    - text/plain
+    min-response-size: 2048
+  tomcat:
+    basedir: target/tomcat
+    accesslog:
+      enabled: true
+      directory: logs
+    max-threads: 200
+    uri-encoding: UTF-8
+  error:
+    path: /error
+jasypt:
+  encryptor:
+    password: xm8EV6Hy5RMFK4EEACIDAwQus
+tx-lcn:
+  springcloud:
+    loadbalance:
+      enabled: true
+kaptcha:
+  image:
+    size: 4
+    expire-after-secondes: 600
+    interceptUrls: /oauth/token
