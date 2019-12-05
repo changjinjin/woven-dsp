@@ -27,8 +27,10 @@
 		<woven-common-mybatis.version>3.1</woven-common-mybatis.version>
 
 		<!-- spring boot -->
-		<spring-boot.version>2.1.10.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.SR4</spring-cloud.version>
+		<!-- <spring-boot.version>2.1.10.RELEASE</spring-boot.version> -->
+		<!-- <spring-cloud.version>Greenwich.SR4</spring-cloud.version> -->
+		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 		<!-- <spring-framework.version>5.1.11.RELEASE</spring-framework.version> -->
 
 		<!-- commons dependencies -->
@@ -123,11 +125,34 @@
 		<module>woven-dsp-service</module>
 		<module>woven-dsp-config</module>
 		<module>woven-dsp-registry</module>
-		<module>woven-dsp-assembly</module>
+		<module>woven-dsp-distribution</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Internal libs -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>woven-dsp-access-platform</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>woven-dsp-access-dataapi</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>woven-dsp-access-consumer</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>woven-dsp-auth-server</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- Import dependency management -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>

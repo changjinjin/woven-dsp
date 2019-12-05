@@ -17,6 +17,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.runtime.startClass>com.merce.woven.dsp.access.platform.Starter</project.runtime.startClass>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -311,6 +312,28 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layout>ZIP</layout>
+					<includeSystemScope>true</includeSystemScope>
+					<mainClass>${project.runtime.startClass}</mainClass>
+					<includes>
+						<include>
+							<groupId>non-exists</groupId>
+							<artifactId>non-exists</artifactId>
+						</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
@@ -346,33 +369,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<configuration> <charset>${project.build.sourceEncoding}</charset> <encoding>${project.build.sourceEncoding}</encoding> 
-				<additionalOptions> <additionalOption>-Xdoclint:none</additionalOption> </additionalOptions> 
-				</configuration> <executions> <execution> <id>attach-javadocs</id> <phase>package</phase> 
-				<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<layout>ZIP</layout>
-					<includeSystemScope>true</includeSystemScope>
-					<mainClass>com.merce.woven.dsp.access.platform.Starter</mainClass>
-					<includes>
-						<include>
-							<groupId>non-exists</groupId>
-							<artifactId>non-exists</artifactId>
-						</include>
-					</includes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -392,17 +388,32 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
-				<configuration> <archive> <manifest> <mainClass>com.merce.woven.visul.Starter</mainClass> 
-				<classpathPrefix>../lib</classpathPrefix> <addClasspath>true</addClasspath> 
-				</manifest> <manifestEntries> <Class-Path><![CDATA[../lib/woven-common-mybatis-3.0.jar]]></Class-Path> 
-				</manifestEntries> </archive> <includes> <include>com/merce/woven/dsp/access/platform/**</include> 
-				</includes> <excludes> <exclude>bin/**</exclude> <exclude>db/**</exclude> 
-				<exclude>conf/**</exclude> <exclude>logs/**</exclude> </excludes> </configuration> 
-				</plugin> -->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-help-plugin</artifactId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>${project.runtime.startClass}</mainClass>
+							<classpathPrefix>../lib</classpathPrefix>
+							<addClasspath>false</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Class-Path><![CDATA[]]>
+							</Class-Path>
+						</manifestEntries>
+					</archive>
+					<includes>
+						<include>com/merce/woven/dsp/access/platform/**</include>
+					</includes>
+					<excludes>
+						<exclude>bin/**</exclude>
+						<exclude>db/**</exclude>
+						<exclude>conf/**</exclude>
+						<exclude>logs/**</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
