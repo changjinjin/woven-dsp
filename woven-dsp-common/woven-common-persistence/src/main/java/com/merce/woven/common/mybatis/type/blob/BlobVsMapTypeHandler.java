@@ -1,0 +1,47 @@
+package com.merce.woven.common.mybatis.type.blob;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class BlobVsMapTypeHandler<K, V> extends AbstractBlobTypeHandler<Map<K, V>> {
+
+    protected Class<K> keyClass;
+    protected Class<V> valueClass;
+
+    @SuppressWarnings("unchecked")
+    public BlobVsMapTypeHandler() {
+        Type genType = getClass().getGenericSuperclass();
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        keyClass = (Class<K>) params[0];
+        valueClass = (Class<V>) params[1];
+    }
+
+    @Override
+    public String translate2Str(Map<K, V> t) {
+        return JSON.toJSONString(t);
+    }
+
+    @Override
+    public Map<K, V> translate2Bean(String result) {
+        Map<K, V> map = new HashMap<K, V>();
+        JSONObject obj = JSON.parseObject(result);
+        obj.forEach((k, v) -> {
+            if (v != null) {
+                map.put(toKey(k), toValue(v));
+            } else {
+                map.put(toKey(k), null);
+            }
+        });
+        return map;
+    }
+
+    public abstract K toKey(String k);
+
+    public abstract V toValue(Object v);
+
+}
