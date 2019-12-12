@@ -14,7 +14,7 @@ import java.io.IOException;
 @SpringCloudApplication
 //@EnableUserInfoTransmitter
 @EnableFeignClients(basePackages = {"com.merce.woven.dsp.access.platform"})
-@ComponentScan(basePackages = {"com.merce.woven.dsp.access.platform"})
+@ComponentScan(basePackages = {"com.merce.woven"})
 @MapperScan(basePackages = {"com.merce.woven.dsp.access.platform.mybatis.mapper"})
 public class Starter {
 
