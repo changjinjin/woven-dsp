@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false" scanPeriod="720 seconds"
+<configuration scan="false" scanPeriod="60 seconds"
 	debug="false">
-	<contextName>wfny</contextName>
+	<contextName>woven-dsp-auth-server</contextName>
 	<!-- 定义日志出输出路径 -->
 	<property name="LOG_PATH" value="target/logs" />
 	<!-- <property name="LOG_PATTERN" value=".%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] 
@@ -11,21 +11,21 @@
 
 	<!-- 控制台输出 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
 		<encoder>
 			<Pattern>
 				${LOG_PATTERN}
 			</Pattern>
 		</encoder>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>DEBUG</level>
-		</filter>
 	</appender>
 
 	<!-- 按天滚动文件输出 -->
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>TRACE</level>
 		</filter>
 		<File>${LOG_PATH}/log.txt</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -47,7 +47,7 @@
 	</appender>
 
 	<!-- spring日志输出 -->
-	<logger name="org.springframework" level="ERROR" />
+	<logger name="org.springframework" level="DEBUG" />
 	<logger name="com.netflix" level="ERROR" />
 	<logger name="org.apache.http" level="ERROR" />
 	<logger name="org.apache.coyote" level="ERROR" />
@@ -85,19 +85,22 @@
 	<!-- 配置mongodb中日志输出级别 -->
 	<logger name="org.springframework.data.mongodb.core" level="ERROR" />
 	<logger name="org.mongodb.driver" level="ERROR" />
+	<logger name="javax" level="ERROR" />
+	<logger name="sun" level="ERROR" />
+	<logger name="org.apache.tomcat" level="ERROR" />
 
 
 	<!-- 开发、测试环境 -->
 	<springProfile name="dev,test">
-		<logger name="com.jusfoun" level="DEBUG" additivity="true" />
+		<logger name="com.merce.woven" level="DEBUG" additivity="true" />
 	</springProfile>
 
 	<!-- 生产环境 -->
 	<springProfile name="prod">
-		<logger name="com.jusfoun" level="ERROR" additivity="true" />
+		<logger name="com.merce.woven" level="ERROR" additivity="true" />
 	</springProfile>
 
-	<root level="DEBUG">
+	<root level="ERROR">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>

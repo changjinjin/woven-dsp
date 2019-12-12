@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import com.merce.woven.common.base.service.criteria.ExampleQueryService;
-import com.merce.woven.common.base.service.criteria.example.ExampleQuery;
-import com.merce.woven.common.base.service.criteria.example.Field;
-import com.merce.woven.common.base.service.criteria.example.FieldGroup;
-import com.merce.woven.common.base.service.criteria.example.Sort;
-import com.merce.woven.common.base.service.criteria.example.SqlEnums.AndOr;
-import com.merce.woven.common.base.service.criteria.example.SqlEnums.Operator;
-import com.merce.woven.common.base.service.criteria.example.SqlEnums.OrderType;
+import com.merce.woven.common.service.criteria.ExampleQueryService;
+import com.merce.woven.common.service.criteria.example.ExampleQuery;
+import com.merce.woven.common.service.criteria.example.Field;
+import com.merce.woven.common.service.criteria.example.FieldGroup;
+import com.merce.woven.common.service.criteria.example.Sort;
+import com.merce.woven.common.service.criteria.example.SqlEnums.AndOr;
+import com.merce.woven.common.service.criteria.example.SqlEnums.Operator;
+import com.merce.woven.common.service.criteria.example.SqlEnums.OrderType;
 import com.merce.woven.common.jpa.criteria.query.FieldObject;
 import com.merce.woven.common.jpa.criteria.query.JpaCriteriaHelper.ComparatorOperator;
 import com.merce.woven.common.jpa.criteria.query.JpaCriteriaHelper.LogicalOperator;
@@ -41,7 +41,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	 * @param queryObject
 	 *            查询条件
 	 * @return 分页数据集
-	 * @see com.merce.woven.common.base.service.criteria.ExampleQueryService#selectPage(com.merce.woven.common.base.service.criteria.example.ExampleQuery)
+	 * @see com.merce.woven.common.service.criteria.ExampleQueryService#selectPage(com.merce.woven.common.service.criteria.example.ExampleQuery)
 	 */
 	default Page<T> findObjectPage(QueryObject queryObject) {
 		return findObjectPage(exampleQuery(queryObject));
@@ -53,7 +53,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	 * @param query
 	 *            查询条件
 	 * @return 分页数据集
-	 * @see com.merce.woven.common.base.service.criteria.ExampleQueryService#selectPage(com.merce.woven.common.base.service.criteria.example.ExampleQuery)
+	 * @see com.merce.woven.common.service.criteria.ExampleQueryService#selectPage(com.merce.woven.common.service.criteria.example.ExampleQuery)
 	 */
 	default Page<T> findObjectPage(ExampleQuery query) {
 		IPage<T> selectPage = selectPage(query);
@@ -70,7 +70,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	 * @param queryObject
 	 *            查询条件
 	 * @return 查询的结果集
-	 * @see com.merce.woven.common.base.service.criteria.ExampleQueryService#selectList(com.merce.woven.common.base.service.criteria.example.ExampleQuery)
+	 * @see com.merce.woven.common.service.criteria.ExampleQueryService#selectList(com.merce.woven.common.service.criteria.example.ExampleQuery)
 	 */
 	default List<T> findList(QueryObject queryObject) {
 		return selectList(exampleQuery(queryObject));
@@ -82,7 +82,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	 * @param queryObject
 	 *            查询条件
 	 * @return 查询的单条结果
-	 * @see com.merce.woven.common.base.service.criteria.ExampleQueryService#selectOne(com.merce.woven.common.base.service.criteria.example.ExampleQuery)
+	 * @see com.merce.woven.common.service.criteria.ExampleQueryService#selectOne(com.merce.woven.common.service.criteria.example.ExampleQuery)
 	 */
 	default T getSingleResult(QueryObject queryObject) {
 		return selectOne(exampleQuery(queryObject));
@@ -93,7 +93,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	 *
 	 * @param queryObject
 	 *            删除条件
-	 * @see com.merce.woven.common.base.service.criteria.ExampleQueryService#delete(com.merce.woven.common.base.service.criteria.example.ExampleQuery)
+	 * @see com.merce.woven.common.service.criteria.ExampleQueryService#delete(com.merce.woven.common.service.criteria.example.ExampleQuery)
 	 */
 	default int delete(QueryObject queryObject) {
 		return delete(exampleQuery(queryObject));

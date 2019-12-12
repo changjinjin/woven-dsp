@@ -32,7 +32,7 @@ public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
 	@ApiModelProperty("创建人")
 	@Column(length = 50)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	protected Long creator;
+	protected String creator;
 
 	@ApiModelProperty("创建时间")
 	@ColumnType(jdbcType = JdbcType.TIMESTAMP)
@@ -41,7 +41,7 @@ public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
 	@ApiModelProperty("修改人")
 	@Column(length = 50)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	protected Long lastModifier;
+	protected String lastModifier;
 
 	@ApiModelProperty("修改时间")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -87,10 +87,10 @@ public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
 				this.setOwner(currentUserId);
 			}
 			if (creator == null) {
-				this.setCreator(currentUserId);
+				this.setCreator(SaasContext.getCurrentUsername());
 			}
 			if (lastModifier == null) {
-				this.setLastModifier(currentUserId);
+				this.setLastModifier(SaasContext.getCurrentUsername());
 			}
 		}
 
@@ -103,7 +103,7 @@ public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
 		this.setLastModifiedTime(new Date());
 		Long currentUserId = SaasContext.getCurrentUserId();
 		if (currentUserId != null) {
-			this.setLastModifier(currentUserId);
+			this.setLastModifier(SaasContext.getCurrentUsername());
 		}
 	}
 }

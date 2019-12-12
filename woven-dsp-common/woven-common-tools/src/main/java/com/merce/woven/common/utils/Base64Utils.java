@@ -19,7 +19,7 @@ public class Base64Utils {
     }
 
     public static void main(String[] args) {
-        String str = "weuyeriuiuer==";
+        String str = "baymax:123456";
         System.out.println(check(str));
         String encode = encode(str);
         System.out.println(encode);

@@ -1,6 +1,6 @@
 package com.merce.woven.common.entity.preprocess;
 
-import com.merce.woven.common.base.service.BasePreprocessService;
+import com.merce.woven.common.service.BasePreprocessService;
 
 /**
  * 定义一个预处理实例的处理接口类

@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings({ "unchecked" })
+@SuppressWarnings({ "unchecked", "restriction" })
 public abstract class GZBase64ClobVsMapTypeHandler<K, V> extends AbstractClobTypeHandler<Map<K, V>>
 		implements GZBase64Parser {
 
