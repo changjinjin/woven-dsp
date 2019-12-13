@@ -11,32 +11,31 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SimpleTenantDetails implements TenantDetails {
+public class SimpleTenantDetails implements TenantDetails<Long> {
 
-	/**
-	 * 客户端ID
-	 */
-	private String clientId;
+    /**
+     * 客户端ID
+     */
+    private Long tenantId;
 
-	/**
-	 * 租户名称
-	 */
-	private String tenant;
+    /**
+     * 租户名称
+     */
+    private String tenant;
 
-	/**
-	 * 系统版本号
-	 */
-	private String version;
+    /**
+     * 系统版本号
+     */
+    private String version;
 
-	public SimpleTenantDetails() {
-	}
+    public SimpleTenantDetails() {
+    }
 
-	public SimpleTenantDetails(String clientId, String tenant, String version) {
-		super();
-		this.clientId = clientId;
-		this.tenant = tenant;
-		this.version = version;
-	}
-	
-	
+    public SimpleTenantDetails(Long tenantId, String tenant, String version) {
+        super();
+        this.tenantId = tenantId;
+        this.tenant = tenant;
+        this.version = version;
+    }
+
 }

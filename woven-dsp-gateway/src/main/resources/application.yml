@@ -24,14 +24,14 @@ spring:
         pool:
           type: DISABLED
       routes:
-      - id: auth-server
-        uri: lb://192.168.2.145:8004
-        order: 2
-        predicates:
-        - Path=/api/auth/**
-        filters:
-        - PreserveHostHeader
-        - RemoveRequestHeader:Expect
+        - id: auth-server
+          uri: lb://192.168.2.145:8004
+          order: 2
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - PreserveHostHeader
+            - RemoveRequestHeader:Expect
 zuul:
   host:
     connect-timeout-millis: 15000
@@ -74,26 +74,26 @@ security:
   token:
     ignored:
       staticResources:
-      - /
-      - /static/**
-      - /webjars/**
-      - /**/*.js*
-      - /**/*.css*
-      - /**/*.html*
-      - /**/*.ico*
-      - /**/*.json*
+        - /
+        - /static/**
+        - /webjars/**
+        - /**/*.js*
+        - /**/*.css*
+        - /**/*.html*
+        - /**/*.ico*
+        - /**/*.json*
       anyMethods:
-      - /
-      - /actuator/**
-      - /v2/**
-      - /swagger**
-      - /api/auth/oauth/**
+        - /
+        - /actuator/**
+        - /v2/**
+        - /swagger**
+        - /api/auth/**
 swagger2:
   enabled: true
   resources:
-  - name: gateway 
-    url: /v2/api-docs
-    swaggerVersion: 0.1.0
-  - name: auth-server
-    url: /api/auth/v2/api-docs
-    swaggerVersion: 0.1.0
+    - name: gateway
+      url: /v2/api-docs
+      swaggerVersion: 0.1.0
+    - name: auth-server
+      url: /api/auth/v2/api-docs
+      swaggerVersion: 0.1.0
