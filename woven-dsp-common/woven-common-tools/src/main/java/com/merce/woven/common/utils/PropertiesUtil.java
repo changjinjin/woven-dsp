@@ -1,4 +1,4 @@
-package com.merce.woven.common.util;
+package com.merce.woven.common.utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

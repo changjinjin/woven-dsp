@@ -1,21 +1,19 @@
-package com.merce.woven.dsp.service;
-
-import com.merce.woven.dsp.scheduler.JobSchedule;
+package com.merce.woven.dsp.scheduler;
 
 /**
  * @Author: haijun
  * @Date: 2019/12/12 15:22
  */
-public class JdbcPush implements JobSchedule {
-    private String engine = "jdbc";
+public class FlowJobSchedule implements JobSchedule {
+    private String type = "flow";
 
     @Override
-    public String getEngine(){
-        return engine;
+    public String getJobType(){
+        return type;
     }
 
     @Override
-    public void pushMessage(String message) {
+    public void sendJob(String message) {
 
     }
 }
