@@ -5,6 +5,9 @@ spring:
   application:
     name: woven-dsp-gateway
   cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
     consul:
       host: 192.168.2.145
       port: 8500
@@ -31,7 +34,7 @@ spring:
         - RemoveRequestHeader:Expect
 zuul:
   host:
-    connect-timeout-millis: 10000
+    connect-timeout-millis: 15000
     socket-timeout-millis: 60000
     connection-request-timeout-millis: 60000
     time-unit: seconds
@@ -40,6 +43,7 @@ zuul:
       path: /api/auth/**
       sensitive-headers: '*'
       service-id: woven-dsp-auth-server
+      stripPrefix: false
   add-proxy-headers: true
   ribbon:
     eager-load:
@@ -52,6 +56,9 @@ zuul:
       limit: 100
       quota: 100
       refresh-interval: 3
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
 security:
   oauth2:
     resource:
@@ -80,10 +87,13 @@ security:
       - /actuator/**
       - /v2/**
       - /swagger**
-      - /api/auth/**
+      - /api/auth/oauth/**
 swagger2:
   enabled: true
   resources:
+  - name: gateway 
+    url: /v2/api-docs
+    swaggerVersion: 0.1.0
   - name: auth-server
     url: /api/auth/v2/api-docs
     swaggerVersion: 0.1.0

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.merce.woven.dsp.data.sys.mybatis.mapper.security.UserMapper">
-	<resultMap id="BaseResultMap" type="com.merce.woven.dsp.data.sys.entity.security.User">
+<mapper namespace="com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserMapper">
+	<resultMap id="BaseResultMap" type="com.info.baymax.dsp.data.sys.entity.security.User">
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -20,7 +20,7 @@
 		<result column="login_id" jdbcType="VARCHAR" property="loginId" />
 		<result column="password" jdbcType="VARCHAR" property="password" />
 		<result column="resource_queues" jdbcType="VARCHAR" property="resourceQueues"
-			typeHandler="com.merce.woven.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler" />
+			typeHandler="com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler" />
 		<result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
 		<result column="is_admin" jdbcType="INTEGER" property="admin" />
 		<result column="email" jdbcType="VARCHAR" property="email" />
@@ -32,9 +32,9 @@
 	</resultMap>
 
 	<resultMap id="BaseWithRolesResultMap" extends="BaseResultMap"
-		type="com.merce.woven.dsp.data.sys.entity.security.User">
+		type="com.info.baymax.dsp.data.sys.entity.security.User">
 		<association property="roles" column="id" fetchType="eager"
-			select="com.merce.woven.dsp.data.sys.mybatis.mapper.security.RoleMapper.selectWithPermsByUserId" />
+			select="com.info.baymax.dsp.data.sys.mybatis.mapper.security.RoleMapper.selectWithPermsByUserId" />
 	</resultMap>
 
 	<select id="selectOneWithRoles" parameterType="Map"

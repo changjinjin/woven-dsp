@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.merce.woven</groupId>
+		<groupId>com.info.baymax</groupId>
 		<artifactId>woven-dsp</artifactId>
 		<version>0.1.0</version>
 	</parent>
@@ -33,15 +33,15 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>com.merce.woven</groupId>
+					<groupId>com.info.baymax</groupId>
 					<artifactId>woven-dsp-access-platform</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>com.merce.woven</groupId>
+					<groupId>com.info.baymax</groupId>
 					<artifactId>woven-dsp-access-consumer</artifactId>
 				</dependency>
 				<dependency>
-					<groupId>com.merce.woven</groupId>
+					<groupId>com.info.baymax</groupId>
 					<artifactId>woven-dsp-access-dataapi</artifactId>
 				</dependency>
 			</dependencies>
@@ -82,7 +82,7 @@
 			</activation>
 			<dependencies>
 				<dependency>
-					<groupId>com.merce.woven</groupId>
+					<groupId>com.info.baymax</groupId>
 					<artifactId>woven-dsp-access-platform</artifactId>
 				</dependency>
 			</dependencies>

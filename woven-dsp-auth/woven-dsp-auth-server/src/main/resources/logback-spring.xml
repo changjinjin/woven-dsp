@@ -92,12 +92,12 @@
 
 	<!-- 开发、测试环境 -->
 	<springProfile name="dev,test">
-		<logger name="com.merce.woven" level="DEBUG" additivity="true" />
+		<logger name="com.info.baymax" level="DEBUG" additivity="true" />
 	</springProfile>
 
 	<!-- 生产环境 -->
 	<springProfile name="prod">
-		<logger name="com.merce.woven" level="ERROR" additivity="true" />
+		<logger name="com.info.baymax" level="ERROR" additivity="true" />
 	</springProfile>
 
 	<root level="ERROR">

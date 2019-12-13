@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.merce.woven</groupId>
+		<groupId>com.info.baymax</groupId>
 		<artifactId>woven-dsp-auth</artifactId>
 		<version>0.1.0</version>
 	</parent>
@@ -15,18 +15,18 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.runtime.startClass>com.merce.woven.dsp.auth.Starter</project.runtime.startClass>
+		<project.runtime.startClass>com.info.baymax.dsp.auth.Starter</project.runtime.startClass>
 		<swagger2.version>2.9.2</swagger2.version>
 		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.merce.woven</groupId>
+			<groupId>com.info.baymax</groupId>
 			<artifactId>woven-dsp-auth-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.merce.woven</groupId>
+			<groupId>com.info.baymax</groupId>
 			<artifactId>woven-dsp-data-sys</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -34,14 +34,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-consul-config</artifactId> 
+			</dependency> <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-consul-discovery</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-consul-config</artifactId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
-		</dependency>
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-openfeign-core</artifactId>

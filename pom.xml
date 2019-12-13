@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.merce.woven</groupId>
+	<groupId>com.info.baymax</groupId>
 	<artifactId>woven-dsp</artifactId>
 	<version>0.1.0</version>
 	<packaging>pom</packaging>
@@ -121,8 +123,8 @@
 		<module>woven-dsp-config</module>
 		<module>woven-dsp-registry</module>
 		<module>woven-dsp-distribution</module>
-    <module>woven-dsp-gateway</module>
-  </modules>
+		<module>woven-dsp-gateway</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -160,6 +162,14 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>0.2.2.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

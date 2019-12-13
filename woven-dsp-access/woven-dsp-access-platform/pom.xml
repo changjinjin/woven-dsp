@@ -5,7 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.merce.woven</groupId>
+        <groupId>com.info.baymax</groupId>
         <artifactId>woven-dsp-access</artifactId>
         <version>0.1.0</version>
     </parent>
@@ -17,11 +17,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.runtime.startClass>com.merce.woven.dsp.access.platform.Starter</project.runtime.startClass>
+        <project.runtime.startClass>com.info.baymax.dsp.access.platform.Starter</project.runtime.startClass>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.merce.woven</groupId>
+            <groupId>com.info.baymax</groupId>
             <artifactId>woven-common-comp</artifactId>
             <version>${project.version}</version>
         </dependency>

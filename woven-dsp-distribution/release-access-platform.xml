@@ -48,7 +48,7 @@
 	</files>
 
 	<!-- <moduleSets> <moduleSet> <useAllReactorProjects>true</useAllReactorProjects> 
-		<includes> <include>com.merce.woven:woven-dsp-access-platform</include> </includes> 
+		<includes> <include>com.info.baymax:woven-dsp-access-platform</include> </includes> 
 		<binaries> <outputDirectory>lib/</outputDirectory> <unpack>false</unpack> 
 		<fileMode>666</fileMode> <dependencySets> <dependencySet> <outputDirectory>lib/</outputDirectory> 
 		</dependencySet> </dependencySets> </binaries> </moduleSet> </moduleSets> -->
@@ -61,7 +61,7 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<fileMode>666</fileMode>
 			<includes>
-				<include>com.merce.woven:woven-dsp-access-platform</include>
+				<include>com.info.baymax:woven-dsp-access-platform</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>
