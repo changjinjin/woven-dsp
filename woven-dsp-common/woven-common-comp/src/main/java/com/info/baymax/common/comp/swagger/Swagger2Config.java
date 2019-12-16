@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,9 +46,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class Swagger2Config {
 
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)//
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)//
             .enable(true)//
             .apiInfo(apiInfo())//
             .select()//
@@ -57,6 +61,10 @@ public class Swagger2Config {
             .globalOperationParameters(globalOperationParameters())//
             .globalResponseMessage(RequestMethod.GET, responseMessages)//
             .globalResponseMessage(RequestMethod.POST, responseMessages);//
+        if (contextPath != null && contextPath.length() > 0) {
+            docket.pathMapping(contextPath);
+        }
+        return docket;
     }
 
     /**
