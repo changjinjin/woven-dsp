@@ -19,6 +19,16 @@
     <dependencies>
         <dependency>
             <groupId>com.info.baymax</groupId>
+            <artifactId>woven-dsp-data-consumer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>woven-dsp-data-platform</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
             <artifactId>woven-common-comp</artifactId>
             <version>${project.version}</version>
         </dependency>
