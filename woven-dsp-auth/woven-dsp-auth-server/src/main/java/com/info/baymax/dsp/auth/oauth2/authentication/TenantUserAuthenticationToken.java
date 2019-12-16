@@ -5,11 +5,13 @@ import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.info.baymax.dsp.auth.api.UserInfo;
+
 import java.util.Collection;
 
 @Setter
 @Getter
-public class TenantUserAuthenticationToken extends UsernamePasswordAuthenticationToken {
+public class TenantUserAuthenticationToken extends UsernamePasswordAuthenticationToken implements UserInfo {
     private static final long serialVersionUID = 7444831017334725302L;
     private String clientId;
     private String tenant;
@@ -17,6 +19,7 @@ public class TenantUserAuthenticationToken extends UsernamePasswordAuthenticatio
 
     private Object userId;
     private Object tenantId;
+    private boolean admin;
 
     public TenantUserAuthenticationToken(Object principal, Object credentials, String clientId, String tenant,
                                          String version) {
@@ -27,12 +30,24 @@ public class TenantUserAuthenticationToken extends UsernamePasswordAuthenticatio
     }
 
     public TenantUserAuthenticationToken(Object principal, Object credentials, String clientId, String tenant,
-                                         String version, Object tenantId, Object userId, Collection<? extends GrantedAuthority> authorities) {
+                                         String version, Object tenantId, Object userId, boolean admin,
+                                         Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
         this.clientId = clientId;
         this.tenantId = tenantId;
         this.tenant = tenant;
         this.userId = userId;
         this.version = version;
+        this.admin = admin;
+    }
+
+    @Override
+    public String getTenantName() {
+        return tenant;
+    }
+
+    @Override
+    public String getUserName() {
+        return super.getPrincipal().toString();
     }
 }

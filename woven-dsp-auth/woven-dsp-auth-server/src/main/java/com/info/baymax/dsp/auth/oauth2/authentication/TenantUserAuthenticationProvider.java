@@ -1,10 +1,5 @@
 package com.info.baymax.dsp.auth.oauth2.authentication;
 
-import com.info.baymax.dsp.auth.security.exceptions.ClientIdNotFoundException;
-import com.info.baymax.dsp.auth.security.i18n.SecurityMessageSource;
-import com.info.baymax.dsp.auth.security.support.tenant.TenantDetails;
-import com.info.baymax.dsp.auth.security.support.tenant.TenantDetailsService;
-import com.info.baymax.dsp.auth.security.support.token.user.SimpleUserDetails;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +8,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.info.baymax.dsp.auth.security.exceptions.ClientIdNotFoundException;
+import com.info.baymax.dsp.auth.security.i18n.SecurityMessageSource;
+import com.info.baymax.dsp.auth.security.support.tenant.TenantDetails;
+import com.info.baymax.dsp.auth.security.support.tenant.TenantDetailsService;
+import com.info.baymax.dsp.auth.security.support.token.user.SimpleUserDetails;
 
 public class TenantUserAuthenticationProvider implements AuthenticationProvider {
     protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
@@ -56,7 +57,7 @@ public class TenantUserAuthenticationProvider implements AuthenticationProvider 
 
         return new TenantUserAuthenticationToken(token.getPrincipal(), token.getCredentials(), token.getClientId(),
             token.getTenant(), token.getVersion(), userDetails.getTenant().getId(), userDetails.getUser().getId(),
-            userDetails.getAuthorities());
+            userDetails.getUser().admin(), userDetails.getAuthorities());
     }
 
     @Override

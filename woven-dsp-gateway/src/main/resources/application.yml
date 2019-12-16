@@ -64,7 +64,7 @@ security:
     resource:
       id: ${spring.application.name}
       serviceId: ${spring.application.name}
-      user-info-uri: http://localhost:8004/api/auth/oauth/user
+      user-info-uri: http://localhost:8004/api/auth/user
       prefer-token-info: false
     client:
       access-token-uri: http://localhost:8004/api/auth/oauth/token
@@ -87,7 +87,8 @@ security:
         - /actuator/**
         - /v2/**
         - /swagger**
-        - /api/auth/**
+        - /api/auth/oauth/**
+        - /api/auth/v2/*
 swagger2:
   enabled: true
   resources:

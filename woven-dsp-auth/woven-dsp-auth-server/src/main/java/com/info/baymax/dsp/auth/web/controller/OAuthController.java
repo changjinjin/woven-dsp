@@ -14,14 +14,14 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "认证管理", value = "用户认证相关接口", description = "系统用户认证管理")
 @RestController
-@RequestMapping("/oauth")
+//@RequestMapping("/oauth")
 @SessionAttributes("authorizationRequest")
 public class OAuthController {
 
-	@ApiOperation(value = "获取登录用户信息", notes = "获取登录用户信息", hidden = false)
-	@GetMapping({ "/user" })
-	@ResponseStatus(HttpStatus.OK)
-	public Principal user(Principal user) {
-		return user;
-	}
+    @ApiOperation(value = "获取登录用户信息", notes = "获取登录用户信息", hidden = false)
+    @GetMapping({"/user"})
+    @ResponseStatus(HttpStatus.OK)
+    public Principal user(Principal user) {
+        return user;
+    }
 }
