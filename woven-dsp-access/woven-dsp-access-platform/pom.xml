@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
-            <artifactId>woven-dsp-data-platform</artifactId>
+            <artifactId>woven-dsp-data-sys</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -36,12 +36,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>woven-dsp-data-platform</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-config</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
