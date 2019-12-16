@@ -20,18 +20,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response,
-			AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("status", HttpStatus.FORBIDDEN.value());
-		// map.put("message", accessDeniedException.getMessage());
-		map.put("message", "拒绝访问");
-		map.put("path", request.getServletPath());
-		map.put("timestamp", String.valueOf(new Date().getTime()));
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-		response.setStatus(HttpStatus.FORBIDDEN.value());
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.writeValue(response.getWriter(), map);
-	}
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", HttpStatus.FORBIDDEN.value());
+        map.put("message", "拒绝访问");
+        map.put("path", request.getServletPath());
+        map.put("timestamp", String.valueOf(new Date().getTime()));
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getWriter(), map);
+    }
 }

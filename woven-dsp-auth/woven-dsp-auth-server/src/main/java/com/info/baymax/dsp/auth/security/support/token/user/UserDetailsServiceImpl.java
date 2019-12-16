@@ -42,126 +42,126 @@ import com.info.baymax.dsp.data.sys.service.security.UserService;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService, GrantedAuthoritiesService {
 
-	@Autowired
-	public SecurityInitConfig initConfig;
+    @Autowired
+    public SecurityInitConfig initConfig;
 
-	@Autowired
-	public PasswordEncoder passwordEncoder;
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
-	@Autowired
-	public TenantService tenantService;
+    @Autowired
+    public TenantService tenantService;
 
-	@Autowired
-	public TenantInitializer tenantInitializer;
+    @Autowired
+    public TenantInitializer tenantInitializer;
 
-	@Autowired
-	public UserService userService;
+    @Autowired
+    public UserService userService;
 
-	@Autowired
-	public PermissionService permissionService;
+    @Autowired
+    public PermissionService permissionService;
 
-	protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
+    protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
-	private AccountStatusUserDetailsChecker checker = new AccountStatusUserDetailsChecker();
+    private AccountStatusUserDetailsChecker checker = new AccountStatusUserDetailsChecker();
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// 用户名为空
-		if (StringUtils.isEmpty(username)) {
-			throw new UsernameNotFoundException(
-					this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty"));
-		}
-		String[] certificates = username.split(":");
-		User user = findUserByClientIdAndUsername(certificates[0], certificates[1], certificates[2]);
-		// 检查用户信息
-		SimpleUserDetails simpleUserDetails = new SimpleUserDetails(certificates[0], user);
-		checker.check(simpleUserDetails);
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 用户名为空
+        if (StringUtils.isEmpty(username)) {
+            throw new UsernameNotFoundException(
+                this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty"));
+        }
+        String[] certificates = username.split(":");
+        // 检查用户信息
+        SimpleUserDetails userDetails = findUserByClientIdAndUsername(certificates[0], certificates[1],
+            certificates[2]);
+        checker.check(userDetails);
 
-		// 如果密码检查是严格模式，则登录需要检查是否需要修改密码
-		simpleUserDetails.setPwdInfo(pwdInfo(initConfig.isPwdStrict(), user, initConfig.getPassword()));
+        // 如果密码检查是严格模式，则登录需要检查是否需要修改密码
+        userDetails.setPwdInfo(pwdInfo(initConfig.isPwdStrict(), userDetails.getUser(), initConfig.getPassword()));
 
-		return simpleUserDetails;
-	}
+        return userDetails;
+    }
 
-	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
-	@Override
-	public Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientId(String clientId) {
-		Collection<String> list = findGrantedAuthorityUrlsByClientId(clientId);
-		if (ICollections.hasElements(list)) {
-			return list.stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
+    @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
+    @Override
+    public Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientId(String clientId) {
+        Collection<String> list = findGrantedAuthorityUrlsByClientId(clientId);
+        if (ICollections.hasElements(list)) {
+            return list.stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
 
-	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
-	@Override
-	public Collection<String> findGrantedAuthorityUrlsByClientId(String clientId) {
-		return permissionService.findAuthoritiesByClientId(clientId);
-	}
+    @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
+    @Override
+    public Collection<String> findGrantedAuthorityUrlsByClientId(String clientId) {
+        return permissionService.findAuthoritiesByClientId(clientId);
+    }
 
-	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
-	@Override
-	public Collection<String> findGrantedAuthorityUrlsByClientIdAndUsername(String clientId, String tenant,
-			String username) {
-		Collection<? extends GrantedAuthority> list = findGrantedAuthoritiesByClientIdAndUsername(clientId, tenant,
-				username);
-		if (ICollections.hasElements(list)) {
-			return list.stream().map(t -> t.getAuthority()).collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
+    @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
+    @Override
+    public Collection<String> findGrantedAuthorityUrlsByClientIdAndUsername(String clientId, String tenant,
+                                                                            String username) {
+        Collection<? extends GrantedAuthority> list = findGrantedAuthoritiesByClientIdAndUsername(clientId, tenant,
+            username);
+        if (ICollections.hasElements(list)) {
+            return list.stream().map(t -> t.getAuthority()).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
 
-	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
-	@Override
-	public Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientIdAndUsername(String clientId,
-			String tenant, String username) {
-		User userdetails = findUserByClientIdAndUsername(clientId, tenant, username);
-		return SimpleUserDetails.grantedAuthorities(userdetails.getAuthorities());
-	}
+    @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
+    @Override
+    public Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientIdAndUsername(String clientId,
+                                                                                              String tenant, String username) {
+        SimpleUserDetails userdetails = findUserByClientIdAndUsername(clientId, tenant, username);
+        return SimpleUserDetails.grantedAuthorities(userdetails.getUser().getAuthorities());
+    }
 
-	// 根据客户端ID和用户名查询系统用户信息
-	private User findUserByClientIdAndUsername(String clientId, String tenant, String username) {
-		Tenant merceTenant = tenantService.findByName(tenant);
-		User userdetails = userService.findByTenantAndLoginId(merceTenant.getId(), username);
-		// 用户不存在
-		if (userdetails == null) {
-			throw new UsernameNotFoundException(this.messages.getMessage("UserErr.usernameNotFound",
-					new Object[] { username }, "Username {0} not found"));
-		}
+    // 根据客户端ID和用户名查询系统用户信息
+    private SimpleUserDetails findUserByClientIdAndUsername(String clientId, String tenantName, String username) {
+        Tenant tenant = tenantService.findByName(tenantName);
+        User user = userService.findByTenantAndLoginId(tenant.getId(), username);
+        // 用户不存在
+        if (user == null) {
+            throw new UsernameNotFoundException(this.messages.getMessage("UserErr.usernameNotFound",
+                new Object[]{username}, "Username {0} not found"));
+        }
 
-		// 如果是管理员权限则需要用户拥有所有的权限，这里赋给该账户所有的权限
+        // 如果是管理员权限则需要用户拥有所有的权限，这里赋给该账户所有的权限
 
-		if (userdetails.admin()) { // 初始获取如果为空则初始化
-			List<String> list = permissionService.findAuthoritiesByClientId(clientId);
-			if (ICollections.hasNoElements(list)) {
-				throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
-						new Object[] { username }, "Username {0} no authority granted"));
-			}
-			userdetails.setAuthorities(list.stream().map(t -> t).collect(Collectors.toList()));
-		}
+        if (user.admin()) { // 初始获取如果为空则初始化
+            List<String> list = permissionService.findAuthoritiesByClientId(clientId);
+            if (ICollections.hasNoElements(list)) {
+                throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
+                    new Object[]{username}, "Username {0} no authority granted"));
+            }
+            user.setAuthorities(list.stream().map(t -> t).collect(Collectors.toList()));
+        }
 
-		// 用户没有赋权，用户需要有权限才能登陆服务
-		if (userdetails.getAuthorities() == null || userdetails.getAuthorities().isEmpty()) {
-			throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
-					new Object[] { username }, "Username {0} no authority granted"));
-		}
-		return userdetails;
-	}
+        // 用户没有赋权，用户需要有权限才能登陆服务
+        if (user.getAuthorities() == null || user.getAuthorities().isEmpty()) {
+            throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
+                new Object[]{username}, "Username {0} no authority granted"));
+        }
+        return new SimpleUserDetails(clientId, tenant, user);
+    }
 
-	/**
-	 * <pre>
-	 * 是否需要修改密码:
-	 *  1.如果是初始密码需要修改
-	 *  2.密码是否过期
-	 * </pre>
-	 *
-	 * @return 是否需要修改密码
-	 */
-	private PwdInfo pwdInfo(boolean isPwdStrict, User user, String initPwd) {
-		if (isPwdStrict) {
-			return new PwdInfo(PwdMode.STRICT, !user.isCredentialsNonExpired(),
-					passwordEncoder.matches(initPwd, user.getPassword()));
-		}
-		return new PwdInfo(PwdMode.SIMPLE, false, false);
-	}
+    /**
+     * <pre>
+     * 是否需要修改密码:
+     *  1.如果是初始密码需要修改
+     *  2.密码是否过期
+     * </pre>
+     *
+     * @return 是否需要修改密码
+     */
+    private PwdInfo pwdInfo(boolean isPwdStrict, User user, String initPwd) {
+        if (isPwdStrict) {
+            return new PwdInfo(PwdMode.STRICT, !user.isCredentialsNonExpired(),
+                passwordEncoder.matches(initPwd, user.getPassword()));
+        }
+        return new PwdInfo(PwdMode.SIMPLE, false, false);
+    }
 }

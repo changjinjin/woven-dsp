@@ -2,6 +2,7 @@ package com.info.baymax.dsp.auth.oauth2.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,85 +29,99 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 import com.info.baymax.dsp.auth.api.exception.CustomWebResponseExceptionTranslator;
 import com.info.baymax.dsp.auth.oauth2.authentication.TenantUserResourceOwnerPasswordTokenGranter;
+import com.info.baymax.dsp.auth.security.support.token.granted.GrantedAuthoritiesService;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private GrantedAuthoritiesService grantedAuthoritiesService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private Oauth2ClientProperties oauth2ClientProperties;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    @Bean
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
+    }
 
-	@Bean
-	public TokenStore tokenStore() {
-		return new InMemoryTokenStore();
-	}
+    @Bean
+    public ClientDetailsService inMemoryClientDetailsService() {
+        return new InMemoryClientDetailsService();
+    }
 
-	@Bean
-	public ClientDetailsService inMemoryClientDetailsService() {
-		return new InMemoryClientDetailsService();
-	}
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.authenticationManager(authenticationManager)//
+            // .tokenEnhancer(tokenEnhancer())//
+            // 配置JwtAccessToken转换器
+            // .accessTokenConverter(accessTokenConverter())
+            // refresh_token需要userDetailsService
+            .reuseRefreshTokens(false)//
+            .userDetailsService(userDetailsService)//
+            .tokenStore(tokenStore())//
+            .allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET, HttpMethod.OPTIONS)//
+            .exceptionTranslator(new CustomWebResponseExceptionTranslator());
 
-	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.authenticationManager(authenticationManager)//
-				// .tokenEnhancer(tokenEnhancer())//
-				// 配置JwtAccessToken转换器
-				// .accessTokenConverter(accessTokenConverter())
-				// refresh_token需要userDetailsService
-				.reuseRefreshTokens(false)//
-				.userDetailsService(userDetailsService)//
-				.tokenStore(tokenStore())//
-				.allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET, HttpMethod.OPTIONS)//
-				.exceptionTranslator(new CustomWebResponseExceptionTranslator());
+        // 添加自定义的TokenGranters
+        List<TokenGranter> tokenGranters = getTokenGranters(endpoints.getTokenServices(),
+            endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory());
+        tokenGranters.add(endpoints.getTokenGranter());
+        endpoints.tokenGranter(new CompositeTokenGranter(tokenGranters));
+    }
 
-		// 添加自定义的TokenGranters
-		List<TokenGranter> tokenGranters = getTokenGranters(endpoints.getTokenServices(),
-				endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory());
-		tokenGranters.add(endpoints.getTokenGranter());
-		endpoints.tokenGranter(new CompositeTokenGranter(tokenGranters));
-	}
+    private List<TokenGranter> getTokenGranters(AuthorizationServerTokenServices tokenServices,
+                                                ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
+        return new ArrayList<>(Arrays.asList(new TenantUserResourceOwnerPasswordTokenGranter(authenticationManager,
+            tokenServices, clientDetailsService, requestFactory)));
+    }
 
-	private List<TokenGranter> getTokenGranters(AuthorizationServerTokenServices tokenServices,
-			ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
-		return new ArrayList<>(Arrays.asList(new TenantUserResourceOwnerPasswordTokenGranter(authenticationManager,
-				tokenServices, clientDetailsService, requestFactory)));
-	}
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security //
+            .tokenKeyAccess("permitAll()")//
+            .checkTokenAccess("isAuthenticated()") //
+            .allowFormAuthenticationForClients();
+    }
 
-	@Override
-	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		security //
-				.tokenKeyAccess("permitAll()")//
-				.checkTokenAccess("isAuthenticated()") //
-				.allowFormAuthenticationForClients();
-	}
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
 
-	@Override
-	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
-		builder//
-				.withClient("baymax")//
-				.secret(passwordEncoder.encode("123456"))//
-				.scopes("read", "write", "trust")//
-				.autoApprove(true)//
-				.authorities("WRIGTH_READ")//
-				.accessTokenValiditySeconds(60000)//
-				.refreshTokenValiditySeconds(72000)//
-				.authorizedGrantTypes("refresh_token", "authorization_code", "password", "tenant_password",
-						"client_credentials")//
-				.and()//
-				.withClient("dsp")//
-				.secret(passwordEncoder.encode("123456"))//
-				.scopes("read", "write", "trust")//
-				.autoApprove(true)//
-				.accessTokenValiditySeconds(60000)//
-				.refreshTokenValiditySeconds(72000)//
-				.authorities("WRIGTH_READ")//
-				.authorizedGrantTypes("refresh_token", "authorization_code", "password", "tenant_password",
-						"client_credentials");
-	}
+        List<Oauth2Client> clientDetails = oauth2ClientProperties.getClients();
+        if (clientDetails != null && clientDetails.size() > 0) {
+            for (Oauth2Client c : clientDetails) {
+                builder//
+                    .withClient(c.getClientId())//
+                    .secret(passwordEncoder.encode(c.getClientSecret()))//
+                    .resourceIds(c.getResourceIds())//
+                    .scopes(c.getScopes())//
+                    .autoApprove(c.isAutoApprove())//
+                    .autoApprove(c.getAutoApproveScopes())//
+                    .accessTokenValiditySeconds(c.getRefreshTokenValiditySeconds())//
+                    .refreshTokenValiditySeconds(c.getRefreshTokenValiditySeconds())//
+                    .authorizedGrantTypes(c.getAuthorizedGrantTypes())//
+                    .redirectUris(c.getRedirectUris())//
+                    .additionalInformation(c.getAdditionalInformation())//
+                    .authorities(getAuthoritiesByClientId(c.getClientId(), c.getAuthorities()));
+            }
+        }
+    }
+
+    private String[] getAuthoritiesByClientId(String clientId, String[] authorities) {
+        if (authorities != null && authorities.length > 0) {
+            return authorities;
+        }
+        Collection<String> authoritiesList = grantedAuthoritiesService.findGrantedAuthorityUrlsByClientId(clientId);
+        if (authoritiesList != null) {
+            return authoritiesList.stream().toArray(String[]::new);
+        }
+        return new String[]{};
+    }
 }
