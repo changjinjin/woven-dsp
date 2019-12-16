@@ -17,7 +17,7 @@ import java.io.Serializable;
 @ApiModel
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "ref_role_permission")
+@Table(name = "dsp_sys_rolemenu_ref")
 public class RolePermissionRef implements Serializable {
     private static final long serialVersionUID = -4066909154102918575L;
 

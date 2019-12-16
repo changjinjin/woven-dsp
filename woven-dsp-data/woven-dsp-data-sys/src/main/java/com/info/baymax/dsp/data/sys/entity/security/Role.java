@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
-@Table(name = "merce_role", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "name"})})
+@Table(name = "dsp_sys_role", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "name"})})
 public class Role extends BaseEntity {
     private static final long serialVersionUID = -4302027743711660884L;
 

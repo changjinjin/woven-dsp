@@ -27,48 +27,48 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
-@Table(name = "merce_tenant", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) }, indexes = {
-		@Index(columnList = "lastModifiedTime") })
+@Table(name = "dsp_sys_tenant", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})}, indexes = {
+    @Index(columnList = "lastModifiedTime")})
 public class Tenant extends BaseEntity {
-	private static final long serialVersionUID = -7861087791631568673L;
+    private static final long serialVersionUID = -7861087791631568673L;
 
-	@ApiModelProperty(value = "资源队列")
-	@Lob
-	@Column(length = 255)
-	@Convert(converter = ObjectToStringConverter.class)
-	@ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = GZBase64VarcharVsListStringTypeHandler.class)
-	protected List<String> resourceQueues;
+    @ApiModelProperty(value = "资源队列")
+    @Lob
+    @Column(length = 255)
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = GZBase64VarcharVsListStringTypeHandler.class)
+    protected List<String> resourceQueues;
 
-	@ApiModelProperty(value = "HDFS空间限额")
-	@Column(length = 18)
-	@ColumnType(jdbcType = JdbcType.BIGINT)
-	@DefaultValue("0")
-	private Long hdfsSpaceQuota;
+    @ApiModelProperty(value = "HDFS空间限额")
+    @Column(length = 18)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    @DefaultValue("0")
+    private Long hdfsSpaceQuota;
 
-	@ApiModelProperty(value = "全局ID")
-	@Column(length = 50)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private String zid;
+    @ApiModelProperty(value = "全局ID")
+    @Column(length = 50)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String zid;
 
-	@ApiModelProperty(value = "版本")
-	@Column(length = 30)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private String version;
+    @ApiModelProperty(value = "版本")
+    @Column(length = 30)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String version;
 
-	public static Tenant apply(String name, List<String> resourceQueues) {
-		return new Tenant(name, resourceQueues);
-	}
+    public static Tenant apply(String name, List<String> resourceQueues) {
+        return new Tenant(name, resourceQueues);
+    }
 
-	public Tenant() {
-	}
+    public Tenant() {
+    }
 
-	public Tenant(String name) {
-		this.name = name;
-	}
+    public Tenant(String name) {
+        this.name = name;
+    }
 
-	public Tenant(String name, List<String> resourceQueues) {
-		this.name = name;
-		this.resourceQueues = resourceQueues;
-	}
+    public Tenant(String name, List<String> resourceQueues) {
+        this.name = name;
+        this.resourceQueues = resourceQueues;
+    }
 
 }

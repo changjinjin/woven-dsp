@@ -44,6 +44,11 @@ zuul:
       sensitive-headers: '*'
       service-id: woven-dsp-auth-server
       stripPrefix: false
+    access-platform:
+      path: /api/dsp/platform/**
+      sensitive-headers: '*'
+      service-id: woven-dsp-access-platform
+      stripPrefix: false
   add-proxy-headers: true
   ribbon:
     eager-load:
@@ -89,6 +94,7 @@ security:
         - /swagger**
         - /api/auth/oauth/**
         - /api/auth/v2/*
+        - /api/dsp/platform/v2/*
 swagger2:
   enabled: true
   resources:
@@ -97,4 +103,7 @@ swagger2:
       swaggerVersion: 0.1.0
     - name: auth-server
       url: /api/auth/v2/api-docs
+      swaggerVersion: 0.1.0
+    - name: access-platform
+      url: /api/dsp/platform/v2/api-docs
       swaggerVersion: 0.1.0

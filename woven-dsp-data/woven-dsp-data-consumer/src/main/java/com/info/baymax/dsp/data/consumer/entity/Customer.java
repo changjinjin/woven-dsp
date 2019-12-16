@@ -28,10 +28,10 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
-@Table(name = "dsp_consumer", uniqueConstraints = {
+@Table(name = "dsp_customer", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"tenantId", "username"})}, indexes = {
     @Index(columnList = "lastModifiedTime")})
-public class Consumer extends BaseEntity implements CryptoBean {
+public class Customer extends BaseEntity implements CryptoBean {
     private static final long serialVersionUID = -3170541763416732171L;
 
     @ApiModelProperty(value = "用户名")

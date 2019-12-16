@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.platform;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,8 @@ import java.io.IOException;
 //@EnableUserInfoTransmitter
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.platform"})
 @ComponentScan(basePackages = {"com.info.baymax"})
-@MapperScan(basePackages = {"com.info.baymax.dsp.access.platform.mybatis.mapper"})
+@EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
+@MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 public class Starter {
 
     /**
