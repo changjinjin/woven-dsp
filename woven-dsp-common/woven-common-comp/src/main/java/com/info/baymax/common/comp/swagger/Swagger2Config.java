@@ -4,8 +4,10 @@
 
 package com.info.baymax.common.comp.swagger;
 
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.message.result.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,15 @@ import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
-import springfox.documentation.builders.*;
+
+import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.message.result.Response;
+
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.Example;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
@@ -24,10 +34,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Swagger2文档配置类，这里用于设置swagger启动相关配置项，在应用中开启Swagger服务
  *
@@ -36,7 +42,7 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2WebFlux // 开启Swagger服务，针对WebFlux应用
-@ConditionalOnProperty(prefix = Swagger2ResourceProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class Swagger2Config {
 
     @Bean
@@ -133,4 +139,5 @@ public class Swagger2Config {
             .examples(Arrays.asList(new Example(MediaType.APPLICATION_JSON_UTF8_VALUE, Response.error(errType))))//
             .build();
     }
+
 }
