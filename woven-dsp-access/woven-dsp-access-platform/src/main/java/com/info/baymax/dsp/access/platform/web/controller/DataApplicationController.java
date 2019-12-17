@@ -25,7 +25,7 @@ import java.util.List;
  * @Date: 2019/12/16 14:44
  * 管理员针对消费者的申请记录进行操作
  */
-@Api(tags = "数据资源相关接口", description = "数据资源相关接口")
+@Api(tags = "管理员审批相关接口", description = "管理员审批相关接口")
 @RestController
 @RequestMapping("/dataapply")
 public class DataApplicationController {
