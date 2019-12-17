@@ -9,6 +9,7 @@ import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,7 @@ import java.util.List;
  * @Date: 2019/12/13 16:41
  * http://xxx.yyy/api/dsp/platform/
  */
+@Slf4j
 @Api(tags = "数据资源相关接口", description = "数据资源相关接口")
 @RestController
 @RequestMapping("/datares")
@@ -42,6 +44,7 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.OK)
     public Page<Dataset> queryDataset(QueryObject queryObject) throws Exception {
         //--TODO-- 查询merce_dataset记录,支持按照名称，Engine,创建时间等过滤
+        log.info("query dataset list ...");
         return dataResourceService.queryDatasets(queryObject);
     }
 
@@ -50,6 +53,7 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.OK)
     public IPage<DataResource> queryDataResource(ExampleQuery exampleQuery) throws Exception {
         //--TODO-- 支持按照名称，Engine， 发布状态，创建时间等过滤
+		log.info("query dataResource list ...");
         return dataResourceService.selectPage(exampleQuery);
     }
 
@@ -59,6 +63,7 @@ public class DataResourceController {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
+        log.info("create dataResource ...");
         int id = dataResourceService.createDataResource(drs);
         Response res = new Response();
         return res.status(HttpStatus.CREATED.value()).content(id);
@@ -70,6 +75,7 @@ public class DataResourceController {
     public Response updateDataResource(DataResource drs) throws Exception {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
+        log.info("update dataResource, id={} ...", drs.getId());
         dataResourceService.updateDataResource(drs);
         Response res = new Response();
         return res.status(HttpStatus.ACCEPTED.value());
@@ -80,6 +86,7 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Response deleteDataResource(List<Long> ids) throws Exception {
         //request boy :string[] ids
+        log.info("delete dataResource , ids.size={} ...", ids.size());
         dataResourceService.deleteDataResource(ids);
         Response res = new Response();
         res.status(HttpStatus.NO_CONTENT.value());
@@ -91,6 +98,7 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Response openDataResource(DataResource drs) throws Exception {
         //--TODO-- updateOpenStatus 1 and updateDataPolicy
+        log.info("publish dataResource, id={} ...", drs.getId());
         if(drs.getOpenStatus() == 1){
             dataResourceService.updateDataResource(drs);
         }else{
@@ -106,6 +114,7 @@ public class DataResourceController {
     public Response closeDataResource(List<Long> ids) throws Exception {
         //--TODO-- 根据dataResourceId关联更新consumer_data_application record status,禁止申请权限,或者删除记录
         //--TODO-- updateOpenStatus 0
+        log.info("close dataResource and delete dataApplication, ids.size={}...", ids.size());
         dataApplicationService.deleteByDataResIds(ids);
         dataResourceService.closeDataResource(ids);
         Response res = new Response();
