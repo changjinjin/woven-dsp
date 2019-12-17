@@ -2,18 +2,39 @@ package com.info.baymax.dsp.auth.api;
 
 public interface UserInfo {
 
-    public String getClientId();
+    /**
+     * 获取客户端ID
+     */
+    String getClientId();
 
-    public Object getTenantId();
+    /**
+     * 获取租户ID
+     */
+    Object getTenantId();
 
-    public String getTenantName();
+    /**
+     * 获取租户名称
+     */
+    String getTenantName();
 
-    public Object getUserId();
+    /**
+     * 获取用户ID
+     */
+    Object getUserId();
 
-    public String getUserName();
+    /**
+     * 获取用户名称
+     */
+    String getUserName();
 
-    public boolean isAdmin();
+    /**
+     * 用户是否是超级管理员
+     */
+    boolean isAdmin();
 
-    public String getVersion();
+    /**
+     * 获取系统版本号
+     */
+    String getVersion();
 
 }

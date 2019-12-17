@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.info.baymax.dsp.auth.api.config.manager.AuthorizeConfigProvider;
 
-@Order(2)
+@Order(100)
 @Component
 public class PermissionAuthorizeConfigProvider implements AuthorizeConfigProvider {
 

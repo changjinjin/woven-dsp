@@ -10,14 +10,13 @@ import com.info.baymax.dsp.data.sys.constant.AuthConstants;
 
 @Order(1)
 @Component
-public class AuthorizationServerAuthorizeConfigProvider implements AuthorizeConfigProvider {
+public class WebSecurityAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
     @Override
     public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
         config//
             .antMatchers(AuthConstants.TOKEN_ENTRY_POINT).fullyAuthenticated()//
             .antMatchers(AuthConstants.TOKEN_REFRESH_ENTRY_POINT).permitAll()//
-            .antMatchers(AuthConstants.TOKEN_AUTH_ENTRY_POINT).authenticated()//
         ;
     }
 

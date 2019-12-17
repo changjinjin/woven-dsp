@@ -19,8 +19,6 @@ import com.info.baymax.dsp.auth.api.exception.CustomWebResponseExceptionTranslat
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    // @Autowired
-    // private WhiteListProperties whiteListProperties;
     @Autowired
     private AuthorizeConfigManager authorizeConfigManager;
 
