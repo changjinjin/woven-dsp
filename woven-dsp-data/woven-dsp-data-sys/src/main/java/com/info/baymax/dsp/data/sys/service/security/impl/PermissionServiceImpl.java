@@ -23,7 +23,6 @@ import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.PermissionMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RolePermissionRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.PermissionService;
-import com.info.baymax.dsp.data.sys.service.security.TenantService;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -33,8 +32,6 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 	private PermissionMapper permissionMapper;
 	@Autowired
 	private RolePermissionRefMapper rolePermissionRefMapper;
-	@Autowired
-	private TenantService tenantService;
 
 	@Override
 	public MyIdableMapper<Permission> getMyIdableMapper() {

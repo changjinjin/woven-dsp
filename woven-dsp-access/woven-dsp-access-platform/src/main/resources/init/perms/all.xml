@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clients>
+    <client>
+        <clientId>dsp</clientId>
+        <roots>
+            <root>
+                <code>01</code>
+                <name>数据主题</name>
+                <type>1</type>
+                <enabled>0</enabled>
+                <url>/api/woven/datasubject/</url>
+                <route>/sjjc</route>
+                <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0101</code>
+                        <name>数据全景</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/datapanorama/</url>
+                        <route>/dataPanorama</route>
+                        <icon><![CDATA[fa fa-server nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0102</code>
+                        <name>时序数据</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/datapanorama/</url>
+                        <route>/timeSeriesData</route>
+                        <icon><![CDATA[fa fa-server nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0103</code>
+                        <name>运营分析</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/operationalanalysis/</url>
+                        <route>/operationAnalysis</route>
+                        <icon><![CDATA[fa fa-file-zip-o nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0104</code>
+                        <name>资源分析</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/resourceanalysis/</url>
+                        <route>/resourceAnalysis</route>
+                        <icon><![CDATA[fa fa-cloud-download nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0105</code>
+                        <name>安全分析</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/safetyanalysis/</url>
+                        <route>/safetyAnalysis</route>
+                        <icon><![CDATA[fa fa-download nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0106</code>
+                        <name>服务分析</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/serviceanalysis/</url>
+                        <route>/collector</route>
+                        <icon><![CDATA[fa fa-shopping-basket nav]]></icon>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>02</code>
+                <name>数据集成</name>
+                <type>1</type>
+                <enabled>1</enabled>
+                <url>/api/woven/dataintegration/</url>
+                <route>/dataIntegration</route>
+                <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0201</code>
+                        <name>资源目录</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/resource/roots/</url>
+                        <route>/resourceMan</route>
+                        <icon><![CDATA[fa fa-server nav]]></icon>
+                        <!-- <children> <permission> <code>020101</code> <name>元数据</name> <type>3</type>
+                            <enabled>0</enabled> <url>/api/woven/resource/roots/schema</url> <route>/dataIntegration</route>
+                            <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission>
+                            <permission> <code>020102</code> <name>数据集</name> <type>3</type> <enabled>0</enabled>
+                            <url>/api/woven/resource/roots/dataset</url> <route>/dataIntegration</route>
+                            <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission>
+                            <permission> <code>020103</code> <name>数据源</name> <type>3</type> <enabled>0</enabled>
+                            <url>/api/woven/resource/roots/datasource</url> <route>/dataIntegration</route>
+                            <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission>
+                            <permission> <code>020104</code> <name>数据标准</name> <type>3</type> <enabled>0</enabled>
+                            <url>/api/woven/resource/roots/standard</url> <route>/dataIntegration</route>
+                            <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission>
+                            </children> -->
+                    </permission>
+                    <permission>
+                        <code>0202</code>
+                        <name>文件管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/oss/file/</url>
+                        <route>/dataMan</route>
+                        <icon><![CDATA[fa fa-file-zip-o nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0203</code>
+                        <name>数据导入</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/synchronizations/dataSyncJobs/query/</url>
+                        <route>/synchronization</route>
+                        <icon><![CDATA[fa fa-cloud-download nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0204</code>
+                        <name>文件导入</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/synchronizations/fileSyncJobs/query/</url>
+                        <route>/fileSynchronization</route>
+                        <icon><![CDATA[fa fa-download nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0205</code>
+                        <name>采集器</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/collectors/query/</url>
+                        <route>/collector</route>
+                        <icon><![CDATA[fa fa-shopping-basket nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0206</code>
+                        <name>对象采集</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/synchronizations/objectSyncJobs/query/</url>
+                        <route>/objectSynchronization</route>
+                        <icon><![CDATA[fa fa-download nav]]></icon>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>03</code>
+                <name>数据治理</name>
+                <type>1</type>
+                <enabled>1</enabled>
+                <url>/api/woven/datagovernance/</url>
+                <route>/dataGovernance</route>
+                <icon><![CDATA[icon iconfont icon-ir-govern nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0301</code>
+                        <name>质量分析</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/zmod/query/</url>
+                        <route>/qualityAnalysis/analysisTemplate</route>
+                        <icon><![CDATA[fa fa-balance-scale nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0302</code>
+                        <name>元数据分析</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/metadataAnalysis/</url>
+                        <route>/schemaAnalysis/:id/</route>
+                        <icon><![CDATA[fa fa-flask nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0303</code>
+                        <name>血缘分析</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/consanguinityAnalysis/</url>
+                        <route>/kinship/:id/</route>
+                        <icon><![CDATA[fa fa-flask nav]]></icon>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>04</code>
+                <name>数据分析</name>
+                <type>1</type>
+                <enabled>1</enabled>
+                <url>/api/woven/dataAnalysis/</url>
+                <route>/dataAnalysis</route>
+                <icon><![CDATA[icon iconfont icon-ir-analyze nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0401</code>
+                        <name>流程管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/resource/roots/</url>
+                        <route>/design</route>
+                        <icon><![CDATA[fa fa-sitemap nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0402</code>
+                        <name>交互式查询</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/interactiveQuery/</url>
+                        <route>/interactiveQuery</route>
+                        <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0403</code>
+                        <name>项目目录</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/project/projects/</url>
+                        <route>/resourceManProject</route>
+                        <icon><![CDATA[fa fa-tasks nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0404</code>
+                        <name>配置</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/configuration/</url>
+                        <route></route>
+                        <icon><![CDATA[fa fa-gears nav]]></icon>
+                        <children>
+                            <permission>
+                                <code>040401</code>
+                                <name>工作流选择器</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/processconfigs/query/</url>
+                                <route>/processconfig/workflow-selector</route>
+                                <icon><![CDATA[fa fa-tasks nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>040402</code>
+                                <name>批处理选择器</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/processconfigs/query/</url>
+                                <route>/processconfig/dataflow-selector</route>
+                                <icon><![CDATA[fa fa-tasks nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>040403</code>
+                                <name>自定义函数</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/processconfigs/query/</url>
+                                <route>/processconfig/dataflow-udf</route>
+                                <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>040404</code>
+                                <name>过滤器</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/processconfigs/query/</url>
+                                <route>/processconfig/filter-class</route>
+                                <icon><![CDATA[fa fa-tasks nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>040405</code>
+                                <name>数据库驱动</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/processconfigs/query/</url>
+                                <route>/processconfig/jdbc-driver</route>
+                                <icon><![CDATA[fa fa-sitemap nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>040406</code>
+                                <name>自定义节点</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/customizestep/query</url>
+                                <route>/processconfig/step-define</route>
+                                <icon><![CDATA[fa fa-sitemap nav]]></icon>
+                            </permission>
+                        </children>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>05</code>
+                <name>实时计算</name>
+                <type>1</type>
+                <enabled>1</enabled>
+                <url>/api/woven/realtimeComputation/</url>
+                <route>/realTimeComputing</route>
+                <icon><![CDATA[icon iconfont icon-ir-attestation nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0501</code>
+                        <name>作业管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/streaming/job/list/</url>
+                        <route>/jobManage</route>
+                        <icon><![CDATA[fa fa-calendar-o nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0502</code>
+                        <name>作业运维</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/streaming/job/progress/list/</url>
+                        <route>/jobOperation</route>
+                        <icon><![CDATA[fa fa-leaf nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0503</code>
+                        <name>作业模板</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/streaming/job/template/list/</url>
+                        <route>/jobTemplate</route>
+                        <icon><![CDATA[fa fa-calendar-o nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0504</code>
+                        <name>交互式查询</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/interactiveQuery/</url>
+                        <route>/interactiveQuery</route>
+                        <icon><![CDATA[fa fa-calendar-o nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0505</code>
+                        <name>实时计算流程设计</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/streaming/job/realtime/list/</url>
+                        <route>/realtime/list/index</route>
+                        <icon><![CDATA[fa fa-calendar-o nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0506</code>
+                        <name>实时计算任务监控</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/streaming/job/realtime/task/</url>
+                        <route>/realtime/list/tasklist</route>
+                        <icon><![CDATA[fa fa-calendar-o nav]]></icon>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>06</code>
+                <name>数据监控</name>
+                <type>1</type>
+                <enabled>1</enabled>
+                <url>/api/woven/dataMonitoring/</url>
+                <route>/dataMonitoring</route>
+                <icon><![CDATA[icon iconfont icon-ir-monitoring nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0601</code>
+                        <name>运维管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/mochaitom/</url>
+                        <route>/hippo/index</route>
+                        <icon><![CDATA[fa fa-life-buoy nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0602</code>
+                        <name>监控可视化</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/hippo/visualization/</url>
+                        <route>/hippo/visualization</route>
+                        <icon><![CDATA[fa fa-line-chart nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0603</code>
+                        <name>监控访问</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/accessMonitoring/</url>
+                        <route>/hippo/visit</route>
+                        <icon><![CDATA[fa fa-line-chart nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0604</code>
+                        <name>任务监控</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/taskMonitoring/</url>
+                        <route>/hippo/taskControl</route>
+                        <icon><![CDATA[fa fa-area-chart nav]]></icon>
+                        <children>
+                            <permission>
+                                <code>060401</code>
+                                <name>任务调度</name>
+                                <type>2</type>
+                                <enabled>1</enabled>
+                                <url>/api/woven/taskScheduling/</url>
+                                <route>/hippo/schedule</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>060402</code>
+                                <name>数据统计</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/dataStatistics/</url>
+                                <route>/hippo/statistics</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                        </children>
+                    </permission>
+                    <permission>
+                        <code>0605</code>
+                        <name>质量监控</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/flink/</url>
+                        <route>/hippo/flink</route>
+                        <icon><![CDATA[fa fa-life-buoy nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0606</code>
+                        <name>资源管理</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/Ambari/</url>
+                        <route>/hippo/nodeMonitor</route>
+                        <icon><![CDATA[fa fa-life-buoy nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0607</code>
+                        <name>业务质量</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/platform/</url>
+                        <route>/hippo/platform</route>
+                        <icon><![CDATA[fa fa-area-chart nav]]></icon>
+                        <children>
+                            <permission>
+                                <code>060701</code>
+                                <name>数据量趋势和波动</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/flink_row_check/</url>
+                                <route>/hippo/flink_row_check</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>060702</code>
+                                <name>数据空值率</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/sink_row_check_null/</url>
+                                <route>/hippo/sink_row_check_null</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>060703</code>
+                                <name>历史数据量趋势和波动</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/flink_row_check_baobiao/</url>
+                                <route>/hippo/flink_row_check_baobiao</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>060704</code>
+                                <name>历史时间片数据空值率</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/sink_row_check_null_baobiao/</url>
+                                <route>/hippo/sink_row_check_null_baobiao</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>060705</code>
+                                <name>每小时时间粒度数据及时性</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/sink_row_check_acc_baobiao/</url>
+                                <route>/hippo/sink_row_check_acc_baobiao</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                        </children>
+                    </permission>
+
+                    <permission>
+                        <code>0608</code>
+                        <name>接入监控</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/platform/collectmonitor/</url>
+                        <route>/platform/collectmonitor/</route>
+                        <icon><![CDATA[fa fa-area-chart nav]]></icon>
+                        <children>
+                            <permission>
+                                <code>060801</code>
+                                <name>消费组积压监控</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/WJInputServiceSize_H/</url>
+                                <route>/hippo/WJInputServiceSize_H</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                        </children>
+                    </permission>
+
+                    <permission>
+                        <code>0609</code>
+                        <name>计算过程监控</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/platform/processmonitor/</url>
+                        <route>/platform/processmonitor/</route>
+                        <icon><![CDATA[fa fa-area-chart nav]]></icon>
+                        <children>
+                            <permission>
+                                <code>060901</code>
+                                <name>处理数据量与行数-小时粒度</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/WJHandleServiceSize_H/</url>
+                                <route>/hippo/WJHandleServiceSize_H</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>060902</code>
+                                <name>输出数据量与行数-小时粒度</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/WJOutputServiceSize_H/</url>
+                                <route>/hippo/WJOutputServiceSize_H</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                        </children>
+                    </permission>
+                    <permission>
+                        <code>0610</code>
+                        <name>全流程监控</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/platform/allmonitor/</url>
+                        <route>/platform/allmonitor/</route>
+                        <icon><![CDATA[fa fa-area-chart nav]]></icon>
+                        <children>
+                            <permission>
+                                <code>061001</code>
+                                <name>数据量大小波动-小时粒度</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/WJServicewaveSize_H/</url>
+                                <route>/hippo/WJServicewaveSize_H</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                            <permission>
+                                <code>061002</code>
+                                <name>数据量行数波动-小时粒度</name>
+                                <type>2</type>
+                                <enabled>0</enabled>
+                                <url>/api/woven/WJServicewaveRow_H/</url>
+                                <route>/hippo/WJServicewaveRow_H</route>
+                                <icon><![CDATA[fa fa-server nav]]></icon>
+                            </permission>
+                        </children>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>07</code>
+                <name>数据挖掘</name>
+                <type>1</type>
+                <enabled>0</enabled>
+                <url>/api/woven/datamining/</url>
+                <route>/sjjk</route>
+                <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0701</code>
+                        <name>报表配置</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/reportconfigure/</url>
+                        <route>/reportConfig</route>
+                        <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                    </permission>
+                </children>
+            </root>
+            <root>
+                <code>08</code>
+                <name>权限管理</name>
+                <type>1</type>
+                <enabled>1</enabled>
+                <url>/api/woven/privilegeManagement/</url>
+                <route>/systemConfig</route>
+                <icon><![CDATA[icon iconfont icon-ir-attestation nav]]></icon>
+                <children>
+                    <permission>
+                        <code>0801</code>
+                        <name>资源管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/resourceManagement/</url>
+                        <route>/rolePermission</route>
+                        <icon><![CDATA[fa fa-key nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0802</code>
+                        <name>角色管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/roleManagement/</url>
+                        <route>/roleManagement</route>
+                        <icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0803</code>
+                        <name>用户管理</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/woven/userManagement/</url>
+                        <route>/userManagement</route>
+                        <icon><![CDATA[fa fa-user-circle nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0804</code>
+                        <name>日志审计</name>
+                        <type>2</type>
+                        <enabled>1</enabled>
+                        <url>/api/logs/metrics/request/page/</url>
+                        <route>/logAudit</route>
+                        <icon><![CDATA[fa fa-user-circle nav]]></icon>
+                    </permission>
+                    <permission>
+                        <code>0805</code>
+                        <name>数据授权</name>
+                        <type>2</type>
+                        <enabled>0</enabled>
+                        <url>/api/woven/dataShare/</url>
+                        <route>/dataShare</route>
+                        <icon><![CDATA[fa fa-user-circle nav]]></icon>
+                    </permission>
+                </children>
+            </root>
+        </roots>
+    </client>
+</clients>

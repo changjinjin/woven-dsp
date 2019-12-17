@@ -3,10 +3,9 @@ package com.info.baymax.dsp.data.sys.service.security;
 import java.util.List;
 
 import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 
-public interface UserService extends BaseEntityService<User>, QueryObjectCriteriaService<User> {
+public interface UserService extends BaseEntityService<User> {
 
     /**
      * 根据租户和用户名查询用户信息

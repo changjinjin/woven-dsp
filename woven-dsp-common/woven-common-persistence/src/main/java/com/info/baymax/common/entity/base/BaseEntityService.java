@@ -4,8 +4,7 @@ import java.util.List;
 
 import com.info.baymax.common.entity.preprocess.PreEntityService;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
-import com.info.baymax.common.service.BaseIdableService;
-import com.info.baymax.common.service.criteria.ExampleQueryService;
+import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 
 /**
@@ -16,7 +15,7 @@ import com.info.baymax.common.service.criteria.example.ExampleQuery;
  * @date 2019年7月2日 上午10:20:47
  */
 public interface BaseEntityService<T extends BaseEntity>
-    extends ExampleQueryService<T>, BaseIdableService<T>, PreEntityService<T> {
+    extends BaseIdableAndExampleQueryService<T>, PreEntityService<T> {
 
     public static final String PROPERTY_ID = "id";
     public static final String PROPERTY_NAME = "name";

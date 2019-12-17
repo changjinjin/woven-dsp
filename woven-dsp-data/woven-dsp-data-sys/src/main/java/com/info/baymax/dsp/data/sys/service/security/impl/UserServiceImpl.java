@@ -23,12 +23,12 @@ import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
 import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
 import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
 import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
-import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
@@ -196,10 +196,10 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
     }
 
     @Override
-    public Page<User> findObjectPage(QueryObject queryObject) {
-        Page<User> page = UserService.super.findObjectPage(queryObject);
+    public IPage<User> selectPage(ExampleQuery query) {
+        IPage<User> page = UserService.super.selectPage(query);
         if (page != null) {
-            fetchUsersRoles(page.getContent());
+            fetchUsersRoles(page.getList());
         }
         return page;
     }

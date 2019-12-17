@@ -73,6 +73,15 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     /**
      * 创建一个Query的构建器
      *
+     * @return 默认的构建器
+     */
+    public static ExampleQuery builder(ExampleQuery query) {
+        return query == null ? new ExampleQuery() : query;
+    }
+
+    /**
+     * 创建一个Query的构建器
+     *
      * @param entityClass 指定查询的数据实体类型
      * @return 默认的构建器
      */

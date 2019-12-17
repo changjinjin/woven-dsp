@@ -14,29 +14,29 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ApiModel
-//@Deprecated
+@Deprecated
 public class Page<T> implements Serializable {
-	private static final long serialVersionUID = -8853851041929515638L;
+    private static final long serialVersionUID = -8853851041929515638L;
 
-	@ApiModelProperty("数据列表")
+    @ApiModelProperty("数据列表")
     private List<T> content;
-	@ApiModelProperty("是否分页")
+    @ApiModelProperty("是否分页")
     private boolean pageable = true;
-	@ApiModelProperty("数据总条数")
+    @ApiModelProperty("数据总条数")
     private long totalElements;
-	@ApiModelProperty("总页数")
+    @ApiModelProperty("总页数")
     private int totalPages;
-	@ApiModelProperty("本页数据量")
+    @ApiModelProperty("本页数据量")
     private int size;
-	@ApiModelProperty("总数据量")
+    @ApiModelProperty("总数据量")
     private long number;
-	@ApiModelProperty("偏移量")
+    @ApiModelProperty("偏移量")
     private long numberOfElements;
-	@ApiModelProperty("是否为空")
+    @ApiModelProperty("是否为空")
     private boolean empty;
-	@ApiModelProperty("是否第一页")
-	private boolean first;
-	@ApiModelProperty("是否最后一页")
+    @ApiModelProperty("是否第一页")
+    private boolean first;
+    @ApiModelProperty("是否最后一页")
     private boolean last;
 
     public Page(int pageNum, int pageSize, long totalCount, List<T> content) {

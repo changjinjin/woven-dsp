@@ -25,6 +25,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ApiModel
+@Deprecated
 public class QueryObject implements Serializable {
 	private static final long serialVersionUID = -6814906254023484410L;
 
