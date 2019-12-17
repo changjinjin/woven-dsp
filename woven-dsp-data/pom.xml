@@ -23,5 +23,5 @@
         <module>woven-dsp-data-sys</module>
         <module>woven-dsp-data-platform</module>
         <module>woven-dsp-data-consumer</module>
-    </modules>
+	</modules>
 </project>
