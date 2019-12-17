@@ -9,9 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>woven-dsp-data-platform</artifactId>
+    <artifactId>woven-dsp-data-dataset</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>woven-common-persistence</artifactId>
@@ -29,11 +30,6 @@
             <groupId>org.passay</groupId>
             <artifactId>passay</artifactId>
             <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>woven-dsp-data-dataset</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

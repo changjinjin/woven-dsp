@@ -2,10 +2,10 @@ package com.info.baymax.dsp.data.platform.service;
 
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
+import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
-import com.merce.woven.common.jpa.criteria.query.QueryObject;
-import com.merce.woven.common.jpa.page.Page;
-import com.merce.woven.data.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.common.jpa.page.Page;
 
 import java.util.List;
 
@@ -18,6 +18,5 @@ public interface DataResourceService extends BaseEntityService<DataResource>, Qu
     void updateDataResource(DataResource dataResource);
     void deleteDataResource(List<Long> ids);
     void closeDataResource(List<Long> ids);
-
     Page<Dataset> queryDatasets(QueryObject queryObject);
 }

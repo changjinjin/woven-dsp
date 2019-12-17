@@ -16,8 +16,8 @@ import java.io.IOException;
 //@EnableUserInfoTransmitter
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.platform"})
 @ComponentScan(basePackages = {"com.info.baymax"})
-@EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity", "com.merce.woven.data"})
-@MapperScan(basePackages = {"com.info.baymax.dsp.data.**.mapper", "com.merce.woven.data.mybatis.mapper"})
+@EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity", "com.info.baymax.dsp.data.dataset"})
+@MapperScan(basePackages = {"com.info.baymax.dsp.data.**.mapper", "com.info.baymax.dsp.data.dataset.mybatis.mapper"})
 public class PlatformStarter {
 
     /**

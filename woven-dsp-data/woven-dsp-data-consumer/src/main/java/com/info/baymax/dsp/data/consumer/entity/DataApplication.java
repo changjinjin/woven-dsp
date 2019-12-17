@@ -15,11 +15,13 @@ import tk.mybatis.mapper.annotation.ColumnType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 import java.util.Map;
 
@@ -33,7 +35,9 @@ import java.util.Map;
 @ApiModel
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "dsp_data_application")
+@Table(name = "dsp_data_application", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"dataResId", "creator","transferType"})}, indexes = {
+        @Index(columnList = "lastModifiedTime DESC")})
 public class DataApplication extends BaseEntity {
     private static final long serialVersionUID = 8381030191792735602L;
 
@@ -48,7 +52,7 @@ public class DataApplication extends BaseEntity {
     @ApiModelProperty(value = "数据传输类型: 0 pull, 1 push")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    private Integer type;
+    private Integer transferType;
 
     @ApiModelProperty("PUSH操作相关配置,包括目的数据源,周期设定,编码等")
     @Lob
