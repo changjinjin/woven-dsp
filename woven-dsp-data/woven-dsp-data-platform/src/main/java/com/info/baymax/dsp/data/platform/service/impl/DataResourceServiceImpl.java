@@ -1,15 +1,15 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
+import com.info.baymax.common.jpa.criteria.query.QueryObject;
+import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.mybatis.mapper.example.Example;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataResourceMapper;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.merce.woven.common.jpa.criteria.query.QueryObject;
-import com.merce.woven.common.jpa.page.Page;
-import com.merce.woven.data.entity.core.Dataset;
-import com.merce.woven.data.service.core.DatasetService;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
