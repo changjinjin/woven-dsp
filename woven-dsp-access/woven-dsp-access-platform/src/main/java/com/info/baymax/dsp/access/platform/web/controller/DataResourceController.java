@@ -44,6 +44,8 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.OK)
     public Page<DataResource> queryDataset(QueryObject queryObject) throws Exception {
         //--TODO-- 查询merce_dataset记录,支持按照名称，Engine,创建时间等过滤
+
+
 //        Page<Dataset> result = datasetServerService
 //                .findPageResult(QueryObject.builder(queryObject).setCurrentTenantCondition(SaasContext.current()));
 //        return result;
@@ -55,9 +57,6 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.OK)
     public IPage<DataResource> queryDataResource(ExampleQuery exampleQuery) throws Exception {
         //--TODO-- 支持按照名称，Engine， 发布状态，创建时间等过滤
-//        Page<Dataset> result = datasetServerService
-//                .findPageResult(QueryObject.builder(queryObject).setCurrentTenantCondition(SaasContext.current()));
-//        return result;
         return dataResourceService.selectPage(exampleQuery);
     }
 
