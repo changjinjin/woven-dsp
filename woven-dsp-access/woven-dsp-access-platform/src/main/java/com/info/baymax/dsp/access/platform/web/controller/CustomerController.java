@@ -2,6 +2,7 @@ package com.info.baymax.dsp.access.platform.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,7 @@ public class CustomerController {
     private CustomerService consumerService;
 
     @ApiOperation(value = "新加消费者信息")
-    @GetMapping("save")
+    @PostMapping("save")
     @ResponseBody
     public Response<?> save(@ApiParam(value = "消费者信息") @RequestBody Customer t) {
         consumerService.saveOrUpdate(t);
@@ -33,7 +34,7 @@ public class CustomerController {
     }
 
     @ApiOperation(value = "更新消费者信息")
-    @GetMapping("update")
+    @PostMapping("update")
     @ResponseBody
     public Response<?> update(@ApiParam(value = "消费者信息") @RequestBody Customer t) {
         consumerService.saveOrUpdate(t);

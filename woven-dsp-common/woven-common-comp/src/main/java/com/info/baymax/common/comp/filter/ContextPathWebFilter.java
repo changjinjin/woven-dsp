@@ -9,7 +9,13 @@ import org.springframework.web.server.WebFilterChain;
 
 import reactor.core.publisher.Mono;
 
-@Component // 所有/contextPath前缀的请求都会自动去除该前缀
+/**
+ * 所有/contextPath前缀的请求都会自动去除该前缀
+ *
+ * @author jingwei.yang
+ * @date 2019年12月17日 上午10:37:35
+ */
+@Component
 public class ContextPathWebFilter implements WebFilter {
     @Autowired
     private ServerProperties serverProperties;

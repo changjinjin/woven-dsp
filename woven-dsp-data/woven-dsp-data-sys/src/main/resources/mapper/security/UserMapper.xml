@@ -40,7 +40,7 @@
 	<select id="selectOneWithRoles" parameterType="Map"
 		resultMap="BaseWithRolesResultMap">
 	<![CDATA[
-	select * from merce_user t
+	select * from dsp_sys_user t
 	]]>
 		<where>
 			<if test="id != null and id != ''"> and id = #{id,jdbcType=VARCHAR}</if>

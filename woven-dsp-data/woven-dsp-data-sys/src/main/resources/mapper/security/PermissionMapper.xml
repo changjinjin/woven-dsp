@@ -34,18 +34,18 @@
 
 	<select id="selectByRoleId" parameterType="String" resultMap="BaseResultMap">
 	<![CDATA[
-       select p.*,rr.half_select from merce_permission p left join ref_role_permission rr
+       select p.*,rr.half_select from dsp_sys_menu p left join dsp_sys_rolemenu_ref rr
        on p.id = rr.permission_id where rr.role_id = #{roleId,jdbcType=VARCHAR}
 	]]>
 	</select>
 
 	<select id="selectByParentId" parameterType="String"
 		resultMap="BaseWithChildrenResultMap">
-	<![CDATA[select * from merce_permission t where t.parent_id = #{parentId,jdbcType=VARCHAR}]]>
+	<![CDATA[select * from dsp_sys_menu t where t.parent_id = #{parentId,jdbcType=VARCHAR}]]>
 	</select>
 
 	<select id="selectOneWithChildren" parameterType="String"
 		resultMap="BaseWithChildrenResultMap">
-	<![CDATA[select * from merce_permission t where t.id = #{id,jdbcType=VARCHAR}]]>
+	<![CDATA[select * from dsp_sys_menu t where t.id = #{id,jdbcType=VARCHAR}]]>
 	</select>
 </mapper>

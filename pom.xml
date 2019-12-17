@@ -105,7 +105,7 @@
 
 		<cloning.version>1.9.3</cloning.version>
 		<swagger2.version>3.0.0-SNAPSHOT</swagger2.version>
-		<swagger-module.version>1.5.20</swagger-module.version>
+		<swagger-module.version>1.5.22</swagger-module.version>
 		<micrometer-core.version>1.1.4</micrometer-core.version>
 
 		<spark.version>2.4.0</spark.version>
@@ -120,10 +120,8 @@
 		<module>woven-dsp-data</module>
 		<module>woven-dsp-adapter</module>
 		<module>woven-dsp-service</module>
-		<module>woven-dsp-config</module>
-		<module>woven-dsp-registry</module>
-		<module>woven-dsp-distribution</module>
 		<module>woven-dsp-gateway</module>
+		<module>woven-dsp-distribution</module>
 	</modules>
 
 	<dependencyManagement>
@@ -199,6 +197,16 @@
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-spring-webflux</artifactId>
 				<version>${swagger2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>${swagger-module.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-models</artifactId>
+				<version>${swagger-module.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.xiaoymin</groupId>

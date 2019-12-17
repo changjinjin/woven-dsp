@@ -47,7 +47,7 @@
 	</appender>
 
 	<!-- spring日志输出 -->
-	<logger name="org.springframework" level="DEBUG" />
+	<logger name="org.springframework" level="INFO" />
 	<logger name="com.netflix" level="ERROR" />
 	<logger name="org.apache.http" level="ERROR" />
 	<logger name="org.apache.coyote" level="ERROR" />
@@ -89,12 +89,12 @@
 
 	<!-- 开发、测试环境 -->
 	<springProfile name="dev,test">
-		<logger name="com.jusfoun" level="DEBUG" additivity="true" />
+		<logger name="com.info.baymax" level="DEBUG" additivity="true" />
 	</springProfile>
 
 	<!-- 生产环境 -->
 	<springProfile name="prod">
-		<logger name="com.jusfoun" level="ERROR" additivity="true" />
+		<logger name="com.info.baymax" level="ERROR" additivity="true" />
 	</springProfile>
 
 	<root level="DEBUG">
