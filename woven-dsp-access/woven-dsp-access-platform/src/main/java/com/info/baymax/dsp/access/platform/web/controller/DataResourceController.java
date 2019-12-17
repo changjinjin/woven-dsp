@@ -1,14 +1,13 @@
 package com.info.baymax.dsp.access.platform.web.controller;
 
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.jpa.page.Page;
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.impl.DataResourceServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.merce.woven.data.entity.core.Dataset;
+import com.merce.woven.data.service.core.DatasetService;
+import com.merce.woven.common.jpa.criteria.query.FieldObject;
+import com.merce.woven.common.jpa.criteria.query.QueryObject;
+import com.merce.woven.common.jpa.page.Page;
 
 import java.util.List;
 
@@ -42,14 +47,9 @@ public class DataResourceController {
     @ApiOperation(value = "分页查询Baymax数据集")
     @PostMapping("/query/datasets")
     @ResponseStatus(HttpStatus.OK)
-    public Page<DataResource> queryDataset(QueryObject queryObject) throws Exception {
+    public Page<Dataset> queryDataset(QueryObject queryObject) throws Exception {
         //--TODO-- 查询merce_dataset记录,支持按照名称，Engine,创建时间等过滤
-
-
-//        Page<Dataset> result = datasetServerService
-//                .findPageResult(QueryObject.builder(queryObject).setCurrentTenantCondition(SaasContext.current()));
-//        return result;
-        return null;
+        return dataResourceService.queryDatasets(queryObject);
     }
 
     @ApiOperation(value = "分页查询关联后的数据资源")

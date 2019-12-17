@@ -6,6 +6,10 @@ import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataResourceMapper;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
+import com.merce.woven.common.jpa.criteria.query.QueryObject;
+import com.merce.woven.common.jpa.page.Page;
+import com.merce.woven.data.entity.core.Dataset;
+import com.merce.woven.data.service.core.DatasetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,9 @@ import java.util.List;
 public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource> implements DataResourceService {
     @Autowired
     DataResourceMapper resourceMapper;
+
+    @Autowired
+    DatasetService datasetService;
 
     @Override
     public MyIdableMapper<DataResource> getMyIdableMapper() {
@@ -45,5 +52,10 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
     @Override
     public void closeDataResource(List<Long> ids){
         resourceMapper.closeDataResourceByIds(ids);
+    }
+
+    @Override
+    public Page<Dataset> queryDatasets(QueryObject queryObject) {
+        return datasetService.findObjectPage(queryObject);
     }
 }
