@@ -18,7 +18,7 @@ import java.io.IOException;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-public class Starter {
+public class PlatformStarter {
 
     /**
      * 使用统配的方式加载配置文件，已适配不同的profile.
@@ -33,6 +33,6 @@ public class Starter {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Starter.class, args);
+        SpringApplication.run(PlatformStarter.class, args);
     }
 }
