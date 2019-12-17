@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel
-//@Deprecated
+@Deprecated
 public class Pageable implements Serializable {
 	private static final long serialVersionUID = 4460131260956215413L;
 

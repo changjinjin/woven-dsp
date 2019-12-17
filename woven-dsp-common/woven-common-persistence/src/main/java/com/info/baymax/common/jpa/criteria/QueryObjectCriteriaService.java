@@ -32,14 +32,13 @@ import com.info.baymax.common.utils.ICollections;
  * @param <T>
  */
 // FIXME JPA 到 Mybatis 过渡接口，全部替换为mybatis后这些接口建议弃用
-// @Deprecated
+@Deprecated
 public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 
 	/**
 	 * 根据动态查询条件查询
 	 *
-	 * @param queryObject
-	 *            查询条件
+	 * @param queryObject 查询条件
 	 * @return 分页数据集
 	 * @see com.info.baymax.common.service.criteria.ExampleQueryService#selectPage(com.info.baymax.common.service.criteria.example.ExampleQuery)
 	 */
@@ -50,8 +49,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	/**
 	 * 根据ExampleQuery查询返回一个JPA的Page对象，用于公共调用
 	 *
-	 * @param query
-	 *            查询条件
+	 * @param query 查询条件
 	 * @return 分页数据集
 	 * @see com.info.baymax.common.service.criteria.ExampleQueryService#selectPage(com.info.baymax.common.service.criteria.example.ExampleQuery)
 	 */
@@ -67,8 +65,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	/**
 	 * 根据查询条件获取所有结果
 	 *
-	 * @param queryObject
-	 *            查询条件
+	 * @param queryObject 查询条件
 	 * @return 查询的结果集
 	 * @see com.info.baymax.common.service.criteria.ExampleQueryService#selectList(com.info.baymax.common.service.criteria.example.ExampleQuery)
 	 */
@@ -79,8 +76,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	/**
 	 * 根据查询条件获取单个结果
 	 *
-	 * @param queryObject
-	 *            查询条件
+	 * @param queryObject 查询条件
 	 * @return 查询的单条结果
 	 * @see com.info.baymax.common.service.criteria.ExampleQueryService#selectOne(com.info.baymax.common.service.criteria.example.ExampleQuery)
 	 */
@@ -91,8 +87,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	/**
 	 * 根据条件删除数据
 	 *
-	 * @param queryObject
-	 *            删除条件
+	 * @param queryObject 删除条件
 	 * @see com.info.baymax.common.service.criteria.ExampleQueryService#delete(com.info.baymax.common.service.criteria.example.ExampleQuery)
 	 */
 	default int delete(QueryObject queryObject) {
@@ -102,8 +97,7 @@ public interface QueryObjectCriteriaService<T> extends ExampleQueryService<T> {
 	/**
 	 * 根据QueryObject对象转化为ExampleQuery对象
 	 *
-	 * @param queryObject
-	 *            QueryObject条件包装
+	 * @param queryObject QueryObject条件包装
 	 * @return 转化后的ExampleQuery对象
 	 */
 	default ExampleQuery exampleQuery(QueryObject queryObject) {
@@ -123,8 +117,7 @@ class ExampleQueryTransferHelper {
 	/**
 	 * 条件转化
 	 *
-	 * @param queryObject
-	 *            原来的JPA QueryObject条件
+	 * @param queryObject 原来的JPA QueryObject条件
 	 * @return Mybatis的ExampleQuery查询条件
 	 */
 	public static ExampleQuery queryObjectToExampleQuery(QueryObject queryObject, Class<?> entityClass) {

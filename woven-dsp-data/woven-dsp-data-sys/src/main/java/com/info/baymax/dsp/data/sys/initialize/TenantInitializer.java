@@ -81,7 +81,7 @@ public class TenantInitializer {
 		User initAdmin = initAdmin(initConfig, tenant, initAdminPassword);
 		PermRoots roots = null;
 		try {
-			roots = PermsParser.getInitPerms(initConfig);
+			roots = PermsParser.getInitPerms(initConfig.getPermsFile());
 		} catch (JAXBException e) {
 			log.error(e.getMessage(), e);
 		}

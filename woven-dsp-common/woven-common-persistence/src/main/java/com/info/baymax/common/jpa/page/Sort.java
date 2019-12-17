@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel
-//@Deprecated
-public class Sort implements Serializable{
+@Deprecated
+public class Sort implements Serializable {
 	private static final long serialVersionUID = -121408492162144003L;
 
 	@ApiModelProperty("排序")

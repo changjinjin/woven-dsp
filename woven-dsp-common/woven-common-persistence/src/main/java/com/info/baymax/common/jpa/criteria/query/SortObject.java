@@ -21,6 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel
+@Deprecated
 public class SortObject implements Serializable {
 	private static final long serialVersionUID = -8413317033449069620L;
 

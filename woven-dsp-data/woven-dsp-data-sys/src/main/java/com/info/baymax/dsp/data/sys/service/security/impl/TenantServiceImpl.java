@@ -13,6 +13,7 @@ import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
@@ -57,7 +58,7 @@ public class TenantServiceImpl extends EntityClassServiceImpl<Tenant> implements
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
-	public Tenant createTenant(InitConfig initConfig, TenantRegisterBean tenant, User creater) {
+	public Tenant createTenant(InitConfig initConfig, TenantRegisterBean tenant) {
 		int count = countByName(tenant.getName());
 		if (count > 0) {
 			throw new ServiceException(ErrType.ENTITY_EXIST, "同名的租户已经存在");
@@ -65,9 +66,9 @@ public class TenantServiceImpl extends EntityClassServiceImpl<Tenant> implements
 
 		Tenant rootTnt = findByName(TenantInitializer.INIT_ROOT_LOGINID);
 		tenant.setTenantId(rootTnt.getId());
-		tenant.setOwner(creater.getId());
-		tenant.setCreator(creater.getUsername());
-		tenant.setLastModifier(creater.getUsername());
+		tenant.setOwner(SaasContext.getCurrentUserId());
+		tenant.setCreator(SaasContext.getCurrentUsername());
+		tenant.setLastModifier(SaasContext.getCurrentUsername());
 		tenant.setEnabled(YesNoType.YES.getValue());
 		insertSelective(tenant);
 		tenantInitializer.initTenantAdminAndPerms(initConfig, tenant, tenant.getAdminPassword());
@@ -75,8 +76,8 @@ public class TenantServiceImpl extends EntityClassServiceImpl<Tenant> implements
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
-	public Tenant updateTenant(InitConfig initConfig, TenantRegisterBean tenant, User user) {
-		tenant.setLastModifier(user.getUsername());
+	public Tenant updateTenant(InitConfig initConfig, TenantRegisterBean tenant ) {
+		tenant.setLastModifier(SaasContext.getCurrentUsername());
 		tenant.setLastModifiedTime(new Date());
 		updateByPrimaryKey(tenant);
 		tenantInitializer.initTenantAdminAndPerms(initConfig, tenant, tenant.getAdminPassword());

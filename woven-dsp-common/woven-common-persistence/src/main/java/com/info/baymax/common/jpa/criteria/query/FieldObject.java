@@ -18,6 +18,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ApiModel
+@Deprecated
 public class FieldObject implements Serializable {
 	private static final long serialVersionUID = -1619431159309782129L;
 

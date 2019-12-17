@@ -34,6 +34,6 @@ public class InitConfig {
 	/**
 	 * 系统权限初始化文件
 	 */
-	private String permsFile;
+	private String permsFile = "classpath:init/perms/roots.xml";
 
 }

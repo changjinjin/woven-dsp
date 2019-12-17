@@ -3,10 +3,9 @@ package com.info.baymax.dsp.data.sys.service.security;
 import java.util.List;
 
 import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 
-public interface RoleService extends BaseEntityService<Role>, QueryObjectCriteriaService<Role> {
+public interface RoleService extends BaseEntityService<Role> {
 
 	/**
 	 * 批量修改角色启用和停用状态

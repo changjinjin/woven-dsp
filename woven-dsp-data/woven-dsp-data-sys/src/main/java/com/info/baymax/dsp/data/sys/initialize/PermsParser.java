@@ -15,20 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 public class PermsParser {
 
 	// 就从配置文件中加载系统权限列表
-	public static URL loadPermsFromXml(String xmlFilePath) {
+	public static URL loadPermsFromXml(String initFilePath) {
 		try {
-			return ResourceUtils.getURL(xmlFilePath);
+			return ResourceUtils.getURL(initFilePath);
 		} catch (FileNotFoundException e) {
 			log.warn("权限初始化文件不存在，使用系统默认权限数据", e);
 			return null;
 		}
 	}
 
-	public static PermRoots getInitPerms(InitConfig initConfig) throws JAXBException {
+	public static PermRoots getInitPerms(String initFilePath) throws JAXBException {
 		// 加载权限列表
-		URL url = loadPermsFromXml(initConfig.getPermsFile());
+		URL url = loadPermsFromXml(initFilePath);
 		if (url == null) {
-			url = loadPermsFromXml("classpath:init/perms/all.xml");
+			url = loadPermsFromXml("classpath:init/perms/roots.xml");
 		}
 		return JaxbUtils.xml2java(url, PermRoots.class);
 	}
