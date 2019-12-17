@@ -15,11 +15,17 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.runtime.startClass>com.info.baymax.dsp.access.consumer.ConsumerStarter</project.runtime.startClass>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.info.baymax</groupId>
-            <artifactId>woven-dsp-data-consumer</artifactId>
+            <artifactId>woven-common-comp</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>woven-dsp-data-sys</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -29,17 +35,12 @@
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
-            <artifactId>woven-common-comp</artifactId>
+            <artifactId>woven-dsp-data-consumer</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -66,6 +67,11 @@
                     <artifactId>jackson-annotations</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -172,6 +178,14 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -182,7 +196,23 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-webflux</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
@@ -264,6 +294,16 @@
                     <include>logback-spring.xml</include>
                 </includes>
             </resource>
+            <!-- 打包执行脚本 -->
+            <resource>
+                <directory>src/main/bin</directory>
+                <filtering>true</filtering>
+                <targetPath>bin</targetPath>
+                <includes>
+                    <include>*.bat</include>
+                    <include>*.sh</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -272,7 +312,7 @@
                 <configuration>
                     <layout>ZIP</layout>
                     <includeSystemScope>true</includeSystemScope>
-                    <mainClass>com.info.baymax.dsp.access.consumer.Starter</mainClass>
+                    <mainClass>${project.runtime.startClass}</mainClass>
                     <includes>
                         <include>
                             <groupId>non-exists</groupId>
@@ -342,6 +382,33 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${project.runtime.startClass}</mainClass>
+                            <classpathPrefix>../lib</classpathPrefix>
+                            <addClasspath>false</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path><![CDATA[]]>
+                            </Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <includes>
+                        <include>com/merce/woven/dsp/access/platform/**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>bin/**</exclude>
+                        <exclude>db/**</exclude>
+                        <exclude>conf/**</exclude>
+                        <exclude>logs/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
