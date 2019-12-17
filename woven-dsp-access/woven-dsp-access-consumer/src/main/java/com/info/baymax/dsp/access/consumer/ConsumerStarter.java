@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.consumer;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +14,11 @@ import java.io.IOException;
 
 @SpringCloudApplication
 //@EnableUserInfoTransmitter
-@EnableFeignClients(basePackages = { "com.info.baymax.dsp.access.platform" })
-@ComponentScan(basePackages = { "com.info.baymax.dsp.access.platform" })
-@MapperScan(basePackages = { "com.jusfoun.services.ops.server.mapper" })
-public class Starter {
+@EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.consumer"})
+@ComponentScan(basePackages = {"com.info.baymax"})
+@EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
+@MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
+public class ConsumerStarter {
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer getPropertyPlaceholderConfigurer() throws IOException {
@@ -27,6 +29,6 @@ public class Starter {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(Starter.class, args);
+		SpringApplication.run(ConsumerStarter.class, args);
 	}
 }

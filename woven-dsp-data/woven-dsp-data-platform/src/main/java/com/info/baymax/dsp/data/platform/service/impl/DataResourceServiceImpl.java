@@ -1,12 +1,15 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
+import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.mybatis.mapper.example.Example;
+import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataResourceMapper;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -14,9 +17,15 @@ import java.util.List;
  * @Date: 2019/12/13 19:10
  */
 @Service
-public class DataResourceServiceImpl implements DataResourceService {
+@Transactional(rollbackOn = Exception.class)
+public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource> implements DataResourceService {
     @Autowired
     DataResourceMapper resourceMapper;
+
+    @Override
+    public MyIdableMapper<DataResource> getMyIdableMapper() {
+        return resourceMapper;
+    }
 
     @Override
     public Integer createDataResource(DataResource dataResource) {
@@ -29,7 +38,12 @@ public class DataResourceServiceImpl implements DataResourceService {
     }
 
     @Override
-    public void deleteDataResource(List<Integer> ids) {
+    public void deleteDataResource(List<Long> ids) {
         resourceMapper.deleteByPrimaryKeys(ids);
+    }
+
+    @Override
+    public void closeDataResource(List<Long> ids){
+        resourceMapper.closeDataResourceByIds(ids);
     }
 }
