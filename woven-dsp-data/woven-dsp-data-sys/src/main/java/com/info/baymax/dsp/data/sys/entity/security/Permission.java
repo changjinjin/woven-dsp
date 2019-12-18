@@ -40,12 +40,6 @@ import tk.mybatis.mapper.annotation.ColumnType;
 public class Permission extends BaseEntity implements Comparable<Permission>, TreeIdable<Long, Permission> {
 	private static final long serialVersionUID = 4953480541587178592L;
 
-	@XmlElement(name = "name")
-	@ApiModelProperty("名称")
-	@Column(length = 255)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	protected String name;
-
 	@XmlElement(name = "客户端ID")
 	@ApiModelProperty(value = "客户端ID")
 	@Column(length = 20)

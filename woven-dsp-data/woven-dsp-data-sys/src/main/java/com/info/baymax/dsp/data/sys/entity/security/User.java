@@ -58,11 +58,6 @@ public class User extends BaseEntity implements CryptoBean {
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String username;
 
-	@ApiModelProperty(value = "姓名")
-	@Column(length = 50)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private String realName;
-
 	@ApiModelProperty(value = "用户密码")
 	@Column(length = 255)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)

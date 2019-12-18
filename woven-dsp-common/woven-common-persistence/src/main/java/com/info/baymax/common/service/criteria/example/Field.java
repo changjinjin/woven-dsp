@@ -1,10 +1,11 @@
 package com.info.baymax.common.service.criteria.example;
 
+import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
 import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 /**
  * 一个查询条件包装对象
@@ -13,6 +14,11 @@ import io.swagger.annotations.ApiModelProperty;
  * @date 2019年9月6日 下午12:17:52
  */
 @ApiModel
+@Setter
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Field extends CriteriaItem {
     private static final long serialVersionUID = -1405405956112124994L;
 
@@ -20,7 +26,7 @@ public class Field extends CriteriaItem {
      * 条件关联类型，默认：AND
      */
     @ApiModelProperty("条件关联类型：AND或OR，默认：AND")
-    private AndOr andOr;
+    private AndOr andOr = AndOr.AND;
 
     /**
      * 属性名称（java字段名称，非数据库列名）
@@ -29,7 +35,7 @@ public class Field extends CriteriaItem {
     private String name;
 
     @ApiModelProperty(value = "比较操作类型，默认：EQUAL")
-    private Operator oper;
+    private Operator oper = Operator.EQUAL;
 
     @ApiModelProperty(//
         "属性值数组:"//
@@ -38,18 +44,6 @@ public class Field extends CriteriaItem {
             + "3）判断字段是否为空时该值可为空，如： NULL, NOT_NULL。"//
     )
     private Object[] value;
-
-    public Field() {
-        this.andOr = AndOr.AND;
-        this.oper = Operator.EQUAL;
-    }
-
-    public Field(AndOr andOr, String name, Operator oper, Object[] value) {
-        this.andOr = andOr;
-        this.name = name;
-        this.oper = oper;
-        this.value = value;
-    }
 
     public static Field apply(AndOr andOr, String name, Operator operator) {
         return new Field(andOr, name, operator, new Object[]{});
@@ -61,37 +55,5 @@ public class Field extends CriteriaItem {
 
     public static Field apply(AndOr andOr, String name, Operator operator, Object... value) {
         return new Field(andOr, name, operator, value);
-    }
-
-    public AndOr getAndOr() {
-        return andOr;
-    }
-
-    public void setAndOr(AndOr andOr) {
-        this.andOr = andOr;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Operator getOper() {
-        return oper;
-    }
-
-    public void setOper(Operator oper) {
-        this.oper = oper;
-    }
-
-    public Object[] getValue() {
-        return value;
-    }
-
-    public void setValue(Object[] value) {
-        this.value = value;
     }
 }

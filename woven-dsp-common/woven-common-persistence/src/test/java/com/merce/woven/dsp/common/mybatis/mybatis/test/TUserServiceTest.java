@@ -1,16 +1,15 @@
 package com.merce.woven.dsp.common.mybatis.mybatis.test;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.merce.woven.dsp.common.mybatis.mybatis.entity.TUser;
 import com.merce.woven.dsp.common.mybatis.mybatis.service.TUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-//@TestConfiguration
+import java.util.Date;
+import java.util.List;
+
+// @TestConfiguration
 public class TUserServiceTest extends AbstractMapperTest {
 
     @Autowired

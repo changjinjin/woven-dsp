@@ -3,6 +3,7 @@ package com.info.baymax.common.service.criteria.example;
 import com.info.baymax.common.service.criteria.example.SqlEnums.OrderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -13,6 +14,11 @@ import java.io.Serializable;
  * @date 2019年5月5日 下午12:10:29
  */
 @ApiModel
+@Setter
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sort implements Serializable {
     private static final long serialVersionUID = -8413317033449069620L;
 
@@ -26,18 +32,10 @@ public class Sort implements Serializable {
      * 排序类型：ASC或DESC，默认ASC
      */
     @ApiModelProperty("排序类型：ASC或DESC，默认ASC")
-    private OrderType order;
-
-    public Sort() {
-    }
+    private OrderType order = OrderType.ASC;
 
     public Sort(String fieldName) {
         this(fieldName, OrderType.ASC);
-    }
-
-    public Sort(String name, OrderType order) {
-        this.name = name;
-        this.order = order;
     }
 
     public static Sort apply(String fieldName) {
@@ -47,21 +45,4 @@ public class Sort implements Serializable {
     public static Sort apply(String fieldName, OrderType orderDirection) {
         return new Sort(fieldName, orderDirection);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public OrderType getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderType order) {
-        this.order = order;
-    }
-
 }
