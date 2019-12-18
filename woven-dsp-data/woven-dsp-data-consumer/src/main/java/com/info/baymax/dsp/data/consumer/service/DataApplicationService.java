@@ -1,11 +1,10 @@
 package com.info.baymax.dsp.data.consumer.service;
 
+import java.util.List;
+
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
-import com.info.baymax.dsp.data.consumer.entity.Customer;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
-
-import java.util.List;
 
 /**
  * @Author: haijun
