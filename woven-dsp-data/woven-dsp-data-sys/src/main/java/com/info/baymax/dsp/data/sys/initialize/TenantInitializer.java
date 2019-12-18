@@ -156,7 +156,7 @@ public class TenantInitializer {
 		initSaasContext(tenant, user);
 		order = 0;
 		for (PermClient client : clients.getClients()) {
-			List<Permission> roots = client.getRoots();
+			List<Permission> roots = client.getPermissions();
 			for (Permission t : roots) {
 				t.setClientId(client.getClientId());
 				t.setTenantId(tenant.getId());

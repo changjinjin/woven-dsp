@@ -2,8 +2,8 @@
 <clients>
 	<client>
 		<clientId>dsp</clientId>
-		<roots>
-			<root>
+		<permissions>
+			<permission>
 				<code>01</code>
 				<name>数据主题</name>
 				<type>1</type>
@@ -67,8 +67,8 @@
 						<icon><![CDATA[fa fa-shopping-basket nav]]></icon>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>02</code>
 				<name>数据集成</name>
 				<type>1</type>
@@ -82,20 +82,20 @@
 						<name>资源目录</name>
 						<type>2</type>
 						<enabled>1</enabled>
-						<url>/api/woven/resource/roots/</url>
+						<url>/api/woven/resource/permissions/</url>
 						<route>/resourceMan</route>
 						<icon><![CDATA[fa fa-server nav]]></icon>
 						<!-- <children> <permission> <code>020101</code> <name>元数据</name> <type>3</type> 
-							<enabled>0</enabled> <url>/api/woven/resource/roots/schema</url> <route>/dataIntegration</route> 
+							<enabled>0</enabled> <url>/api/woven/resource/permissions/schema</url> <route>/dataIntegration</route> 
 							<icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission> 
 							<permission> <code>020102</code> <name>数据集</name> <type>3</type> <enabled>0</enabled> 
-							<url>/api/woven/resource/roots/dataset</url> <route>/dataIntegration</route> 
+							<url>/api/woven/resource/permissions/dataset</url> <route>/dataIntegration</route> 
 							<icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission> 
 							<permission> <code>020103</code> <name>数据源</name> <type>3</type> <enabled>0</enabled> 
-							<url>/api/woven/resource/roots/datasource</url> <route>/dataIntegration</route> 
+							<url>/api/woven/resource/permissions/datasource</url> <route>/dataIntegration</route> 
 							<icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission> 
 							<permission> <code>020104</code> <name>数据标准</name> <type>3</type> <enabled>0</enabled> 
-							<url>/api/woven/resource/roots/standard</url> <route>/dataIntegration</route> 
+							<url>/api/woven/resource/permissions/standard</url> <route>/dataIntegration</route> 
 							<icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon> </permission> 
 							</children> -->
 					</permission>
@@ -145,8 +145,8 @@
 						<icon><![CDATA[fa fa-download nav]]></icon>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>03</code>
 				<name>数据治理</name>
 				<type>1</type>
@@ -183,8 +183,8 @@
 						<icon><![CDATA[fa fa-flask nav]]></icon>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>04</code>
 				<name>数据分析</name>
 				<type>1</type>
@@ -198,7 +198,7 @@
 						<name>流程管理</name>
 						<type>2</type>
 						<enabled>1</enabled>
-						<url>/api/woven/resource/roots/</url>
+						<url>/api/woven/resource/permissions/</url>
 						<route>/design</route>
 						<icon><![CDATA[fa fa-sitemap nav]]></icon>
 					</permission>
@@ -286,8 +286,8 @@
 						</children>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>05</code>
 				<name>实时计算</name>
 				<type>1</type>
@@ -351,8 +351,8 @@
 						<icon><![CDATA[fa fa-calendar-o nav]]></icon>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>06</code>
 				<name>数据监控</name>
 				<type>1</type>
@@ -572,8 +572,8 @@
 						</children>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>07</code>
 				<name>数据挖掘</name>
 				<type>1</type>
@@ -592,8 +592,8 @@
 						<icon><![CDATA[icon iconfont icon-ir-integration nav]]></icon>
 					</permission>
 				</children>
-			</root>
-			<root>
+			</permission>
+			<permission>
 				<code>08</code>
 				<name>权限管理</name>
 				<type>1</type>
@@ -648,7 +648,7 @@
 						<icon><![CDATA[fa fa-user-circle nav]]></icon>
 					</permission>
 				</children>
-			</root>
-		</roots>
+			</permission>
+		</permissions>
 	</client>
 </clients>
