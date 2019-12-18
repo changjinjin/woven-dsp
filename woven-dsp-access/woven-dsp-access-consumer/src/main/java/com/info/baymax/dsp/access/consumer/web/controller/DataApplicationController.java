@@ -2,6 +2,7 @@ package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
@@ -64,11 +65,17 @@ public class DataApplicationController {
         return res;
     }
 
+    /**
+     * 消费者是否允许删除操作待定。。。。。
+     * @param ids
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "删除DataApplication记录")
     @DeleteMapping("/delete")
     public Response deleteDataApplication(List<Long> ids) throws Exception {
         //request boy :string[] ids
-        dataApplicationService.deleteDataApplication(ids);
+        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids.toArray());
         Response res = new Response();
         res.status(HttpStatus.NO_CONTENT.value());
         return res;
