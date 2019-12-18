@@ -63,7 +63,7 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, key = "'security_cache_user_'+#tenantId+'_'+#loginId", unless = "#result==null")
     @Override
-    public User findByTenantAndLoginId(Long tenantId, String loginId) {
+    public User findByTenantAndUsername(Long tenantId, String loginId) {
         Map<String, Object> params = new HashMap<>();
         params.put("tenantId", tenantId);
         params.put("loginId", loginId);
@@ -74,7 +74,7 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
     @Preprocess
     @Transactional
     public User save(@PreInsert User t, String initPwd) {
-        if (existsByTenantIdAndName(SaasContext.getCurrentTenantId(), t.getLoginId())) {
+        if (existsByTenantIdAndName(SaasContext.getCurrentTenantId(), t.getUsername())) {
             throw new ServiceException(ErrType.ENTITY_EXIST, "同名用户已经存在");
         }
         LocalDateTime now = LocalDateTime.now();

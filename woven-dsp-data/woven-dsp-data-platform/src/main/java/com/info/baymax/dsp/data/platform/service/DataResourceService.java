@@ -2,10 +2,10 @@ package com.info.baymax.dsp.data.platform.service;
 
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
+import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
-import com.merce.woven.common.jpa.criteria.query.QueryObject;
-import com.merce.woven.common.jpa.page.Page;
-import com.merce.woven.data.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 
 import java.util.List;
 
@@ -15,9 +15,8 @@ import java.util.List;
  */
 public interface DataResourceService extends BaseEntityService<DataResource>, QueryObjectCriteriaService<DataResource> {
     Integer createDataResource(DataResource dataResource);
+    DataResource getDataResource(Long id);
     void updateDataResource(DataResource dataResource);
-    void deleteDataResource(List<Long> ids);
     void closeDataResource(List<Long> ids);
-
-    Page<Dataset> queryDatasets(QueryObject queryObject);
+    IPage<Dataset> queryDatasets(ExampleQuery exampleQuery);
 }

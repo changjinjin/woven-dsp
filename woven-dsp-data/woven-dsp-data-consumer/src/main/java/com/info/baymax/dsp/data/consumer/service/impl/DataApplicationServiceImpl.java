@@ -2,7 +2,6 @@ package com.info.baymax.dsp.data.consumer.service.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
-import com.info.baymax.dsp.data.consumer.entity.Customer;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.mybatis.mapper.DataApplicationMapper;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
@@ -40,12 +39,7 @@ public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataAppli
     }
 
     @Override
-    public void deleteDataApplication(List<Long> ids) {
-        dataApplicationMapper.deleteByPrimaryKeys(ids);
-    }
-
-    @Override
-    public void deleteByDataResIds(List<Long> dataResIds){
-        dataApplicationMapper.deleteByDataResIds(dataResIds);
+    public void deleteByDataResIds(Long tenantId, List<Long> dataResIds){
+        dataApplicationMapper.deleteByDataResIds(tenantId, dataResIds);
     }
 }

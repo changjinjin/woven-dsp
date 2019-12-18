@@ -90,6 +90,7 @@ public final class SecurityUtils {
         saasContext.setUserId(json.getLong("userId"));
         saasContext.setUsername(json.getString("name"));
         saasContext.setAdmin(json.getBooleanValue("admin"));
+        saasContext.setUserType(json.getString("userType"));
         return saasContext;
     }
 
@@ -104,6 +105,7 @@ public final class SecurityUtils {
         saasContext.setUserId(Long.valueOf(token.getUserId().toString()));
         saasContext.setUsername(token.getUserName());
         saasContext.setAdmin(token.isAdmin());
+        saasContext.setUserType(token.getUserType().name());
         return saasContext;
     }
 }

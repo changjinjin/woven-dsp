@@ -38,10 +38,10 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 		return permissionMapper;
 	}
 
-	public Permission findByTenantIdAndCode(String tenantId, String code) {
+	public Permission findByClientIdAndCode(String clientId, String code) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
 				.fieldGroup()//
-				.andEqualTo("tenantId", tenantId)//
+				.andEqualTo("clientId", clientId)//
 				.andEqualTo("code", code)//
 				.end());
 	}
@@ -49,23 +49,14 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
 	@Override
 	public Permission save(Permission t) {
-		Permission exists = existsByTenantIdAndCode(SaasContext.getCurrentTenantId(), t.getCode());
+		Permission exists = findByClientIdAndCode(SaasContext.getCurrentClienId(), t.getCode());
 		if (exists != null) {
 			throw new ServiceException(ErrType.ENTITY_EXIST, "相同编码的权限[" + t.getCode() + "]已经存在！");
 		}
 		t.setEnabled(YesNoType.YES.getValue());
-		t.setOrder(selectMaxOrder(SaasContext.getCurrentTenantId()) + 1);
+		t.setOrder(selectMaxOrder(SaasContext.getCurrentClienId()) + 1);
 		insertSelective(t);
 		return t;
-	}
-
-	@Override
-	public Permission existsByTenantIdAndCode(Long tenantId, String code) {
-		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("tenantId", tenantId)//
-				.andEqualTo("code", code)//
-				.end());
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
@@ -140,7 +131,7 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 	}
 
 	@Override
-	public int selectMaxOrder(Long tenantId) {
-		return permissionMapper.selectMaxOrder(tenantId);
+	public int selectMaxOrder(String clientId) {
+		return permissionMapper.selectMaxOrder(clientId);
 	}
 }

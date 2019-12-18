@@ -5,7 +5,6 @@
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="creator" jdbcType="VARCHAR" property="creator" />
-		<result column="description" jdbcType="VARCHAR" property="description" />
 		<result column="enabled" jdbcType="INTEGER" property="enabled" />
 		<result column="expired_time" jdbcType="BIGINT" property="expiredTime" />
 		<result column="last_modified_time" jdbcType="TIMESTAMP"

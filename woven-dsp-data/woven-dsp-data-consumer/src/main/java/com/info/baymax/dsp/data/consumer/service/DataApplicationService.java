@@ -1,11 +1,10 @@
 package com.info.baymax.dsp.data.consumer.service;
 
+import java.util.List;
+
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
-import com.info.baymax.dsp.data.consumer.entity.Customer;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
-
-import java.util.List;
 
 /**
  * @Author: haijun
@@ -14,6 +13,5 @@ import java.util.List;
 public interface DataApplicationService extends BaseEntityService<DataApplication>, QueryObjectCriteriaService<DataApplication> {
     Long createDataApplication(DataApplication dataApplication);
     void updateDataApplication(DataApplication dataApplication);
-    void deleteDataApplication(List<Long> ids);
-    void deleteByDataResIds(List<Long> ids);
+    void deleteByDataResIds(Long tenantId, List<Long> ids);
 }

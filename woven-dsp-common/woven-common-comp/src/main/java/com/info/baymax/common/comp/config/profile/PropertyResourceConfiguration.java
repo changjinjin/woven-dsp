@@ -53,7 +53,7 @@ public class PropertyResourceConfiguration implements ImportAware {
     }
 
     @Nullable
-    private AnnotationAttributes fromMap(@Nullable Map<String, Object> map) {
+	private AnnotationAttributes fromMap(@Nullable Map<String, Object> map) {
         if (map == null) {
             return null;
         }

@@ -41,12 +41,12 @@ public interface DataApplicationMapper extends MyIdableMapper<DataApplication> {
             "<script>",
             "delete",
             "from dsp_data_application",
-            "where data_res_id in",
+            "where tenant_id = #{tenantId, jdbcType=BIGINT} and  data_res_id in",
             "<foreach collection='ids' item='id' open='(' separator=',' close=')'>",
             "#{id}",
             "</foreach>",
             "</script>"
     })
-    int deleteByDataResIds(@Param("ids") List<Long> ids);
+    int deleteByDataResIds(@Param("tenantId") Long tenantId,@Param("ids") List<Long> ids);
 
 }

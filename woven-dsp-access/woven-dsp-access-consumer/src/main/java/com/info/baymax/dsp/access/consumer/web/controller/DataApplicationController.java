@@ -1,24 +1,18 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
+import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.info.baymax.common.jpa.page.Page;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,7 +23,7 @@ import java.util.List;
  */
 @Api(tags = "消费者针对数据资源的操作接口", description = "消费者数据资源操作接口")
 @RestController
-@RequestMapping("/dataapply")
+@RequestMapping("/application")
 public class DataApplicationController {
     @Autowired
     DataApplicationService dataApplicationService;
@@ -55,8 +49,8 @@ public class DataApplicationController {
     public Response createDataApplicaiton(DataApplication dataApplication) throws Exception {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
-        Long id = dataApplicationService.createDataApplication(dataApplication);
-        return Response.ok(id);
+        DataApplication dbApplication= dataApplicationService.save(dataApplication);
+        return new Response().status(HttpStatus.CREATED.value()).content(dbApplication.getId());
     }
 
 
@@ -65,20 +59,22 @@ public class DataApplicationController {
     public Response updateDataApplication(DataApplication dataApplication) throws Exception {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
-        dataApplicationService.updateDataApplication(dataApplication);
-        Response res = new Response();
-        res.status(HttpStatus.ACCEPTED.value());
-        return res;
+        dataApplicationService.saveOrUpdate(dataApplication);
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
+    /**
+     * 消费者是否允许删除操作待定。。。。。
+     * @param ids
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "删除DataApplication记录")
     @DeleteMapping("/delete")
     public Response deleteDataApplication(List<Long> ids) throws Exception {
         //request boy :string[] ids
-        dataApplicationService.deleteDataApplication(ids);
-        Response res = new Response();
-        res.status(HttpStatus.NO_CONTENT.value());
-        return res;
+        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids.toArray());
+        return new Response().status(HttpStatus.NO_CONTENT.value());
     }
 
 }

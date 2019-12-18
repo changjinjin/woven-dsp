@@ -15,11 +15,13 @@ import tk.mybatis.mapper.annotation.ColumnType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 import java.util.Map;
 
@@ -33,7 +35,10 @@ import java.util.Map;
 @ApiModel
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "dsp_data_resource")
+@Table(name = "dsp_data_resource", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
+        @Index(columnList = "tenantId,storage"),
+        @Index(columnList = "lastModifiedTime DESC")})
 public class DataResource extends BaseEntity {
     private static final long serialVersionUID = -1646060649387068719L;
 
@@ -71,7 +76,7 @@ public class DataResource extends BaseEntity {
     @ApiModelProperty(value = "数据集存储引擎")
     @Column(length = 255, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String engine;
+    private String storage;
 
     @ApiModelProperty(value = "存储目录(分类)ID")
     @Column(length = 255, nullable = false)

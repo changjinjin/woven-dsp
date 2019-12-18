@@ -70,7 +70,7 @@ public class TenantController {
         if (tenant == null) {
             throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "租户不存在");
         }
-        User admin = userService.findByTenantAndLoginId(tenant.getId(), TenantInitializer.INIT_ADMIN_LOGINID);
+        User admin = userService.findByTenantAndUsername(tenant.getId(), TenantInitializer.INIT_ADMIN_LOGINID);
         TenantRegisterBean tenantRegisterBean = new TenantRegisterBean();
         BeanUtils.copyProperties(tenant, tenantRegisterBean);
         tenantRegisterBean.setAdminPassword(admin.getPassword());
