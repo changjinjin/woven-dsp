@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.platform.web.controller.security;
+package com.info.baymax.dsp.access.platform.web.controller.sys;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

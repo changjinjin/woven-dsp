@@ -11,7 +11,7 @@
 			property="lastModifiedTime" />
 		<result column="last_modifier" jdbcType="VARCHAR" property="lastModifier" />
 		<result column="module_version" jdbcType="INTEGER" property="moduleVersion" />
-		<result column="real_name" jdbcType="VARCHAR" property="realName" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="name_duplicatable" jdbcType="BIT" property="nameDuplicatable" />
 		<result column="owner" jdbcType="VARCHAR" property="owner" />
 		<result column="version" jdbcType="INTEGER" property="version" />

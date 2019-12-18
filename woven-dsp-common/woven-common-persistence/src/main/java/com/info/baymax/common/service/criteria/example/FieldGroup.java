@@ -1,12 +1,15 @@
 package com.info.baymax.common.service.criteria.example;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.service.criteria.FieldGroupBuilder;
 import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
 import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.ibatis.reflection.MetaObject;
 import tk.mybatis.mapper.util.MetaObjectUtil;
 
@@ -22,6 +25,9 @@ import java.util.List;
  * @date 2019年9月6日 下午12:22:41
  */
 @ApiModel
+@Setter
+@Getter
+@ToString
 public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldGroup> {
     private static final long serialVersionUID = 2462883877776169902L;
 
@@ -70,49 +76,11 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
         this.fieldGroups = fieldGroups;
     }
 
-    /************************* getter and setter ******************************/
-
-    public AndOr getAndOr() {
-        return andOr;
-    }
-
-    public void setAndOr(AndOr andOr) {
-        this.andOr = andOr;
-    }
-
-    public List<Field> getFeilds() {
-        return feilds;
-    }
-
-    public void setFeilds(List<Field> feilds) {
-        this.feilds = feilds;
-    }
-
-    public List<FieldGroup> getFieldGroups() {
-        return fieldGroups;
-    }
-
-    public void setFieldGroups(List<FieldGroup> fieldGroups) {
-        this.fieldGroups = fieldGroups;
-    }
-
-    public FieldGroup getParent() {
-        return parent;
-    }
-
-    public void setParent(FieldGroup parent) {
-        this.parent = parent;
-    }
-
     public ExampleQuery getQuery() {
         if (query == null && parent != null) {
             query = parent.getQuery();
         }
         return query;
-    }
-
-    public void setQuery(ExampleQuery query) {
-        this.query = query;
     }
 
     /************************* 排序节点 ******************************/

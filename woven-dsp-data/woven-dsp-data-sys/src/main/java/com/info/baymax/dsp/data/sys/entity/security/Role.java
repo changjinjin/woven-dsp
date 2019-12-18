@@ -30,11 +30,6 @@ import tk.mybatis.mapper.annotation.ColumnType;
 public class Role extends BaseEntity {
 	private static final long serialVersionUID = -4302027743711660884L;
 
-	@ApiModelProperty("名称")
-	@Column(length = 255)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	protected String name;
-
 	@ApiModelProperty("角色权限列表")
 	@Transient
 	private Set<Permission> permissions;

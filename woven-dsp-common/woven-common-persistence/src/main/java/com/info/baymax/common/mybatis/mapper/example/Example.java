@@ -1,5 +1,9 @@
 package com.info.baymax.common.mybatis.mapper.example;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.ibatis.reflection.MetaObject;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.entity.EntityColumn;
@@ -19,23 +23,18 @@ import java.util.*;
  *
  * Copyright (c) 2014-2017 abel533@gmail.com
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 /**
@@ -44,6 +43,8 @@ import java.util.*;
  * @author jingwei.yang
  * @date 2019年7月11日 下午8:01:14
  */
+@Setter
+@Getter
 public class Example implements IDynamicTableName {
     protected String orderByClause;
 
@@ -193,30 +194,6 @@ public class Example implements IDynamicTableName {
         return this;
     }
 
-    public String getDynamicTable() {
-        return dynamicTable;
-    }
-
-    public void setDynamicTable(String dynamicTable) {
-        this.dynamicTable = dynamicTable;
-    }
-
-    public String getAppendTable() {
-        return appendTable;
-    }
-
-    public void setAppendTable(String appendTable) {
-        this.appendTable = appendTable;
-    }
-
-    public String getTableAlias() {
-        return tableAlias;
-    }
-
-    public void setTableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
-    }
-
     public void or(Criteria criteria) {
         this.criteria.orCriteria(criteria);
     }
@@ -245,14 +222,6 @@ public class Example implements IDynamicTableName {
         return criteria;
     }
 
-    public Criteria getCriteria() {
-        return criteria;
-    }
-
-    public void setCriteria(Criteria criteria) {
-        this.criteria = criteria;
-    }
-
     protected Criteria createCriteriaInternal() {
         return new Criteria(propertyMap, exists, notNull);
     }
@@ -261,10 +230,6 @@ public class Example implements IDynamicTableName {
         criteria = null;
         orderByClause = null;
         distinct = false;
-    }
-
-    public Map<String, EntityColumn> getPropertyMap() {
-        return propertyMap;
     }
 
     public static class OrderBy {
@@ -321,30 +286,19 @@ public class Example implements IDynamicTableName {
         }
     }
 
+    @Setter
+    @Getter
+    @ApiModel
     public abstract static class CriteriaItem implements Comparable<CriteriaItem>, Serializable {
         private static final long serialVersionUID = 6417720184834620402L;
 
         // 条件排序序号
+        @ApiModelProperty(hidden = true)
         protected int index;
 
         // 是否是条件组
+        @ApiModelProperty(hidden = true)
         private boolean group;
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public boolean isGroup() {
-            return group;
-        }
-
-        public void setGroup(boolean group) {
-            this.group = group;
-        }
 
         @Override
         public int compareTo(CriteriaItem o) {
@@ -355,6 +309,8 @@ public class Example implements IDynamicTableName {
 
     }
 
+    @Setter
+    @Getter
     public static class Criteria extends CriteriaItem {
         private static final long serialVersionUID = 4411291485392371897L;
 
@@ -843,52 +799,10 @@ public class Example implements IDynamicTableName {
             return ordItems;
         }
 
-        public Criteria getParent() {
-            return parent;
-        }
-
-        public void setParent(Criteria parent) {
-            this.parent = parent;
-        }
-
-        public boolean isExists() {
-            return exists;
-        }
-
-        public boolean isNotNull() {
-            return notNull;
-        }
-
-        public Map<String, EntityColumn> getPropertyMap() {
-            return propertyMap;
-        }
-
-        public String getAndOr() {
-            return andOr;
-        }
-
-        public void setAndOr(String andOr) {
-            this.andOr = andOr;
-        }
-
-        public List<Criterion> getCriterions() {
-            return criterions;
-        }
-
-        public void setCriterions(List<Criterion> criterions) {
-            this.criterions = criterions;
-        }
-
-        public List<Criteria> getCriterias() {
-            return criterias;
-        }
-
-        public void setCriterias(List<Criteria> criterias) {
-            this.criterias = criterias;
-        }
-
     }
 
+    @Setter
+    @Getter
     public static class Criterion extends CriteriaItem {
         private static final long serialVersionUID = -6324904523102903996L;
 
@@ -968,48 +882,10 @@ public class Example implements IDynamicTableName {
         protected Criterion(String condition, Object value, Object secondValue, boolean isOr) {
             this(condition, value, secondValue, null, isOr);
         }
-
-        public String getAndOr() {
-            return andOr;
-        }
-
-        public void setAndOr(String andOr) {
-            this.andOr = andOr;
-        }
-
-        public String getCondition() {
-            return condition;
-        }
-
-        public Object getSecondValue() {
-            return secondValue;
-        }
-
-        public String getTypeHandler() {
-            return typeHandler;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public boolean isBetweenValue() {
-            return betweenValue;
-        }
-
-        public boolean isListValue() {
-            return listValue;
-        }
-
-        public boolean isNoValue() {
-            return noValue;
-        }
-
-        public boolean isSingleValue() {
-            return singleValue;
-        }
     }
 
+    @Setter
+    @Getter
     public static class Builder {
         private final Class<?> entityClass;
         protected EntityTable table;
@@ -1262,28 +1138,12 @@ public class Example implements IDynamicTableName {
         }
     }
 
-    public String getCountColumn() {
-        return countColumn;
-    }
-
     @Override
     public String getDynamicTableName() {
         if (StringUtil.isNotEmpty(dynamicTable)) {
             return dynamicTable;
         }
         return tableName;
-    }
-
-    public Class<?> getEntityClass() {
-        return entityClass;
-    }
-
-    public String getOrderByClause() {
-        return orderByClause;
-    }
-
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
     }
 
     public Set<String> getSelectColumns() {
@@ -1301,22 +1161,6 @@ public class Example implements IDynamicTableName {
         return selectColumns;
     }
 
-    public boolean isDistinct() {
-        return distinct;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isForUpdate() {
-        return forUpdate;
-    }
-
-    public void setForUpdate(boolean forUpdate) {
-        this.forUpdate = forUpdate;
-    }
-
     /**
      * 指定 count(property) 查询属性
      *
@@ -1326,15 +1170,6 @@ public class Example implements IDynamicTableName {
         if (propertyMap.containsKey(property)) {
             this.countColumn = propertyMap.get(property).getColumn();
         }
-    }
-
-    /**
-     * 设置表名
-     *
-     * @param tableName
-     */
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
 }

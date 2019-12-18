@@ -1,13 +1,16 @@
 package com.info.baymax.common.service.criteria.example;
 
+import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
+import com.info.baymax.common.mybatis.page.IPageable;
 import com.info.baymax.common.service.criteria.QueryBuilder;
 import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
 import com.info.baymax.common.service.criteria.example.SqlEnums.OrderType;
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
-import com.info.baymax.common.mybatis.page.IPageable;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.*;
@@ -19,22 +22,25 @@ import java.util.*;
  * @date 2019年6月27日 上午10:08:57
  */
 @ApiModel
+@Setter
+@Getter
+@ToString
 public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     private static final long serialVersionUID = 4850854513242762929L;
 
     @ApiModelProperty("分页信息，默认不设置分页")
     protected IPageable pageable = new IPageable(false);
 
-    @ApiModelProperty("查询数据类型")
+    @ApiModelProperty(value = "查询数据类型", hidden = true)
     protected Class<?> entityClass;
 
-    @ApiModelProperty("是否去重，默认false")
+    @ApiModelProperty(value = "是否去重，默认false", hidden = true)
     protected boolean distinct;
 
-    @ApiModelProperty("是否锁表，默认false")
+    @ApiModelProperty(value = "是否锁表，默认false", hidden = true)
     protected boolean forUpdate;
 
-    @ApiModelProperty("需要统计的字段名，如：count(id)则该属性为'id'，统计时使用，默认为空")
+    @ApiModelProperty(value = "需要统计的字段名，如：count(id)则该属性为'id'，统计时使用，默认为空", hidden = true)
     protected String countProperty;
 
     @ApiModelProperty("查询的字段列表")
@@ -49,13 +55,13 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     @ApiModelProperty("排序属性信息")
     protected List<Sort> ordSort;
 
-    @ApiModelProperty("动态表名，可以是一个表名，也可以是一个子查询的结果表，如：(select * from user) u")
+    @ApiModelProperty(value = "动态表名，可以是一个表名，也可以是一个子查询的结果表，如：(select * from user) u", hidden = true)
     protected String dynamicTable;
 
-    @ApiModelProperty("追加表名，一个sql拼接片段端，如：t inner join user_role_ref urr on t.id = urr.user_id追加在（select * from t_user）之后用于关联条件用")
+    @ApiModelProperty(value = "追加表名，一个sql拼接片段端，如：t inner join user_role_ref urr on t.id = urr.user_id追加在（select * from t_user）之后用于关联条件用", hidden = true)
     protected String appendTable;
 
-    @ApiModelProperty("表别名")
+    @ApiModelProperty(value = "表别名", hidden = true)
     protected String tableAlias;
 
     /*************************************
@@ -151,103 +157,6 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
         this.excludeProperties = excludeProperties;
         this.fieldGroup = fieldGroup;
         this.ordSort = ordSort;
-    }
-
-    /************** getter and setter **********************/
-    public Class<?> getEntityClass() {
-        return entityClass;
-    }
-
-    public void setEntityClass(Class<?> entityClass) {
-        this.entityClass = entityClass;
-    }
-
-    public boolean isDistinct() {
-        return distinct;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isForUpdate() {
-        return forUpdate;
-    }
-
-    public void setForUpdate(boolean forUpdate) {
-        this.forUpdate = forUpdate;
-    }
-
-    public String getCountProperty() {
-        return countProperty;
-    }
-
-    public void setCountProperty(String countProperty) {
-        this.countProperty = countProperty;
-    }
-
-    public Set<String> getSelectProperties() {
-        return selectProperties;
-    }
-
-    public void setSelectProperties(Set<String> selectProperties) {
-        this.selectProperties = selectProperties;
-    }
-
-    public Set<String> getExcludeProperties() {
-        return excludeProperties;
-    }
-
-    public void setExcludeProperties(Set<String> excludeProperties) {
-        this.excludeProperties = excludeProperties;
-    }
-
-    public FieldGroup getFieldGroup() {
-        return fieldGroup;
-    }
-
-    public void setFieldGroup(FieldGroup fieldGroup) {
-        this.fieldGroup = fieldGroup;
-    }
-
-    public List<Sort> getOrdSort() {
-        return ordSort;
-    }
-
-    public void setOrdSort(List<Sort> ordSort) {
-        this.ordSort = ordSort;
-    }
-
-    public IPageable getPageable() {
-        return pageable;
-    }
-
-    public void setPageable(IPageable pageable) {
-        this.pageable = pageable;
-    }
-
-    public String getDynamicTable() {
-        return dynamicTable;
-    }
-
-    public void setDynamicTable(String dynamicTable) {
-        this.dynamicTable = dynamicTable;
-    }
-
-    public String getAppendTable() {
-        return appendTable;
-    }
-
-    public void setAppendTable(String appendTable) {
-        this.appendTable = appendTable;
-    }
-
-    public String getTableAlias() {
-        return tableAlias;
-    }
-
-    public void setTableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
     }
 
     /*************************************

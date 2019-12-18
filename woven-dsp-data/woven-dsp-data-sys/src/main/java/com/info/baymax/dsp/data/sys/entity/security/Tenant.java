@@ -30,11 +30,6 @@ import tk.mybatis.mapper.annotation.ColumnType;
 public class Tenant extends BaseEntity {
 	private static final long serialVersionUID = -7861087791631568673L;
 
-	@ApiModelProperty("名称")
-	@Column(length = 255)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	protected String name;
-
 	@ApiModelProperty(value = "资源队列")
 	@Lob
 	@Column(length = 255)
