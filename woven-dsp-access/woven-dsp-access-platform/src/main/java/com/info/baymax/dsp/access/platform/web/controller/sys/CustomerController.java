@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "消费者管理", description = "消费者管理")
+@Api(tags = "系统管理：消费者管理", description = "消费者管理")
 @RestController
 @RequestMapping("/cust")
 public class CustomerController {

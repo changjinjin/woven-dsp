@@ -43,7 +43,8 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
 		}
 
 		String username = t.getUsername();
-		if (existsByTenantIdAndName(SaasContext.getCurrentTenantId(), username)) {
+		Customer exist = findByTenantAndUsername(SaasContext.getCurrentTenantId(), username);
+		if (exist != null) {
 			throw new ServiceException(ErrType.ENTITY_EXIST, "同名的消费者信息已经存在");
 		}
 

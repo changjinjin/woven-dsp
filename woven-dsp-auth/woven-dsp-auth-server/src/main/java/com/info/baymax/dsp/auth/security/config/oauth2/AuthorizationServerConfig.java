@@ -1,10 +1,9 @@
-package com.info.baymax.dsp.auth.security.config;
+package com.info.baymax.dsp.auth.security.config.oauth2;
 
 import com.info.baymax.dsp.auth.api.exception.CustomWebResponseExceptionTranslator;
 import com.info.baymax.dsp.auth.security.authentication.GrantedAuthoritiesService;
 import com.info.baymax.dsp.auth.security.authentication.customer.TenantCustomerResourceOwnerPasswordTokenGranter;
 import com.info.baymax.dsp.auth.security.authentication.manager.TenantManagerResourceOwnerPasswordTokenGranter;
-import com.info.baymax.dsp.auth.security.config.oauth2.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
@@ -58,9 +56,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)//
-            // .tokenEnhancer(tokenEnhancer())//
-            // 配置JwtAccessToken转换器
-            // .accessTokenConverter(accessTokenConverter())
+            .accessTokenConverter(new CustomJwtAccessTokenConverter())
             // refresh_token需要userDetailsService
             .reuseRefreshTokens(false)//
             .tokenStore(tokenStore())//
@@ -72,12 +68,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             endpoints.getClientDetailsService(), endpoints.getOAuth2RequestFactory());
         tokenGranters.add(endpoints.getTokenGranter());
         endpoints.tokenGranter(new CompositeTokenGranter(tokenGranters));
-
-        // add TokenEnhancer
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(new CustomTokenEnhancer()));
-        endpoints.tokenEnhancer(tokenEnhancerChain);
-
     }
 
     private List<TokenGranter> getTokenGranters(AuthorizationServerTokenServices tokenServices,

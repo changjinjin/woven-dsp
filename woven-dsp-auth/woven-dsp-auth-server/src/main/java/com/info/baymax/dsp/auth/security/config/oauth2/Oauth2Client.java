@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.auth.security.config;
+package com.info.baymax.dsp.auth.security.config.oauth2;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

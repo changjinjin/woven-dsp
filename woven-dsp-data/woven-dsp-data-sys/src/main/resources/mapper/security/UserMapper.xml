@@ -43,9 +43,8 @@
 	]]>
 		<where>
 			<if test="id != null and id != ''"> and id = #{id,jdbcType=VARCHAR}</if>
-			<if test="name != null and name != ''">and name = #{name,jdbcType=VARCHAR}</if>
 			<if test="tenantId != null and tenantId != ''">and tenant_id = #{tenantId,jdbcType=VARCHAR}</if>
-			<if test="loginId != null and loginId != ''">and login_id = #{loginId,jdbcType=VARCHAR}</if>
+			<if test="username != null and username != ''">and username = #{username,jdbcType=VARCHAR}</if>
 			<if test="owner != null and owner != ''">and owner = #{owner,jdbcType=VARCHAR}</if>
 			<if test="version != null and version != ''">and version = #{version,jdbcType=VARCHAR}</if>
 			<if test="enabled != null">and enabled = #{enabled,jdbcType=INTEGER}</if>

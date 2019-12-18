@@ -54,6 +54,8 @@ public class OauthTokenApiDescription implements SwaggerAdditionApiDescription {
                 .modelRef(new ModelRef("string"))//
                 .parameterType("header")//
                 .required(false)//
+                .allowableValues(new AllowableListValues(Arrays.asList("Basic ZHNwOjEyMzQ1Ng==",
+                    "Basic Y3VzdG9tZXI6MTIzNDU2", "Basic YmF5bWF4OjEyMzQ1Ng=="), "string"))//
                 .defaultValue("Basic ZHNwOjEyMzQ1Ng==")//
                 .build(),
             new ParameterBuilder()//
@@ -66,11 +68,10 @@ public class OauthTokenApiDescription implements SwaggerAdditionApiDescription {
                     + "6、tenant_password — 租户密码认证方式，相对于password模式多了租户信息。 ")//
                 .type(new TypeResolver().resolve(String.class))//
                 .name("grant_type")//
-                .allowableValues(new AllowableListValues(
-                    Arrays.asList("authorization_code", "password", "manager_password", "customer_password",
-                        "client_credentials", "implicit ", "refresh_token"),
+                .allowableValues(new AllowableListValues(Arrays.asList("manager_password", "customer_password",
+                    "password", "refresh_token", "authorization_code", "client_credentials", "implicit "),
                     "string"))//
-                .defaultValue("tenant_password")//
+                .defaultValue("manager_password")//
                 .parameterType("query")//
                 .parameterAccess("access")//
                 .required(false)//

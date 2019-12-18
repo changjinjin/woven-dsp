@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/api/menu")
-@Api(tags = "菜单管理", value = "菜单管理接口")
+@Api(tags = "系统管理：菜单管理", value = "菜单管理接口")
 public class MenuController implements Serializable {
     private static final long serialVersionUID = -8130399587077298234L;
 

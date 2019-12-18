@@ -11,7 +11,6 @@ import java.util.Map;
 @Setter
 public class SaasContext implements Serializable {
     private static final long serialVersionUID = 7238846400682679965L;
-
     public static final String SAAS_CONTEXT_KEY = "SaasContext";
 
     private String host;
