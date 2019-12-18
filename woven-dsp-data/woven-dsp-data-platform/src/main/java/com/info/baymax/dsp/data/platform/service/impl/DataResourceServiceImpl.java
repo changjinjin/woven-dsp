@@ -1,9 +1,8 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
-import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.common.mybatis.mapper.example.Example;
+import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataResourceMapper;
@@ -54,8 +53,7 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
         resourceMapper.closeDataResourceByIds(ids);
     }
 
-    @Override
-    public Page<Dataset> queryDatasets(QueryObject queryObject) {
-        return datasetService.findObjectPage(queryObject);
+    public IPage<Dataset> queryDatasets(ExampleQuery exampleQuery) {
+        return datasetService.selectPage(exampleQuery);
     }
 }

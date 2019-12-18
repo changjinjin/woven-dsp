@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.access.platform.web.controller;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
-import com.info.baymax.common.jpa.page.Page;
 import java.util.List;
 
 /**
@@ -45,10 +43,10 @@ public class DataResourceController {
     @ApiOperation(value = "分页查询Baymax数据集")
     @PostMapping("/query/datasets")
     @ResponseStatus(HttpStatus.OK)
-    public Page<Dataset> queryDataset(QueryObject queryObject) throws Exception {
+    public IPage<Dataset> queryDataset(ExampleQuery exampleQuery) throws Exception {
         //--TODO-- 查询merce_dataset记录,支持按照名称，Engine,创建时间等过滤
         log.info("query dataset list ...");
-        return dataResourceService.queryDatasets(queryObject);
+        return dataResourceService.queryDatasets(exampleQuery);
     }
 
     @ApiOperation(value = "分页查询关联后的数据资源")
