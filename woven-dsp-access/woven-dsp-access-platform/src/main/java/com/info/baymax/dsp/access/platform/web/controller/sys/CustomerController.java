@@ -1,5 +1,7 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
+import com.info.baymax.dsp.data.sys.entity.security.Customer;
+import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.dsp.data.consumer.entity.Customer;
-import com.info.baymax.dsp.data.consumer.service.CustomerService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
