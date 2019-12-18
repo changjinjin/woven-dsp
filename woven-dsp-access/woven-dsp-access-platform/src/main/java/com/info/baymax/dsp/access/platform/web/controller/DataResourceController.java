@@ -3,6 +3,7 @@ package com.info.baymax.dsp.access.platform.web.controller;
 import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +72,15 @@ public class DataResourceController {
         return res.status(HttpStatus.CREATED.value()).content(id);
     }
 
+    @ApiOperation(value = "查询数据资源详情")
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
+        log.info("get dataResource detail ...");
+        DataResource dres = dataResourceService.findOne(SaasContext.getCurrentTenantId(), id +"");
+        Response res = new Response();
+        return res.status(HttpStatus.CREATED.value()).content(dres);
+    }
 
     @ApiOperation(value = "更新dataResource记录")
     @PutMapping("/update")
@@ -76,7 +88,7 @@ public class DataResourceController {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
         log.info("update dataResource, id={} ...", drs.getId());
-        dataResourceService.updateDataResource(drs);
+        dataResourceService.updateByPrimaryKey(drs);
         Response res = new Response();
         return res.status(HttpStatus.ACCEPTED.value());
     }
@@ -87,7 +99,7 @@ public class DataResourceController {
     public Response deleteDataResource(List<Long> ids) throws Exception {
         //request boy :string[] ids
         log.info("delete dataResource , ids.size={} ...", ids.size());
-        dataResourceService.deleteDataResource(ids);
+        dataResourceService.deleteByIds(SaasContext.getCurrentTenantId(),ids.toArray());
         Response res = new Response();
         res.status(HttpStatus.NO_CONTENT.value());
         return res;
@@ -100,7 +112,7 @@ public class DataResourceController {
         //--TODO-- updateOpenStatus 1 and updateDataPolicy
         log.info("publish dataResource, id={} ...", drs.getId());
         if(drs.getOpenStatus() == 1){
-            dataResourceService.updateDataResource(drs);
+            dataResourceService.updateByPrimaryKey(drs);
         }else{
             throw new RuntimeException("Open DataResource but openStatus is 0");
         }
@@ -115,7 +127,7 @@ public class DataResourceController {
         //--TODO-- 根据dataResourceId关联更新consumer_data_application record status,禁止申请权限,或者删除记录
         //--TODO-- updateOpenStatus 0
         log.info("close dataResource and delete dataApplication, ids.size={}...", ids.size());
-        dataApplicationService.deleteByDataResIds(ids);
+        dataApplicationService.deleteByDataResIds(SaasContext.getCurrentTenantId(),ids);
         dataResourceService.closeDataResource(ids);
         Response res = new Response();
         return res.status(HttpStatus.ACCEPTED.value());

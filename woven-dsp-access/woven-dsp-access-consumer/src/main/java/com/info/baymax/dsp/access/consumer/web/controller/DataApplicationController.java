@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Api(tags = "消费者针对数据资源的操作接口", description = "消费者数据资源操作接口")
 @RestController
-@RequestMapping("/dataapply")
+@RequestMapping("/application")
 public class DataApplicationController {
     @Autowired
     DataApplicationService dataApplicationService;

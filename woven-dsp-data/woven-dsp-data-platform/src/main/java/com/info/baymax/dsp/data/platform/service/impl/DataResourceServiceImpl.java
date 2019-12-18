@@ -40,13 +40,13 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
     }
 
     @Override
-    public void updateDataResource(DataResource dataResource) {
-        resourceMapper.updateByExample(dataResource, Example.builder(DataResource.class).build());
+    public DataResource getDataResource(Long id) {
+        return resourceMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public void deleteDataResource(List<Long> ids) {
-        resourceMapper.deleteByPrimaryKeys(ids);
+    public void updateDataResource(DataResource dataResource) {
+        resourceMapper.updateByPrimaryKey(dataResource);
     }
 
     @Override
