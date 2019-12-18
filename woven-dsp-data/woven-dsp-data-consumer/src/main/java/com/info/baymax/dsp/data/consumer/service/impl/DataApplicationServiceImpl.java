@@ -40,12 +40,7 @@ public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataAppli
     }
 
     @Override
-    public void deleteDataApplication(List<Long> ids) {
-        dataApplicationMapper.deleteByPrimaryKeys(ids);
-    }
-
-    @Override
-    public void deleteByDataResIds(List<Long> dataResIds){
-        dataApplicationMapper.deleteByDataResIds(dataResIds);
+    public void deleteByDataResIds(Long tenantId, List<Long> dataResIds){
+        dataApplicationMapper.deleteByDataResIds(tenantId, dataResIds);
     }
 }

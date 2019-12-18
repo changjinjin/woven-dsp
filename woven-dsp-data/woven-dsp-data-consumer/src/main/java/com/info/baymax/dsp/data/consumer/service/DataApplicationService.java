@@ -14,6 +14,5 @@ import java.util.List;
 public interface DataApplicationService extends BaseEntityService<DataApplication>, QueryObjectCriteriaService<DataApplication> {
     Long createDataApplication(DataApplication dataApplication);
     void updateDataApplication(DataApplication dataApplication);
-    void deleteDataApplication(List<Long> ids);
-    void deleteByDataResIds(List<Long> ids);
+    void deleteByDataResIds(Long tenantId, List<Long> ids);
 }

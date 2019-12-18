@@ -15,8 +15,8 @@ import java.util.List;
  */
 public interface DataResourceService extends BaseEntityService<DataResource>, QueryObjectCriteriaService<DataResource> {
     Integer createDataResource(DataResource dataResource);
+    DataResource getDataResource(Long id);
     void updateDataResource(DataResource dataResource);
-    void deleteDataResource(List<Long> ids);
     void closeDataResource(List<Long> ids);
     Page<Dataset> queryDatasets(QueryObject queryObject);
 }

@@ -4,14 +4,19 @@ import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.platform.entity.DataResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +30,10 @@ import java.util.List;
  * @Date: 2019/12/16 14:44
  * 管理员针对消费者的申请记录进行操作
  */
+@Slf4j
 @Api(tags = "管理员审批相关接口", description = "管理员审批相关接口")
 @RestController
-@RequestMapping("/dataapply")
+@RequestMapping("/application")
 public class DataApplicationController {
     @Autowired
     DataApplicationService dataApplicationService;
@@ -40,6 +46,16 @@ public class DataApplicationController {
 //                .findPageResult(QueryObject.builder(queryObject).setCurrentTenantCondition(SaasContext.current()));
 //        return result;
         return dataApplicationService.selectPage(exampleQuery);
+    }
+
+    @ApiOperation(value = "查询用户申请记录详情")
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
+        log.info("get dataApplication detail ...");
+        DataApplication dataApplication = dataApplicationService.findOne(SaasContext.getCurrentTenantId(), id+"");
+        Response res = new Response();
+        return res.status(HttpStatus.CREATED.value()).content(dataApplication);
     }
 
     @ApiOperation(value = "审批消费者申请记录")
@@ -58,7 +74,9 @@ public class DataApplicationController {
     @DeleteMapping("/delete")
     public Response deleteDataApplication(List<Long> ids) throws Exception {
         //request boy :string[] ids
-        dataApplicationService.deleteDataApplication(ids);
+        for(Long id : ids) {
+            dataApplicationService.delete(SaasContext.getCurrentTenantId(), id);
+        }
         Response res = new Response();
         res.status(HttpStatus.NO_CONTENT.value());
         return res;
