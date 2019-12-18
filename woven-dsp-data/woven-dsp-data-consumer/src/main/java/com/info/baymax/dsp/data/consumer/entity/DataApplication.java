@@ -79,6 +79,13 @@ public class DataApplication extends BaseEntity {
     @DefaultValue("0")
     private Long expiredTime;// = 0L;
 
+    @ApiModelProperty("申请状态， 0: 待审批，1: 通过审批， -1:未通过审批")
+    @JsonIgnore
+    @Column(length = 2)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @DefaultValue("0")
+    private Integer status;
+
     @Transient
     public Long getExpiredPeriod() {
         if (expiredTime == null || expiredTime == 0 || expiredTime.longValue() >= MAX_DATE_TIME.longValue()) {
