@@ -1,22 +1,19 @@
 package com.info.baymax.dsp.access.platform.web.controller;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
-import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.platform.entity.DataServiceEntity;
+import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.merce.woven.common.utils.JsonBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +29,9 @@ public class DataApplicationController {
     @Autowired
     DataApplicationService dataApplicationService;
 
+    @Autowired
+    DataServiceEntityService dataServiceEntityService;
+
     @ApiOperation(value = "分页查询所有消费者的申请记录")
     @PostMapping("/query")
     public IPage<DataApplication> queryDataApplication(ExampleQuery exampleQuery) throws Exception {
@@ -42,12 +42,24 @@ public class DataApplicationController {
         return dataApplicationService.selectPage(exampleQuery);
     }
 
+    @ApiOperation(value = "根据申请记录id查询申请信息详情")
+    @GetMapping("/query/{id}")
+    public DataApplication queryDataApplicationById(@PathVariable String id) throws Exception {
+        return dataApplicationService.findOne(SaasContext.getCurrentTenantId(), id);
+    }
+
     @ApiOperation(value = "审批消费者申请记录")
     @PostMapping("/approval")
-    public Response updateDataApplication(DataApplication dataApplication) throws Exception {
+    public Response updateDataApplication(List<String> objects) throws Exception {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
+        DataApplication dataApplication = JsonBuilder.getInstance().fromJson(objects.get(0), DataApplication.class);
+        DataServiceEntity dataServiceEntity = JsonBuilder.getInstance().fromJson(objects.get(1), DataServiceEntity.class);
         dataApplicationService.updateDataApplication(dataApplication);
+        if (dataApplication.getStatus() == 1) {
+            dataServiceEntityService.insert(dataServiceEntity);
+        }
+
         Response res = new Response();
         res.status(HttpStatus.ACCEPTED.value());
         return res;

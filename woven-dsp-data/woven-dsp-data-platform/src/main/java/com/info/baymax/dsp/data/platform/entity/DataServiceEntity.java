@@ -12,18 +12,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Map;
 
@@ -38,13 +27,13 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_service")
-public class DataService extends BaseEntity {
+public class DataServiceEntity extends BaseEntity {
     private static final long serialVersionUID = -6235196279782590695L;
 
-    @ApiModelProperty(value = "消费者申请记录ID")
+    @ApiModelProperty(value = "消费者申请记录ID,与DataApplication id关联")
     @Column(length = 255, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String applyId;
+    private Long applyId;
 
     @ApiModelProperty(value = "服务启动类型: 0 push, 1 pull")
     @Column(length = 11, nullable = false)
