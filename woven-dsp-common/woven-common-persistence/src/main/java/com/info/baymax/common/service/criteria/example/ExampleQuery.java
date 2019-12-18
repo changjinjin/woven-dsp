@@ -34,13 +34,13 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     @ApiModelProperty(value = "查询数据类型", hidden = true)
     protected Class<?> entityClass;
 
-    @ApiModelProperty("是否去重，默认false")
+    @ApiModelProperty(value = "是否去重，默认false", hidden = true)
     protected boolean distinct;
 
     @ApiModelProperty(value = "是否锁表，默认false", hidden = true)
     protected boolean forUpdate;
 
-    @ApiModelProperty("需要统计的字段名，如：count(id)则该属性为'id'，统计时使用，默认为空")
+    @ApiModelProperty(value = "需要统计的字段名，如：count(id)则该属性为'id'，统计时使用，默认为空", hidden = true)
     protected String countProperty;
 
     @ApiModelProperty("查询的字段列表")
