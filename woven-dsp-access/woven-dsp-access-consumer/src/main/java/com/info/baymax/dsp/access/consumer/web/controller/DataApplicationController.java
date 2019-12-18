@@ -49,8 +49,8 @@ public class DataApplicationController {
     public Response createDataApplicaiton(DataApplication dataApplication) throws Exception {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
-        Long id = dataApplicationService.createDataApplication(dataApplication);
-        return Response.ok(id);
+        DataApplication dbApplication= dataApplicationService.save(dataApplication);
+        return new Response().status(HttpStatus.CREATED.value()).content(dbApplication.getId());
     }
 
 
@@ -59,10 +59,8 @@ public class DataApplicationController {
     public Response updateDataApplication(DataApplication dataApplication) throws Exception {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
-        dataApplicationService.updateDataApplication(dataApplication);
-        Response res = new Response();
-        res.status(HttpStatus.ACCEPTED.value());
-        return res;
+        dataApplicationService.saveOrUpdate(dataApplication);
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
     /**
@@ -76,9 +74,7 @@ public class DataApplicationController {
     public Response deleteDataApplication(List<Long> ids) throws Exception {
         //request boy :string[] ids
         dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids.toArray());
-        Response res = new Response();
-        res.status(HttpStatus.NO_CONTENT.value());
-        return res;
+        return new Response().status(HttpStatus.NO_CONTENT.value());
     }
 
 }

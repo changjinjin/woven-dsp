@@ -1,10 +1,11 @@
-package com.info.baymax.dsp.access.platform.web.controller;
+package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import java.util.List;
 
 /**
@@ -65,9 +65,8 @@ public class DataResourceController {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
         log.info("create dataResource ...");
-        int id = dataResourceService.createDataResource(drs);
-        Response res = new Response();
-        return res.status(HttpStatus.CREATED.value()).content(id);
+        DataResource dataResource = dataResourceService.save(drs);
+        return new Response().status(HttpStatus.CREATED.value()).content(dataResource.getId());
     }
 
     @ApiOperation(value = "查询数据资源详情")
@@ -76,8 +75,7 @@ public class DataResourceController {
     public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
         log.info("get dataResource detail ...");
         DataResource dres = dataResourceService.findOne(SaasContext.getCurrentTenantId(), id +"");
-        Response res = new Response();
-        return res.status(HttpStatus.CREATED.value()).content(dres);
+        return new Response().status(HttpStatus.CREATED.value()).content(dres);
     }
 
     @ApiOperation(value = "更新dataResource记录")
@@ -86,9 +84,8 @@ public class DataResourceController {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
         log.info("update dataResource, id={} ...", drs.getId());
-        dataResourceService.updateByPrimaryKey(drs);
-        Response res = new Response();
-        return res.status(HttpStatus.ACCEPTED.value());
+        dataResourceService.saveOrUpdate(drs);
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
     @ApiOperation(value = "删除dataResource记录")
@@ -98,9 +95,7 @@ public class DataResourceController {
         //request boy :string[] ids
         log.info("delete dataResource , ids.size={} ...", ids.size());
         dataResourceService.deleteByIds(SaasContext.getCurrentTenantId(),ids.toArray());
-        Response res = new Response();
-        res.status(HttpStatus.NO_CONTENT.value());
-        return res;
+        return new Response().status(HttpStatus.NO_CONTENT.value());
     }
 
     @ApiOperation(value = "开放数据资源给消费者")
@@ -110,12 +105,11 @@ public class DataResourceController {
         //--TODO-- updateOpenStatus 1 and updateDataPolicy
         log.info("publish dataResource, id={} ...", drs.getId());
         if(drs.getOpenStatus() == 1){
-            dataResourceService.updateByPrimaryKey(drs);
+            dataResourceService.saveOrUpdate(drs);
         }else{
             throw new RuntimeException("Open DataResource but openStatus is 0");
         }
-        Response res = new Response();
-        return res.status(HttpStatus.ACCEPTED.value());
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
     @ApiOperation(value = "关闭某数据资源的申请权限")
@@ -127,8 +121,7 @@ public class DataResourceController {
         log.info("close dataResource and delete dataApplication, ids.size={}...", ids.size());
         dataApplicationService.deleteByDataResIds(SaasContext.getCurrentTenantId(),ids);
         dataResourceService.closeDataResource(ids);
-        Response res = new Response();
-        return res.status(HttpStatus.ACCEPTED.value());
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
 }
