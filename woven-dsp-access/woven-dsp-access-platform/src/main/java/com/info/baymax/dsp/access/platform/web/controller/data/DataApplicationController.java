@@ -1,14 +1,11 @@
-package com.info.baymax.dsp.access.platform.web.controller;
+package com.info.baymax.dsp.access.platform.web.controller.data;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
-import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
-import com.info.baymax.dsp.data.platform.entity.DataResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +59,7 @@ public class DataApplicationController {
     public Response updateDataApplication(DataApplication dataApplication) throws Exception {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
-        dataApplicationService.updateDataApplication(dataApplication);
+        dataApplicationService.saveOrUpdate(dataApplication);
         Response res = new Response();
         res.status(HttpStatus.ACCEPTED.value());
         return res;
@@ -74,9 +70,7 @@ public class DataApplicationController {
     @DeleteMapping("/delete")
     public Response deleteDataApplication(List<Long> ids) throws Exception {
         //request boy :string[] ids
-        for(Long id : ids) {
-            dataApplicationService.delete(SaasContext.getCurrentTenantId(), id);
-        }
+        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids.toArray());
         Response res = new Response();
         res.status(HttpStatus.NO_CONTENT.value());
         return res;

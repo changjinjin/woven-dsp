@@ -49,8 +49,9 @@ public class DataApplicationController {
     public Response createDataApplicaiton(DataApplication dataApplication) throws Exception {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
-        Long id = dataApplicationService.createDataApplication(dataApplication);
-        return Response.ok(id);
+        DataApplication dataApplication1= dataApplicationService.save(dataApplication);
+        Response res = new Response();
+        return res.status(HttpStatus.CREATED.value()).content(dataApplication.getId());
     }
 
 
@@ -59,7 +60,7 @@ public class DataApplicationController {
     public Response updateDataApplication(DataApplication dataApplication) throws Exception {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
-        dataApplicationService.updateDataApplication(dataApplication);
+        dataApplicationService.saveOrUpdate(dataApplication);
         Response res = new Response();
         res.status(HttpStatus.ACCEPTED.value());
         return res;

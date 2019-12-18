@@ -1,10 +1,11 @@
-package com.info.baymax.dsp.access.platform.web.controller;
+package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import java.util.List;
 
 /**
@@ -65,9 +65,9 @@ public class DataResourceController {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
         log.info("create dataResource ...");
-        int id = dataResourceService.createDataResource(drs);
+        DataResource dataResource = dataResourceService.save(drs);
         Response res = new Response();
-        return res.status(HttpStatus.CREATED.value()).content(id);
+        return res.status(HttpStatus.CREATED.value()).content(dataResource.getId());
     }
 
     @ApiOperation(value = "查询数据资源详情")
@@ -86,7 +86,7 @@ public class DataResourceController {
         //checkEntity
         //dataSourceService.saveOrUpdate(drs);
         log.info("update dataResource, id={} ...", drs.getId());
-        dataResourceService.updateByPrimaryKey(drs);
+        dataResourceService.saveOrUpdate(drs);
         Response res = new Response();
         return res.status(HttpStatus.ACCEPTED.value());
     }
@@ -110,7 +110,7 @@ public class DataResourceController {
         //--TODO-- updateOpenStatus 1 and updateDataPolicy
         log.info("publish dataResource, id={} ...", drs.getId());
         if(drs.getOpenStatus() == 1){
-            dataResourceService.updateByPrimaryKey(drs);
+            dataResourceService.saveOrUpdate(drs);
         }else{
             throw new RuntimeException("Open DataResource but openStatus is 0");
         }
