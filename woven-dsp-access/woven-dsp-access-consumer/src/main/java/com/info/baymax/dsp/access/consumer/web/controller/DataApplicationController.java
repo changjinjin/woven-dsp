@@ -1,24 +1,17 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
+import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.info.baymax.common.jpa.page.Page;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

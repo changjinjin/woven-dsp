@@ -1,10 +1,12 @@
 package com.info.baymax.common.comp.crypto;
 
+import org.springframework.stereotype.Component;
+
 import com.info.baymax.common.crypto.delegater.DefaultCryptorDelegater;
 import com.info.baymax.common.crypto.method.AbstractCryptoMethodInvoker;
 import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.message.result.Response;
-import org.springframework.stereotype.Component;
+import com.info.baymax.common.mybatis.page.IPage;
 
 /**
  * 自定义的方法级别参数和返回值加解密调用器
@@ -27,7 +29,7 @@ public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
         return result;
     }
 
-    @SuppressWarnings({"unchecked", "resource"})
+    @SuppressWarnings({"unchecked", "resource", "deprecation"})
     @Override
     public Object beforeHandleResult(Object result) {
         // 拿到返回报文对象的能够处理的层级
@@ -42,6 +44,11 @@ public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
         if (obj instanceof Page) {
             Page<Object> page = (Page<Object>) obj;
             obj = page.getContent();
+        }
+
+        if (obj instanceof IPage) {
+            IPage<Object> page = (IPage<Object>) obj;
+            obj = page.getList();
         }
 
         if (obj instanceof com.github.pagehelper.Page) {

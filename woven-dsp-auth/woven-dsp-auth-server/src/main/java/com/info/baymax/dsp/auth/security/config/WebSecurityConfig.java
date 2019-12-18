@@ -1,5 +1,13 @@
 package com.info.baymax.dsp.auth.security.config;
 
+import com.info.baymax.dsp.auth.api.config.WhiteListProperties;
+import com.info.baymax.dsp.auth.security.authentication.customer.CustomerUserDetailsService;
+import com.info.baymax.dsp.auth.security.authentication.customer.TenantCustomerAuthenticationProvider;
+import com.info.baymax.dsp.auth.security.authentication.manager.ManagerUserDetailsService;
+import com.info.baymax.dsp.auth.security.authentication.manager.TenantManagerAuthenticationProvider;
+import com.info.baymax.dsp.auth.security.authentication.tenant.TenantDetailsService;
+import com.info.baymax.dsp.data.sys.crypto.check.PasswordChecker;
+import com.info.baymax.dsp.data.sys.crypto.check.StrictModePasswordChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,23 +19,13 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-
-import com.info.baymax.dsp.auth.api.config.WhiteListProperties;
-import com.info.baymax.dsp.auth.oauth2.authentication.TenantUserAuthenticationProvider;
-import com.info.baymax.dsp.auth.security.support.tenant.TenantDetailsService;
-import com.info.baymax.dsp.data.sys.constant.AuthConstants;
-import com.info.baymax.dsp.data.sys.crypto.check.PasswordChecker;
-import com.info.baymax.dsp.data.sys.crypto.check.StrictModePasswordChecker;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
     @Autowired
     private WhiteListProperties whiteListProperties;
     @Autowired
@@ -41,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth//
-            .userDetailsService(userDetailsService)//
+            .userDetailsService(managerUserDetailsService)//
             .passwordEncoder(passwordEncoder)//
         ;
     }
@@ -69,6 +67,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private TenantDetailsService tenantDetailsService;
+    @Autowired
+    private ManagerUserDetailsService managerUserDetailsService;
+    @Autowired
+    private CustomerUserDetailsService customerUserDetailsService;
 
     @Bean
     @Override
@@ -76,8 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         AuthenticationManager authenticationManager2 = super.authenticationManager();
         if (authenticationManager2 instanceof ProviderManager) {
             ProviderManager providerManager = (ProviderManager) authenticationManager2;
-            providerManager.getProviders().add(0,
-                new TenantUserAuthenticationProvider(tenantDetailsService, userDetailsService, passwordEncoder));
+            providerManager.getProviders().add(0, new TenantCustomerAuthenticationProvider(tenantDetailsService,
+                customerUserDetailsService, passwordEncoder));
+            providerManager.getProviders().add(0, new TenantManagerAuthenticationProvider(tenantDetailsService,
+                managerUserDetailsService, passwordEncoder));
             return providerManager;
         }
         return super.authenticationManager();

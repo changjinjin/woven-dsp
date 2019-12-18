@@ -5,19 +5,18 @@
 		<id column="id" jdbcType="VARCHAR" property="id" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="creator" jdbcType="VARCHAR" property="creator" />
-		<result column="description" jdbcType="VARCHAR" property="description" />
 		<result column="enabled" jdbcType="INTEGER" property="enabled" />
 		<result column="expired_time" jdbcType="BIGINT" property="expiredTime" />
 		<result column="last_modified_time" jdbcType="TIMESTAMP"
 			property="lastModifiedTime" />
 		<result column="last_modifier" jdbcType="VARCHAR" property="lastModifier" />
 		<result column="module_version" jdbcType="INTEGER" property="moduleVersion" />
-		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="real_name" jdbcType="VARCHAR" property="realName" />
 		<result column="name_duplicatable" jdbcType="BIT" property="nameDuplicatable" />
 		<result column="owner" jdbcType="VARCHAR" property="owner" />
 		<result column="version" jdbcType="INTEGER" property="version" />
 		<result column="hdfs_space_quota" jdbcType="BIGINT" property="hdfsSpaceQuota" />
-		<result column="login_id" jdbcType="VARCHAR" property="loginId" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
 		<result column="password" jdbcType="VARCHAR" property="password" />
 		<result column="resource_queues" jdbcType="VARCHAR" property="resourceQueues"
 			typeHandler="com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler" />

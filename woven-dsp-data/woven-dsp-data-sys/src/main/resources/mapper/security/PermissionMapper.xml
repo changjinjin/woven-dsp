@@ -7,7 +7,6 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
 		<result column="creator" jdbcType="VARCHAR" property="creator" />
-		<result column="description" jdbcType="VARCHAR" property="description" />
 		<result column="enabled" jdbcType="INTEGER" property="enabled" />
 		<result column="expired_time" jdbcType="BIGINT" property="expiredTime" />
 		<result column="last_modified_time" jdbcType="TIMESTAMP"
@@ -24,6 +23,7 @@
 		<result column="icon" jdbcType="VARCHAR" property="icon" />
 		<result column="route" jdbcType="VARCHAR" property="route" />
 		<result column="ord" jdbcType="VARCHAR" property="order" />
+		<result column="client_id" jdbcType="VARCHAR" property="clientId" />
 	</resultMap>
 
 	<resultMap id="BaseWithChildrenResultMap" extends="BaseResultMap"

@@ -56,7 +56,7 @@ public interface BaseEntityService<T extends BaseEntity>
      */
     default T saveOrUpdate(T t) {
         if (t.getId() == null) {
-            // 避免前端传过来空字符串，这里需要单独做处理以避免tk.mybatis.mapper的主键策略不生效
+			// 避免前端传过来空字符串，这里需要单独做处理以避免tk.mybatis.mapper的主键策略不生效
             t.setId(null);
             insertSelective(t);
         } else {

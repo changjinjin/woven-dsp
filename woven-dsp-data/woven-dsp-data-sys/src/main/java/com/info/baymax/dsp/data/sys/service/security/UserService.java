@@ -14,7 +14,7 @@ public interface UserService extends BaseEntityService<User> {
      * @param loginId  登录ID
      * @return 用户信息
      */
-    User findByTenantAndLoginId(Long tenantId, String loginId);
+	User findByTenantAndUsername(Long tenantId, String loginId);
 
     /**
      * 重置用户密码

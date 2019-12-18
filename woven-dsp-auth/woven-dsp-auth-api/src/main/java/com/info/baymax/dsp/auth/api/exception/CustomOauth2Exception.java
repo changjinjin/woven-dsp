@@ -80,7 +80,7 @@ public class CustomOauth2Exception extends OAuth2Exception {
 		} else if (UNAUTHORIZED_CLIENT.equals(errorCode)) {
 			return "未授权的客户端";
 		} else if (INVALID_GRANT.equals(errorCode)) {
-			return "无效的授权";
+			return "授权无效";
 		} else if (INVALID_SCOPE.equals(errorCode)) {
 			return "无效的授权范围";
 		} else if (INVALID_TOKEN.equals(errorCode)) {

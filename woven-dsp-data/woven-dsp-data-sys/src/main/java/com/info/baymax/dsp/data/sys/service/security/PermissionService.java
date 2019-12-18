@@ -26,11 +26,11 @@ public interface PermissionService extends BaseEntityService<Permission>, TreeId
 	/**
 	 * 查询节点
 	 *
-	 * @param tenantId 当前租户ID
+	 * @param clientId 客户端ID
 	 * @param code     编码
 	 * @return 存在的节点，不存在返回空
 	 */
-	Permission existsByTenantIdAndCode(Long tenantId, String code);
+	Permission findByClientIdAndCode(String clientId, String code);
 
 	/**
 	 * 根据ID级联删除
@@ -43,9 +43,9 @@ public interface PermissionService extends BaseEntityService<Permission>, TreeId
 	/**
 	 * 查询权限最大的order排序号
 	 *
-	 * @param tenantId 租户ID
+	 * @param clientId 客户端ID
 	 * @return 最大的order值
 	 */
-	int selectMaxOrder(Long tenantId);
+	int selectMaxOrder(String clientId);
 
 }

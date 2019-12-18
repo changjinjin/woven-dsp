@@ -20,6 +20,11 @@ public interface UserInfo {
     /**
      * 获取用户ID
      */
+    UserType getUserType();
+
+    /**
+     * 获取用户ID
+     */
     Object getUserId();
 
     /**
@@ -36,5 +41,9 @@ public interface UserInfo {
      * 获取系统版本号
      */
     String getVersion();
+
+    public enum UserType {
+        Manager, Customer;
+    }
 
 }

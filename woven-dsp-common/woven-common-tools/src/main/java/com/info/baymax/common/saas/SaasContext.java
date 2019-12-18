@@ -23,6 +23,7 @@ public class SaasContext implements Serializable {
     private Long userId;
     private String username;
     private boolean admin;
+    private String userType;
 
     private static ThreadLocal<SaasContext> saasContextThreadLocal = new ThreadLocal<>();
 

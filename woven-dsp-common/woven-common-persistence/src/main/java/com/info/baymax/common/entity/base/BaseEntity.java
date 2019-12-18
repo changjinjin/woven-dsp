@@ -24,10 +24,21 @@ import java.util.Date;
 public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
     private static final long serialVersionUID = 4394421573081538612L;
 
-    @ApiModelProperty("名称")
-    @Column(length = 255)
+    @ApiModelProperty("是否启用")
+    @Column(length = 1)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @DefaultValue("1")
+    protected Integer enabled;
+
+    @ApiModelProperty("所属租户ID")
+    @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    protected String name;
+    protected Long tenantId;
+
+    @ApiModelProperty("所属人")
+    @Column(length = 50)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    protected Long owner;
 
     @ApiModelProperty("创建人")
     @Column(length = 50)
@@ -47,27 +58,6 @@ public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date lastModifiedTime;
-
-    @ApiModelProperty("所属人")
-    @Column(length = 50)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    protected Long owner;
-
-    @ApiModelProperty("是否启用")
-    @Column(length = 1)
-    @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("1")
-    protected Integer enabled;
-
-    @ApiModelProperty("描述简介")
-    @Column(length = 255)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    protected String description;
-
-    @ApiModelProperty("所属租户ID")
-    @Column(length = 50)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    protected Long tenantId;
 
     @Override
     public void preInsert() {
