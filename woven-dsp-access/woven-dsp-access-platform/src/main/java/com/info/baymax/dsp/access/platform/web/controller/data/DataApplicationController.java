@@ -38,9 +38,6 @@ public class DataApplicationController {
     @PostMapping("/query")
     public IPage<DataApplication> queryDataApplication(ExampleQuery exampleQuery) throws Exception {
         //--TODO-- 支持按照名称，Engine,创建时间等过滤
-//        Page<Dataset> result = datasetServerService
-//                .findPageResult(QueryObject.builder(queryObject).setCurrentTenantCondition(SaasContext.current()));
-//        return result;
         return dataApplicationService.selectPage(exampleQuery);
     }
 
@@ -50,8 +47,7 @@ public class DataApplicationController {
     public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
         log.info("get dataApplication detail ...");
         DataApplication dataApplication = dataApplicationService.findOne(SaasContext.getCurrentTenantId(), id+"");
-        Response res = new Response();
-        return res.status(HttpStatus.CREATED.value()).content(dataApplication);
+        return new Response().status(HttpStatus.CREATED.value()).content(dataApplication);
     }
 
     @ApiOperation(value = "审批消费者申请记录")
@@ -60,9 +56,7 @@ public class DataApplicationController {
         //--TODO-- checkEntity, saveObj ,return id;
         //checkEntity
         dataApplicationService.saveOrUpdate(dataApplication);
-        Response res = new Response();
-        res.status(HttpStatus.ACCEPTED.value());
-        return res;
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
 
@@ -71,9 +65,7 @@ public class DataApplicationController {
     public Response deleteDataApplication(List<Long> ids) throws Exception {
         //request boy :string[] ids
         dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids.toArray());
-        Response res = new Response();
-        res.status(HttpStatus.NO_CONTENT.value());
-        return res;
+        return new Response().status(HttpStatus.NO_CONTENT.value());
     }
 
 }

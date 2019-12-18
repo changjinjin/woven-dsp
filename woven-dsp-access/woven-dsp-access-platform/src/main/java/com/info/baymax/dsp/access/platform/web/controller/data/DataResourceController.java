@@ -66,8 +66,7 @@ public class DataResourceController {
         //dataSourceService.saveOrUpdate(drs);
         log.info("create dataResource ...");
         DataResource dataResource = dataResourceService.save(drs);
-        Response res = new Response();
-        return res.status(HttpStatus.CREATED.value()).content(dataResource.getId());
+        return new Response().status(HttpStatus.CREATED.value()).content(dataResource.getId());
     }
 
     @ApiOperation(value = "查询数据资源详情")
@@ -76,8 +75,7 @@ public class DataResourceController {
     public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
         log.info("get dataResource detail ...");
         DataResource dres = dataResourceService.findOne(SaasContext.getCurrentTenantId(), id +"");
-        Response res = new Response();
-        return res.status(HttpStatus.CREATED.value()).content(dres);
+        return new Response().status(HttpStatus.CREATED.value()).content(dres);
     }
 
     @ApiOperation(value = "更新dataResource记录")
@@ -87,8 +85,7 @@ public class DataResourceController {
         //dataSourceService.saveOrUpdate(drs);
         log.info("update dataResource, id={} ...", drs.getId());
         dataResourceService.saveOrUpdate(drs);
-        Response res = new Response();
-        return res.status(HttpStatus.ACCEPTED.value());
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
     @ApiOperation(value = "删除dataResource记录")
@@ -98,9 +95,7 @@ public class DataResourceController {
         //request boy :string[] ids
         log.info("delete dataResource , ids.size={} ...", ids.size());
         dataResourceService.deleteByIds(SaasContext.getCurrentTenantId(),ids.toArray());
-        Response res = new Response();
-        res.status(HttpStatus.NO_CONTENT.value());
-        return res;
+        return new Response().status(HttpStatus.NO_CONTENT.value());
     }
 
     @ApiOperation(value = "开放数据资源给消费者")
@@ -114,8 +109,7 @@ public class DataResourceController {
         }else{
             throw new RuntimeException("Open DataResource but openStatus is 0");
         }
-        Response res = new Response();
-        return res.status(HttpStatus.ACCEPTED.value());
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
     @ApiOperation(value = "关闭某数据资源的申请权限")
@@ -127,8 +121,7 @@ public class DataResourceController {
         log.info("close dataResource and delete dataApplication, ids.size={}...", ids.size());
         dataApplicationService.deleteByDataResIds(SaasContext.getCurrentTenantId(),ids);
         dataResourceService.closeDataResource(ids);
-        Response res = new Response();
-        return res.status(HttpStatus.ACCEPTED.value());
+        return new Response().status(HttpStatus.ACCEPTED.value());
     }
 
 }
