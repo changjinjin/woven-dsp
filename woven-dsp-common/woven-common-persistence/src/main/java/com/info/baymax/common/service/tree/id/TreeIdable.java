@@ -22,23 +22,9 @@ public interface TreeIdable<ID extends Serializable, T extends TreeIdable<ID, T>
     ID getId();
 
     /**
-     * 设置ID
-     *
-     * @param id ID
-     */
-    void setId(ID id);
-
-    /**
      * 获取父节点ID
      *
      * @return 父节点ID
      */
     ID getParentId();
-
-    /**
-     * 设置父节点ID
-     *
-     * @param parentId 父节点ID
-     */
-    void setParentId(ID parentId);
 }

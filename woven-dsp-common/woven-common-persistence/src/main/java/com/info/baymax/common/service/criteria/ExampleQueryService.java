@@ -1,13 +1,14 @@
 package com.info.baymax.common.service.criteria;
 
+import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
+import com.info.baymax.common.mybatis.mapper.aggregation.AggregateCondition;
+import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.mybatis.page.IPageable;
 import com.info.baymax.common.service.BaseExampleService;
 import com.info.baymax.common.service.BasePreprocessService;
 import com.info.baymax.common.service.criteria.example.ExampleHelper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassService;
-import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
-import com.info.baymax.common.mybatis.page.IPage;
-import com.info.baymax.common.mybatis.page.IPageable;
 
 import java.util.List;
 
@@ -25,8 +26,18 @@ public interface ExampleQueryService<T> extends BaseExampleService<T>, EntityCla
      * @param query 查询条件
      * @return 查询的记录条数
      */
-    default Integer selectCount(ExampleQuery query) {
+    default int selectCount(ExampleQuery query) {
         return selectCountByExample(ExampleHelper.createExample(query, getEntityClass()));
+    }
+
+    /**
+     * 查询是否存在符合条件的记录
+     *
+     * @param query 查询条件
+     * @return 如果存在返回true，否则返回false
+     */
+    default boolean exists(ExampleQuery query) {
+        return selectCount(query) > 0;
     }
 
     /**
@@ -107,6 +118,17 @@ public interface ExampleQueryService<T> extends BaseExampleService<T>, EntityCla
     default int updateByExampleSelective(@PreUpdate T record, ExampleQuery query) {
         preUpdate(record);
         return updateByExampleSelective(record, ExampleHelper.createExample(query, getEntityClass()));
+    }
+
+    /**
+     * 聚合查询
+     *
+     * @param query              查询条件
+     * @param aggregateCondition 聚合条件
+     * @return 查询结果
+     */
+    default List<T> selectAggregationByQuery(ExampleQuery query, AggregateCondition aggregateCondition) {
+        return selectAggregationByExample(ExampleHelper.createExample(query), aggregateCondition);
     }
 
 }

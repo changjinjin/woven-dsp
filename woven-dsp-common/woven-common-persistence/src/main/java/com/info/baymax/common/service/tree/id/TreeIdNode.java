@@ -27,7 +27,6 @@ public abstract class TreeIdNode<ID extends Serializable, T extends TreeIdable<I
         return id;
     }
 
-    @Override
     public void setId(ID id) {
         this.id = id;
     }
@@ -37,7 +36,6 @@ public abstract class TreeIdNode<ID extends Serializable, T extends TreeIdable<I
         return parentId;
     }
 
-    @Override
     public void setParentId(ID parentId) {
         this.parentId = parentId;
     }

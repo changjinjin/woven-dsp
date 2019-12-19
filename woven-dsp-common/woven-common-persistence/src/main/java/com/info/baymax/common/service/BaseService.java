@@ -5,9 +5,7 @@ import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
 import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
-import com.info.baymax.common.mybatis.mapper.aggregation.AggregateCondition;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
-import com.info.baymax.common.mybatis.mapper.example.Example;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.mybatis.page.IPageable;
 import com.info.baymax.common.utils.ICollections;
@@ -126,7 +124,7 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
     default List<T> select(T record) {
         return getMyBaseMapper().select(record);
     }
-
+     
     /**
      * 查询并排序
      *
@@ -219,11 +217,6 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
      */
     default boolean exists(T record) {
         return selectCount(record) > 0;
-    }
-
-    @Override
-    default List<T> selectAggregationByExample(Example example, AggregateCondition aggregateCondition) {
-        return getMyBaseMapper().selectAggregationByExample(example, aggregateCondition);
     }
 
 }

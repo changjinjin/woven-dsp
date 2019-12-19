@@ -1,6 +1,5 @@
 package com.info.baymax.common.mybatis.mapper;
 
-import com.info.baymax.common.mybatis.mapper.aggregation.AggregationMapper;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.mybatis.mapper.delete.DeleteListMapper;
 
@@ -16,7 +15,6 @@ import tk.mybatis.mapper.common.base.select.SelectCountMapper;
 import tk.mybatis.mapper.common.base.select.SelectMapper;
 import tk.mybatis.mapper.common.base.select.SelectOneMapper;
 import tk.mybatis.mapper.common.rowbounds.SelectRowBoundsMapper;
-
 
 /**
  * 基本增删改查操作接口
@@ -39,8 +37,6 @@ public interface MyBaseMapper<T> extends //
     SelectCountMapper<T>, //
     UpdateByDifferMapper<T>, //
     UpdateByPrimaryKeySelectiveForceMapper<T>, //
-    BaseExampleMapper<T>,//
-    AggregationMapper<T>
-
+    BaseExampleMapper<T>//
 {
 }

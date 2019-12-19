@@ -21,5 +21,4 @@ public class CustAppController implements BaseEntityController<CustApp> {
     public BaseEntityService<CustApp> getBaseEntityService() {
         return custAppService;
     }
-
 }

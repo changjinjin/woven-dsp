@@ -26,10 +26,10 @@ public class CustApp extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long custId;
 
-    @ApiModelProperty(value = "消费者ID")
+    @ApiModelProperty(value = "消费者名称")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long custName;
+    private String custName;
 
     @ApiModelProperty(value = "应用名称")
     @Column(length = 255)
