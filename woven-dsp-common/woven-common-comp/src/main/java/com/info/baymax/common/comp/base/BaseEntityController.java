@@ -43,7 +43,7 @@ public interface BaseEntityController<T extends BaseEntity> {
     @ApiOperation(value = "批量删除")
     @GetMapping("deleteByIds")
     @ResponseBody
-    default Response<?> deleteByIds(@ApiParam(value = "删除ID列表", required = true) @RequestParam List<Long> ids) {
+    default Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam List<Long> ids) {
         getBaseEntityService().deleteByPrimaryKeys(ids);
         return Response.ok();
     }
