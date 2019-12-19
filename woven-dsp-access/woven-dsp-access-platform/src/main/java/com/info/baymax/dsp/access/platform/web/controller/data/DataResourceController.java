@@ -74,7 +74,7 @@ public class DataResourceController {
     @ResponseStatus(HttpStatus.OK)
     public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
         log.info("get dataResource detail ...");
-        DataResource dres = dataResourceService.findOne(SaasContext.getCurrentTenantId(), id +"");
+        DataResource dres = dataResourceService.findOne(SaasContext.getCurrentTenantId(), id);
         return new Response().status(HttpStatus.CREATED.value()).content(dres);
     }
 

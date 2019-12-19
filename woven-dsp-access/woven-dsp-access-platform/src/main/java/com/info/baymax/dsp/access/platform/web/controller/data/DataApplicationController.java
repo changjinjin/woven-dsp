@@ -41,20 +41,13 @@ public class DataApplicationController {
         return dataApplicationService.selectPage(exampleQuery);
     }
 
-
-    @ApiOperation(value = "根据申请记录id查询申请信息详情")
-    @GetMapping("/query/{id}")
-    public DataApplication queryDataApplicationById(@PathVariable String id) throws Exception {
-        return dataApplicationService.findOne(SaasContext.getCurrentTenantId(), id);
-    }
-
-    @ApiOperation(value = "查询用户申请记录详情")
+    @ApiOperation(value = "根据申请记录id查询用户申请记录详情")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response getDataResource(@PathVariable("id") Long id ) throws Exception {
         log.info("get dataApplication detail ...");
-        DataApplication dataApplication = dataApplicationService.findOne(SaasContext.getCurrentTenantId(), id+"");
-        return new Response().status(HttpStatus.CREATED.value()).content(dataApplication);
+        DataApplication dataApplication = dataApplicationService.findOne(SaasContext.getCurrentTenantId(), id);
+        return Response.ok(dataApplication);
     }
 
     @ApiOperation(value = "审批消费者申请记录")
