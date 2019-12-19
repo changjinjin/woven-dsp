@@ -42,7 +42,7 @@ public class CustomerController implements BaseEntityController<Customer> {
     @ResponseBody
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
     @Override
-    public Response<Customer> infoById(@ApiParam(value = "消费者ID", required = true) @RequestParam Long id) {
+    public Response<Customer> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
         return BaseEntityController.super.infoById(id);
     }
 

@@ -38,10 +38,6 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
 
 	@Override
 	public Customer save(Customer t) {
-		if (t == null) {
-			throw new ServiceException(ErrType.BAD_REQUEST, "保存对象不能为空");
-		}
-
 		String username = t.getUsername();
 		Customer exist = findByTenantAndUsername(SaasContext.getCurrentTenantId(), username);
 		if (exist != null) {
@@ -55,10 +51,6 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
 
 	@Override
 	public Customer update(Customer t) {
-		if (t == null) {
-			throw new ServiceException(ErrType.BAD_REQUEST, "修改对象不能为空");
-		}
-
 		// 不能修改账号和密码
 		t.setUsername(null);
 		t.setPassword(null);
