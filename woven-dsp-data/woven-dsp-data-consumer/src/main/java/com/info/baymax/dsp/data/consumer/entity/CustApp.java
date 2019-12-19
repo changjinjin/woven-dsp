@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
-@Table(name = "dsp_cust_app", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "username"})})
+@Table(name = "dsp_cust_app", uniqueConstraints = {@UniqueConstraint(columnNames = {"custId", "name"})})
 public class CustApp extends BaseEntity {
     private static final long serialVersionUID = 391285825183967082L;
 
