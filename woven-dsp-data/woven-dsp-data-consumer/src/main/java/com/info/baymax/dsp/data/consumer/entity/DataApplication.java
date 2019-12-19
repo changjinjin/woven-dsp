@@ -38,7 +38,7 @@ public class DataApplication extends BaseEntity {
     @ApiModelProperty(value = "数据资源ID")
     @Column(length = 255, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String dataResId;
+    private Long dataResId;
 
     @ApiModelProperty(value = "数据传输类型: 0 pull, 1 push")
     @Column(length = 11, nullable = false)
@@ -48,7 +48,7 @@ public class DataApplication extends BaseEntity {
     @ApiModelProperty("PUSH操作相关配置,关联CustDataResource获取push信息")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    private Long custDataResourceId;
+    private Long custDataSourceId;
 
     @ApiModelProperty("PULL操作配置,关联CustApp获取接入配置信息")
     @Column(length = 20)
