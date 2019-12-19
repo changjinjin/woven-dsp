@@ -44,7 +44,7 @@ public class DataPolicy extends BaseEntity {
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
-    private String serviceType;
+    private Integer serviceType;
 
     @ApiModelProperty(value = "服务方式:file，message，http等")
     @Column(length = 50, nullable = false)

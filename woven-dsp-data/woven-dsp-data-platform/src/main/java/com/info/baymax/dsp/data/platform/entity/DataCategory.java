@@ -37,7 +37,7 @@ public class DataCategory extends BaseEntity implements Comparable<DataCategory>
 
     @ApiModelProperty("排序序号")
     @Column(name = "ord", length = 11)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("1")
     private Integer order;
 
@@ -48,8 +48,8 @@ public class DataCategory extends BaseEntity implements Comparable<DataCategory>
 
     @ApiModelProperty("父节点ID")
     @Column(length = 50)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String parentId;
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    private Long parentId;
 
     @ApiModelProperty("子级节点列表")
     @Transient
