@@ -42,7 +42,7 @@ public class MenuController implements Serializable {
 
     @ApiOperation(value = "加载登录用户的菜单列表")
     @PostMapping("/loadMenus")
-    public Response<List<Menu>> save() {
+    public Response<List<Menu>> loadMenus() {
         User currentUser = userService.findByTenantAndUsername(SaasContext.getCurrentTenantName(),
             SaasContext.getCurrentUsername());
         List<Permission> roots = Lists.newArrayList();

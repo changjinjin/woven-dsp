@@ -14,6 +14,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+         <project.runtime.startClass>com.info.baymax.dsp.gateway.GatewayStarter</project.runtime.startClass>
         <swagger2.version>2.9.2</swagger2.version>
     </properties>
     <dependencies>
@@ -129,28 +130,13 @@
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
-            <!-- 先将resources目录下的文件排除掉，有后面的操作选择性打包 -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>/**</exclude>
-                </excludes>
-            </resource>
-            <!-- 将resources下的文件打包到jar里面 -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>/mapper/**/*.xml</include>
-                </includes>
-            </resource>
-            <!-- 将需要修改的配置文件单独存放 -->
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <targetPath>config</targetPath>
+                <!-- <targetPath>config</targetPath> -->
                 <includes>
-                    <include>access-platform.properties</include>
-                    <include>access-platform-${profileActive}.properties</include>
+                    <include>*.properties</include>
+                    <include>*.yml</include>
                     <include>logback-spring.xml</include>
                 </includes>
             </resource>

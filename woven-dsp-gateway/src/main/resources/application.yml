@@ -5,9 +5,6 @@ spring:
   application:
     name: woven-dsp-gateway
   cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
     consul:
       host: 192.168.1.81
       port: 8123
@@ -47,6 +44,11 @@ zuul:
       path: /api/dsp/platform/**
       sensitive-headers: '*'
       service-id: woven-dsp-access-platform
+      stripPrefix: false
+    access-consumer:
+      path: /api/dsp/consumer/**
+      sensitive-headers: '*'
+      service-id: woven-dsp-access-consumer
       stripPrefix: false
   add-proxy-headers: true
   ribbon:
@@ -92,8 +94,7 @@ security:
         - /v2/**
         - /swagger**
         - /api/auth/oauth/**
-        - /api/auth/v2/*
-        - /api/dsp/platform/v2/*
+        - /**/v2/*
 swagger2:
   enabled: true
   resources:
@@ -105,4 +106,7 @@ swagger2:
       swaggerVersion: 0.1.0
     - name: access-platform
       url: /api/dsp/platform/v2/api-docs
+      swaggerVersion: 0.1.0
+    - name: access-consumer
+      url: /api/dsp/consumer/v2/api-docs
       swaggerVersion: 0.1.0

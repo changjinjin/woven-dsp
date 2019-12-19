@@ -13,8 +13,6 @@ import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-
 import java.util.Date;
 
 @Data
@@ -26,7 +24,6 @@ import java.util.Date;
 public class BaseEntity extends SnowFlakeIdEntity implements PreEntity {
     private static final long serialVersionUID = 4394421573081538612L;
 
-    @XmlElement(name = "name")
     @ApiModelProperty("名称")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)

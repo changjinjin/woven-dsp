@@ -31,8 +31,8 @@ public class PermClients {
     private List<PermClient> clients;
 
     public static void main(String[] args) throws FileNotFoundException, JAXBException {
-        PermClients clients = new PermClients(
-            Arrays.asList(new PermClient("baymax", Arrays.asList(new Permission("p1", "/p1", 1, null)))));
+        PermClients clients = new PermClients(Arrays.asList(new PermClient("baymax",
+            Arrays.asList(new Permission("p1", "/p1", 1, null), new Permission("p2", "/p2", 2, null)))));
         JaxbUtils.java2xml(new File("d:/1.xml"), clients, PermClients.class);
     }
 }

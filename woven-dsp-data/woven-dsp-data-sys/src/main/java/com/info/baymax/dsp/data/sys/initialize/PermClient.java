@@ -20,13 +20,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "client")
-@XmlType(name = "PermClient", propOrder = {"clientId", "roots"})
+@XmlType(name = "PermClient", propOrder = {"clientId", "permissions"})
 public class PermClient {
 
     @XmlElement
     private String clientId;
 
-    @XmlElementWrapper(name = "roots")
-    @XmlElement(name = "root")
-    private List<Permission> roots;
+    @XmlElementWrapper(name = "permissions")
+    @XmlElement(name = "permission")
+    private List<Permission> permissions;
 }

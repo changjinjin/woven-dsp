@@ -21,7 +21,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = { "com.info.baymax" })
 @EntityScan(basePackages = { "com.info.baymax.dsp.data.**.entity" })
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-public class Starter {
+public class AuthStarter {
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer getPropertyPlaceholderConfigurer() throws IOException {
@@ -32,6 +32,6 @@ public class Starter {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(Starter.class, args);
+		SpringApplication.run(AuthStarter.class, args);
 	}
 }

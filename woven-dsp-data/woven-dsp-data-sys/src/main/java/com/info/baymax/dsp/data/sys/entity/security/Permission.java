@@ -109,6 +109,12 @@ public class Permission extends BaseEntity implements Comparable<Permission>, Tr
 		this.children = children;
 	}
 
+	@XmlElement(name = "name")
+	@Override
+	public String getName() {
+		return super.getName();
+	}
+
 	@XmlElement(name = "enabled")
 	@Override
 	public Integer getEnabled() {
