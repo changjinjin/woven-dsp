@@ -12,16 +12,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Map;
 
@@ -54,17 +45,15 @@ public class DataApplication extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer transferType;
 
-    @ApiModelProperty("PUSH操作相关配置,包括目的数据源,周期设定,编码等")
-    @Lob
-    @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> pushConfiguration;
+    @ApiModelProperty("PUSH操作相关配置,关联CustDataResource获取push信息")
+    @Column(length = 20)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    private Long custDataResourceId;
 
-    @ApiModelProperty("PULL操作相关配置,管理员审批时进行配置,包括URI,连接方式,token访问规则等")
-    @Lob
-    @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> pullConfiguration;
+    @ApiModelProperty("PULL操作配置,关联CustApp获取接入配置信息")
+    @Column(length = 20)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    private Long custAppId;
 
     @ApiModelProperty("消费者进行的一般配置信息")
     @Lob
