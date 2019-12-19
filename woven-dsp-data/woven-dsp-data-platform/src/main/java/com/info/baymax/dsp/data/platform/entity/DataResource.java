@@ -81,7 +81,7 @@ public class DataResource extends BaseEntity {
     @ApiModelProperty(value = "存储目录(分类)ID")
     @Column(length = 255, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String categoryId;
+    private Long categoryId;
 
     @ApiModelProperty(value = "存储目录")
     @Transient
@@ -111,7 +111,7 @@ public class DataResource extends BaseEntity {
     @ApiModelProperty(value = "关联的数据共享策略ID")
     @Column(length = 255, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String dataPolicyId;
+    private Long dataPolicyId;
 
     @ApiModelProperty(value = "开放状态: 0 未开放, 1 已开放")
     @Column(length = 11, nullable = false)
@@ -124,7 +124,7 @@ public class DataResource extends BaseEntity {
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
-    private Long expiredTime;// = 0L;
+    private Long expiredTime;
 
     @Transient
     public Long getExpiredPeriod() {

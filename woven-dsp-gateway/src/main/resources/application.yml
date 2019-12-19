@@ -1,21 +1,33 @@
 server:
-  address: 192.168.2.145
+  address: 192.168.2.187
   port: 8000
 spring:
   application:
     name: woven-dsp-gateway
   cloud:
     consul:
-      host: 127.0.0.1
-      port: 8500
+      host: 192.168.1.81
+      port: 8123
       discovery:
-        service-name: ${spring.application.name}
-        instance-id: ${spring.application.name}:${server.port}
-        health-check-path: /actuator/health
-        health-check-interval: 15s
-    service-registry:
-      auto-registration:
-        enabled: true
+        register: true
+        serviceName: ${spring.application.name}
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 15s
+        tags: urlprefix-/${spring.application.name}
+        instanceId: ${spring.application.name}:${server.port}
+    gateway:
+      httpclient:
+        pool:
+          type: DISABLED
+      routes:
+        - id: auth-server
+          uri: lb://192.168.2.187:8004
+          order: 2
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - PreserveHostHeader
+            - RemoveRequestHeader:Expect
 zuul:
   host:
     connect-timeout-millis: 15000

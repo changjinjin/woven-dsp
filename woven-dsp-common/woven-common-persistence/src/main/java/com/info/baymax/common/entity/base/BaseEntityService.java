@@ -1,13 +1,13 @@
 package com.info.baymax.common.entity.base;
 
-import java.util.List;
-
 import com.info.baymax.common.entity.preprocess.PreEntityService;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+
+import java.util.List;
 
 /**
  * 继承{@link BaseEntity.java}的实体类公共查询接口定义
@@ -71,7 +71,7 @@ public interface BaseEntityService<T extends BaseEntity>
         }
     }
 
-    default T findOne(Long tenantId, String id) {
+    default T findOne(Long tenantId, Long id) {
         return selectOne(ExampleQuery.builder(getEntityClass())//
             .fieldGroup()//
             .andEqualTo(PROPERTY_TENANTID, tenantId)//
