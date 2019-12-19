@@ -22,4 +22,14 @@ public class CustAppServiceImpl extends EntityClassServiceImpl<CustApp> implemen
         return custAppMapper;
     }
 
+	@Override
+	public CustApp save(CustApp t) {
+		return CustAppService.super.save(t);
+	}
+
+	@Override
+	public CustApp update(CustApp t) {
+		return CustAppService.super.update(t);
+	}
+
 }

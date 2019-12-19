@@ -3,6 +3,8 @@ package com.info.baymax.common.entity.base;
 import java.util.List;
 
 import com.info.baymax.common.entity.preprocess.PreEntityService;
+import com.info.baymax.common.message.exception.ServiceException;
+import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
@@ -39,11 +41,17 @@ public interface BaseEntityService<T extends BaseEntity>
     }
 
     default T save(T t) {
+        if (t == null) {
+            throw new ServiceException(ErrType.ENTITY_EMPTY, "保存对象不能为空");
+        }
         insertSelective(t);
         return t;
     }
 
     default T update(T t) {
+        if (t == null) {
+            throw new ServiceException(ErrType.ENTITY_EMPTY, "修改对象不能为空");
+        }
         updateByPrimaryKeySelective(t);
         return t;
     }
