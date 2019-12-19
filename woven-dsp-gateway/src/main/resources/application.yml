@@ -33,6 +33,11 @@ zuul:
       sensitive-headers: '*'
       service-id: woven-dsp-access-platform
       stripPrefix: false
+    access-consumer:
+      path: /api/dsp/consumer/**
+      sensitive-headers: '*'
+      service-id: woven-dsp-access-consumer
+      stripPrefix: false
   add-proxy-headers: true
   ribbon:
     eager-load:
@@ -77,8 +82,7 @@ security:
         - /v2/**
         - /swagger**
         - /api/auth/oauth/**
-        - /api/auth/v2/*
-        - /api/dsp/platform/v2/*
+        - /**/v2/*
 swagger2:
   enabled: true
   resources:

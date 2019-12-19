@@ -55,7 +55,7 @@ public interface BaseEntityController<T extends BaseEntity> {
         return Response.ok(getBaseEntityService().selectPage(ExampleQuery.builder(query)));
     }
 
-    @ApiOperation(value = "查询记录")
+    @ApiOperation(value = "查询详情")
     @GetMapping("infoById")
     @ResponseBody
     default Response<T> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {

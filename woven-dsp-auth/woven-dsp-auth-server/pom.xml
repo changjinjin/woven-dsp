@@ -15,7 +15,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.runtime.startClass>com.info.baymax.dsp.auth.Starter</project.runtime.startClass>
+        <project.runtime.startClass>com.info.baymax.dsp.auth.AuthStarter</project.runtime.startClass>
         <swagger2.version>2.9.2</swagger2.version>
         <jjwt.version>0.9.1</jjwt.version>
     </properties>

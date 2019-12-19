@@ -28,18 +28,20 @@ public class CustomerController implements BaseEntityController<Customer> {
         return consumerService;
     }
 
-    @ApiOperation(value = "分页查询消费者信息")
+    @ApiOperation(value = "分页查询")
     @PostMapping("page")
     @ResponseBody
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
+    @Override
     public Response<IPage<Customer>> page(@ApiParam(value = "查询条件") @RequestBody ExampleQuery query) {
         return BaseEntityController.super.page(query);
     }
 
-    @ApiOperation(value = "查询消费者信息")
+    @ApiOperation(value = "查询详情")
     @GetMapping("infoById")
     @ResponseBody
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
+    @Override
     public Response<Customer> infoById(@ApiParam(value = "消费者ID", required = true) @RequestParam Long id) {
         return BaseEntityController.super.infoById(id);
     }

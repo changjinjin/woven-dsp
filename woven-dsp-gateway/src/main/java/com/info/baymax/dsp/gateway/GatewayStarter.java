@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableOAuth2Sso
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableAutoConfiguration
-public class Starter {
+public class GatewayStarter {
     public static void main(String[] args) {
-        SpringApplication.run(Starter.class, args);
+        SpringApplication.run(GatewayStarter.class, args);
     }
 }
