@@ -1,5 +1,5 @@
 server:
-  address: 192.168.2.145
+  address: 192.168.2.187
   port: 8000
 spring:
   application:
@@ -9,8 +9,8 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     consul:
-      host: 127.0.0.1
-      port: 8500
+      host: 192.168.1.81
+      port: 8123
       discovery:
         register: true
         serviceName: ${spring.application.name}
@@ -24,7 +24,7 @@ spring:
           type: DISABLED
       routes:
         - id: auth-server
-          uri: lb://192.168.2.145:8004
+          uri: lb://192.168.2.187:8004
           order: 2
           predicates:
             - Path=/api/auth/**
