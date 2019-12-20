@@ -10,8 +10,8 @@ import com.info.baymax.common.comp.config.profile.EnableExtProperties;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringCloudApplication
-@EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.platform"})
-@ComponentScan(basePackages = {"com.info.baymax.dsp.access.platform"})
+@EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})
+@ComponentScan(basePackages = {"com.info.baymax"})
 @MapperScan(basePackages = {"com.jusfoun.services.ops.server.mapper"})
 @EnableExtProperties("classpath*:**/access-dataapi*.properties")
 public class Starter {

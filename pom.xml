@@ -114,6 +114,7 @@
 		<rs-api.version>2.1</rs-api.version>
 		<jersey.version>2.27</jersey.version>
 		<cloud-feign.version>2.1.0.RELEASE</cloud-feign.version>
+		<elasticsearch.version>5.5.3</elasticsearch.version>
 	</properties>
 
 	<modules>
