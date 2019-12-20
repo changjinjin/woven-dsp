@@ -8,4 +8,6 @@ import com.info.baymax.dsp.data.consumer.entity.DataApplication;
  * @Date: 2019/12/13 19:09
  */
 public interface DataApplicationService extends BaseEntityService<DataApplication> {
+
+    void updateDataApplicationStatus(Long id, Integer status);
 }

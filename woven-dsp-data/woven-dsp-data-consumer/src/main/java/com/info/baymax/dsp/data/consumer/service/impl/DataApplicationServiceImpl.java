@@ -23,6 +23,12 @@ public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataAppli
     DataApplicationMapper dataApplicationMapper;
 
     @Override
+    public void updateDataApplicationStatus(Long id, Integer status){
+        dataApplicationMapper.updateDataApplicationStatus(id, status);
+    }
+
+
+    @Override
     public MyIdableMapper<DataApplication> getMyIdableMapper() {
         return dataApplicationMapper;
     }
