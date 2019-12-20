@@ -31,6 +31,11 @@
             <artifactId>passay</artifactId>
             <version>1.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>woven-dsp-data-platform</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -38,6 +38,11 @@
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
+            <artifactId>woven-dsp-data-dataset</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
             <artifactId>woven-dsp-job-schedule</artifactId>
             <version>${project.version}</version>
         </dependency>
