@@ -293,7 +293,7 @@ public class Example implements IDynamicTableName {
         private static final long serialVersionUID = 6417720184834620402L;
 
         // 条件排序序号
-        @ApiModelProperty(hidden = true)
+        @ApiModelProperty("条件排序序号")
         protected int index;
 
         // 是否是条件组

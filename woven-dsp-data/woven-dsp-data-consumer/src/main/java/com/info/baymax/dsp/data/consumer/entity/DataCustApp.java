@@ -13,6 +13,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+/**
+ * 消费者应用信息
+ *
+ * @author jingwei.yang
+ * @date 2019年12月20日 上午11:09:44
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
