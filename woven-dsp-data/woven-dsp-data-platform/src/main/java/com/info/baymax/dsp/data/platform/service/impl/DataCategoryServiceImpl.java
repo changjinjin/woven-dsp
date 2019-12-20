@@ -1,15 +1,5 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
@@ -21,6 +11,14 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataCategoryMapper;
 import com.info.baymax.dsp.data.platform.service.DataCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -44,7 +42,7 @@ public class DataCategoryServiceImpl extends EntityClassServiceImpl<DataCategory
 
         // 设置order属性
         Long parentId = t.getParentId();
-        t.setOrder(selectMaxOrder(parentId));
+        t.setOrder(dataCategoryMapper.selectMaxOrder(parentId));
 
         // 设置path属性
         DataCategory parent = selectByPrimaryKey(parentId);
@@ -83,16 +81,6 @@ public class DataCategoryServiceImpl extends EntityClassServiceImpl<DataCategory
     public DataCategory update(DataCategory t) {
         checkName(t);
         return DataCategoryService.super.update(t);
-    }
-
-    private int selectMaxOrder(Long parentId) {
-        /*
-         * AggregateCondition aggregateCondition = AggregateCondition.builder()// .aggregateBy("order")//
-         * .aggregateType(AggregateType.MAX)// .groupBy("parentId"); List<DataCategory> list = selectAggregationByQuery(
-         * ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("parentId", parentId).end(),
-         * aggregateCondition); if (ICollections.hasElements(list)) { return list.get(0).getOrder() + 1; }
-         */
-        return dataCategoryMapper.selectMaxOrder(parentId);
     }
 
     @Override

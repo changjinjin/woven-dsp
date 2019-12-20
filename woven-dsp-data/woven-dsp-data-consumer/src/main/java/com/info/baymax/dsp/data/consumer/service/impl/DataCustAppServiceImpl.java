@@ -5,9 +5,9 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
-import com.info.baymax.dsp.data.consumer.entity.CustApp;
-import com.info.baymax.dsp.data.consumer.mybatis.mapper.CustAppMapper;
-import com.info.baymax.dsp.data.consumer.service.CustAppService;
+import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
+import com.info.baymax.dsp.data.consumer.mybatis.mapper.DataCustAppMapper;
+import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,18 @@ import java.util.UUID;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
-public class CustAppServiceImpl extends EntityClassServiceImpl<CustApp> implements CustAppService {
+public class DataCustAppServiceImpl extends EntityClassServiceImpl<DataCustApp> implements DataCustAppService {
 
     @Autowired
-    private CustAppMapper custAppMapper;
+    private DataCustAppMapper dataCustAppMapper;
 
     @Override
-    public MyIdableMapper<CustApp> getMyIdableMapper() {
-        return custAppMapper;
+    public MyIdableMapper<DataCustApp> getMyIdableMapper() {
+        return dataCustAppMapper;
     }
 
     @Override
-    public CustApp save(CustApp t) {
+    public DataCustApp save(DataCustApp t) {
         if (StringUtils.isEmpty(t.getAppName())) {
             throw new ServiceException(ErrType.BAD_REQUEST, "appName不能为空。");
         }
@@ -42,15 +42,15 @@ public class CustAppServiceImpl extends EntityClassServiceImpl<CustApp> implemen
         // 绑定消费者
         t.setCustId(SaasContext.getCurrentUserId());
         t.setCustName(SaasContext.getCurrentUsername());
-        return CustAppService.super.save(t);
+        return DataCustAppService.super.save(t);
     }
 
     @Override
-    public CustApp update(CustApp t) {
+    public DataCustApp update(DataCustApp t) {
 
         // key不能更新
         t.setAccessKey(null);
-        return CustAppService.super.update(t);
+        return DataCustAppService.super.update(t);
     }
 
 }

@@ -57,7 +57,7 @@ public class PlatDataApplicationController {
         //checkEntity
         DataApplication dataApplication = JsonBuilder.getInstance().fromJson(objects.get(0), DataApplication.class);
         DataService dataServiceEntity = JsonBuilder.getInstance().fromJson(objects.get(1), DataService.class);
-        dataApplicationService.updateDataApplication(dataApplication);
+        dataApplicationService.update(dataApplication);
         if (dataApplication.getStatus() == 1) {
             dataServiceEntityService.insert(dataServiceEntity);
         }

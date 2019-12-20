@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * @Author: haijun
@@ -17,7 +16,8 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackOn = Exception.class)
-public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataApplication> implements DataApplicationService {
+public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataApplication>
+    implements DataApplicationService {
 
     @Autowired
     DataApplicationMapper dataApplicationMapper;
@@ -25,21 +25,5 @@ public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataAppli
     @Override
     public MyIdableMapper<DataApplication> getMyIdableMapper() {
         return dataApplicationMapper;
-    }
-
-    @Override
-    public Long createDataApplication(DataApplication dataApplication) {
-        long id = dataApplicationMapper.insert(dataApplication);
-        return id;
-    }
-
-    @Override
-    public void updateDataApplication(DataApplication dataApplication) {
-        dataApplicationMapper.updateByPrimaryKey(dataApplication);
-    }
-
-    @Override
-    public void deleteByDataResIds(Long tenantId, List<Long> dataResIds){
-        dataApplicationMapper.deleteByDataResIds(tenantId, dataResIds);
     }
 }
