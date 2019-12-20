@@ -47,13 +47,13 @@ public class DataCategoryController implements BaseEntityController<DataCategory
     @ApiOperation(value = "批量删除", hidden = true)
     @Override
     public Response<?> deleteByIds(List<Long> ids) {
-        throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "此接口不再在支持。");
+        throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "不支持此接口。");
     }
 
     @ApiOperation(value = "分页查询", hidden = true)
     @Override
     public Response<IPage<DataCategory>> page(ExampleQuery query) {
-        throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "此接口不再在支持。");
+        throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "不支持此接口。");
     }
 
     @ApiOperation(value = "目录排序")
