@@ -21,8 +21,8 @@
     </dependencies>
     <modules>
         <module>woven-dsp-data-sys</module>
+        <module>woven-dsp-data-dataset</module>
         <module>woven-dsp-data-platform</module>
         <module>woven-dsp-data-consumer</module>
-        <module>woven-dsp-data-dataset</module>
     </modules>
 </project>

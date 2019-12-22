@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface DataServiceMapper extends MyIdableMapper<DataService> {
 
-    @Select("select * from dsp_data_service where type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
+    @Select("select * from dsp_data_service where (schedule_type = 'once' or schedule_type='cron') type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
     List<DataService> querySpecialDataService(@Param("type") int type, @Param("status") int status, @Param("isRunning") int isRunning);
 
     @Update("update dsp_data_service set is_running = 1 where type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER}")

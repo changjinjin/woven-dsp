@@ -5,6 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -55,18 +56,23 @@ public class DataResource extends BaseEntity {
    - 核对 数据信息, 例如 有效期(精确到日) , 数据字段定义 等
    - 点击 "确认",完成数据关联设置
    * 完成后, 此时数据在 "数据管理"->"数据资源" 中可见(此功能为过渡功能)*/
-    //id, name, label, type, dataset_id, engine, encoder, configuration, expired_time, tenant_id, creator, modifier, create_time, last_modified_time
-
-    @ApiModelProperty(value = "标签别名")
-    @Column(length = 255, nullable = false)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String label;
+    //id, name, type, label, dataset_id, engine, encoder, configuration, expired_time, tenant_id, creator, modifier, create_time, last_modified_time
 
     @ApiModelProperty(value = "数据类型: 0 structured, 1 semi-structured, 2 unstructured")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer type;
+
+    @ApiModelProperty(value = "标签别名")
+    @Column(length = 255, nullable = true)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String label;
+
+    @ApiModelProperty(value = "增量字段,可以为空,增量字段只有一个并且只支持整型和时间戳类型")
+    @Column(length = 255, nullable = true)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String incrementField;
 
     @ApiModelProperty(value = "关联的baymax系统中数据集ID")
     @Column(length = 255, nullable = false)
@@ -87,31 +93,22 @@ public class DataResource extends BaseEntity {
     @Transient
     private DataCategory category;
 
-    @ApiModelProperty(value = "数据集对应的编码")
-    @Column(length = 255, nullable = false)
+    @ApiModelProperty(value = "数据集对应的编码,默认utf8")
+    @Column(length = 255, nullable = true)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String encoder;
+    private String encoder = "utf8";
 
-    @ApiModelProperty("存储原有Dataset配置参数,包含schema信息")
+    @ApiModelProperty("开放字段及配置字段映射关系")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> datasetConfiguration;
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
+    private Map<String,String> fieldMappings;
 
     @ApiModelProperty("管理员在关联数据集时进行的一些基本配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> baseConfiguration;
-
-    @Transient
-    @ApiModelProperty("数据共享策略:管理员在数据发布时进行的一些配置")
-    private Map<String, String> dataPolicyConfiguration;
-
-    @ApiModelProperty(value = "关联的数据共享策略ID")
-    @Column(length = 255, nullable = false)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long dataPolicyId;
 
     @ApiModelProperty(value = "开放状态: 0 未开放, 1 已开放")
     @Column(length = 11, nullable = false)

@@ -5,6 +5,8 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.dsp.data.platform.bean.TransformRule;
+import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsMapStringKeyTransformRuleValueTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -45,8 +47,8 @@ public class DataService extends BaseEntity {
     @ApiModelProperty("数据字段相关配置,包括加密,脱敏,转换等")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> fieldConfiguration;
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyTransformRuleValueTypeHandler.class)
+    private Map<String, TransformRule> fieldConfiguration;
 
     @ApiModelProperty("服务相关的一些配置,如限速限流,开始时间结束时间,周期信息等配置")
     @Lob
@@ -54,13 +56,7 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> serviceConfiguration;
 
-//    @ApiModelProperty("管理员进行的其他一些配置")
-//    @Lob
-//    @Convert(converter = ObjectToStringConverter.class)
-//    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-//    private Map<String, String> otherConfiguration;
-
-    @ApiModelProperty("调度类型：once,cron")
+    @ApiModelProperty("调度类型：once,cron,event")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private String scheduleType;
@@ -99,6 +95,11 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer isRunning;
+
+    @ApiModelProperty("当前服务中的增量值")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    private String cursorVal;
 
     @ApiModelProperty("服务过期时间")
     @JsonIgnore
