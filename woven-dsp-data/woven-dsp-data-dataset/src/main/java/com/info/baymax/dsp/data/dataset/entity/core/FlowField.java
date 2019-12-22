@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
-import com.oracle.webservices.internal.api.databinding.DatabindingMode;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

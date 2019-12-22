@@ -18,7 +18,6 @@ import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowHistDescService;
 import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
-import com.info.baymax.dsp.data.dataset.service.resource.ResourceManagerService;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
 import com.info.baymax.dsp.data.dataset.utils.ConstantInfo;
 import com.info.baymax.dsp.data.dataset.utils.Flows;
@@ -62,8 +61,6 @@ public class FlowGenUtil {
     private FlowDescService flowDescService;
     @Autowired
     private SchemaService schemaService;
-    @Autowired
-    private ResourceManagerService resourceManagerService;
     @Autowired
     private DataResourceService dataResourceService;
     @Autowired

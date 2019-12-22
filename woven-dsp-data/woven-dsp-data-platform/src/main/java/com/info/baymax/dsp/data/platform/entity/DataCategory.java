@@ -11,28 +11,23 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * @Author: haijun
- * @Date: 2019/12/13 18:55
- * 数据目录信息
+ * @Date: 2019/12/13 18:55 数据目录信息
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "dsp_data_category")
-public class DataCategory extends BaseEntity implements Comparable<DataCategory> {
+@Table(name = "dsp_data_category", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"tenantId", "parentId", "name"})})
+public class DataCategory extends BaseEntity implements Comparable<DataCategory>, TreeIdable<Long, DataCategory> {
     private static final long serialVersionUID = -2838835837038572690L;
 
     @ApiModelProperty("排序序号")
@@ -47,8 +42,9 @@ public class DataCategory extends BaseEntity implements Comparable<DataCategory>
     private String path;
 
     @ApiModelProperty("父节点ID")
-    @Column(length = 50)
+    @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
+    @DefaultValue("0")
     private Long parentId;
 
     @ApiModelProperty("子级节点列表")
@@ -76,5 +72,4 @@ public class DataCategory extends BaseEntity implements Comparable<DataCategory>
         }
         return children;
     }
-
 }

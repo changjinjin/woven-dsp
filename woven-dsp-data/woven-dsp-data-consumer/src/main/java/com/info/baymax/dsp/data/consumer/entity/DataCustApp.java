@@ -13,12 +13,18 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+/**
+ * 消费者应用信息
+ *
+ * @author jingwei.yang
+ * @date 2019年12月20日 上午11:09:44
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
-@Table(name = "dsp_cust_app", uniqueConstraints = {@UniqueConstraint(columnNames = {"custId", "name"})})
-public class CustApp extends BaseEntity {
+@Table(name = "dsp_dc_appconfig", uniqueConstraints = {@UniqueConstraint(columnNames = {"custId", "name"})})
+public class DataCustApp extends BaseEntity {
     private static final long serialVersionUID = 391285825183967082L;
 
     @ApiModelProperty(value = "消费者ID")
@@ -26,10 +32,10 @@ public class CustApp extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long custId;
 
-    @ApiModelProperty(value = "消费者ID")
+    @ApiModelProperty(value = "消费者名称")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long custName;
+    private String custName;
 
     @ApiModelProperty(value = "应用名称")
     @Column(length = 255)

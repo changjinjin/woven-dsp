@@ -47,7 +47,6 @@
 	</appender>
 
 	<!-- spring日志输出 -->
-	<logger name="org.springframework" level="DEBUG" />
 	<logger name="com.netflix" level="ERROR" />
 	<logger name="org.apache.http" level="ERROR" />
 	<logger name="org.apache.coyote" level="ERROR" />
@@ -85,11 +84,11 @@
 	<!-- 配置mongodb中日志输出级别 -->
 	<logger name="org.springframework.data.mongodb.core" level="ERROR" />
 	<logger name="org.mongodb.driver" level="ERROR" />
-
+    <logger name="org.springframework" level="ERROR" />
 
 	<!-- 开发、测试环境 -->
 	<springProfile name="dev,test">
-		<logger name="com.jusfoun" level="DEBUG" additivity="true" />
+		<logger name="com.jusfoun" level="INFO" additivity="true" />
 	</springProfile>
 
 	<!-- 生产环境 -->

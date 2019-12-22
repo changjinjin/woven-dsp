@@ -34,7 +34,7 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
 
     @Override
     public void updateDataServiceToRunning(Integer type, Integer status, Integer isRunning){
-        dataServiceMapper.updateDataServiceToRunning(type,status,isRunning);
+        dataServiceMapper.updateSpecialDataServiceToRunning(type,status,isRunning);
     }
 
     @Override

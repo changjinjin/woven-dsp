@@ -17,7 +17,7 @@ public interface DataServiceMapper extends MyIdableMapper<DataService> {
     List<DataService> querySpecialDataService(@Param("type") int type, @Param("status") int status, @Param("isRunning") int isRunning);
 
     @Update("update dsp_data_service set is_running = 1 where type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER}")
-    void updateDataServiceToRunning(@Param("type") int type, @Param("status") int status, @Param("isRunning") int isRunning);
+    void updateSpecialDataServiceToRunning(@Param("type") int type, @Param("status") int status, @Param("isRunning") int isRunning);
 
     @Update("update dsp_data_service set is_running = 1 where id = #{id, jdbcType=BIGINT}")
     void updateDataServiceToRunning(@Param("id") Long id);

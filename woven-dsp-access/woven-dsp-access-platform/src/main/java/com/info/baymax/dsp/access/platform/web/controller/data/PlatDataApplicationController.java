@@ -51,15 +51,12 @@ public class PlatDataApplicationController {
     }
 
     @ApiOperation(value = "审批消费者申请记录")
-    @PostMapping("/approval")
-    public Response updateDataApplication(List<String> objects) throws Exception {
-        //--TODO-- checkEntity, saveObj ,return id;
-        //checkEntity
-        DataApplication dataApplication = JsonBuilder.getInstance().fromJson(objects.get(0), DataApplication.class);
-        DataService dataServiceEntity = JsonBuilder.getInstance().fromJson(objects.get(1), DataService.class);
-        dataApplicationService.updateDataApplication(dataApplication);
-        if (dataApplication.getStatus() == 1) {
-            dataServiceEntityService.insert(dataServiceEntity);
+    @PostMapping("/approval/{status}")
+    public Response updateDataApplication(@PathVariable Integer status, @RequestBody DataService dataService) throws Exception {
+        dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), status);
+        if (status == 1) {
+            dataServiceEntityService.insert(dataService);
+            return new Response().status(HttpStatus.CREATED.value());
         }
         return new Response().status(HttpStatus.ACCEPTED.value());
     }

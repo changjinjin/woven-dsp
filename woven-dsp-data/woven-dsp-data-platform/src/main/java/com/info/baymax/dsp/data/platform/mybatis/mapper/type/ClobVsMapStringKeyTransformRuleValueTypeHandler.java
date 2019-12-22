@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.data.dataset.mybatis.type.clob;
+package com.info.baymax.dsp.data.platform.mybatis.mapper.type;
 
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapTypeHandler;
 import com.info.baymax.common.utils.JsonBuilder;

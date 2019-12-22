@@ -13,14 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -119,7 +112,7 @@ public class DataResourceController {
         //--TODO-- 根据dataResourceId关联更新consumer_data_application record status,禁止申请权限,或者删除记录
         //--TODO-- updateOpenStatus 0
         log.info("close dataResource and delete dataApplication, ids.size={}...", ids.size());
-        dataApplicationService.deleteByDataResIds(SaasContext.getCurrentTenantId(),ids);
+        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(),ids.toArray());
         dataResourceService.closeDataResource(ids);
         return new Response().status(HttpStatus.ACCEPTED.value());
     }

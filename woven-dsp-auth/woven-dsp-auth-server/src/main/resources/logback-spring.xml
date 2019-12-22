@@ -88,7 +88,7 @@
 	<logger name="sun" level="ERROR" />
 	<logger name="org.apache.tomcat" level="ERROR" />
 	
-	<logger name="org.springframework" level="DEBUG" />
+	<logger name="org.springframework" level="INFO" />
 
 
 	<!-- 开发、测试环境 -->
