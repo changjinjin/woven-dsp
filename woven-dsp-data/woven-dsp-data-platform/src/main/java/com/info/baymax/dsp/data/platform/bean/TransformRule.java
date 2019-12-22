@@ -15,11 +15,11 @@ public class TransformRule implements Serializable {
      * support: blank, replace, md5, base64, udf
     */
     private String type;
-    private String expression;
+    private String expression;//base(col) as field
 
-    public static final String RULE_BLANK = "";
-    public static final String RULE_REPLACE = "";
+    public static final String RULE_BLANK = "";//'' as field_name
+    public static final String RULE_REPLACE = "";//''
 //    public static final String RULE_MD5 = "";
-    public static final String RULE_BASE64 = "";
-    public static final String RULE_UDF = "";
+    public static final String RULE_BASE64 = "";//base64(field) as new_field
+    public static final String RULE_UDF = "";//test_udf() as new_field
 }

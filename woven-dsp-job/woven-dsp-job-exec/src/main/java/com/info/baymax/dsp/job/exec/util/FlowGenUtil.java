@@ -10,11 +10,13 @@ import com.info.baymax.dsp.data.dataset.entity.core.DataField;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowHistDesc;
 import com.info.baymax.dsp.data.dataset.entity.core.Schema;
 import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
+import com.info.baymax.dsp.data.dataset.service.core.FlowHistDescService;
 import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceManagerService;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
@@ -31,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.internal.jsr166.Flow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -70,6 +74,8 @@ public class FlowGenUtil {
     private DataPolicyService dataPolicyService;
     @Autowired
     private CustDataSourceService custDataSourceService;
+    @Autowired
+    private FlowHistDescService flowHistDescService;
 
     /**
      * 根据source dataset的schema获取输入字段列表
@@ -220,33 +226,18 @@ public class FlowGenUtil {
 
     private StepDesc getSinkStep(String stepId, DataApplication dataApplication, List<FlowField> inputFields){
         CustDataSource custDataSource = custDataSourceService.findOne(dataApplication.getTenantId(),dataApplication.getCustDataSourceId());
-        String type = custDataSource.getType();
         Map<String,String> configuration = custDataSource.getOtherConfiguration();
 
-        Flows.StepBuilder sinkStep = Flows.step("sink", stepId, stepId).input(inputFields);
-        for( : configuration)
+        Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
+        Iterator<Map.Entry<String,String>> iter = configuration.entrySet().iterator();
+        while (iter.hasNext()){
+            Map.Entry<String,String> entry = iter.next();
+            String key = entry.getKey();
+            String val = entry.getValue();
+            stepBuilder.config(key, val);
+        }
 
-                .config("storage", String.format("#{storage:%s}", "hdfs"))
-                .config("format", String.format("#{format:%s}", "parquet"))
-                .config("outputDatasetDir",
-                        String.format("#{outputDatasetDir:%s}",
-                                System.getProperty("zebra.analysis.output.datasetdir",
-                                        ConstantInfo.QA_OUTPUT_BASE_DIR)))
-                .config("outputBaseDir",
-                        String.format("#{outputBaseDir:%s}",
-                                System.getProperty("zebra.analysis.output.basedir",
-                                        ConstantInfo.QA_OUTPUT_DATASET_DIR)))
-                .config("schemaName", qa_schema_current).config("schema", qa_schema_current)
-                .config("schemaId", schema.getId())
-                .config("withOriginalFields", String.format("#{withOriginalFields:true}"))
-                .config("sliceType", sourceDS.getSliceType()).config("sliceTime", sourceDS.getSliceTime())
-                .config("expiredTime", "#{expiredTime:0}").config("sourceData", sourceDS.getName())
-                .config("sourceDataCount", sourceDS.getRecordNumber()).config("sourceDataSize", sourceDS.getByteSize())
-                .config("datasetName", "qa_sink_dataset_" + flowName)// 这里先设定name,后面进行创建
-                .config("datasetId", UUID.randomUUID().toString()) // 这里先设定id,后面进行创建
-                .withPosition(808, 79).build();
-
-        StepDesc step = sinkStep.withPosition(585, 203).input(fields).output(fields).build();
+        StepDesc step = stepBuilder.withPosition(585, 203).input(inputFields).build();
         return step;
     }
 
@@ -254,7 +245,7 @@ public class FlowGenUtil {
     public FlowDesc genDataServiceFlow(DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource)
         throws Exception {
         final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
-        final String schema_dir = ConstantInfo.QA_SCHEMA_DIE;
+        final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
         final String flowType = "dataservice";
 
         String flowName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
@@ -315,158 +306,72 @@ public class FlowGenUtil {
 
         //构建sink step
         StepDesc sinkStep = getSinkStep("sink_4", dataApplication, outputFileds);
-        // 获取qualityAnalysisSink step
 
+        Flows.FlowBuilder flowBuilder = Flows.dataflow(flowName);
+        FlowDesc flow = flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).connect("source_1", "filter_2")
+            .connect("filter_2", "transform_3").connect("transform_3","sink_4").build();
 
-        Flows.FlowBuilder flowBuilder;
-        if ("streamflow".equals(model.getFlowType())) {
-            flowBuilder = Flows.streamflow(flowName);
-        } else {
-            flowBuilder = Flows.dataflow(flowName);
-        }
+        flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
 
-        FlowDesc flow = flowBuilder.step(sourceStep).step(step2).step(sinkStep).connect("s1", "s2")
-            .connect("s2", "s3_sink").build();
-
-        flow.setSource("qaflow");// 代表flow类型，生成的execution里携带这个属性
-
-        // qa flow都放在Flows/qa_flow目录下
+        //dataservice flow都放在Flows/ds_flow目录下
         ResourceDesc flowResource = null;
-        flowResource = resourceDescService.findRootsByName(SaasContext.getCurrentTenantId(),
-            ConstantInfo.RESOURCE_DIR_ROOT_FLOW);
-        ResourceDesc qaFlow = resourceDescService.findByNameAndParent(SaasContext.getCurrentTenantId(),
-            ConstantInfo.QA_OUTPUT_FLOW_DIR, flowResource.getId());
+        flowResource = resourceDescService.findRootsByName(sourceDS.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_FLOW);
+        ResourceDesc dataserviceFlowRes = resourceDescService.findByNameAndParent(sourceDS.getTenantId(), ConstantInfo.DS_OUTPUT_FLOW_DIR, flowResource.getId());
 
-        if (qaFlow == null) {
-            ResourceDesc qaResDesc = new ResourceDesc();
-            qaResDesc.setCreateTime(new Date());
-            qaResDesc.setCreator(SaasContext.getCurrentUser().getLoginId());
-            qaResDesc.setEnabled(1);
-            qaResDesc.setExpiredTime(0L);
-            qaResDesc.setLastModifiedTime(qaResDesc.getCreateTime());
-            qaResDesc.setLastModifier(SaasContext.getCurrentUserLoginId());
-            qaResDesc.setModuleVersion(0);
-            qaResDesc.setName(ConstantInfo.QA_OUTPUT_FLOW_DIR);
-            qaResDesc.setOwner(SaasContext.getCurrentUserId());
-            qaResDesc.setVersion(0);
-            qaResDesc.setResType(ConstantInfo.RES_TYPE_FLOW);
-            qaResDesc.setTenantId(SaasContext.getCurrentTenantId());
-            qaResDesc.setParentId(flowResource.getId());
-            qaResDesc.setIsHide(1);// qa flow文件夹不显示在Flows目录下
+        if (dataserviceFlowRes == null) {
+            ResourceDesc dsResDesc = new ResourceDesc();
+            dsResDesc.setCreateTime(new Date());
+            dsResDesc.setCreator(sourceDS.getCreator());
+            dsResDesc.setEnabled(1);
+            dsResDesc.setExpiredTime(0L);
+            dsResDesc.setLastModifiedTime(dsResDesc.getCreateTime());
+            dsResDesc.setLastModifier(sourceDS.getTenantId());
+            dsResDesc.setModuleVersion(0);
+            dsResDesc.setName(ConstantInfo.DS_OUTPUT_FLOW_DIR);
+            dsResDesc.setOwner(sourceDS.getOwner());
+            dsResDesc.setVersion(0);
+            dsResDesc.setResType(ConstantInfo.RES_TYPE_FLOW);
+            dsResDesc.setTenantId(sourceDS.getTenantId());
+            dsResDesc.setParentId(flowResource.getId());
+            dsResDesc.setIsHide(1);// qa flow文件夹不显示在Flows目录下
 
-            resourceDescService.saveOrUpdate(qaResDesc);
-            qaFlow = qaResDesc;
+            resourceDescService.saveOrUpdate(dsResDesc);
+            dataserviceFlowRes = dsResDesc;
         }
 
-        flow.setResource(qaFlow);
-        flow.setTenantId(SaasContext.getCurrentTenantId());
-        flow.setOwner(SaasContext.getCurrentUserId());
+        flow.setResource(dataserviceFlowRes);
+        flow.setTenantId(sourceDS.getTenantId());
+        flow.setOwner(sourceDS.getOwner());
+        flow.setDescription("dataserviceId:" + dataService.getId());
+        flow.setOid("$null");
+        flow.setIsHide(1);// qa flow不显示在Flows目录下
 
-        return flow;
+        logger.info("begin to save qa flow: " + JsonBuilder.getInstance().toJson(flow));
+        FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
+        logger.info("save qa flow success : id=" + flowCreated.getId());
+
+        // flow创建成功，关联拷贝一份history记录
+        logger.info("copy history flow begin ...");
+        FlowHistDesc fh = copyToHistory(flowCreated, sourceDS);
+        logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
+
+        return flowCreated;
     }
 
-    /**
-     * remove useless <key,value> for a ConfigObject
-     *
-     * @param inputMap
-     * @param extraKeysToRemove
-     * @return
-     */
-    public Map removeMaintableProperties(Map<String, Object> inputMap, String[] extraKeysToRemove,
-                                                boolean removeFromValues) {
-        if (inputMap == null)
-            return null;
-
-        Map<String, Object> output = new HashMap<>(inputMap);
-
-        if (removeFromValues) {
-            for (String keyName : inputMap.keySet()) {
-                removeMaintableProperties((Map) output.get(keyName), extraKeysToRemove);
-            }
+    private FlowHistDesc copyToHistory(FlowDesc flow, Dataset sourceDS) {
+        FlowHistDesc fh = new FlowHistDesc();
+        BeanUtils.copyProperties(flow, fh);
+        Integer version = flowHistDescService.findMaxVersionByFlowId(flow.getId());
+        if (version == null) {
+            fh.setVersion(fh.getVersion());
         } else {
-            removeMaintableProperties(output, extraKeysToRemove);
+            fh.setVersion(version + 1);
         }
-
-        return output;
-    }
-
-    /**
-     * remove useless properties for a object-generated JSON string
-     *
-     * @param inputJson
-     * @param extraKeysToRemove
-     * @return
-     */
-    public Map removeMaintableProperties(String inputJson, String[] extraKeysToRemove,
-                                                boolean removeFromValues) {
-        return removeMaintableProperties(JsonBuilder.getInstance().fromJson(inputJson, ConfigObject.class),
-            extraKeysToRemove, removeFromValues);
-    }
-
-    /**
-     * remove useless <key,value> for elements in a List
-     *
-     * @param objectList
-     * @param extraKeysToRemove
-     * @return
-     */
-    public List removeMaintableProperties(List objectList, String[] extraKeysToRemove) {
-        if (objectList == null)
-            return null;
-
-        List<Object> outputList = new ArrayList<>();
-        for (Object obj : objectList) {
-            outputList.add(removeMaintableProperties(JsonBuilder.getInstance().toJson(obj), extraKeysToRemove, false));
-        }
-
-        return outputList;
-    }
-
-    /**
-     * remove useless <key,value> for a ConfigObject
-     *
-     * @param inputMap
-     * @param extraKeysToRemove
-     * @return
-     */
-    public Map removeMaintableProperties(Map inputMap, String[] extraKeysToRemove) {
-
-        Map output = inputMap;
-
-        if (inputMap == null)
-            return null;
-
-        output.remove("moduleVersion");
-        output.remove("solrdocVersion");
-        output.remove("nameDuplicatable");
-        output.remove("expiredPeriod");
-        output.remove("idPrefix");
-        output.remove("tags");
-        output.remove("lastModifier");
-        output.remove("lastModifiedTime");
-        output.remove("creator");
-        output.remove("createTime");
-        output.remove("description");
-        output.remove("tenant");
-
-        if (extraKeysToRemove != null && extraKeysToRemove.length > 0) {
-            for (String keyName : extraKeysToRemove)
-                output.remove(keyName);
-        }
-
-        return output;
-    }
-
-    /**
-     * remove useless properties for a ConfigObject
-     *
-     * @param inputMap
-     * @param extraKeysToRemove
-     * @return
-     */
-    public String getJsonAfterRemoveProperties(Map inputMap, String[] extraKeysToRemove) {
-        Map output = removeMaintableProperties(inputMap, extraKeysToRemove);
-        return JsonBuilder.getInstance().toJson(output);
+        fh.setId(null);
+        fh.setOid(flow.getId());
+        fh.setTenantId(sourceDS.getTenantId());
+        fh = flowHistDescService.saveOrUpdate(fh);
+        return fh;
     }
 
 }

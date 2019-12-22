@@ -25,16 +25,16 @@ public class ConstantInfo {
     public static final String RES_TYPE_SCHEMA_DATASOURCE = "datasource_dir";
     public static final String RES_TYPE_DATASET = "dataset_dir";
 
-    public static final String QA_OUTPUT_DATASET_DIR = "qaoutput"; //dataset根目录下直接创建一个qaoutput文件夹，目前只支持一级目录,如果包含多级目录会有问题
-    public static final String QA_OUTPUT_BASE_DIR = "/tmp/qaoutput"; //hdfs上存放sink结果目录
+    public static final String DS_OUTPUT_DATASET_DIR = "dsoutput"; //dataset根目录下直接创建一个qaoutput文件夹，目前只支持一级目录,如果包含多级目录会有问题
+    public static final String DS_OUTPUT_BASE_DIR = "/tmp/dsoutput"; //hdfs上存放sink结果目录
 
-    public static final String QA_OUTPUT_FLOW_DIR = "Qa_flow";
+    public static final String DS_OUTPUT_FLOW_DIR = "DS_flow";
 
-    public static final String QA_WORKFLOW_DESC = "QA_WORK_FLOW";
-    public static final String QA_DATAFLOW_DESC = "QA_DATA_FLOW";
+    public static final String DS_WORKFLOW_DESC = "DS_WORK_FLOW";
+    public static final String DS_DATAFLOW_DESC = "DS_DATA_FLOW";
 
     public static final SimpleDateFormat monthFmt = new SimpleDateFormat("yyyyMM");
     public static final SimpleDateFormat dayFmt = new SimpleDateFormat("yyyyMMdd");
 
-    public static final String QA_SCHEMA_DIE = "qa_schema";
+    public static final String DS_SCHEMA_DIR = "ds_schema";
 }
