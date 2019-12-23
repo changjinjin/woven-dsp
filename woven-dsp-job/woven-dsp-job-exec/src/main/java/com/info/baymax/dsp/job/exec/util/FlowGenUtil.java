@@ -6,11 +6,13 @@ import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
 import com.info.baymax.dsp.data.dataset.entity.core.DataField;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowHistDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
 import com.info.baymax.dsp.data.dataset.entity.core.Schema;
 import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -28,27 +30,27 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataPolicyService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.glassfish.jersey.internal.jsr166.Flow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.NotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class FlowGenUtil {
 
     private static Logger logger = LoggerFactory.getLogger(FlowGenUtil.class);
@@ -243,14 +245,14 @@ public class FlowGenUtil {
         throws Exception {
         final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
         final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
-        final String flowType = "dataservice";
+        final String flowType = "dataflow";
 
         String flowName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
 
         Dataset sourceDS = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
         if (sourceDS == null) {
             logger.error("getDataset by id error: id=" + dataResource.getDatasetId());
-            throw new NotFoundException("getDataset by id error: id= " + dataResource.getDatasetId());
+            throw new RuntimeException("getDataset by id error: id= " + dataResource.getDatasetId());
         }
 
         // 如果dataset有自己的元数据，则在这里查出来并设置上避免后面引用出错
@@ -298,16 +300,27 @@ public class FlowGenUtil {
         filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition);
 
         //构建transform step
-        List<FlowField> outputFileds = new ArrayList<>();
-        StepDesc transStep = getTransformStep("transform_3", dataService, transInputFields, outputFileds);
+        StepDesc transStep = null;
+        List<FlowField> outputFileds = null;
+        if(dataService.getFieldConfiguration()!=null && dataService.getFieldConfiguration().size()>0){
+            outputFileds = new ArrayList<>();
+            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFileds);
+        }else{
+            outputFileds = transInputFields;
+        }
 
         //构建sink step
         StepDesc sinkStep = getSinkStep("sink_4", dataApplication, outputFileds);
 
         Flows.FlowBuilder flowBuilder = Flows.dataflow(flowName);
-        FlowDesc flow = flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).connect("source_1", "filter_2")
-            .connect("filter_2", "transform_3").connect("transform_3","sink_4").build();
-
+        FlowDesc flow = null;
+        if(transStep != null) {
+            flow = flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).connect("source_1", "filter_2")
+                    .connect("filter_2", "transform_3").connect("transform_3", "sink_4").build();
+        }else{
+            flow = flowBuilder.step(sourceStep).step(filterStep).step(sinkStep).connect("source_1", "filter_2")
+                    .connect("filter_2", "sink_4").build();
+        }
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
 
         //dataservice flow都放在Flows/ds_flow目录下
@@ -369,6 +382,33 @@ public class FlowGenUtil {
         fh.setTenantId(sourceDS.getTenantId());
         fh = flowHistDescService.saveOrUpdate(fh);
         return fh;
+    }
+
+    public FlowSchedulerDesc genScheduler(DataService dataService, FlowDesc flowDesc){
+        String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+        String name = "ds_"+ dataService.getName()+ "_" + time;
+        ConfigObject configurations = new ConfigObject();
+        List<Map<String,String>> properties = new LinkedList<>();
+        String runtimeProperties = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
+        List<String> list = JsonBuilder.getInstance().fromJson(runtimeProperties, List.class);
+        for(String str : list) {
+            Map<String,String> map = (Map<String, String>)JsonBuilder.getInstance().fromJson(str, Map.class);
+            properties.add(map);
+        }
+        configurations.put("properties", properties);
+        Long startTime = System.currentTimeMillis();
+        try {
+            startTime = Long.parseLong(dataService.getServiceConfiguration().get("startTime"));
+        } catch (NumberFormatException ex) {
+            log.error("NumberFormatException: For input string : {}", dataService.getServiceConfiguration().get("startTime"));
+        }
+        configurations.put("startTime", startTime);
+        FlowSchedulerDesc scheduler = new FlowSchedulerDesc(name, "dsflow", "once", flowDesc.getId(), flowDesc.getName(), configurations);
+        scheduler.setFlowType("dataflow");
+        scheduler.setTotalExecuted(0);
+        scheduler.setId(UUID.randomUUID().toString());
+
+        return scheduler;
     }
 
 }

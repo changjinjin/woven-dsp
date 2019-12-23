@@ -44,6 +44,11 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer type;
 
+    @ApiModelProperty("调度类型：once,cron,event")
+    @Column(length = 50)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    private String scheduleType;
+
     @ApiModelProperty("数据字段相关配置,包括加密,脱敏,转换等")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
@@ -56,10 +61,7 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> serviceConfiguration;
 
-    @ApiModelProperty("调度类型：once,cron,event")
-    @Column(length = 50)
-    @ColumnType(jdbcType = JdbcType.INTEGER)
-    private String scheduleType;
+
 
     @ApiModelProperty("总的执行次数,一个服务可能被重复部署多次")
     @Column(length = 11, nullable = false)
