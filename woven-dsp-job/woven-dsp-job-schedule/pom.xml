@@ -74,6 +74,10 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-annotations</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.elasticsearch.client</groupId>
+                    <artifactId>elasticsearch-rest-client</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -222,11 +226,11 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -250,6 +254,17 @@
                     <groupId>com.zaxxer</groupId>
                     <artifactId>HikariCP-java7</artifactId>
                 </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
+            <version>${quartz.version}</version>
+            <exclusions>
+            <exclusion>
+                <artifactId>slf4j-api</artifactId>
+                <groupId>org.slf4j</groupId>
+            </exclusion>
             </exclusions>
         </dependency>
         <dependency>
