@@ -3,6 +3,7 @@ package com.info.baymax.dsp.access.platform.web.controller.data;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,16 +39,28 @@ public class DataCategoryController implements BaseEntityController<DataCategory
         return dataCategoryService;
     }
 
+    @ApiOperation(value = "单个删除")
+    @GetMapping("/deleteById")
+    @ResponseBody
     @Override
-    public Response<?> deleteById(Long id) {
+    public Response<?> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam Long id) {
+        if (id == null) {
+            throw new ControllerException(ErrType.BAD_REQUEST, "删除记录ID不能为空");
+        }
         dataCategoryService.deleteById(id);
         return Response.ok();
     }
 
-    @ApiOperation(value = "批量删除", hidden = true)
+    @ApiOperation(value = "批量删除")
+    @GetMapping("/deleteByIds")
+    @ResponseBody
     @Override
-    public Response<?> deleteByIds(List<Long> ids) {
-        throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "不支持此接口。");
+    public Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam Long[] ids) {
+        if (ids == null || ids.length == 0) {
+            throw new ControllerException(ErrType.BAD_REQUEST, "删除记录ID不能为空");
+        }
+        dataCategoryService.deleteByIds(ids);
+        return Response.ok();
     }
 
     @ApiOperation(value = "分页查询", hidden = true)

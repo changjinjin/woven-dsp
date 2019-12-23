@@ -71,6 +71,32 @@ public interface BaseEntityService<T extends BaseEntity>
         }
     }
 
+    /**
+     * 根据ID删除单条记录，如果需要做级联删除需重写该方法
+     *
+     * @param id 删除的ID
+     * @return 删除结果
+     */
+    default int deleteById(Long id) {
+        return this.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 根据ID批量删除，调用deleteById循环删除，适用于有附加操作的场景
+     *
+     * @param ids 删除的ID集合
+     * @return 删除结果
+     */
+    default int deleteByIds(Long[] ids) {
+        if (ids != null && ids.length > 0) {
+            for (Long id : ids) {
+                deleteById(id);
+            }
+            return ids.length;
+        }
+        return 0;
+    }
+
     default T findOne(Long tenantId, Long id) {
         return selectOne(ExampleQuery.builder(getEntityClass())//
             .fieldGroup()//

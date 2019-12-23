@@ -21,6 +21,4 @@ public class CustDataSourceServiceImpl extends EntityClassServiceImpl<CustDataSo
     public MyIdableMapper<CustDataSource> getMyIdableMapper() {
         return custDataSourceMapper;
     }
-
-
 }

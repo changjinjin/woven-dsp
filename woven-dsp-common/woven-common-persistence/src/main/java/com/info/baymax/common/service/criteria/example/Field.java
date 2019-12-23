@@ -25,7 +25,7 @@ public class Field extends CriteriaItem {
     /**
      * 条件关联类型，默认：AND
      */
-    @ApiModelProperty("条件关联类型：AND或OR，默认：AND")
+    @ApiModelProperty(value = "条件关联类型：AND或OR，默认：AND", allowableValues = "AND,OR")
     private AndOr andOr = AndOr.AND;
 
     /**
@@ -34,7 +34,7 @@ public class Field extends CriteriaItem {
     @ApiModelProperty("属性名称：java实体类中字段名称，非数据库列名")
     private String name;
 
-    @ApiModelProperty(value = "比较操作类型，默认：EQUAL")
+    @ApiModelProperty(value = "比较操作类型，默认：EQUAL", allowableValues = "EQUAL,NOT_EQUAL,LIKE,NOT_LIKE,BETWEEN,NOT_BETWEEN,GREATER_THAN,GREATER_THAN_OR_EQUAL,LESS_THAN,LESS_THAN_OR_EQUAL,IS_NULL,NOT_NULL,IN,NOT_IN")
     private Operator oper = Operator.EQUAL;
 
     @ApiModelProperty(//

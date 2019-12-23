@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.data.platform.service;
 
-import java.util.List;
-
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.service.tree.id.TreeIdableExampleQueryService;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;
+
+import java.util.List;
 
 public interface DataCategoryService
     extends BaseEntityService<DataCategory>, TreeIdableExampleQueryService<Long, DataCategory> {
@@ -25,14 +25,6 @@ public interface DataCategoryService
      * @return 移动结果
      */
     int move(Long[] ids, Long destId);
-
-    /**
-     * 删除目录
-     *
-     * @param id 删除的目录ID
-     * @return 删除结果
-     */
-    int deleteById(Long id);
 
     /**
      * 查询目录树
