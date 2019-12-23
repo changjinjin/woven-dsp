@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.job.sch.config;
+package com.info.baymax.dsp.job.exec.config;
 
 import feign.Logger;
 import feign.RequestInterceptor;
