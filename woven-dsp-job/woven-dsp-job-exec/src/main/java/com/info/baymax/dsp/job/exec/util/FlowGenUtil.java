@@ -356,9 +356,9 @@ public class FlowGenUtil {
         flow.setOid("$null");
         flow.setIsHide(1);// qa flow不显示在Flows目录下
 
-        logger.info("begin to save qa flow: " + JsonBuilder.getInstance().toJson(flow));
+        logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
         FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
-        logger.info("save qa flow success : id=" + flowCreated.getId());
+        logger.info("save ds flow success : id=" + flowCreated.getId());
 
         // flow创建成功，关联拷贝一份history记录
         logger.info("copy history flow begin ...");
@@ -407,6 +407,8 @@ public class FlowGenUtil {
         scheduler.setFlowType("dataflow");
         scheduler.setTotalExecuted(0);
         scheduler.setId(UUID.randomUUID().toString());
+
+        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
 
         return scheduler;
     }

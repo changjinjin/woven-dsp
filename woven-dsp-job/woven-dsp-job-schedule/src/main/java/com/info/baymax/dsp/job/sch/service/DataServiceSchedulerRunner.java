@@ -10,6 +10,8 @@ import com.info.baymax.dsp.job.sch.scheduler.AbstractScheduler;
 import com.info.baymax.dsp.job.sch.scheduler.DataShareScheduler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import java.util.List;
  * @Date: 2019/12/18 20:00
  */
 @Component
+@EnableScheduling
 @Slf4j
 public class DataServiceSchedulerRunner {
     @Autowired
@@ -30,39 +33,27 @@ public class DataServiceSchedulerRunner {
     DataServiceEntityService dataServiceEntityService;
 
     @PostConstruct
-    private void updateServiceStatus(){
+    public void updateServiceStatus(){
         try {
-            Thread.sleep(30*1000);
+            log.info("start to recover running service and update finished service.");
+            dataServiceEntityService.recoverDataService();
+            dataServiceEntityService.updateFinishedDataService();
+
+            log.info("end to recover running service and update finished service success.");
         }catch (Exception e){
 
         }
-        dataServiceEntityService.recoverDataService();
-        dataServiceEntityService.updateFinishedDataService();
-        log.info("recover running service and update finished service success.");
     }
 
-
-    @PostConstruct
+    @Scheduled(initialDelay = 1000*60, fixedRate = 1000*10)
     public void runScheduler_push(){
-        try {
-            Thread.sleep(60*1000);
-        }catch (Exception e){
-        }
-
-        while (true) {
-            sendReadyService();
-
-            try {
-                Thread.sleep(5*1000);
-            }catch (Exception e){
-            }
-        }
+        sendReadyService();
     }
 
     @Transactional
     public void sendReadyService(){
         List<DataService> list = dataServiceEntityService.querySpecialDataService(ServiceTypes.SERVICE_TYPE_PUSH, ServiceStatus.SERVICE_STATUS_DEPLOYED, JobStatus.JOB_STATUS_READY);
-
+        log.debug("select ready dataservice size is " + list.size());
         for (DataService pushService : list) {
             dataShareScheduler.schedule(pushService, DataShareJob.class);
         }
