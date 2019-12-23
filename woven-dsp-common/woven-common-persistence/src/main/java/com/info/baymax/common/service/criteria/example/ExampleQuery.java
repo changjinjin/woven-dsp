@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Example Query ,这个对象的属性可以构造一个{@link tk.mybatis.mapper.entity.Example} 对象
+ * Example Query ,这个对象的属性可以构造一个{@link com.info.baymax.common.mybatis.mapper.example.Example} 对象
  *
  * @author jingwei.yang
  * @date 2019年6月27日 上午10:08:57

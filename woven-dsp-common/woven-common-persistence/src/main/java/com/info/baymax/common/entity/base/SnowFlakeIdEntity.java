@@ -1,6 +1,8 @@
 package com.info.baymax.common.entity.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.info.baymax.common.mybatis.genid.SnowflakeGenId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,14 +22,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" }, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class SnowFlakeIdEntity implements Serializable {
-	private static final long serialVersionUID = 8199030533526416114L;
+    private static final long serialVersionUID = 8199030533526416114L;
 
-	@ApiModelProperty("主键")
-	@Id
-	@KeySql(genId = SnowflakeGenId.class)
-	@Column(length = 50)
-	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	protected Long id;
+    @ApiModelProperty("主键")
+    @Id
+    @KeySql(genId = SnowflakeGenId.class)
+    @Column(length = 20)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    @JsonSerialize(using = ToStringSerializer.class)
+    protected Long id;
 }
