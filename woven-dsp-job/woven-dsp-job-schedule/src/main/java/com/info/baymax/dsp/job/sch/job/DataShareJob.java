@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +60,26 @@ public class DataShareJob implements Job {
             //--------------TODO-------如果执行启动失败怎么办-------------
 
         }
+    }
 
+//    @PostConstruct
+    public void testRest(){
+        try {
+            Thread.sleep(60*1000);
+        }catch (Exception e){
+        }
+
+        Map<String,Object> body = new HashMap<String,Object>();
+        JobDataMap jdm = new JobDataMap();
+        jdm.put("type", "push");
+        jdm.put("scheduleType", "once");
+        jdm.put("jobName", "1111000000");
+        jdm.put("jobGroup", "111111_3224244");
+        jdm.put("serviceId", "1111000000");
+        jdm.put("tenantId", "424335353333");
+        jdm.put("owner", "087776666999");
+        jdm.put("dataService", "");
+        body.putAll(jdm);
+        executorRestClient.deployDataservice(body);
     }
 }
