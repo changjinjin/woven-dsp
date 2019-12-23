@@ -35,7 +35,7 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
     @JsonIgnore
     protected int counter = 0;
 
-    @ApiModelProperty("条件关联类型：AND或OR，默认：AND")
+    @ApiModelProperty(value = "条件关联类型：AND或OR，默认：AND", allowableValues = "AND,OR")
     protected AndOr andOr;
 
     @ApiModelProperty("简单条件集合")

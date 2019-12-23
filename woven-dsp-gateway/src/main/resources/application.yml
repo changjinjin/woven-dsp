@@ -15,19 +15,6 @@ spring:
         healthCheckInterval: 15s
         tags: urlprefix-/${spring.application.name}
         instanceId: ${spring.application.name}:${server.port}
-    gateway:
-      httpclient:
-        pool:
-          type: DISABLED
-      routes:
-        - id: auth-server
-          uri: lb://192.168.2.187:8004
-          order: 2
-          predicates:
-            - Path=/api/auth/**
-          filters:
-            - PreserveHostHeader
-            - RemoveRequestHeader:Expect
 zuul:
   host:
     connect-timeout-millis: 15000
@@ -54,14 +41,6 @@ zuul:
   ribbon:
     eager-load:
       enabled: true
-  ratelimit:
-    key-prefix: dsp-ratelimite
-    enabled: true
-    behind-proxy: true
-    default-policy:
-      limit: 100
-      quota: 100
-      refresh-interval: 3
 ribbon:
   ReadTimeout: 10000
   ConnectTimeout: 10000

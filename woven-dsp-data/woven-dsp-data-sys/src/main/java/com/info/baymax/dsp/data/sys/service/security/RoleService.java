@@ -16,14 +16,6 @@ public interface RoleService extends BaseEntityService<Role> {
 	int resetStatus(List<Role> list);
 
 	/**
-	 * 批量删除角色数据
-	 *
-	 * @param ids 删除的ID集合
-	 * @return 删除结果
-	 */
-	int deleteByIds(Long[] ids);
-
-	/**
 	 * 根据角色ID查询
 	 *
 	 * @param id 角色ID

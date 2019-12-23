@@ -56,7 +56,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)//
-            .accessTokenConverter(new CustomJwtAccessTokenConverter())
+            .tokenEnhancer(new AccessTokenEnhancer())//
+            // .accessTokenConverter(new CustomJwtAccessTokenConverter())//
             // refresh_token需要userDetailsService
             .reuseRefreshTokens(false)//
             .tokenStore(tokenStore())//
