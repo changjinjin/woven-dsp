@@ -29,7 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/dataapi")
 @Api(tags = "数据服务接口", value = "数据拉取接口")
-public class DataServiceController implements Serializable {
+public class DataApiController implements Serializable {
 
     private static final long serialVersionUID = -5006451148239176107L;
 

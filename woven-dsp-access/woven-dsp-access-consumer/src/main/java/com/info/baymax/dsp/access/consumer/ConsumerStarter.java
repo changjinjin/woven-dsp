@@ -17,7 +17,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @EnableExtProperties("classpath*:**/access-consumer*.properties")
-@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class})
 public class ConsumerStarter {
 
     public static void main(String[] args) {

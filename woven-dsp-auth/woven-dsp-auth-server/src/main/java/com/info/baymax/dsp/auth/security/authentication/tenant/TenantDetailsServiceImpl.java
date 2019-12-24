@@ -28,11 +28,11 @@ public class TenantDetailsServiceImpl implements TenantDetailsService {
 
     @Override
     public TenantDetails<?> findByTenant(String tenantName) {
-        LicenseContent content = new LicenseVerifyDemo().verify(LicenseInit.getParamers());
-        if (content == null) {
-            throw new LicenseNotActivatedException(
-                this.messages.getMessage("ClientErr.licenseNotActivation", "License is not activation !"));
-        }
+//        LicenseContent content = new LicenseVerifyDemo().verify(LicenseInit.getParamers());
+//        if (content == null) {
+//            throw new LicenseNotActivatedException(
+//                this.messages.getMessage("ClientErr.licenseNotActivation", "License is not activation !"));
+//        }
 
         Tenant tenant = tenantService.findByName(tenantName);
         if (tenant == null) {
