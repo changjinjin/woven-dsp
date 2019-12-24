@@ -31,6 +31,7 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataPolicyService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.job.exec.constant.FlowCont;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -55,13 +56,6 @@ import java.util.UUID;
 public class FlowGenUtil {
 
     private static Logger logger = LoggerFactory.getLogger(FlowGenUtil.class);
-
-    private static final String schema_cursor_name = "cursor_schema_v0.1";
-    private static final String schema_sink_prefix = "ds_sink_";
-    private static final String dataset_cursor_prefix = "ds_sql_sink_";
-    private static final String dataset_sink_prefix = "ds_sink_";
-    private static final String dataset_cursor_dir = "/tmp/sink/dataservice/";
-    private static final String dataset_cursor_file_prefix = "sql_sink_";
 
     @Autowired
     private DatasetService datasetService;
@@ -244,8 +238,8 @@ public class FlowGenUtil {
         if(!custDataSource.getOtherConfiguration().containsKey("mode")){
             stepBuilder.config("mode", "append");
         }
-        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), schema_sink_prefix +dataService.getId());
-        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), dataset_sink_prefix +dataService.getId());
+        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), FlowCont.schema_sink_prefix +dataService.getId());
+        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), FlowCont.dataset_sink_prefix +dataService.getId());
         String schemaId = "";
         String datasetId = "";
         if(schema != null){
@@ -260,7 +254,7 @@ public class FlowGenUtil {
             stepBuilder.config("autoSchema","true");
         }
 
-        stepBuilder.config("schemaId", schemaId).config("schema", schema_sink_prefix +dataService.getId()).config("datasetId", datasetId).config("dataset",dataset_sink_prefix + dataService.getId());
+        stepBuilder.config("schemaId", schemaId).config("schema", FlowCont.schema_sink_prefix +dataService.getId()).config("datasetId", datasetId).config("dataset",FlowCont.dataset_sink_prefix + dataService.getId());
         StepDesc step = stepBuilder.withPosition(585, 203).input(inputFields).build();
         return step;
     }
@@ -286,8 +280,8 @@ public class FlowGenUtil {
 
     private StepDesc getSqlSinkStep(String stepId, Dataset sourceDS, DataService dataService,List<FlowField> inputFields){
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
-        Schema schema = schemaService.findOneByName(sourceDS.getTenantId(), schema_cursor_name);
-        Dataset dataset = datasetService.findOneByName(sourceDS.getTenantId(), dataset_cursor_prefix + dataService.getId());
+        Schema schema = schemaService.findOneByName(sourceDS.getTenantId(), FlowCont.schema_cursor_name);
+        Dataset dataset = datasetService.findOneByName(sourceDS.getTenantId(), FlowCont.dataset_cursor_prefix + dataService.getId());
         //没有则创建
         String schemaId = "";
         String datasetId = "";
@@ -304,7 +298,7 @@ public class FlowGenUtil {
         }
         stepBuilder.config("mode", "overwrite");
 
-        stepBuilder.config("schemaId", schemaId).config("schema", schema_cursor_name).config("datasetId", datasetId).config("dataset",dataset_cursor_prefix + dataService.getId());
+        stepBuilder.config("schemaId", schemaId).config("schema", FlowCont.schema_cursor_name).config("datasetId", datasetId).config("dataset",FlowCont.dataset_cursor_prefix + dataService.getId());
         stepBuilder.config("quoteChar", "\"")
                 .config("escapeChar", "\\")
                 .config("schemaVersion", "")
@@ -319,7 +313,7 @@ public class FlowGenUtil {
                 .config("nullValue", "")
                 .config("expiredTime", "0")
                 .config("mode", "overwrite")
-                .config("path", dataset_cursor_dir + dataset_cursor_file_prefix + dataService.getId())
+                .config("path", FlowCont.dataset_cursor_dir + FlowCont.dataset_cursor_file_prefix + dataService.getId())
                 .config("countWrittenRecord", "")
                 .config("sliceType", "");
 

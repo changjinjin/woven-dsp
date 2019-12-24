@@ -6,7 +6,10 @@ import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.mybatis.type.clob.ClobVsObjectTypeHandler;
+import com.info.baymax.dsp.data.platform.bean.JobInfo;
 import com.info.baymax.dsp.data.platform.bean.TransformRule;
+import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsJobInfoTypeHandler;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsMapStringKeyTransformRuleValueTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -102,10 +105,11 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String cursorVal;
 
-    @ApiModelProperty("当前服务对应的flow,在第一次执行时生成")
-    @Column(length = 255)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String flowId;
+    @Lob
+    @ApiModelProperty("当前服务对应的flow和schedule信息,在第一次执行时生成")
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsJobInfoTypeHandler.class)
+    private JobInfo jobInfo;
 
     @ApiModelProperty("服务过期时间")
     @JsonIgnore
