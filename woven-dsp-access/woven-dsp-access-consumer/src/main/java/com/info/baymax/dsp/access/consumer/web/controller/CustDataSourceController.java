@@ -16,5 +16,4 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     public BaseEntityService<CustDataSource> getBaseEntityService() {
         return custDataSourceService;
     }
-
 }

@@ -31,9 +31,6 @@ public class PropertyResourceConfiguration implements ImportAware {
         }
     }
 
-    /**
-     * 使用统配的方式加载配置文件，已适配不同的profile. 一定一定一定要注意，这里的PropertySourcesPlaceholderConfigurer获取方法是静态的，如果不是静态的则会失败。
-     */
     @Bean
     public PropertySourcesPlaceholderConfigurer getPropertyPlaceholderConfigurer() throws IOException {
         PropertySourcesPlaceholderConfigurer ppc = new PropertySourcesPlaceholderConfigurer();
@@ -53,7 +50,7 @@ public class PropertyResourceConfiguration implements ImportAware {
     }
 
     @Nullable
-	private AnnotationAttributes fromMap(@Nullable Map<String, Object> map) {
+    private AnnotationAttributes fromMap(@Nullable Map<String, Object> map) {
         if (map == null) {
             return null;
         }

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "消费端：消费者应用管理", description = "消费者应用管理")
+@Api(tags = "消费端：消费者应用配置管理", description = "消费者应用配置管理")
 @RestController
 @RequestMapping("/cust")
 public class DataCustAppController implements BaseEntityController<DataCustApp> {

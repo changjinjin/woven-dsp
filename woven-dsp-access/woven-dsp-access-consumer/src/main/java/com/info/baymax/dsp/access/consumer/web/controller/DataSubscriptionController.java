@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "消费者数据订阅相关接口", description = "消费者数据订阅相关接口")
 @RestController
 @RequestMapping("/subscribe")
+@Deprecated
 public class DataSubscriptionController implements BaseEntityController<DataSubscription> {
 
     @Autowired

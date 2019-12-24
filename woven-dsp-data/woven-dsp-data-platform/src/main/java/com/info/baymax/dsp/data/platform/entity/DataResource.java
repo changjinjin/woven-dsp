@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
-import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,8 +27,7 @@ import java.util.Map;
 
 /**
  * @Author: haijun
- * @Date: 2019/12/13 18:55
- * 数据资源实体类，该记录在用户将baymax的数据集关联到dsp后生成，消费者可以对其申请，管理员可以对其审批
+ * @Date: 2019/12/13 18:55 数据资源实体类，该记录在用户将baymax的数据集关联到dsp后生成，消费者可以对其申请，管理员可以对其审批
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -37,9 +35,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_resource", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
-        @Index(columnList = "tenantId,storage"),
-        @Index(columnList = "lastModifiedTime DESC")})
+    @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {@Index(columnList = "tenantId,storage"),
+    @Index(columnList = "lastModifiedTime DESC")})
 public class DataResource extends BaseEntity {
     private static final long serialVersionUID = -1646060649387068719L;
 
@@ -47,16 +44,23 @@ public class DataResource extends BaseEntity {
     protected static Long MAX_DATE_TIME = 253402214400L;
 
     /*
-    1. 数据资源关联:  与baymax数据进行关联,  管理员登录 "管理平台", 进入"数据管理"->"数据设置", 选择数据集(现有baymax中数据集), 点击 "关联", 弹出配置窗口(或页面)
-   - 数据类型 (结构, 半结构, 非结构)
-   - 设置 数据标签,便于识别, 默认使用name
-   - 设置 数据支持功能(增量触发, 增量, 全量, 分页, 排序, 单条), 设置增量字段, 增量字段类型, 由数据存储类型自动筛选出可配置项
-   - 设置 数据所在分类(目录)
-   - 核对 数据编码
-   - 核对 数据信息, 例如 有效期(精确到日) , 数据字段定义 等
-   - 点击 "确认",完成数据关联设置
-   * 完成后, 此时数据在 "数据管理"->"数据资源" 中可见(此功能为过渡功能)*/
-    //id, name, type, label, dataset_id, engine, encoder, configuration, expired_time, tenant_id, creator, modifier, create_time, last_modified_time
+     * 1. 数据资源关联: 与baymax数据进行关联, 管理员登录 "管理平台", 进入"数据管理"->"数据设置", 选择数据集(现有baymax中数据集), 点击 "关联", 弹出配置窗口(或页面) - 数据类型 (结构,
+     * 半结构, 非结构) - 设置 数据标签,便于识别, 默认使用name - 设置 数据支持功能(增量触发, 增量, 全量, 分页, 排序, 单条), 设置增量字段, 增量字段类型, 由数据存储类型自动筛选出可配置项 - 设置
+     * 数据所在分类(目录) - 核对 数据编码 - 核对 数据信息, 例如 有效期(精确到日) , 数据字段定义 等 - 点击 "确认",完成数据关联设置 完成后, 此时数据在 "数据管理"->"数据资源"
+     * 中可见(此功能为过渡功能)
+     */
+    // id, name, type, label, dataset_id, engine, encoder, configuration, expired_time, tenant_id, creator, modifier,
+    // create_time, last_modified_time
+
+    @ApiModelProperty(value = "选择开放服务类型(推送, 拉取): 0-pull, 1-push, 2-pull and push")
+    @Column(length = 1, nullable = false)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    private Integer shareType;
+
+    @ApiModelProperty(value = "服务方式（:文件,消息,http）：http, message, file")
+    @Column(length = 20, nullable = false)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String serviceType;
 
     @ApiModelProperty(value = "数据类型: 0 structured, 1 semi-structured, 2 unstructured")
     @Column(length = 11, nullable = false)
@@ -102,13 +106,19 @@ public class DataResource extends BaseEntity {
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String,String> fieldMappings;
+    private Map<String, String> fieldMappings;
 
     @ApiModelProperty("管理员在关联数据集时进行的一些基本配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> baseConfiguration;
+
+    @ApiModelProperty("数据发布配置信息")
+    @Lob
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
+    private Map<String, String> publishConfiguration;
 
     @ApiModelProperty(value = "开放状态: 0 未开放, 1 已开放")
     @Column(length = 11, nullable = false)
@@ -146,9 +156,7 @@ public class DataResource extends BaseEntity {
         }
     }
 
-
     public DataResource() {
     }
-
 
 }

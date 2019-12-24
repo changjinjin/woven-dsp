@@ -49,7 +49,7 @@ security:
     resource:
       id: ${spring.application.name}
       serviceId: ${spring.application.name}
-      user-info-uri: http://localhost:8004/api/auth/user
+      user-info-uri: http://localhost:8004/api/auth/oauth/user
       prefer-token-info: false
     client:
       access-token-uri: http://localhost:8004/api/auth/oauth/token
