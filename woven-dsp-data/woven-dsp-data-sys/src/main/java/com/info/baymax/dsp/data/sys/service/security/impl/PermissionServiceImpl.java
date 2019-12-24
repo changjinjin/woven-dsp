@@ -53,6 +53,7 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 		if (exists != null) {
 			throw new ServiceException(ErrType.ENTITY_EXIST, "相同编码的权限[" + t.getCode() + "]已经存在！");
 		}
+		t.setClientId(SaasContext.getCurrentClienId());
 		t.setEnabled(YesNoType.YES.getValue());
 		t.setOrder(selectMaxOrder(SaasContext.getCurrentClienId()) + 1);
 		insertSelective(t);

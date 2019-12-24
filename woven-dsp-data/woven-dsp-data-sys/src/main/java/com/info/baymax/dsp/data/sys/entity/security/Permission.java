@@ -31,6 +31,7 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@ApiModelProperty(value = "客户端ID")
 	@Column(length = 20)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
+	@DefaultValue("baymax")
 	private String clientId;
 
 	@XmlElement(name = "code")

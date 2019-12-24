@@ -68,8 +68,10 @@ public class TUserServiceTest extends AbstractMapperTest {
             .paged()// 分页
             .pageNum(1)// 页码
             .pageSize(10)// 页长
+
             .excludeProperties("poassword")// 排除的查询字段
             .selectProperties("id", "name", "age")// 查询的字段
+
             .fieldGroup()// 构建匹配条件
             .andEqualTo("gender", 1)// gender = 1
             .andGreaterThanOrEqualTo("age", 12)// age >= 12
