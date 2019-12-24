@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @Author: haijun
  * @Date: 2019/12/16 11:25 http://xxx.yyy/api/dsp/consumer/
  */
-@Api(tags = "消费者针对数据资源的操作接口", description = "消费者数据资源操作接口")
+@Api(tags = "消费端: 消费者申请（订阅）记录接口", description = "消费者申请（订阅）记录接口")
 @RestController
 @RequestMapping("/application")
 public class CustDataApplicationController implements BaseEntityController<DataApplication> {

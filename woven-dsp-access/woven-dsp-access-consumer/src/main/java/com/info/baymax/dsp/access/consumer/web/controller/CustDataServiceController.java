@@ -5,15 +5,13 @@ import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequestMapping("/service")
-@Api(tags = "消费者: 数据服务接口", value = "消费者: 数据服务接口")
+@Api(tags = "消费端: 数据服务接口", value = "消费者: 数据服务接口")
 public class CustDataServiceController implements BaseEntityController<DataService> {
 
     @Autowired
