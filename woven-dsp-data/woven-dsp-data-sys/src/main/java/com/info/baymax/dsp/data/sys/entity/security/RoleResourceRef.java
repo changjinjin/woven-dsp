@@ -1,23 +1,16 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
-
-import org.apache.ibatis.type.JdbcType;
-
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.mybatis.type.bool.BooleanVsIntegerTypeHandler;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -31,13 +24,13 @@ public class RoleResourceRef implements Serializable {
     @ApiModelProperty(value = "角色ID")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long roleId;
+    private String roleId;
 
     @Id
     @ApiModelProperty(value = "资源目录ID")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long resourceId;
+    private String resourceId;
 
     @ApiModelProperty("资源目录类型：schema_dir，dataset_dir，datasource_dir，standard_dir，flow_dir，fileset_dir")
     @Column(length = 20)
@@ -59,23 +52,23 @@ public class RoleResourceRef implements Serializable {
     public RoleResourceRef() {
     }
 
-    public RoleResourceRef(Long roleId) {
+    public RoleResourceRef(String roleId) {
         this.roleId = roleId;
     }
 
-    public RoleResourceRef(Long roleId, Long resourceId) {
+    public RoleResourceRef(String roleId, String resourceId) {
         this.roleId = roleId;
         this.resourceId = resourceId;
     }
 
-    public RoleResourceRef(Long roleId, Long resourceId, String resType, Boolean halfSelect) {
+    public RoleResourceRef(String roleId, String resourceId, String resType, Boolean halfSelect) {
         this.roleId = roleId;
         this.resourceId = resourceId;
         this.resType = resType;
         this.halfSelect = halfSelect;
     }
 
-    public RoleResourceRef(Long roleId, Long resourceId, String resType, Boolean halfSelect, Integer counter) {
+    public RoleResourceRef(String roleId, String resourceId, String resType, Boolean halfSelect, Integer counter) {
         this.roleId = roleId;
         this.resourceId = resourceId;
         this.resType = resType;

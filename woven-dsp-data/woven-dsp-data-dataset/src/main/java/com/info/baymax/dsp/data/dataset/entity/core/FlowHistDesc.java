@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.entity.base.Maintable;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
-import com.info.baymax.dsp.data.dataset.entity.Maintable;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListLinkDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListParameterDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListStepDescTypeHandler;
@@ -17,13 +17,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -4,7 +4,6 @@ import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
-import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@Api(tags = "数据资源管理：数据集查询接口", description = "baymax服务平台中dataset数据查询相关接口，用于关联转化数据资源")
+@Api(tags = "数据管理：数据集查询接口", description = "Baymax服务平台中dataset数据查询相关接口，用于关联转化数据资源")
 @RestController
 @RequestMapping("/dataset")
 public class DatasetController {
@@ -30,12 +29,13 @@ public class DatasetController {
     @Autowired
     private DatasetService datasetService;
 
-    @ApiOperation(value = "数据集", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
+    @ApiOperation(value = "资源目录查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
     @PostMapping("/resDirTree")
     @ResponseBody
     public Response<List<ResourceDesc>> resourceDirTree() {
         ExampleQuery query = ExampleQuery.builder(ResourceDesc.class).fieldGroup()
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
+            .andEqualTo("tenantId", "60e705b8-5960-442b-9df9-2cf0573d9daf").andEqualTo("resType", "dataset_dir")
+            .end();
         return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
     }
 

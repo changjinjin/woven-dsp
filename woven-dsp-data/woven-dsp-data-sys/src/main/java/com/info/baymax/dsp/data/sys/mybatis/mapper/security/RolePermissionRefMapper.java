@@ -10,10 +10,10 @@ import com.info.baymax.dsp.data.sys.entity.security.RolePermissionRef;
 @Mapper
 public interface RolePermissionRefMapper extends MyBaseMapper<RolePermissionRef> {
 
-	@Delete("delete from ref_role_permission where role_id = #{roleId,jdbcType=BIGINT}")
-	int deleteByRoleId(@Param("roleId") Long roleId);
+	@Delete("delete from ref_role_permission where role_id = #{roleId,jdbcType=VARCHAR}")
+	int deleteByRoleId(@Param("roleId") String roleId);
 
-	@Delete("delete from ref_role_permission where permission_id = #{permissionId,jdbcType=BIGINT}")
-	int deleteByPermissionId(@Param("permissionId") Long permissionId);
+	@Delete("delete from ref_role_permission where permission_id = #{permissionId,jdbcType=VARCHAR}")
+	int deleteByPermissionId(@Param("permissionId") String permissionId);
 
 }

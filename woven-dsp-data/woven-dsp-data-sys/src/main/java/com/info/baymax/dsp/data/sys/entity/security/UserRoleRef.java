@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "dsp_sys_userole_ref")
+@Table(name = "ref_user_role")
 public class UserRoleRef implements Serializable {
     private static final long serialVersionUID = -4066909154102918575L;
 
@@ -25,18 +25,18 @@ public class UserRoleRef implements Serializable {
     @ApiModelProperty(value = "用户ID")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long userId;
+    private String userId;
 
     @Id
     @ApiModelProperty(value = "角色ID")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long roleId;
+    private String roleId;
 
     public UserRoleRef() {
     }
 
-    public UserRoleRef(Long userId, Long roleId) {
+    public UserRoleRef(String userId, String roleId) {
         this.userId = userId;
         this.roleId = roleId;
     }

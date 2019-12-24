@@ -11,7 +11,7 @@ import org.apache.ibatis.type.JdbcType;
 import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
-import com.info.baymax.common.entity.base.BaseEntity;
+import com.info.baymax.common.entity.base.Maintable;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,7 +28,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @ApiModel
 @Entity
 @Table(name = "dsp_customer", uniqueConstraints = { @UniqueConstraint(columnNames = { "tenantId", "username" }) })
-public class Customer extends BaseEntity implements CryptoBean {
+public class Customer extends Maintable implements CryptoBean {
 	private static final long serialVersionUID = -3170541763416732171L;
 
 	@ApiModelProperty(value = "用户名")

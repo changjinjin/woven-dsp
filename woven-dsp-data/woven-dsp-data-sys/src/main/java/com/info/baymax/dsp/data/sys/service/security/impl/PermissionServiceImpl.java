@@ -89,14 +89,13 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 				delete(c);
 			}
 		}
-
 		// 再删除自己
 		return deleteByPrimaryKey(t.getId());
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
 	@Override
-	public int deleteOnCascadeById(Long id) {
+	public int deleteOnCascadeById(String id) {
 		Permission t = permissionMapper.selectOneWithChildren(id);
 		if (t != null) {
 			delete(t);

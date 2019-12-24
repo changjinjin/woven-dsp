@@ -19,7 +19,6 @@ import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.entity.security.TenantRegisterBean;
-import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.initialize.InitConfig;
 import com.info.baymax.dsp.data.sys.initialize.TenantInitializer;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.TenantMapper;

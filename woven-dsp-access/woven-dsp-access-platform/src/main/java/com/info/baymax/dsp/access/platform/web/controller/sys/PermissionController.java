@@ -1,7 +1,9 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
+import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.utils.ICollections;
@@ -18,28 +20,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/perm")
 @Api(tags = "认证与授权：系统权限管理", value = "系统权限管理接口定义")
-public class PermissionController {
+public class PermissionController implements MainTableController<Permission> {
 
     @Autowired
     private PermissionService permissionService;
 
-    @ApiOperation(value = "保存权限信息")
-    @PostMapping("/save")
-    public Response<?> save(@ApiParam(value = "权限信息", required = true) @RequestBody Permission t) {
-        permissionService.save(t);
-        return Response.ok();
-    }
-
-    @ApiOperation(value = "编辑权限信息")
-    @PostMapping("/update")
-    public Response<?> update(@ApiParam(value = "权限信息", required = true) @RequestBody Permission t) {
-        permissionService.update(t);
-        return Response.ok();
+    @Override
+    public BaseMaintableService<Permission> getBaseMaintableService() {
+        return permissionService;
     }
 
     @ApiOperation(value = "根据ID删除权限信息")
-    @PostMapping("/deleteById/{id}")
-    public Response<?> deleteById(@ApiParam(value = "权限ID", required = true) @PathVariable("id") Long id) {
+    @PostMapping("/deleteById")
+    public Response<?> deleteById(@ApiParam(value = "权限ID", required = true) @RequestParam String id) {
         permissionService.deleteOnCascadeById(id);
         return Response.ok();
     }

@@ -38,7 +38,7 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
     }
 
     @Override
-    public Customer findByTenantAndUsername(Long tenantId, String username) {
+    public Customer findByTenantAndUsername(String tenantId, String username) {
         return selectOne(ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("tenantId", tenantId)
             .andEqualTo("username", username).end());
     }
@@ -65,9 +65,9 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
     }
 
     @Override
-    public int resetPwd(Long[] ids, String initPwd) {
+    public int resetPwd(String[] ids, String initPwd) {
         if (ids != null && ids.length > 0) {
-            for (Long id : ids) {
+            for (String id : ids) {
                 Customer t = new Customer();
                 t.setId(id);
                 t.setPassword(passwordEncoder.encode(initPwd));

@@ -19,7 +19,7 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 	 * @param roleId 角色ID
 	 * @return 角色对应的权限列表
 	 */
-	Set<Permission> selectByRoleId(@Param("roleId") Long roleId);
+	Set<Permission> selectByRoleId(@Param("roleId") String roleId);
 
 	/**
 	 * 根据父节点ID查询权限列表
@@ -27,7 +27,7 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 	 * @param parentId 父节点ID
 	 * @return 子节点集合
 	 */
-	List<Permission> selectByParentId(@Param("parentId") Long parentId);
+	List<Permission> selectByParentId(@Param("parentId") String parentId);
 
 	/**
 	 * 级联查询一个权限记录和他的所有子孙节点
@@ -35,7 +35,7 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 	 * @param id 主键值
 	 * @return 权限记录和他的所有子孙节点
 	 */
-	Permission selectOneWithChildren(@Param("id") Long id);
+	Permission selectOneWithChildren(@Param("id") String id);
 
 	@Select("select max(ord) from dsp_sys_menu where client_id = #{clientId,jdbcType=VARCHAR}")
 	int selectMaxOrder(String clientId);

@@ -28,9 +28,9 @@ public class DataCustApp extends BaseEntity {
     private static final long serialVersionUID = 391285825183967082L;
 
     @ApiModelProperty(value = "消费者ID")
-    @Column(length = 20)
-    @ColumnType(jdbcType = JdbcType.BIGINT)
-    private Long custId;
+    @Column(length = 50)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String custId;
 
     @ApiModelProperty(value = "消费者名称")
     @Column(length = 255)

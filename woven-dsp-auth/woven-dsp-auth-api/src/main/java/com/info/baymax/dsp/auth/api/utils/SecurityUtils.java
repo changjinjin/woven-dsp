@@ -86,8 +86,8 @@ public final class SecurityUtils {
         SaasContext saasContext = SaasContext.getCurrentSaasContext();
         saasContext.setClientId(json.getString("clientId"));
         saasContext.setTenantName(json.getString("tenant"));
-        saasContext.setTenantId(json.getLong("tenantId"));
-        saasContext.setUserId(json.getLong("userId"));
+        saasContext.setTenantId(json.getString("tenantId"));
+        saasContext.setUserId(json.getString("userId"));
         saasContext.setUsername(json.getString("name"));
         saasContext.setAdmin(json.getBooleanValue("admin"));
         saasContext.setUserType(json.getString("userType"));
@@ -101,8 +101,8 @@ public final class SecurityUtils {
         SaasContext saasContext = SaasContext.getCurrentSaasContext();
         saasContext.setClientId(token.getClientId());
         saasContext.setTenantName(token.getTenantName());
-        saasContext.setTenantId(Long.valueOf(token.getTenantId().toString()));
-        saasContext.setUserId(Long.valueOf(token.getUserId().toString()));
+        saasContext.setTenantId(token.getTenantId());
+        saasContext.setUserId(token.getUserId());
         saasContext.setUsername(token.getUserName());
         saasContext.setAdmin(token.isAdmin());
         saasContext.setUserType(token.getUserType().name());

@@ -114,7 +114,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
     public Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientIdAndUsername(String clientId,
                                                                                               String tenant, String username) {
         SimpleManagerDetails userdetails = findUserByClientIdAndUsername(clientId, tenant, username);
-        return SimpleManagerDetails.grantedAuthorities(userdetails.getUser().getAuthorities());
+        return userdetails.getUser().getAuthorities();
     }
 
     // 根据客户端ID和用户名查询系统用户信息
@@ -135,7 +135,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
                 throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
                     new Object[]{username}, "Username {0} no authority granted"));
             }
-            user.setAuthorities(list.stream().map(t -> t).collect(Collectors.toList()));
+            user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList()));
         }
 
         // 用户没有赋权，用户需要有权限才能登陆服务

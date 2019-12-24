@@ -18,7 +18,7 @@ public class TenantManagerAuthenticationToken extends AbstractTenantUserAuthenti
     }
 
     public TenantManagerAuthenticationToken(Object principal, Object credentials, String clientId, String tenant,
-                                            String version, Object tenantId, Object userId, boolean admin,
+                                            String version, String tenantId, String userId, boolean admin,
                                             Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, clientId, tenant, version, tenantId, userId, admin, authorities);
     }

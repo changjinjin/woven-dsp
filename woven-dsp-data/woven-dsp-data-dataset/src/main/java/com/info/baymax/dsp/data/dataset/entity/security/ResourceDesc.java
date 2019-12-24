@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.data.dataset.entity.security;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.info.baymax.common.entity.base.Maintable;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.service.tree.id.TreeIdable;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.data.dataset.entity.Maintable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

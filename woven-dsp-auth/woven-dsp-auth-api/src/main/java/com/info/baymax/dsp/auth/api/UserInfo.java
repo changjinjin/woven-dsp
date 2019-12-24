@@ -10,7 +10,7 @@ public interface UserInfo {
     /**
      * 获取租户ID
      */
-    Object getTenantId();
+    String getTenantId();
 
     /**
      * 获取租户名称
@@ -25,7 +25,7 @@ public interface UserInfo {
     /**
      * 获取用户ID
      */
-    Object getUserId();
+    String getUserId();
 
     /**
      * 获取用户名称

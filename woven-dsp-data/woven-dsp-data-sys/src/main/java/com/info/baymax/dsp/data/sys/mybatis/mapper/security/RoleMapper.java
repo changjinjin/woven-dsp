@@ -17,7 +17,7 @@ public interface RoleMapper extends MyIdableMapper<Role> {
      * @param userId 用户ID
      * @return 用户对应的角色列表
      */
-    List<Role> selectOnlyRoleByUserId(@Param("userId") Long userId);
+    List<Role> selectOnlyRoleByUserId(@Param("userId") String userId);
 
     /**
      * 根据用户ID查询角色列表
@@ -25,7 +25,7 @@ public interface RoleMapper extends MyIdableMapper<Role> {
      * @param userId 用户ID
      * @return 用户对应的角色列表
      */
-    List<Role> selectWithPermsByUserId(@Param("userId") Long userId);
+    List<Role> selectWithPermsByUserId(@Param("userId") String userId);
 
     /**
      * 根据角色ID查询
@@ -33,5 +33,5 @@ public interface RoleMapper extends MyIdableMapper<Role> {
      * @param id 角色ID
      * @return 角色信息，包含对应的权限信息
      */
-    Role selectWithPermissionsById(@Param("id") Long id);
+    Role selectWithPermissionsById(@Param("id") String id);
 }

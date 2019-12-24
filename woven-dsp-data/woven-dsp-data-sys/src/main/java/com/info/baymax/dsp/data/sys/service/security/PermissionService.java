@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.data.sys.service.security;
 
-import java.util.List;
-
-import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.service.tree.id.TreeIdableService;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 
-public interface PermissionService extends BaseEntityService<Permission>, TreeIdableService<Long, Permission> {
+import java.util.List;
+
+public interface PermissionService extends BaseMaintableService<Permission>, TreeIdableService<String, Permission> {
 
 	/**
 	 * 查询所有的权限值集合
@@ -38,7 +38,7 @@ public interface PermissionService extends BaseEntityService<Permission>, TreeId
 	 * @param id 要删除的顶级ID
 	 * @return 删除结果
 	 */
-	int deleteOnCascadeById(Long id);
+	int deleteOnCascadeById(String id);
 
 	/**
 	 * 查询权限最大的order排序号

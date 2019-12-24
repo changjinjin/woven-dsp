@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
+import com.info.baymax.common.entity.base.Maintable;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
-import com.info.baymax.dsp.data.dataset.entity.Maintable;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsConfigObjectTypeHandler;
 import com.info.baymax.dsp.data.dataset.utils.ValueBind;
 import io.swagger.annotations.ApiModel;
@@ -13,15 +13,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

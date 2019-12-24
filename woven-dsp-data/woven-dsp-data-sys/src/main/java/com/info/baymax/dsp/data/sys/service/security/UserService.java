@@ -2,10 +2,10 @@ package com.info.baymax.dsp.data.sys.service.security;
 
 import java.util.List;
 
-import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 
-public interface UserService extends BaseEntityService<User> {
+public interface UserService extends BaseMaintableService<User> {
 
     /**
      * 根据租户和用户名查询用户信息
@@ -14,7 +14,7 @@ public interface UserService extends BaseEntityService<User> {
      * @param loginId  登录ID
      * @return 用户信息
      */
-	User findByTenantAndUsername(Long tenantId, String loginId);
+	User findByTenantAndUsername(String tenantId, String loginId);
 
     /**
      * 重置用户密码
@@ -23,7 +23,7 @@ public interface UserService extends BaseEntityService<User> {
      * @param initPwd 初始密码
      * @return 修改成功条数
      */
-    int resetPwd(Long[] ids, String initPwd);
+    int resetPwd(String[] ids, String initPwd);
 
     /**
      * 修改用户启用停用状态
@@ -49,5 +49,5 @@ public interface UserService extends BaseEntityService<User> {
      * @param ids ID集合
      * @return 删除条数
      */
-    int deleteByIds(Long[] ids);
+    int deleteByIds(String[] ids);
 }

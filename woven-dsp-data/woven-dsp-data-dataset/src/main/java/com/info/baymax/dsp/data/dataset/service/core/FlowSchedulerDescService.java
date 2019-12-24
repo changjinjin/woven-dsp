@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.data.dataset.service.core;
 
 
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
-import com.info.baymax.dsp.data.dataset.service.BaseMaintableService;
 
 import java.util.Date;
 import java.util.List;

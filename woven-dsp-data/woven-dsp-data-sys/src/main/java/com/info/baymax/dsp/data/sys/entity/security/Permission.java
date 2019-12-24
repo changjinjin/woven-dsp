@@ -1,33 +1,20 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
-import org.apache.ibatis.type.JdbcType;
-
-import com.info.baymax.common.service.tree.id.TreeIdable;
-import com.info.baymax.common.entity.base.BaseEntity;
+import com.info.baymax.common.entity.base.Maintable;
 import com.info.baymax.common.entity.field.DefaultValue;
+import com.info.baymax.common.service.tree.id.TreeIdable;
 import com.info.baymax.common.utils.ICollections;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.*;
+import java.util.Collections;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "permission")
@@ -37,7 +24,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @ApiModel
 @Entity
 @Table(name = "dsp_sys_menu", uniqueConstraints = { @UniqueConstraint(columnNames = { "clientId", "code" }) })
-public class Permission extends BaseEntity implements Comparable<Permission>, TreeIdable<Long, Permission> {
+public class Permission extends Maintable implements Comparable<Permission>, TreeIdable<String, Permission> {
 	private static final long serialVersionUID = 4953480541587178592L;
 
 	@XmlElement(name = "客户端ID")
@@ -56,7 +43,7 @@ public class Permission extends BaseEntity implements Comparable<Permission>, Tr
 	@ApiModelProperty("父节点ID")
 	@Column(length = 50)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	private Long parentId;
+	private String parentId;
 
 	@XmlElement(name = "url")
 	@ApiModelProperty(value = "权限路径")

@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.data.dataset.service.core;
 
-import java.util.Date;
-import java.util.List;
-
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
-import com.info.baymax.dsp.data.dataset.service.BaseMaintableService;
 import com.info.baymax.dsp.data.dataset.service.resource.QueryObjectByResourceOrProjectService;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceIdService;
+
+import java.util.Date;
+import java.util.List;
 
 public interface DatasetService extends BaseMaintableService<Dataset>, QueryObjectByResourceOrProjectService<Dataset>,
     ResourceIdService<Dataset> {

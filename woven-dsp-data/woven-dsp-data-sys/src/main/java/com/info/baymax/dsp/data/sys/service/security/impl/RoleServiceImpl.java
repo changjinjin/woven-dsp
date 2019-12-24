@@ -1,17 +1,5 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Lists;
 import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
 import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
@@ -23,16 +11,22 @@ import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
-import com.info.baymax.dsp.data.sys.entity.security.Permission;
-import com.info.baymax.dsp.data.sys.entity.security.Role;
-import com.info.baymax.dsp.data.sys.entity.security.RolePermissionRef;
-import com.info.baymax.dsp.data.sys.entity.security.RoleResourceRef;
-import com.info.baymax.dsp.data.sys.entity.security.RoleResourceRefGroup;
+import com.info.baymax.dsp.data.sys.entity.security.*;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RoleMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RolePermissionRefMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RoleResourceRefMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserRoleRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -114,7 +108,7 @@ public class RoleServiceImpl extends EntityClassServiceImpl<Role> implements Rol
     }
 
     @Override
-    public int deleteById(Long id) {
+    public int deleteById(String id) {
         // 删除用户与角色的关联关系
         userRoleRefMapper.deleteByRoleId(id);
         // 删除角色与权限的关联关系
@@ -127,7 +121,7 @@ public class RoleServiceImpl extends EntityClassServiceImpl<Role> implements Rol
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Override
-    public int deleteByIds(Long[] ids) {
+    public int deleteByIds(String[] ids) {
         return RoleService.super.deleteByIds(ids);
     }
 
@@ -143,7 +137,7 @@ public class RoleServiceImpl extends EntityClassServiceImpl<Role> implements Rol
 
     @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
     @Override
-    public Role selectWithPermissionsAndResourcesRefsById(Long id) {
+    public Role selectWithPermissionsAndResourcesRefsById(String id) {
         Role t = roleMapper.selectWithPermissionsById(id);
         if (t != null) {
             List<RoleResourceRef> list = roleResourceRefMapper.select(new RoleResourceRef(t.getId()));

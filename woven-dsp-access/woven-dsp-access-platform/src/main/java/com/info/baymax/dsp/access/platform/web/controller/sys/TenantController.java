@@ -2,9 +2,9 @@ package com.info.baymax.dsp.access.platform.web.controller.sys;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/api/tenant")
+@RequestMapping("/tenant")
 @Api(tags = "认证与授权：租户管理", value = "租户管理接口定义")
 public class TenantController {
 
@@ -48,11 +48,11 @@ public class TenantController {
     @Cryptoable(enableParam = true)
     public Response<Long> create(
         @ApiParam(value = "租户注册信息", required = true) @RequestBody @Decrypt TenantRegisterBean tenant) {
-        Tenant tnt = tenantService.createTenant(initConfig, tenant);
-        return Response.ok(tnt.getId());
+        tenantService.createTenant(initConfig, tenant);
+        return Response.ok();
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/update")
     @ApiOperation(value = "修改更新租户")
     @Cryptoable(enableParam = true)
     public Response<?> update(@ApiParam(value = "租户ID", required = true) @PathVariable("id") String id,
@@ -61,11 +61,12 @@ public class TenantController {
         return Response.ok();
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/infoById")
     @ApiOperation(value = "根据租户id查询租户")
     @Cryptoable(returnOperation = {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
-    public Response<TenantRegisterBean> find(@ApiParam(value = "租户ID") @PathVariable("id") String id) throws Exception {
+    public Response<TenantRegisterBean> infoById(@ApiParam(value = "租户ID") @PathVariable("id") String id)
+        throws Exception {
         Tenant tenant = tenantService.selectByPrimaryKey(id);
         if (tenant == null) {
             throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "租户不存在");
@@ -78,9 +79,9 @@ public class TenantController {
         return Response.ok(tenantRegisterBean);
     }
 
-    @PostMapping("query")
+    @PostMapping("page")
     @ApiOperation("条件查询租户(分页/排序)")
-    public Response<IPage<Tenant>> query(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
+    public Response<IPage<Tenant>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
         query = ExampleQuery.builder(query).fieldGroup().andNotEqualTo("name", "root").end();
         return Response.ok(tenantService.selectPage(query));
     }

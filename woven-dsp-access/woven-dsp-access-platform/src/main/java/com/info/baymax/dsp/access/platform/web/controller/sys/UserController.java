@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.crypto.CryptoOperation;
@@ -19,6 +20,7 @@ import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.annotation.Cryptoable;
 import com.info.baymax.common.crypto.annotation.Decrypt;
 import com.info.baymax.common.crypto.annotation.ReturnOperation;
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
@@ -39,7 +41,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @RequestMapping("/api/user")
 @Api(tags = "认证与授权：系统用户管理", value = "系统用户管理接口定义")
-public class UserController {
+public class UserController implements MainTableController<User> {
 
     @Autowired
     private InitConfig initConfig;
@@ -49,44 +51,24 @@ public class UserController {
     @Autowired
     private TenantService tenantService;
 
-    @ApiOperation(value = "保存用户信息")
-    @PostMapping("/save")
-    @Cryptoable(enableParam = true)
-    public Response<?> save(@ApiParam(value = "用户信息", required = true) @RequestBody @Decrypt User t) {
-        userService.save(t);
-        return Response.ok();
-    }
-
-    @ApiOperation(value = "编辑用户信息")
-    @PostMapping("/update")
-    @Cryptoable(enableParam = true)
-    public Response<?> update(@ApiParam(value = "用户信息", required = true) @RequestBody @Decrypt User t) {
-        userService.update(t);
-        return Response.ok();
+    @Override
+    public BaseMaintableService<User> getBaseMaintableService() {
+        return userService;
     }
 
     @ApiOperation(value = "分页查询用户数据")
-    @PostMapping("/listPage")
+    @PostMapping("/page")
     @JsonBodys({
         @JsonBody(type = User.class, excludes = {"creator", "createTime", "lastModifier", "lastModifiedTime",
             "hdfsSpaceQuota", "moduleVersion", "password", "description", "groupCount", "groupFieldValue"}),
         @JsonBody(type = Role.class, includes = {"id", "name"})})
     @Cryptoable(returnOperation = {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
-    public Response<IPage<User>> listPage(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
+    @Override
+    public Response<IPage<User>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
         query = ExampleQuery.builder(query).fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
         IPage<User> page = userService.selectPage(query);
         return Response.ok(page);
-    }
-
-    @ApiOperation(value = "批量删除用户")
-    @PostMapping("/deleteByIds")
-    public Response<?> deleteByIds(@ApiParam(value = "删除的用户ID数组", required = true) @RequestBody Long[] ids) {
-        if (ids == null || ids.length == 0) {
-            return Response.error(ErrType.BAD_REQUEST, "请选择需要删除的用户！");
-        }
-        userService.deleteByIds(ids);
-        return Response.ok();
     }
 
     @ApiOperation(value = "根据用户ID查询用户信息")
@@ -97,6 +79,7 @@ public class UserController {
         @JsonBody(type = Role.class, excludes = {"permissions"})})
     @Cryptoable(returnOperation = {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
+    @Override
     public Response<User> infoById(@ApiParam(value = "用户ID", required = true) @RequestParam String id) {
         User t = userService.selectByPrimaryKey(id);
         if (t != null) {
@@ -119,7 +102,7 @@ public class UserController {
 
     @ApiOperation(value = "重置用户密码")
     @PostMapping("/resetPwd")
-    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam Long[] ids) {
+    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam String[] ids) {
         if (ids == null || ids.length == 0) {
             return Response.error(ErrType.BAD_REQUEST, "请选择需要重置密码的用户！");
         }

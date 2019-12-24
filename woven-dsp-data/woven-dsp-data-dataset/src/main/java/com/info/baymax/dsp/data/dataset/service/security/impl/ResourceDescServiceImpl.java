@@ -1,24 +1,16 @@
 package com.info.baymax.dsp.data.dataset.service.security.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
+import com.info.baymax.dsp.data.dataset.mybatis.mapper.security.ResourceDescMapper;
+import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
-import com.info.baymax.dsp.data.dataset.entity.security.ResourceType;
-import com.info.baymax.dsp.data.dataset.entity.security.RoleResourceRef;
-import com.info.baymax.dsp.data.dataset.entity.security.Tenant;
-import com.info.baymax.dsp.data.dataset.entity.security.User;
-import com.info.baymax.dsp.data.dataset.mybatis.mapper.security.ResourceDescMapper;
-import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
+import java.util.List;
 
 @Service
 public class ResourceDescServiceImpl extends EntityClassServiceImpl<ResourceDesc> implements ResourceDescService {

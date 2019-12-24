@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: woven-dsp-gateway
+  devtools:
+    restart:
+      enabled: false
   cloud:
     consul:
       host: 192.168.1.81
@@ -44,6 +47,16 @@ zuul:
 ribbon:
   ReadTimeout: 10000
   ConnectTimeout: 10000
+management:
+  endpoint:
+    health:
+      enabled: true
+    beans:
+      enabled: true
+    env:
+      enabled: true
+    info:
+      enabled: true
 security:
   oauth2:
     resource:

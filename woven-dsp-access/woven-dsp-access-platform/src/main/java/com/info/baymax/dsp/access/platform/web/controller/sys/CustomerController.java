@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.info.baymax.common.comp.base.BaseEntityController;
+import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.crypto.annotation.Cryptoable;
 import com.info.baymax.common.crypto.annotation.Decrypt;
-import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = "系统管理：消费者管理", description = "消费者管理")
 @RestController
 @RequestMapping("/cust")
-public class CustomerController implements BaseEntityController<Customer> {
+public class CustomerController implements MainTableController<Customer> {
 
     @Autowired
     private CustomerService consumerService;
@@ -42,7 +42,7 @@ public class CustomerController implements BaseEntityController<Customer> {
     private SysInitConfig sysInitConfig;
 
     @Override
-    public BaseEntityService<Customer> getBaseEntityService() {
+    public BaseMaintableService<Customer> getBaseMaintableService() {
         return consumerService;
     }
 
@@ -52,7 +52,7 @@ public class CustomerController implements BaseEntityController<Customer> {
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
     @Override
     public Response<IPage<Customer>> page(@ApiParam(value = "查询条件") @RequestBody ExampleQuery query) {
-        return BaseEntityController.super.page(query);
+        return MainTableController.super.page(query);
     }
 
     @ApiOperation(value = "查询详情")
@@ -60,8 +60,8 @@ public class CustomerController implements BaseEntityController<Customer> {
     @ResponseBody
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
     @Override
-    public Response<Customer> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
-        return BaseEntityController.super.infoById(id);
+    public Response<Customer> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam String id) {
+        return MainTableController.super.infoById(id);
     }
 
     @ApiOperation(value = "修改密码")
@@ -78,7 +78,7 @@ public class CustomerController implements BaseEntityController<Customer> {
 
     @ApiOperation(value = "重置用户密码")
     @PostMapping("/resetPwd")
-    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam Long[] ids) {
+    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam String[] ids) {
         if (ids == null || ids.length == 0) {
             return Response.error(ErrType.BAD_REQUEST, "请选择需要重置密码的用户！");
         }

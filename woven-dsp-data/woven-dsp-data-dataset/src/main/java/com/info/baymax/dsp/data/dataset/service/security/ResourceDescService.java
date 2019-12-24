@@ -1,14 +1,11 @@
 package com.info.baymax.dsp.data.dataset.service.security;
 
-import java.util.List;
-
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
 import com.info.baymax.common.service.tree.id.TreeIdableService;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
-import com.info.baymax.dsp.data.dataset.entity.security.RoleResourceRef;
-import com.info.baymax.dsp.data.dataset.entity.security.Tenant;
-import com.info.baymax.dsp.data.dataset.entity.security.User;
-import com.info.baymax.dsp.data.dataset.service.BaseMaintableService;
+
+import java.util.List;
 
 public interface ResourceDescService extends BaseMaintableService<ResourceDesc>,
         QueryObjectCriteriaService<ResourceDesc>, TreeIdableService<String, ResourceDesc> {

@@ -63,7 +63,7 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, key = "'security_cache_user_'+#tenantId+'_'+#loginId", unless = "#result==null")
     @Override
-    public User findByTenantAndUsername(Long tenantId, String loginId) {
+    public User findByTenantAndUsername(String tenantId, String loginId) {
         Map<String, Object> params = new HashMap<>();
         params.put("tenantId", tenantId);
         params.put("loginId", loginId);
@@ -125,9 +125,9 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Override
-    public int resetPwd(Long[] ids, String initPwd) {
+    public int resetPwd(String[] ids, String initPwd) {
         if (ids != null && ids.length > 0) {
-            for (Long id : ids) {
+            for (String id : ids) {
                 User t = new User();
                 t.setId(id);
                 t.setPassword(passwordEncoder.encode(initPwd));
@@ -180,17 +180,13 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Override
-    public int deleteByIds(Long[] ids) {
+    public int deleteByIds(String[] ids) {
         List<User> list = findByIds(SaasContext.getCurrentTenantId(), ids);
         for (User user : list) {
             if (YesNoType.YES.equalsTo(user.getEnabled())) {
                 throw new ServiceException(ErrType.ENTITY_DELETE_ERROR, "删除用户前请将用户停用！");
             }
         }
-        /*
-         * boolean clearUserAllData = wovenAppRestClient.clearUserAllData(ids); if (clearUserAllData) { for (String id :
-         * ids) { userRoleRefMapper.deleteByUserId(id); } deleteByPrimaryKeys(ids); }
-         */
         deleteByPrimaryKeys(ids);
         return ids.length;
     }

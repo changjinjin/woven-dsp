@@ -17,20 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * @Author: haijun
  * @Date: 2019/12/13 16:41 http://xxx.yyy/api/dsp/platform/
  */
 @Slf4j
-@Api(tags = "数据资源相关接口", description = "数据资源相关接口")
+@Api(tags = "数据管理：数据资源相关接口", description = "数据资源相关接口")
 @RestController
 @RequestMapping("/datares")
 public class DataResourceController implements BaseEntityController<DataResource> {
     @Autowired
     private DataResourceService dataResourceService;
-
     @Autowired
     private DataApplicationService dataApplicationService;
 
@@ -55,12 +54,13 @@ public class DataResourceController implements BaseEntityController<DataResource
     @ApiOperation(value = "关闭某数据资源的申请权限")
     @PostMapping("/close")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Response<?> closeDataResource(List<Long> ids) throws Exception {
-        // --TODO-- 根据dataResourceId关联更新consumer_data_application record status,禁止申请权限,或者删除记录
+    public Response<?> closeDataResource(Long[] ids) throws Exception {
+        // --TODO-- 根据dataResourceId关联更新consumer_data_application record
+        // status,禁止申请权限,或者删除记录
         // --TODO-- updateOpenStatus 0
-        log.info("close dataResource and delete dataApplication, ids.size={}...", ids.size());
-        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids.toArray());
-        dataResourceService.closeDataResource(ids);
+        log.info("close dataResource and delete dataApplication, ids.size={}...", ids.length);
+        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids);
+        dataResourceService.closeDataResource(Arrays.asList(ids));
         return Response.ok();
     }
 

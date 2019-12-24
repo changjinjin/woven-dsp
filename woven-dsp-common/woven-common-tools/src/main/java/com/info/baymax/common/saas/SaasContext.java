@@ -16,10 +16,10 @@ public class SaasContext implements Serializable {
     private String host;
 
     private String clientId;
-    private Long tenantId;
+    private String tenantId;
     private String tenantName;
 
-    private Long userId;
+    private String userId;
     private String username;
     private boolean admin;
     private String userType;
@@ -42,15 +42,15 @@ public class SaasContext implements Serializable {
         return getCurrentSaasContext().getClientId();
     }
 
-    public static Long getCurrentTenantId() {
+    public static String getCurrentTenantId() {
         return getCurrentSaasContext().getTenantId();
     }
 
-    public static Long getCurrentTenantName() {
+    public static String getCurrentTenantName() {
         return getCurrentSaasContext().getTenantId();
     }
 
-    public static Long getCurrentUserId() {
+    public static String getCurrentUserId() {
         return getCurrentSaasContext().getUserId();
     }
 

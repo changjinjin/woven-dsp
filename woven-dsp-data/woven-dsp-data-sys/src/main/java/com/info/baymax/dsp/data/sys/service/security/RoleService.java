@@ -1,11 +1,11 @@
 package com.info.baymax.dsp.data.sys.service.security;
 
-import java.util.List;
-
-import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 
-public interface RoleService extends BaseEntityService<Role> {
+import java.util.List;
+
+public interface RoleService extends BaseMaintableService<Role> {
 
 	/**
 	 * 批量修改角色启用和停用状态
@@ -21,7 +21,7 @@ public interface RoleService extends BaseEntityService<Role> {
 	 * @param id 角色ID
 	 * @return 角色信息，包含对应的权限信息
 	 */
-	Role selectWithPermissionsAndResourcesRefsById(Long id);
+	Role selectWithPermissionsAndResourcesRefsById(String id);
 
 	/**
 	 * 更新

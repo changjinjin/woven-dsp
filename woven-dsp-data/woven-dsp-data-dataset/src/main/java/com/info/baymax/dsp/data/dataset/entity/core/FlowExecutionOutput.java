@@ -3,8 +3,8 @@ package com.info.baymax.dsp.data.dataset.entity.core;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.info.baymax.common.entity.base.Maintable;
 import com.info.baymax.common.entity.field.DefaultValue;
-import com.info.baymax.dsp.data.dataset.entity.Maintable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,12 +12,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(callSuper = false)

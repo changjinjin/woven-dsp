@@ -33,7 +33,7 @@ public class SimpleManagerDetails extends TenantUserDetails {
     public SimpleManagerDetails(String clientId, Tenant tenant, User user) {
         super(clientId, tenant, user.getUsername(), user.getPassword(), YesNoType.YES.equalsTo(user.getEnabled()),
             user.isAccountNonExpired(), user.isCredentialsNonExpired(), user.isAccountNonLocked(),
-            grantedAuthorities(user.getAuthorities()));
+            user.getAuthorities());
         this.user = user;
     }
 

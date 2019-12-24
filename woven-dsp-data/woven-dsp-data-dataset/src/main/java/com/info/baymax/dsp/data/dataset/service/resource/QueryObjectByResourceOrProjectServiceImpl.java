@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.data.dataset.service.resource;
 
 import com.info.baymax.common.jpa.criteria.query.FieldObject;
+import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper;
 import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.criteria.query.SortObject;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
@@ -8,12 +9,11 @@ import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceType;
-import com.info.baymax.dsp.data.dataset.entity.security.Tenant;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
+import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper;
 
 import java.util.Iterator;
 import java.util.List;

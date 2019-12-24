@@ -17,8 +17,8 @@ public abstract class AbstractTenantUserAuthenticationToken extends UsernamePass
     private String tenant;
     private String version;
 
-    private Object userId;
-    private Object tenantId;
+    private String userId;
+    private String tenantId;
     private boolean admin;
 
     public AbstractTenantUserAuthenticationToken(Object principal, Object credentials, String clientId, String tenant,
@@ -30,7 +30,7 @@ public abstract class AbstractTenantUserAuthenticationToken extends UsernamePass
     }
 
     public AbstractTenantUserAuthenticationToken(Object principal, Object credentials, String clientId, String tenant,
-                                                 String version, Object tenantId, Object userId, boolean admin,
+                                                 String version, String tenantId, String userId, boolean admin,
                                                  Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
         this.clientId = clientId;

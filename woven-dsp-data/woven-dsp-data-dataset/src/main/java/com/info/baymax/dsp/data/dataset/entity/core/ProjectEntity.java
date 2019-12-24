@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
-import com.info.baymax.dsp.data.dataset.entity.Maintable;
+import com.info.baymax.common.entity.base.Maintable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
