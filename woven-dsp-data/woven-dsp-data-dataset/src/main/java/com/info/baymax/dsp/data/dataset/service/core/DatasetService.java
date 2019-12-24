@@ -14,4 +14,6 @@ public interface DatasetService extends BaseMaintableService<Dataset>, QueryObje
     List<Dataset> findBySchemaIdAndCreateTime(Date start, Date end, String schemaId);
 
     List<Dataset> findBySchemaId(String schemaId);
+
+    Dataset findOneByName(String tenant, String name);
 }
