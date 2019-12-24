@@ -4,6 +4,7 @@ import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -34,8 +35,7 @@ public class DatasetController {
     @ResponseBody
     public Response<List<ResourceDesc>> resourceDirTree() {
         ExampleQuery query = ExampleQuery.builder(ResourceDesc.class).fieldGroup()
-            .andEqualTo("tenantId", "60e705b8-5960-442b-9df9-2cf0573d9daf").andEqualTo("resType", "dataset_dir")
-            .end();
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
         return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
     }
 

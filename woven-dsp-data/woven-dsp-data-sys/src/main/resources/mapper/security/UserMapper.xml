@@ -16,7 +16,7 @@
 		<result column="owner" jdbcType="VARCHAR" property="owner" />
 		<result column="version" jdbcType="INTEGER" property="version" />
 		<result column="hdfs_space_quota" jdbcType="BIGINT" property="hdfsSpaceQuota" />
-		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="login_id" jdbcType="VARCHAR" property="loginId" />
 		<result column="password" jdbcType="VARCHAR" property="password" />
 		<result column="resource_queues" jdbcType="VARCHAR" property="resourceQueues"
 			typeHandler="com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler" />
@@ -39,12 +39,12 @@
 	<select id="selectOneWithRoles" parameterType="Map"
 		resultMap="BaseWithRolesResultMap">
 	<![CDATA[
-	select * from dsp_sys_user t
+	select * from merce_user t
 	]]>
 		<where>
 			<if test="id != null and id != ''"> and id = #{id,jdbcType=VARCHAR}</if>
 			<if test="tenantId != null and tenantId != ''">and tenant_id = #{tenantId,jdbcType=VARCHAR}</if>
-			<if test="username != null and username != ''">and username = #{username,jdbcType=VARCHAR}</if>
+			<if test="loginId != null and loginId != ''">and login_id = #{loginId,jdbcType=VARCHAR}</if>
 			<if test="owner != null and owner != ''">and owner = #{owner,jdbcType=VARCHAR}</if>
 			<if test="version != null and version != ''">and version = #{version,jdbcType=VARCHAR}</if>
 			<if test="enabled != null">and enabled = #{enabled,jdbcType=INTEGER}</if>
