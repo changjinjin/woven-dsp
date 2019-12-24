@@ -81,6 +81,12 @@ public class ExecutorDataServiceController {
         return Mono.just("OK");
     }
 
+    /**
+     * 暂时先用不到,Dataservice失效时允许执行完最后一次
+     * @param executionId
+     * @param body
+     * @return
+     */
     @PostMapping("/kill/{executionId}")
     public Mono<String> killDataservice(@PathVariable("executionId") String executionId, @RequestBody Map<String, Object> body) {
         killServiceAsync(executionId, body);

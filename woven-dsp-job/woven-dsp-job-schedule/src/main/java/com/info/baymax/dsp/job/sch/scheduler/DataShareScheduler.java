@@ -49,7 +49,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
                 scheduler.shutdown(true);
             }
         } catch (SchedulerException e) {
-            log.error("shutdown QuartzScheduler error：", e);
+            log.error("shutdown DataShareScheduler error：", e);
         }
     }
 
@@ -114,7 +114,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
 
             scheduler.scheduleJob(myJob, trigger);
         } catch (Exception e) {
-            throw new RuntimeException("schedule flow failed", e);
+            throw new RuntimeException("schedule dataservice [" + ds.getId() +"] failed", e);
         }
     }
 
@@ -126,7 +126,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
             log.info("try to cancel DataShareScheduler {}", service.getId());
             scheduler.deleteJob(new JobKey(jobName, jobGroup));
         } catch (Exception e) {
-            throw new RuntimeException("cancel flow failed", e);
+            log.error("cancel ds job failed "+service.getId()+" :", e);
         }
     }
 
