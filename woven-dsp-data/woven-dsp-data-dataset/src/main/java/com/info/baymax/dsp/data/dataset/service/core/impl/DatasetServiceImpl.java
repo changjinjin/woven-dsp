@@ -112,4 +112,21 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 		return dataset;
 	}
 
+	@Override
+	public Dataset findOneByName(String tenant, String name){
+		List<Dataset> list = selectList(ExampleQuery.builder(getEntityClass())//
+				.fieldGroup()//
+				.andEqualTo("tenantId", tenant)
+				.andEqualTo("name", name)
+				.end()//
+				.orderByDesc("lastModifiedTime")
+		);
+
+		if(list!=null && list.size()>0){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+
 }
