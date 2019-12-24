@@ -1,11 +1,8 @@
 package com.info.baymax.dsp.job.exec;
 
 import com.info.baymax.common.comp.config.profile.EnableExtProperties;
-import com.info.baymax.dsp.job.exec.reader.CommonReader;
-import com.info.baymax.dsp.job.exec.writer.CommonWriter;
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import lombok.extern.slf4j.Slf4j;
-import org.mybatis.spring.annotation.MapperScan;
+import tk.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchRestHealthIndicatorAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,10 +11,6 @@ import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.lang.reflect.Modifier;
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author: haijun
