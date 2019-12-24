@@ -106,6 +106,12 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> formatConfigurations;
 
+    @ApiModelProperty("是否关联过：0-未关联，1-已经关联")
+    @Column(length = 11)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @DefaultValue("0")
+    private Integer isRelated;
+
     @ApiModelProperty("所属资源目录信息")
     @Transient
     private ResourceDesc resource;

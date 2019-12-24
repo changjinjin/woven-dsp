@@ -1,14 +1,13 @@
 package com.info.baymax.dsp.data.sys.mybatis.mapper.security;
 
-import java.util.List;
-import java.util.Set;
-
+import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.dsp.data.sys.entity.security.Permission;
+import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface PermissionMapper extends MyIdableMapper<Permission> {
@@ -27,7 +26,7 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 	 * @param parentId 父节点ID
 	 * @return 子节点集合
 	 */
-	List<Permission> selectByParentId(@Param("parentId") String parentId);
+ 	List<Permission> selectByParentId(@Param("parentId") String parentId);
 
 	/**
 	 * 级联查询一个权限记录和他的所有子孙节点
