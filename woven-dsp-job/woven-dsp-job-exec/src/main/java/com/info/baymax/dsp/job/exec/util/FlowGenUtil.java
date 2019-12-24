@@ -332,7 +332,7 @@ public class FlowGenUtil {
             dsResDesc.setEnabled(1);
             dsResDesc.setExpiredTime(0L);
             dsResDesc.setLastModifiedTime(dsResDesc.getCreateTime());
-            dsResDesc.setLastModifier(sourceDS.getTenantId());
+            dsResDesc.setLastModifier(sourceDS.getCreator());
             dsResDesc.setModuleVersion(0);
             dsResDesc.setName(ConstantInfo.DS_OUTPUT_FLOW_DIR);
             dsResDesc.setOwner(sourceDS.getOwner());

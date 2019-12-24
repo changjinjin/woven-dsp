@@ -120,13 +120,13 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> publishConfiguration;
 
-    @ApiModelProperty(value = "开放状态: 0 未开放, 1 已开放")
+    @ApiModelProperty(value = "开放状态: 0 未开放, 1 已开放,2 已到期")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer openStatus;
 
-    @ApiModelProperty("此数据资源的有效期")
+    @ApiModelProperty("此数据资源的有效期,服务期限")
     @JsonIgnore
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
