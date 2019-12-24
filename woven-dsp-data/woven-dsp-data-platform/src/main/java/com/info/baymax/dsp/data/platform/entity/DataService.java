@@ -5,6 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.platform.bean.TransformRule;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsMapStringKeyTransformRuleValueTypeHandler;
 import io.swagger.annotations.ApiModel;
@@ -46,7 +47,7 @@ public class DataService extends BaseEntity {
 
     @ApiModelProperty("调度类型：once,cron,event")
     @Column(length = 50)
-    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String scheduleType;
 
     @ApiModelProperty("数据字段相关配置,包括加密,脱敏,转换等")
@@ -60,8 +61,6 @@ public class DataService extends BaseEntity {
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> serviceConfiguration;
-
-
 
     @ApiModelProperty("总的执行次数,一个服务可能被重复部署多次")
     @Column(length = 11, nullable = false)
@@ -100,8 +99,13 @@ public class DataService extends BaseEntity {
 
     @ApiModelProperty("当前服务中的增量值")
     @Column(length = 255)
-    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String cursorVal;
+
+    @ApiModelProperty("当前服务对应的flow,在第一次执行时生成")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String flowId;
 
     @ApiModelProperty("服务过期时间")
     @JsonIgnore

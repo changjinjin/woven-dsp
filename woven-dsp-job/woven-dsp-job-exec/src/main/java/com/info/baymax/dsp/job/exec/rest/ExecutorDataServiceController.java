@@ -7,6 +7,7 @@ import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
+import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowSchedulerDescService;
 import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
@@ -15,15 +16,11 @@ import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import com.info.baymax.dsp.job.exec.constant.ServiceTypes;
 import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
-import com.info.baymax.dsp.job.exec.reader.CommonReader;
-import com.info.baymax.dsp.job.exec.service.ReaderAndWriterLoader;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
-import com.info.baymax.dsp.job.exec.writer.CommonWriter;
 import com.info.baymax.dsp.data.dataset.entity.core.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -46,6 +46,8 @@ public class ExecutorDataServiceController {
     DataResourceService dataResourceService;
     @Autowired
     CustDataSourceService custDataSourceService;
+    @Autowired
+    FlowDescService flowDescService;
     @Autowired
     DatasetService datasetService;
     @Autowired
@@ -62,11 +64,11 @@ public class ExecutorDataServiceController {
         log.info("receive execute Dataservice-> {}", body);
         String jobName = body.get("jobName").toString();
         String jobGroup = body.get("jobGroup").toString();
-        Integer type = (Integer) body.get("type");
-        Integer schedulerType = (Integer)body.get("scheduleType");
-        Long serviceId = (Long)body.get("serviceId");
-        Long tenantId = (Long)body.get("tenantId");
-        Long owner = (Long)body.get("owner");
+        Integer type = Integer.parseInt(body.get("type")+"");
+        String schedulerType = body.get("scheduleType")+"";
+        Long serviceId = Long.parseLong(body.get("serviceId")+"");
+        Long tenantId = Long.parseLong(body.get("tenantId")+"");
+        Long owner = Long.parseLong(body.get("owner")+"");
         DataService dataService = JsonBuilder.getInstance().fromJson(body.get("dataService").toString(), DataService.class);
 
         if(type == ServiceTypes.SERVICE_TYPE_PUSH){
@@ -88,8 +90,8 @@ public class ExecutorDataServiceController {
     @Async
     public void executePushServiceAsync(DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource) {
         try {
-            CommonReader reader = ReaderAndWriterLoader.getReader(dataResource.getStorage());
-            CommonWriter writer = ReaderAndWriterLoader.getWriter(custDataSource.getType());
+//            CommonReader reader = ReaderAndWriterLoader.getReader(dataResource.getStorage());
+//            CommonWriter writer = ReaderAndWriterLoader.getWriter(custDataSource.getType());
 
             //-------------TODO----flow generate------------
 /*          根据dataResource组成Source step,
@@ -107,9 +109,41 @@ public class ExecutorDataServiceController {
 
             flow加一个标识,标识它是共享数据flow,完成后给平台和用户发一个通知,列表显示通知。
 */
-            FlowDesc flowDesc = flowGenUtil.genDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
+            FlowDesc flowDesc = null;
 
-            FlowSchedulerDesc scheduler = flowGenUtil.genScheduler(dataService, flowDesc);
+            if(StringUtils.isNotEmpty(dataService.getFlowId())){
+                String flowId = dataService.getFlowId();
+                flowDesc = flowDescService.selectByPrimaryKey(flowId);
+                if(flowDesc != null) {
+                    List<FlowField> filterInputs = new ArrayList<>();
+                    for (StepDesc step : flowDesc.getSteps()) {
+                        if (step.getType().equals("filter")) {
+                            List<Map<String, String>> fmap = (ArrayList<Map<String, String>>) step.getInputConfigurations().get(0).get("fields");
+                            for (Map<String, String> f : fmap) {
+                                FlowField field = new FlowField(f.get("column"), f.get("type"), f.get("alias"), f.get("description"));
+                                filterInputs.add(field);
+                            }
+                            String filterCondition = flowGenUtil.getCondition(dataResource, dataService, filterInputs);
+                            if (StringUtils.isNotEmpty(filterCondition)) {
+                                step.getOtherConfigurations().put("condition", filterCondition);
+                                //更新flowDesc
+                                flowDescService.saveOrUpdate(flowDesc);
+                            }
+                            break;
+                        }
+                    }
+                }else{
+                    flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
+                    dataService.setFlowId(flowDesc.getId());
+                    dataServiceEntityService.saveOrUpdate(dataService);
+                }
+            }else{
+                flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
+                dataService.setFlowId(flowDesc.getId());
+                dataServiceEntityService.saveOrUpdate(dataService);
+            }
+
+            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService, flowDesc);
 
             //提交任务到woven-server平台
             try {
@@ -133,7 +167,6 @@ public class ExecutorDataServiceController {
 //            LogCollector.disableMDC();
         }
     }
-
 
 
 }

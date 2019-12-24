@@ -157,7 +157,7 @@ public class FlowGenUtil {
     }
 
 
-    private StepDesc getSourceStep(String stepId, Dataset cdo, List<FlowField> outputFields) {
+    private StepDesc getSourceStep(String stepId, Dataset cdo, List<FlowField> outputFields) throws Exception {
         Flows.StepBuilder sourceStep = null;
         sourceStep = Flows.step("source", stepId, stepId);
         StepDesc step = sourceStep
@@ -175,7 +175,7 @@ public class FlowGenUtil {
         return df.format(new Date());
     }
 
-    private StepDesc getFilterStep(String stepId, List<FlowField> inputFields, List<FlowField> outputFields, String condition) {
+    private StepDesc getFilterStep(String stepId, List<FlowField> inputFields, List<FlowField> outputFields, String condition) throws Exception {
         Flows.StepBuilder filterStep = Flows.step("filter", stepId, stepId);
         StepDesc step = filterStep.config("condition", condition)
                 .config("sessionCache","").config("interceptor", "")
@@ -183,7 +183,7 @@ public class FlowGenUtil {
         return step;
     }
 
-    private StepDesc getTransformStep(String stepId, DataService dataService, List<FlowField> inputFields, List<FlowField> outputFields){
+    private StepDesc getTransformStep(String stepId, DataService dataService, List<FlowField> inputFields, List<FlowField> outputFields) throws Exception{
         Flows.StepBuilder transStep = Flows.step("transform", stepId, stepId);
 
         List<String> expressions = new ArrayList<>();
@@ -223,12 +223,20 @@ public class FlowGenUtil {
     }
 
 
-    private StepDesc getSinkStep(String stepId, DataApplication dataApplication, List<FlowField> inputFields){
+    private StepDesc getSinkStep(String stepId, DataApplication dataApplication, List<FlowField> inputFields) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataApplication.getTenantId(),dataApplication.getCustDataSourceId());
         Map<String,String> configuration = custDataSource.getOtherConfiguration();
 
+//        CustDataSource custDataSource = new CustDataSource();
+//        custDataSource.setId(102L);
+//        custDataSource.setType("HDFS");
+//        Map<String,String> configs = new HashMap<>();
+//        configs.put("format", "csv");
+//        configs.put("path", "/tmp/navy");
+//        custDataSource.setOtherConfiguration(configs);
+
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
-        Iterator<Map.Entry<String,String>> iter = configuration.entrySet().iterator();
+        Iterator<Map.Entry<String,String>> iter = custDataSource.getOtherConfiguration().entrySet().iterator();
         while (iter.hasNext()){
             Map.Entry<String,String> entry = iter.next();
             String key = entry.getKey();
@@ -241,15 +249,20 @@ public class FlowGenUtil {
     }
 
 
-    public FlowDesc genDataServiceFlow(DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource)
+    public FlowDesc generateDataServiceFlow(DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource)
         throws Exception {
         final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
         final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
         final String flowType = "dataflow";
 
         String flowName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
+        Dataset sourceDS = null;
+        try {
+            sourceDS = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
+        }catch (Exception e){
+            logger.error("", e);
+        }
 
-        Dataset sourceDS = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
         if (sourceDS == null) {
             logger.error("getDataset by id error: id=" + dataResource.getDatasetId());
             throw new RuntimeException("getDataset by id error: id= " + dataResource.getDatasetId());
@@ -276,27 +289,7 @@ public class FlowGenUtil {
 
         //构建filter step
         StepDesc filterStep = null;
-        String condition = "1 == 1";
-        if(StringUtils.isNotEmpty(dataResource.getIncrementField()) && StringUtils.isNotEmpty(dataService.getCursorVal())){
-            String incrementField = dataResource.getIncrementField();
-            for(FlowField flowField : sourceOutputs){
-                if(flowField.getColumn().equals(incrementField)){
-                    if(flowField.getType().equals("int") || flowField.getType().equals("short") || flowField.getType().equals("bigint")) {
-                        condition = incrementField + " > " + dataService.getCursorVal();
-                    }else if(flowField.getType().equals("date")){
-                        condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
-                    }else if(flowField.getType().equals("timestamp")){
-                        condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
-                    }else{
-                        condition = incrementField + " > " + dataService.getCursorVal();
-                    }
-                    break;
-                }
-            }
-        }else if(StringUtils.isNotEmpty(dataResource.getIncrementField())){
-            String incrementField = dataResource.getIncrementField();
-            condition = incrementField + " IS NOT NULL";
-        }
+        String condition = getCondition(dataResource, dataService, sourceOutputs);
         filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition);
 
         //构建transform step
@@ -314,12 +307,16 @@ public class FlowGenUtil {
 
         Flows.FlowBuilder flowBuilder = Flows.dataflow(flowName);
         FlowDesc flow = null;
-        if(transStep != null) {
-            flow = flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).connect("source_1", "filter_2")
-                    .connect("filter_2", "transform_3").connect("transform_3", "sink_4").build();
-        }else{
-            flow = flowBuilder.step(sourceStep).step(filterStep).step(sinkStep).connect("source_1", "filter_2")
-                    .connect("filter_2", "sink_4").build();
+        try {
+            if (transStep != null) {
+                flow = flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).connect("source_1", "filter_2")
+                        .connect("filter_2", "transform_3").connect("transform_3", "sink_4").build();
+            } else {
+                flow = flowBuilder.step(sourceStep).step(filterStep).step(sinkStep).connect("source_1", "filter_2")
+                        .connect("filter_2", "sink_4").build();
+            }
+        }catch (Exception e){
+            logger.error("build flow exception: ", e);
         }
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
 
@@ -368,6 +365,31 @@ public class FlowGenUtil {
         return flowCreated;
     }
 
+    public String getCondition(DataResource dataResource, DataService dataService, List<FlowField> sourceOutputs){
+        String condition = "1 == 1";
+        if(StringUtils.isNotEmpty(dataResource.getIncrementField()) && StringUtils.isNotEmpty(dataService.getCursorVal())){
+            String incrementField = dataResource.getIncrementField();
+            for(FlowField flowField : sourceOutputs){
+                if(flowField.getColumn().equals(incrementField)){
+                    if(flowField.getType().equals("int") || flowField.getType().equals("short") || flowField.getType().equals("bigint")) {
+                        condition = incrementField + " > " + dataService.getCursorVal();
+                    }else if(flowField.getType().equals("date")){
+                        condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
+                    }else if(flowField.getType().equals("timestamp")){
+                        condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
+                    }else{
+                        condition = incrementField + " > " + dataService.getCursorVal();
+                    }
+                    break;
+                }
+            }
+        }else if(StringUtils.isNotEmpty(dataResource.getIncrementField())){
+            String incrementField = dataResource.getIncrementField();
+            condition = incrementField + " IS NOT NULL";
+        }
+        return condition;
+    }
+
     private FlowHistDesc copyToHistory(FlowDesc flow, Dataset sourceDS) {
         FlowHistDesc fh = new FlowHistDesc();
         BeanUtils.copyProperties(flow, fh);
@@ -384,7 +406,7 @@ public class FlowGenUtil {
         return fh;
     }
 
-    public FlowSchedulerDesc genScheduler(DataService dataService, FlowDesc flowDesc){
+    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc){
         String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         String name = "ds_"+ dataService.getName()+ "_" + time;
         ConfigObject configurations = new ConfigObject();
