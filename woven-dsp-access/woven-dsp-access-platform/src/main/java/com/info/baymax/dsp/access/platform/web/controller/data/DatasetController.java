@@ -34,8 +34,11 @@ public class DatasetController {
     @PostMapping("/resDirTree")
     @ResponseBody
     public Response<List<ResourceDesc>> resourceDirTree() {
-        ExampleQuery query = ExampleQuery.builder(ResourceDesc.class).fieldGroup()
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
+        ExampleQuery query = ExampleQuery.builder(ResourceDesc.class)//
+            .fieldGroup()//
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
+            .andEqualTo("resType", "dataset_dir")//
+            .end();
         return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
     }
 
@@ -58,5 +61,4 @@ public class DatasetController {
         }
         return Response.ok(datasetService.selectByPrimaryKey(id));
     }
-
 }
