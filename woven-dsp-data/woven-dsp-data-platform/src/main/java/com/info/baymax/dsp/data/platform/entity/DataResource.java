@@ -5,13 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
-<<<<<<< HEAD
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
-import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
-
-=======
-import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringListTypeHandler;
->>>>>>> 62329f249d42e1369f79394b945ed8f9f3e0a142
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
