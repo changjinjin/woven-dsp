@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +38,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/api/user")
-@Api(tags = "认证与授权：系统用户管理", value = "系统用户管理接口定义")
+@RequestMapping("/user")
+@Api(tags = "系统管理：系统用户管理", value = "系统用户管理接口定义")
 public class UserController implements MainTableController<User> {
 
     @Autowired
@@ -56,8 +55,6 @@ public class UserController implements MainTableController<User> {
         return userService;
     }
 
-    @ApiOperation(value = "分页查询用户数据")
-    @PostMapping("/page")
     @JsonBodys({
         @JsonBody(type = User.class, excludes = {"creator", "createTime", "lastModifier", "lastModifiedTime",
             "hdfsSpaceQuota", "moduleVersion", "password", "description", "groupCount", "groupFieldValue"}),
@@ -71,8 +68,6 @@ public class UserController implements MainTableController<User> {
         return Response.ok(page);
     }
 
-    @ApiOperation(value = "根据用户ID查询用户信息")
-    @GetMapping("/infoById")
     @JsonBodys({
         @JsonBody(type = User.class, excludes = {"creator", "createTime", "lastModifier", "lastModifiedTime",
             "moduleVersion", "password", "description", "groupCount", "groupFieldValue"}),

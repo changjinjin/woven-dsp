@@ -4,17 +4,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 /**
  * 定义接口返回的数据包装
  *
- * @param <T>
- *            报文主体内容
+ * @param <T> 报文主体内容
  * @author: jingwei.yang
  * @date: 2019年4月23日 下午2:52:28
  */
+@Setter
+@Getter
 @ApiModel
 public class Response<T> implements Serializable {
 	private static final long serialVersionUID = 3218508078738927801L;
@@ -58,30 +61,6 @@ public class Response<T> implements Serializable {
 
 	public boolean success() {
 		return this.status != null && this.status.intValue() == 0;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public T getContent() {
-		return content;
-	}
-
-	public void setContent(T content) {
-		this.content = content;
 	}
 
 	private static <T> Response<T> execute(Integer status, String message, T content) {

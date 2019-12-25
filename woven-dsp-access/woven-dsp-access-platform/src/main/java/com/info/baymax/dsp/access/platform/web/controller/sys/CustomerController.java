@@ -4,12 +4,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.info.baymax.common.comp.base.MainTableController;
@@ -46,21 +44,15 @@ public class CustomerController implements MainTableController<Customer> {
         return consumerService;
     }
 
-    @ApiOperation(value = "分页查询")
-    @PostMapping("page")
-    @ResponseBody
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
     @Override
-    public Response<IPage<Customer>> page(@ApiParam(value = "查询条件") @RequestBody ExampleQuery query) {
+    public Response<IPage<Customer>> page(ExampleQuery query) {
         return MainTableController.super.page(query);
     }
 
-    @ApiOperation(value = "查询详情")
-    @GetMapping("infoById")
-    @ResponseBody
     @JsonBodys({@JsonBody(type = Customer.class, excludes = "password")})
     @Override
-    public Response<Customer> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam String id) {
+    public Response<Customer> infoById(String id) {
         return MainTableController.super.infoById(id);
     }
 

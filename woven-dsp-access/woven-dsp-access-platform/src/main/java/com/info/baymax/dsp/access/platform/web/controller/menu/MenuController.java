@@ -28,7 +28,7 @@ import java.util.Set;
  * @date 2019年11月14日 下午3:32:23
  */
 @RestController
-@RequestMapping("/api/menu")
+@RequestMapping("/menu")
 @Api(tags = "系统管理：菜单管理", value = "菜单管理接口")
 public class MenuController implements Serializable {
     private static final long serialVersionUID = -8130399587077298234L;

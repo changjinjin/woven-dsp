@@ -16,6 +16,12 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.Nullable;
 
+/**
+ * 自定义配置文件加引入配置自动装配器，使用EnableExtProperties注解可使用统配符的方式指定需要加载的配置文件
+ *
+ * @author jingwei.yang
+ * @date 2019年12月25日 下午4:22:59
+ */
 @Configuration
 public class PropertyResourceConfiguration implements ImportAware {
 

@@ -31,11 +31,8 @@ public class DataCategoryController implements BaseEntityController<DataCategory
         return dataCategoryService;
     }
 
-    @ApiOperation(value = "单个删除")
-    @GetMapping("/deleteById")
-    @ResponseBody
     @Override
-    public Response<?> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam Long id) {
+    public Response<?> deleteById(Long id) {
         if (id == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "删除记录ID不能为空");
         }
@@ -43,17 +40,11 @@ public class DataCategoryController implements BaseEntityController<DataCategory
         return Response.ok();
     }
 
-    @ApiOperation(value = "批量删除", hidden = true)
-    @GetMapping("/deleteByIds")
-    @ResponseBody
     @Override
-    public Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam Long[] ids) {
+    public Response<?> deleteByIds(Long[] ids) {
         throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "不支持此接口。");
     }
 
-    @ApiOperation(value = "分页查询", hidden = true)
-    @GetMapping("/page")
-    @ResponseBody
     @Override
     public Response<IPage<DataCategory>> page(ExampleQuery query) {
         throw new ControllerException(ErrType.INTERNAL_SERVER_ERROR, "不支持此接口。");

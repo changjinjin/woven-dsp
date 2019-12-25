@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/perm")
-@Api(tags = "认证与授权：系统权限管理", value = "系统权限管理接口定义")
+@Api(tags = "系统管理：系统权限管理", value = "系统权限管理接口定义")
 public class PermissionController implements MainTableController<Permission> {
 
     @Autowired
@@ -30,15 +30,12 @@ public class PermissionController implements MainTableController<Permission> {
         return permissionService;
     }
 
-    @ApiOperation(value = "根据ID删除权限信息")
-    @PostMapping("/deleteById")
-    public Response<?> deleteById(@ApiParam(value = "权限ID", required = true) @RequestParam String id) {
+    @Override
+    public Response<?> deleteById(String id) {
         permissionService.deleteOnCascadeById(id);
         return Response.ok();
     }
 
-    @ApiOperation(value = "根据ID查询权限信息")
-    @PostMapping("/infoById")
     @JsonBodys({@JsonBody(type = Permission.class, includes = {"id", "code", "name", "type", "url", "description",
         "enabled", "order", "route", "icon"})})
     public Response<Permission> infoById(@ApiParam(value = "权限ID", required = true) @RequestBody String id) {

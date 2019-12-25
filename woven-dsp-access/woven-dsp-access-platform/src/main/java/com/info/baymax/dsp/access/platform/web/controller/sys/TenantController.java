@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/tenant")
-@Api(tags = "认证与授权：租户管理", value = "租户管理接口定义")
+@Api(tags = "系统管理：租户管理", value = "租户管理接口定义")
 public class TenantController {
 
     @Autowired

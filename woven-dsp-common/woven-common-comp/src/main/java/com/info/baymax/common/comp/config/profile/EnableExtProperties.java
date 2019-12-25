@@ -13,5 +13,11 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Import(PropertyResourceConfiguration.class)
 public @interface EnableExtProperties {
+
+    /**
+     * 配置文件路径，可使用通配符，主要解决@PropertySource不能使用通配符的问题
+     *
+     * @return 文件路径
+     */
     String[] value() default {};
 }
