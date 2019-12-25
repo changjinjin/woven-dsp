@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.job.sch.scheduler;
 
 import com.info.baymax.common.utils.JsonBuilder;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.job.sch.constant.SchedulerTypes;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -105,7 +105,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
                 triggerBuilder.endAt(new Date(lastMiss));
             }
 
-            if (SchedulerTypes.SCHEDULER_TYPE_CRON.equals(ds.getScheduleType())) {
+            if (ScheduleType.SCHEDULER_TYPE_CRON.equals(ds.getScheduleType())) {
                 triggerBuilder.withSchedule(CronScheduleBuilder.cronSchedule((String) ds.getServiceConfiguration().get("cron"))
                         .withMisfireHandlingInstructionDoNothing());
             }

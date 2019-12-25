@@ -1,9 +1,8 @@
 package com.info.baymax.dsp.job.exec.reader.impl;
 
-import com.info.baymax.dsp.job.exec.constant.Storage;
+import com.info.baymax.dsp.data.consumer.constant.TargetStorage;
 import com.info.baymax.dsp.job.exec.reader.CommonReader;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author: haijun
@@ -13,6 +12,6 @@ import org.springframework.stereotype.Component;
 public class HiveReader implements CommonReader {
     @Override
     public String getType() {
-        return Storage.HIVE.getValue();
+        return TargetStorage.HIVE.getValue();
     }
 }

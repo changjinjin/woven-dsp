@@ -2,7 +2,6 @@ package com.info.baymax.dsp.job.sch.service.clean;
 
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
@@ -15,12 +14,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @Author: haijun
@@ -71,7 +68,7 @@ public class DataEntityCleaner {
             //更新DB
             dataServiceEntityService.updateListByPrimaryKey(dataServiceList);
 
-            log.info("clean: update dataService successed : {}", count);
+            log.info("clean: update dataService success : " + count);
         } catch (Throwable e) {
             log.error("clean dataService error", e);
         }

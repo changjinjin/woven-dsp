@@ -1,10 +1,10 @@
-package com.info.baymax.dsp.job.sch.constant;
+package com.info.baymax.dsp.data.consumer.constant;
 
 /**
  * @Author: haijun
  * @Date: 2019/12/19 11:48
  */
-public class JobStatus {
+public class ScheduleJobStatus {
     public static final Integer JOB_STATUS_READY = 0;
     public static final Integer JOB_STATUS_RUNNING = 1;
 }
