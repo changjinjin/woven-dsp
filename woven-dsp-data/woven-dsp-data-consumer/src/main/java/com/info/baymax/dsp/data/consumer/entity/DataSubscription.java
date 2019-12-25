@@ -28,6 +28,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @ApiModel
 @Entity
 @Table(name = "dsp_data_subscription", indexes = {@Index(columnList = "lastModifiedTime DESC")})
+@Deprecated
 public class DataSubscription extends BaseEntity {
     private static final long serialVersionUID = 8381030191792735602L;
 

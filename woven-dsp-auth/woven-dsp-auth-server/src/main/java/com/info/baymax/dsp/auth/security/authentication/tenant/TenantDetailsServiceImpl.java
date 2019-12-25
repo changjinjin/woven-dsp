@@ -1,13 +1,9 @@
 package com.info.baymax.dsp.auth.security.authentication.tenant;
 
 import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.dsp.auth.security.authentication.license.LicenseInit;
-import com.info.baymax.dsp.auth.security.authentication.license.LicenseNotActivatedException;
 import com.info.baymax.dsp.auth.security.i18n.SecurityMessageSource;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.service.security.TenantService;
-import de.schlichtherle.demo.LicenseVerifyDemo;
-import de.schlichtherle.license.LicenseContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
