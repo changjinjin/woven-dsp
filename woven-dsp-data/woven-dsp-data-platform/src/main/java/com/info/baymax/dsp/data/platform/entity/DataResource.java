@@ -64,12 +64,12 @@ public class DataResource extends BaseEntity {
     private Integer isPush;
 
     @ApiModelProperty(value = "pull服务方式")
-    @Column(length = 20)
+    @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private List<String> pullServiceType;
 
     @ApiModelProperty(value = "push服务方式: 全量,增量")
-    @Column(length = 20)
+    @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private List<String> pushServiceType;
 
