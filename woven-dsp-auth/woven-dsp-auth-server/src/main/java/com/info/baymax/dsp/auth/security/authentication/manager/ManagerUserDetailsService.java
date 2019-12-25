@@ -13,6 +13,9 @@ import com.info.baymax.dsp.data.sys.initialize.TenantInitializer;
 import com.info.baymax.dsp.data.sys.service.security.PermissionService;
 import com.info.baymax.dsp.data.sys.service.security.TenantService;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -37,6 +40,7 @@ import java.util.stream.Collectors;
  * @author: jingwei.yang
  * @date: 2019年4月22日 下午2:04:49
  */
+@Slf4j
 @Service
 public class ManagerUserDetailsService implements UserDetailsService, GrantedAuthoritiesService {
 
@@ -66,13 +70,25 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 用户名为空
         if (StringUtils.isEmpty(username)) {
-            throw new UsernameNotFoundException(
-                this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty"));
+            String message = this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty");
+            log.debug(message);
+            throw new UsernameNotFoundException(message);
         }
-        String[] certificates = username.split(":");
+        String clientId = null;
+        String tenantName = null;
+        String userName = null;
+        try {
+            String[] certificates = username.split(":");
+            clientId = certificates[0];
+            tenantName = certificates[1];
+            userName = certificates[2];
+        } catch (Exception e) {
+            String message = this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty");
+            log.error(message, e);
+            throw new UsernameNotFoundException(message);
+        }
         // 检查用户信息
-        SimpleManagerDetails userDetails = findUserByClientIdAndUsername(certificates[0], certificates[1],
-            certificates[2]);
+        SimpleManagerDetails userDetails = findUserByClientIdAndUsername(clientId, tenantName, userName);
         checker.check(userDetails);
 
         // 如果密码检查是严格模式，则登录需要检查是否需要修改密码
@@ -123,8 +139,10 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
         User user = userService.findByTenantAndUsername(tenant.getId(), username);
         // 用户不存在
         if (user == null) {
-            throw new UsernameNotFoundException(this.messages.getMessage("UserErr.usernameNotFound",
-                new Object[]{username}, "Username {0} not found"));
+            String message = this.messages.getMessage("UserErr.usernameNotFound", new Object[]{username},
+                "Username {0} not found");
+            log.debug(message);
+            throw new UsernameNotFoundException(message);
         }
 
         // 如果是管理员权限则需要用户拥有所有的权限，这里赋给该账户所有的权限
@@ -132,16 +150,20 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
         if (user.admin()) { // 初始获取如果为空则初始化
             List<String> list = permissionService.findAuthoritiesByClientId(clientId);
             if (ICollections.hasNoElements(list)) {
-                throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
-                    new Object[]{username}, "Username {0} no authority granted"));
+                String message = this.messages.getMessage("UserErr.noAuthorityGranted", new Object[]{username},
+                    "Username {0} no authority granted");
+                log.debug(message);
+                throw new NoGrantedAnyAuthorityException(message);
             }
             user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList()));
         }
 
         // 用户没有赋权，用户需要有权限才能登陆服务
         if (user.getAuthorities() == null || user.getAuthorities().isEmpty()) {
-            throw new NoGrantedAnyAuthorityException(this.messages.getMessage("UserErr.noAuthorityGranted",
-                new Object[]{username}, "Username {0} no authority granted"));
+            String message = this.messages.getMessage("UserErr.noAuthorityGranted", new Object[]{username},
+                "Username {0} no authority granted");
+            log.debug(message);
+            throw new NoGrantedAnyAuthorityException(message);
         }
         return new SimpleManagerDetails(clientId, tenant, user);
     }
