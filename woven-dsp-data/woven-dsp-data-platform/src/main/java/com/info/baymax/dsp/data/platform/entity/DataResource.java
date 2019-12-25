@@ -23,6 +23,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,15 +53,25 @@ public class DataResource extends BaseEntity {
     // id, name, type, label, dataset_id, engine, encoder, configuration, expired_time, tenant_id, creator, modifier,
     // create_time, last_modified_time
 
-    @ApiModelProperty(value = "选择开放服务类型(推送, 拉取): 0-pull, 1-push, 2-pull and push")
-    @Column(length = 1, nullable = false)
+    @ApiModelProperty(value = "是否支持pull:0不支持,1支持")
+    @Column(length = 1)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    private Integer shareType;
+    private Integer isPull;
 
-    @ApiModelProperty(value = "服务方式（:文件,消息,http）：http, message, file")
-    @Column(length = 20, nullable = false)
+    @ApiModelProperty(value = "是否支持push:0不支持,1支持")
+    @Column(length = 1)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    private Integer isPush;
+
+    @ApiModelProperty(value = "pull服务方式")
+    @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String serviceType;
+    private List<String> pullServiceType;
+
+    @ApiModelProperty(value = "push服务方式: 全量,增量")
+    @Column(length = 20)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private List<String> pushServiceType;
 
     @ApiModelProperty(value = "数据类型: 0 structured, 1 semi-structured, 2 unstructured")
     @Column(length = 11, nullable = false)
