@@ -41,11 +41,6 @@
             <artifactId>woven-dsp-data-dataset</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>woven-dsp-job-schedule</artifactId>
-            <version>${project.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -339,6 +334,11 @@
                     <groupId>org.apache.curator</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>${rs-api.version}</version>
         </dependency>
 
     </dependencies>

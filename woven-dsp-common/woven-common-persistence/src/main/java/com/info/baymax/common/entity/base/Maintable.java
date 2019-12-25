@@ -48,11 +48,6 @@ public class Maintable extends CommonEntity<String> implements Cloneable {
     @DefaultValue("1")
     protected Integer moduleVersion;
 
-    @ApiModelProperty("描述信息")
-    @Column(length = 255)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    protected String description;
-
     @ApiModelProperty("分组数")
     @Transient
     protected Long groupCount;

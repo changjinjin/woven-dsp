@@ -5,9 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
-import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
-import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringListTypeHandler;
-
+import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,16 +13,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -66,17 +55,17 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer isPush;
 
-    @ApiModelProperty(value = "pull服务方式")
+    @ApiModelProperty(value = "pull服务方式,2 列表")
     @Convert(converter = ObjectToStringConverter.class)
     @Column(length = 100)
-    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringListTypeHandler.class)
-    private List<String> pullServiceType;
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsIntegerArrayTypeHandler.class)
+    private Integer[] pullServiceMode;
 
-    @ApiModelProperty(value = "push服务方式: 全量,增量")
+    @ApiModelProperty(value = "push服务方式:0 全量,1 增量")
     @Convert(converter = ObjectToStringConverter.class)
     @Column(length = 100)
-    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringListTypeHandler.class)
-    private List<String> pushServiceType;
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsIntegerArrayTypeHandler.class)
+    private Integer[] pushServiceMode;
 
     @ApiModelProperty(value = "数据类型: 0 structured, 1 semi-structured, 2 unstructured")
     @Column(length = 11, nullable = false)
@@ -148,6 +137,18 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
     private Long expiredTime;
+
+    @ApiModelProperty("访问次数")
+    @Column(length = 11)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @DefaultValue("0")
+    private Integer accessTimes;
+
+    @ApiModelProperty("数据来源")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @DefaultValue("Baymax")
+    private String source;
 
     @Transient
     public Long getExpiredPeriod() {

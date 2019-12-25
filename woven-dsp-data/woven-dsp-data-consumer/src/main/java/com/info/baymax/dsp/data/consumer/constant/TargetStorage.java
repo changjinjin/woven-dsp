@@ -1,10 +1,10 @@
-package com.info.baymax.dsp.job.exec.constant;
+package com.info.baymax.dsp.data.consumer.constant;
 
 /**
  * @Author: haijun
  * @Date: 2019/12/19 17:46
  */
-public enum Storage {
+public enum TargetStorage {
     ELASTICSEARCH("ElasticSearch"),
     HBASE("HBASE"),
     HIVE("HIVE"),
@@ -17,7 +17,7 @@ public enum Storage {
 
     private final String value;
 
-    Storage(final String value) {
+    TargetStorage(final String value) {
         this.value = value;
     }
 
