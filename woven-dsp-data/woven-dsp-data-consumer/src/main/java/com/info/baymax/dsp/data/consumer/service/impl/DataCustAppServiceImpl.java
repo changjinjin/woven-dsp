@@ -29,10 +29,10 @@ public class DataCustAppServiceImpl extends EntityClassServiceImpl<DataCustApp> 
 
     @Override
     public DataCustApp save(DataCustApp t) {
-        if (StringUtils.isEmpty(t.getAppName())) {
-            throw new ServiceException(ErrType.BAD_REQUEST, "appName不能为空。");
+        if (StringUtils.isEmpty(t.getName())) {
+            throw new ServiceException(ErrType.BAD_REQUEST, "应用名称不能为空。");
         }
-        if (StringUtils.isEmpty(t.getAccessIp())) {
+        if (t.getAccessIp() == null) {
             throw new ServiceException(ErrType.BAD_REQUEST, "accessIp不能为空。");
         }
         if (StringUtils.isEmpty(t.getAccessKey())) {
@@ -47,7 +47,6 @@ public class DataCustAppServiceImpl extends EntityClassServiceImpl<DataCustApp> 
 
     @Override
     public DataCustApp update(DataCustApp t) {
-
         // key不能更新
         t.setAccessKey(null);
         return DataCustAppService.super.update(t);

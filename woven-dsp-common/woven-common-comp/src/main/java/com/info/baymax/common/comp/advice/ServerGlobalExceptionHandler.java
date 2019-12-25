@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -65,28 +67,25 @@ public class ServerGlobalExceptionHandler {
     }
 
     /**
-     * 认证授权异常信息
+     * 数据库异常
      *
-     * @param e 认证授权异常对象
-     * @return 认证授权异常消息报文
+     * @param e 业务异常对象
+     * @return 业务异常消息报文
      */
-    /*
-     * @ResponseBody
-     *
-     * @ExceptionHandler(AuthenticationException.class)
-     *
-     * @Order(-4) public Response<?> authenticationExceptionHandler(ServerWebExchange swe, AuthenticationException e) {
-     * logger.error(e.getMessage(), e);
-     *
-     * ServerHttpResponse response = swe.getResponse(); Response<Object> resp =
-     * AuthenticationExceptionHandler.handle(response, e); if (resp != null) { return resp; }
-     *
-     * HttpStatus httpStatus = defaultHttpStatus(response, HttpStatus.UNAUTHORIZED); Response<?> result =
-     * Response.error(httpStatus.value(), StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" +
-     * httpStatus.value())); if (result != null) return result;
-     *
-     * // 如果没有处理成功，这抛出统一的认证失败消息 return Response.error(ErrType.UNAUTHORIZED); }
-     */
+
+    @ResponseBody
+    @ExceptionHandler(DataAccessException.class)
+    @Order(-4)
+    public Response<?> DataAccessException(ServerWebExchange swe, DataAccessException e) {
+        logger.error(e.getMessage(), e);
+        ServerHttpResponse response = swe.getResponse();
+        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (e instanceof DuplicateKeyException) {
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "数据重复");
+        } else {
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
 
     /**
      * 设置Response默认的状态码

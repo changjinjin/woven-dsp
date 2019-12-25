@@ -5,6 +5,8 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -64,13 +66,15 @@ public class DataResource extends BaseEntity {
     private Integer isPush;
 
     @ApiModelProperty(value = "pull服务方式")
-    @Column(length = 20)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Convert(converter = ObjectToStringConverter.class)
+    @Column(length = 100)
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringArrayTypeHandler.class)
     private List<String> pullServiceType;
 
     @ApiModelProperty(value = "push服务方式: 全量,增量")
-    @Column(length = 20)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Convert(converter = ObjectToStringConverter.class)
+    @Column(length = 100)
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringArrayTypeHandler.class)
     private List<String> pushServiceType;
 
     @ApiModelProperty(value = "数据类型: 0 structured, 1 semi-structured, 2 unstructured")
