@@ -71,7 +71,7 @@ public class DataApiController implements Serializable {
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
 
         String accessKey = custApp.getAccessKey();
-        String accessIp = custApp.getAccessIp();
+        String[] accessIp = custApp.getAccessIp();
         if (accessKey.equals(requestKey)) {
             Long dataResId = dataApplication.getDataResId();
             DataResource dataResource = dataResourceService.getDataResource(dataResId);

@@ -8,6 +8,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.dataset.entity.core.ProcessConfig;
@@ -30,6 +31,24 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     @Override
     public BaseEntityService<CustDataSource> getBaseEntityService() {
         return custDataSourceService;
+    }
+
+    @Override
+    public Response<?> save(CustDataSource t) {
+        Response<?> response = CheckEntity.checkDataSource(t);
+        if (!response.success()) {
+            return response;
+        }
+        return BaseEntityController.super.save(t);
+    }
+
+    @Override
+    public Response<?> update(CustDataSource t) {
+        Response<?> response = CheckEntity.checkDataSource(t);
+        if (!response.success()) {
+            return response;
+        }
+        return BaseEntityController.super.update(t);
     }
 
     @ApiOperation(value = "查询数据库驱动信息", notes = "如果是JDBC类型的数据源，查询系统内置的数据库驱动信息用于用户创建数据源")

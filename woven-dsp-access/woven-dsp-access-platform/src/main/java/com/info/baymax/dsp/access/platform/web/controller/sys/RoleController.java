@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/role")
-@Api(tags = "认证与授权：系统角色管理", value = "系统角色管理接口定义")
+@Api(tags = "系统管理：系统角色管理", value = "系统角色管理接口定义")
 public class RoleController implements MainTableController<Role> {
 
     @Autowired
