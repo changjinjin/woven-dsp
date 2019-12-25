@@ -1,11 +1,13 @@
 package com.info.baymax.dsp.job.exec.util;
 
-import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.JsonBuilder;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
+import com.info.baymax.dsp.data.consumer.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
 import com.info.baymax.dsp.data.dataset.entity.core.DataField;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
@@ -25,13 +27,11 @@ import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
 import com.info.baymax.dsp.data.dataset.utils.ConstantInfo;
 import com.info.baymax.dsp.data.dataset.utils.Flows;
 import com.info.baymax.dsp.data.platform.bean.TransformRule;
-import com.info.baymax.dsp.data.platform.entity.DataPolicy;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataPolicyService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
-import com.info.baymax.dsp.job.exec.constant.FlowCont;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -42,11 +42,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -238,8 +236,8 @@ public class FlowGenUtil {
         if(!custDataSource.getAttributes().containsKey("mode")){
             stepBuilder.config("mode", "append");
         }
-        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), FlowCont.schema_sink_prefix +dataService.getId());
-        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), FlowCont.dataset_sink_prefix +dataService.getId());
+        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), ExecutorFlowConf.schema_sink_prefix +dataService.getId());
+        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), ExecutorFlowConf.dataset_sink_prefix +dataService.getId());
         String schemaId = "";
         String datasetId = "";
         if(schema != null){
@@ -254,7 +252,7 @@ public class FlowGenUtil {
             stepBuilder.config("autoSchema","true");
         }
 
-        stepBuilder.config("schemaId", schemaId).config("schema", FlowCont.schema_sink_prefix +dataService.getId()).config("datasetId", datasetId).config("dataset",FlowCont.dataset_sink_prefix + dataService.getId());
+        stepBuilder.config("schemaId", schemaId).config("schema", ExecutorFlowConf.schema_sink_prefix +dataService.getId()).config("datasetId", datasetId).config("dataset", ExecutorFlowConf.dataset_sink_prefix + dataService.getId());
         StepDesc step = stepBuilder.withPosition(585, 203).input(inputFields).build();
         return step;
     }
@@ -280,8 +278,8 @@ public class FlowGenUtil {
 
     private StepDesc getSqlSinkStep(String stepId, Dataset sourceDS, DataService dataService,List<FlowField> inputFields){
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
-        Schema schema = schemaService.findOneByName(sourceDS.getTenantId(), FlowCont.schema_cursor_name);
-        Dataset dataset = datasetService.findOneByName(sourceDS.getTenantId(), FlowCont.dataset_cursor_prefix + dataService.getId());
+        Schema schema = schemaService.findOneByName(sourceDS.getTenantId(), ExecutorFlowConf.schema_cursor_name);
+        Dataset dataset = datasetService.findOneByName(sourceDS.getTenantId(), ExecutorFlowConf.dataset_cursor_prefix + dataService.getId());
         //没有则创建
         String schemaId = "";
         String datasetId = "";
@@ -298,7 +296,7 @@ public class FlowGenUtil {
         }
         stepBuilder.config("mode", "overwrite");
 
-        stepBuilder.config("schemaId", schemaId).config("schema", FlowCont.schema_cursor_name).config("datasetId", datasetId).config("dataset",FlowCont.dataset_cursor_prefix + dataService.getId());
+        stepBuilder.config("schemaId", schemaId).config("schema", ExecutorFlowConf.schema_cursor_name).config("datasetId", datasetId).config("dataset", ExecutorFlowConf.dataset_cursor_prefix + dataService.getId());
         stepBuilder.config("quoteChar", "\"")
                 .config("escapeChar", "\\")
                 .config("schemaVersion", "")
@@ -313,7 +311,7 @@ public class FlowGenUtil {
                 .config("nullValue", "")
                 .config("expiredTime", "0")
                 .config("mode", "overwrite")
-                .config("path", FlowCont.dataset_cursor_dir + FlowCont.dataset_cursor_file_prefix + dataService.getId())
+                .config("path", ExecutorFlowConf.dataset_cursor_dir + ExecutorFlowConf.dataset_cursor_file_prefix + dataService.getId())
                 .config("countWrittenRecord", "")
                 .config("sliceType", "");
 
@@ -361,7 +359,7 @@ public class FlowGenUtil {
 
         //构建filter step
         StepDesc filterStep = null;
-        String condition = getCondition(dataResource, dataService, sourceOutputs);
+        String condition = getCondition(dataResource, dataApplication, dataService, sourceOutputs);
         filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition);
 
         //构建transform step
@@ -380,7 +378,7 @@ public class FlowGenUtil {
         //构建sql step和sink step 2
         StepDesc sqlStep = null;
         StepDesc sinkStep_2 = null;
-        if(StringUtils.isNotEmpty(dataResource.getIncrementField())){
+        if(StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataApplication.getServiceMode() == DataServiceMode.increment_mode){
             List<FlowField> sqlOutFields = null;
             sqlStep = getSQLStep("sql_5", dataResource, outputFileds, sqlOutFields);
             if(sqlStep != null){
@@ -471,27 +469,29 @@ public class FlowGenUtil {
         return flowCreated;
     }
 
-    public String getCondition(DataResource dataResource, DataService dataService, List<FlowField> sourceOutputs){
+    public String getCondition(DataResource dataResource, DataApplication dataApplication, DataService dataService, List<FlowField> sourceOutputs){
         String condition = "1 == 1";
-        if(StringUtils.isNotEmpty(dataResource.getIncrementField()) && StringUtils.isNotEmpty(dataService.getCursorVal())){
-            String incrementField = dataResource.getIncrementField();
-            for(FlowField flowField : sourceOutputs){
-                if(flowField.getColumn().equals(incrementField)){
-                    if(flowField.getType().equals("int") || flowField.getType().equals("short") || flowField.getType().equals("bigint")) {
-                        condition = incrementField + " > " + dataService.getCursorVal();
-                    }else if(flowField.getType().equals("date")){
-                        condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
-                    }else if(flowField.getType().equals("timestamp")){
-                        condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
-                    }else{
-                        condition = incrementField + " > " + dataService.getCursorVal();
+        if(dataApplication.getServiceMode() == DataServiceMode.increment_mode) {
+            if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && StringUtils.isNotEmpty(dataService.getCursorVal())) {
+                String incrementField = dataResource.getIncrementField();
+                for (FlowField flowField : sourceOutputs) {
+                    if (flowField.getColumn().equals(incrementField)) {
+                        if (flowField.getType().equals("int") || flowField.getType().equals("short") || flowField.getType().equals("bigint")) {
+                            condition = incrementField + " > " + dataService.getCursorVal();
+                        } else if (flowField.getType().equals("date")) {
+                            condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
+                        } else if (flowField.getType().equals("timestamp")) {
+                            condition = incrementField + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
+                        } else {
+                            condition = incrementField + " > " + dataService.getCursorVal();
+                        }
+                        break;
                     }
-                    break;
                 }
+            } else if (StringUtils.isNotEmpty(dataResource.getIncrementField())) {
+                String incrementField = dataResource.getIncrementField();
+                condition = incrementField + " IS NOT NULL";
             }
-        }else if(StringUtils.isNotEmpty(dataResource.getIncrementField())){
-            String incrementField = dataResource.getIncrementField();
-            condition = incrementField + " IS NOT NULL";
         }
         return condition;
     }
@@ -512,18 +512,11 @@ public class FlowGenUtil {
         return fh;
     }
 
-    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc){
+    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
         String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         String name = "ds_"+ dataService.getName()+ "_" + time;
         ConfigObject configurations = new ConfigObject();
-        List<Map<String,String>> properties = new LinkedList<>();
-        String runtimeProperties = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
-        List<String> list = JsonBuilder.getInstance().fromJson(runtimeProperties, List.class);
-        for(String str : list) {
-            Map<String,String> map = (Map<String, String>)JsonBuilder.getInstance().fromJson(str, Map.class);
-            properties.add(map);
-        }
-        configurations.put("properties", properties);
+        configurations.put("properties", runtime_properties);
         Long startTime = System.currentTimeMillis();
         try {
             startTime = Long.parseLong(dataService.getServiceConfiguration().get("startTime"));

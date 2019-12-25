@@ -1,9 +1,8 @@
 package com.info.baymax.dsp.job.exec.writer.impl;
 
-import com.info.baymax.dsp.job.exec.constant.Storage;
+import com.info.baymax.dsp.data.consumer.constant.TargetStorage;
 import com.info.baymax.dsp.job.exec.writer.CommonWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author: haijun
@@ -13,6 +12,6 @@ import org.springframework.stereotype.Component;
 public class EsWriter implements CommonWriter {
     @Override
     public String getType() {
-        return Storage.ELASTICSEARCH.getValue();
+        return TargetStorage.ELASTICSEARCH.getValue();
     }
 }

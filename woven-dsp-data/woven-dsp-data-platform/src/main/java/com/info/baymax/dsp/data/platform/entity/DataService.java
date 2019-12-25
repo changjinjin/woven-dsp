@@ -59,7 +59,7 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyTransformRuleValueTypeHandler.class)
     private Map<String, TransformRule> fieldConfiguration;
 
-    @ApiModelProperty("服务相关的一些配置,如限速限流,开始时间结束时间,周期信息等配置")
+    @ApiModelProperty("服务相关的一些配置,如限速限流,开始时间结束时间,周期cron信息等配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
