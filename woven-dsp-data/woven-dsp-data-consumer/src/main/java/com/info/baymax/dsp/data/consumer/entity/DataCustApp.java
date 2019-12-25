@@ -1,6 +1,8 @@
 package com.info.baymax.dsp.data.consumer.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
+import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,10 +10,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 /**
  * 消费者应用信息
@@ -37,15 +36,11 @@ public class DataCustApp extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String custName;
 
-    @ApiModelProperty(value = "应用名称")
-    @Column(length = 255)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String appName;
-
     @ApiModelProperty(value = "接入IP")
-    @Column(length = 20)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String accessIp;
+    @Convert(converter = ObjectToStringConverter.class)
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringArrayTypeHandler.class)
+    private String[] accessIp;
 
     @ApiModelProperty(value = "接入KEY")
     @Column(length = 100)
