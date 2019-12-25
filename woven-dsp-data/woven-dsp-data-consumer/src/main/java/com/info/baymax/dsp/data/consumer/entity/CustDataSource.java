@@ -2,7 +2,7 @@ package com.info.baymax.dsp.data.consumer.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
-import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyObjectValueTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -34,7 +34,7 @@ public class CustDataSource extends BaseEntity {
     @ApiModelProperty(value = "推送数据源配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> otherConfiguration;
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyObjectValueTypeHandler.class)
+    private Map<String, Object> attributes;
 
 }

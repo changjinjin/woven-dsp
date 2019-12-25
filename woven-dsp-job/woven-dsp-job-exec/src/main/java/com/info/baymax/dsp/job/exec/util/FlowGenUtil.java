@@ -228,14 +228,14 @@ public class FlowGenUtil {
     private StepDesc getSinkStep(String stepId, Dataset sourceDataset, DataService dataService, DataApplication dataApplication, List<FlowField> inputFields) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataApplication.getTenantId(),dataApplication.getCustDataSourceId());
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
-        Iterator<Map.Entry<String,String>> iter = custDataSource.getOtherConfiguration().entrySet().iterator();
+        Iterator<Map.Entry<String,Object>> iter = custDataSource.getAttributes().entrySet().iterator();
         while (iter.hasNext()){
-            Map.Entry<String,String> entry = iter.next();
+            Map.Entry<String,Object> entry = iter.next();
             String key = entry.getKey();
-            String val = entry.getValue();
+            Object val = entry.getValue();
             stepBuilder.config(key, val);
         }
-        if(!custDataSource.getOtherConfiguration().containsKey("mode")){
+        if(!custDataSource.getAttributes().containsKey("mode")){
             stepBuilder.config("mode", "append");
         }
         Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), FlowCont.schema_sink_prefix +dataService.getId());
@@ -416,9 +416,9 @@ public class FlowGenUtil {
             logger.error("build flow exception: ", e);
         }
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
-        if(custDataSource.getType().equalsIgnoreCase("jdbc") && custDataSource.getOtherConfiguration().containsKey("jarPath")){
+        if(custDataSource.getType().equalsIgnoreCase("jdbc") && custDataSource.getAttributes().containsKey("jarPath")){
             ParameterDesc param = new ParameterDesc();
-            param.setName(custDataSource.getOtherConfiguration().get("jarPath"));
+            param.setName(custDataSource.getAttributes().getOrDefault("jarPath","").toString());
             param.setCategory("ref");
             List<ParameterDesc> depenList = new ArrayList<>();
             depenList.add(param);

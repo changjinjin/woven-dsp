@@ -75,6 +75,11 @@ public abstract class CommonEntity<ID extends Serializable> implements PreEntity
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date lastModifiedTime;
+    
+    @ApiModelProperty("描述信息")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    protected String description;
 
     @Override
     public void preInsert() {

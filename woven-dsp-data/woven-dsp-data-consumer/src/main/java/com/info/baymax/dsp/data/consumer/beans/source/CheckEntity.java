@@ -21,7 +21,7 @@ public class CheckEntity {
                 return Response.error(ErrType.BAD_REQUEST, "dataSource[type] is INVALID");
             }
             if (DataSourceType.DB.getValue().equals(dataSource.getType())) {
-                Map<String, String> storageMap = dataSource.getOtherConfiguration();
+                Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
                 } else {
@@ -63,7 +63,7 @@ public class CheckEntity {
                 }
             }
             if (DataSourceType.HTTP.getValue().equals(dataSource.getType())) {
-                Map<String, String> storageMap = dataSource.getOtherConfiguration();
+            	Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
                 } else {
@@ -79,7 +79,7 @@ public class CheckEntity {
 
             }
             if (DataSourceType.FTP.getValue().equals(dataSource.getType())) {
-                Map<String, String> storageMap = dataSource.getOtherConfiguration();
+            	Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
                 } else {
@@ -106,7 +106,7 @@ public class CheckEntity {
                 }
             }
             if (DataSourceType.socket.getValue().equals(dataSource.getType())) {
-                Map<String, String> storageMap = dataSource.getOtherConfiguration();
+            	Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
                 } else {
@@ -125,7 +125,7 @@ public class CheckEntity {
                 }
             }
             if (DataSourceType.MONGODB.getValue().equals(dataSource.getType())) {
-                Map<String, String> storageMap = dataSource.getOtherConfiguration();
+            	Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
                 } else {
@@ -145,7 +145,7 @@ public class CheckEntity {
 
             }
             if (DataSourceType.ES.getValue().equals(dataSource.getType())) {
-                Map<String, String> storageMap = dataSource.getOtherConfiguration();
+            	Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
                 } else {
