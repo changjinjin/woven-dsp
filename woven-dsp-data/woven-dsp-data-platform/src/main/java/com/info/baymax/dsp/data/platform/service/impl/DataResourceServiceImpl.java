@@ -1,14 +1,17 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
+import com.info.baymax.common.enums.types.YesNoType;
+import com.info.baymax.common.message.exception.ServiceException;
+import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataResourceMapper;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
-import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +26,10 @@ import java.util.List;
 @Transactional(rollbackOn = Exception.class)
 public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource> implements DataResourceService {
     @Autowired
-    DataResourceMapper resourceMapper;
+    private DataResourceMapper resourceMapper;
 
     @Autowired
-    DatasetService datasetService;
+    private DatasetService datasetService;
 
     @Override
     public MyIdableMapper<DataResource> getMyIdableMapper() {
@@ -34,22 +37,24 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
     }
 
     @Override
-    public Integer createDataResource(DataResource dataResource) {
-        return resourceMapper.insert(dataResource);
+    public DataResource save(DataResource t) {
+        if (t == null) {
+            throw new ServiceException(ErrType.BAD_REQUEST, "请求数据不能为空。");
+        }
+
+        // 检查数据集数据是否存在并修改数据集的关联状态
+        Dataset dataset = datasetService.selectByPrimaryKey(t.getDatasetId());
+        if (dataset == null) {
+            throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "绑定的数据集记录不存在或者已经过期。");
+        }
+        dataset.setIsRelated(YesNoType.YES.getValue());
+        datasetService.updateByPrimaryKey(dataset);
+
+        return DataResourceService.super.save(t);
     }
 
     @Override
-    public DataResource getDataResource(Long id) {
-        return resourceMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public void updateDataResource(DataResource dataResource) {
-        resourceMapper.updateByPrimaryKey(dataResource);
-    }
-
-    @Override
-    public void closeDataResource(List<Long> ids){
+    public void closeDataResource(List<Long> ids) {
         resourceMapper.closeDataResourceByIds(ids);
     }
 

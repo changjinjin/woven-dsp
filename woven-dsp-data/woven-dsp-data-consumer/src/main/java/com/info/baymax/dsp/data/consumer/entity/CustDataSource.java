@@ -17,14 +17,9 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
 @Entity
-@Table(name = "dsp_cust_data_source", uniqueConstraints = {@UniqueConstraint(columnNames = {"custId", "name"})})
+@Table(name = "dsp_cust_data_source", uniqueConstraints = {@UniqueConstraint(columnNames = {"owner", "name"})})
 public class CustDataSource extends BaseEntity {
     private static final long serialVersionUID = -4792968324286483492L;
-
-    @ApiModelProperty(value = "消费者ID")
-    @Column(length = 20)
-    @ColumnType(jdbcType = JdbcType.BIGINT)
-    private Long custId;
 
     @ApiModelProperty(value = "推送数据源类型")
     @Column(length = 20)

@@ -33,11 +33,13 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
 
     @ApiOperation(value = "审批消费者申请记录")
     @PostMapping("/approval/{status}")
-    public Response<?> updateDataApplication(@PathVariable Integer status, @RequestBody DataService dataService)
+    public Response<?> approvalDataApplication(@PathVariable Integer status, @RequestBody DataService dataService)
         throws Exception {
         dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), status);
         if (status == 1) {
-            dataServiceEntityService.insert(dataService);
+            DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
+            dataService.setCustId(dataApplication.getOwner());
+            dataServiceEntityService.saveOrUpdate(dataService);
         }
         return Response.ok();
     }

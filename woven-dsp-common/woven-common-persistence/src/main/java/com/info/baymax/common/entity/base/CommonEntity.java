@@ -75,7 +75,7 @@ public abstract class CommonEntity<ID extends Serializable> implements PreEntity
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date lastModifiedTime;
-    
+
     @ApiModelProperty("描述信息")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
@@ -94,13 +94,13 @@ public abstract class CommonEntity<ID extends Serializable> implements PreEntity
 
         String currentUserId = SaasContext.getCurrentUserId();
         if (StringUtils.isNotEmpty(currentUserId)) {
-            if (owner == null) {
+            if (StringUtils.isEmpty(owner)) {
                 this.setOwner(currentUserId);
             }
-            if (creator == null) {
+            if (StringUtils.isEmpty(creator)) {
                 this.setCreator(SaasContext.getCurrentUsername());
             }
-            if (lastModifier == null) {
+            if (StringUtils.isEmpty(lastModifier)) {
                 this.setLastModifier(SaasContext.getCurrentUsername());
             }
         }

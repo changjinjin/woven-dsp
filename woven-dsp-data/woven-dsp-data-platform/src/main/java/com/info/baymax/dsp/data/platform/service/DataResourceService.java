@@ -12,10 +12,9 @@ import java.util.List;
  * @Author: haijun
  * @Date: 2019/12/13 19:09
  */
-public interface DataResourceService extends BaseEntityService<DataResource>  {
-    Integer createDataResource(DataResource dataResource);
-    DataResource getDataResource(Long id);
-    void updateDataResource(DataResource dataResource);
+public interface DataResourceService extends BaseEntityService<DataResource> {
+
     void closeDataResource(List<Long> ids);
+
     IPage<Dataset> queryDatasets(ExampleQuery exampleQuery);
 }
