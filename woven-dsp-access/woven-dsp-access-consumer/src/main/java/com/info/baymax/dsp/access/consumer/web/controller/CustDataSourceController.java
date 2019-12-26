@@ -40,7 +40,7 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 
     @Override
     public Response<?> save(
-        @ApiModelFields(requiredFields = {"name", "type", "attributes", "description"}, filterFields = {"id",
+        @ApiModelFields(requiredFields = {"name", "type", "attributes"}, filterFields = {"id",
             "enabled", "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
             "lastModifier"}, includeMode = false) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);

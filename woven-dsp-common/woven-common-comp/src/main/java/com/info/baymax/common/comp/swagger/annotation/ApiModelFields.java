@@ -27,7 +27,7 @@ public @interface ApiModelFields {
     String[] filterFields() default {};
 
     /**
-     * 是都是包含模式，如果是则filterFields里的字段需要包含进来，否则filterFields的字段需要排除
+     * 是否是包含模式，如果是则filterFields里的字段需要包含进来，否则filterFields的字段需要排除
      *
      * @return 包含模式-true，排除模式-false
      */

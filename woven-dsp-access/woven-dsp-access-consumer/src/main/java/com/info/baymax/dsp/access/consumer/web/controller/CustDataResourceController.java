@@ -25,11 +25,11 @@ public class CustDataResourceController {
     @ApiOperation(value = "消费者查询可申请的数据资源，分页查询")
     @PostMapping("/page")
     public Response<IPage<DataResource>> page(@ApiParam("查询条件") @RequestBody ExampleQuery query) throws Exception {
-        query = ExampleQuery.builder(query).fieldGroup()//
+        query = ExampleQuery.builder(query)//
+            .fieldGroup()//
             .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
             .andEqualTo("openStatus", 1)//
             .end();
         return Response.ok(dataResourceService.selectPage(query));
     }
-
 }

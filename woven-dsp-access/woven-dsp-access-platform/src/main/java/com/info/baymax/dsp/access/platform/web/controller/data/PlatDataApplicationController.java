@@ -5,6 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,9 +27,10 @@ import java.util.Map;
 public class PlatDataApplicationController implements BaseEntityController<DataApplication> {
     @Autowired
     private DataApplicationService dataApplicationService;
-
     @Autowired
     private DataServiceEntityService dataServiceEntityService;
+    @Autowired
+    private DataCustAppService dataCustAppService;
 
     @Value("${dataapi.url.list}")
     private String dataApiUrl;
@@ -45,6 +46,15 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
         return dataApplicationService;
     }
 
+    @Override
+    public Response<DataApplication> infoById(Long id) {
+        DataApplication t = dataApplicationService.selectByPrimaryKey(id);
+        if (t.getCustAppId() != null) {
+            t.setDataCustApp(dataCustAppService.selectByPrimaryKey(t.getCustAppId()));
+        }
+        return Response.ok(t);
+    }
+
     @ApiOperation(value = "审批消费者申请记录")
     @PostMapping("/approval/{status}")
     public Response<?> approvalDataApplication(@PathVariable Integer status, @RequestBody DataService dataService)
@@ -53,7 +63,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
         if (status == 1) {
             DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
             dataService.setCustId(dataApplication.getOwner());
-            if (dataService.getType() == 0) {   //pull 服务, 配置接口信息
+            if (dataService.getType() == 0) { // pull 服务, 配置接口信息
                 dataService.setUrl(dataApiUrl);
                 dataService.setPath(dataApiPath);
 

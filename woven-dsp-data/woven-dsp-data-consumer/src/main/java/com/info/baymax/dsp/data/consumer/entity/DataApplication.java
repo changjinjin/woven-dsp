@@ -65,6 +65,10 @@ public class DataApplication extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long custAppId;
 
+    @Transient
+    @ApiModelProperty("接入配置信息")
+    private DataCustApp dataCustApp;
+
     @ApiModelProperty(value = "服务方式,pull和push不同")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.INTEGER)
