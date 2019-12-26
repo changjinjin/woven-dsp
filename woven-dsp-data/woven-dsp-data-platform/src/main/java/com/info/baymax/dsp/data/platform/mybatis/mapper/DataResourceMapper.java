@@ -15,7 +15,7 @@ public interface DataResourceMapper extends MyIdableMapper<DataResource> {
     @Update({
             "<script>",
             "update",
-            "dsp_data_application",
+            "dsp_data_resource",
             "set open_status = 0",
             "where id in",
             "<foreach collection='ids' item='id' open='(' separator=',' close=')'>",

@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -40,7 +37,7 @@ public class DataResourceController implements BaseEntityController<DataResource
 
     @ApiOperation(value = "开放数据资源给消费者")
     @PostMapping("/open")
-    public Response<?> openDataResource(DataResource drs) throws Exception {
+    public Response<?> openDataResource(@RequestBody DataResource drs) throws Exception {
         // --TODO-- updateOpenStatus 1 and updateDataPolicy
         log.info("publish dataResource, id={} ...", drs.getId());
         if (drs.getOpenStatus() == 1) {
@@ -54,12 +51,12 @@ public class DataResourceController implements BaseEntityController<DataResource
     @ApiOperation(value = "关闭某数据资源的申请权限")
     @PostMapping("/close")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Response<?> closeDataResource(Long[] ids) throws Exception {
+    public Response<?> closeDataResource(@RequestBody Long[] ids) throws Exception {
         // --TODO-- 根据dataResourceId关联更新consumer_data_application record
         // status,禁止申请权限,或者删除记录
         // --TODO-- updateOpenStatus 0
         log.info("close dataResource and delete dataApplication, ids.size={}...", ids.length);
-        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids);
+//        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids);
         dataResourceService.closeDataResource(Arrays.asList(ids));
         return Response.ok();
     }
