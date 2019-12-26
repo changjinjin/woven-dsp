@@ -10,7 +10,12 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: haijun
@@ -26,6 +31,15 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
     @Autowired
     private DataServiceEntityService dataServiceEntityService;
 
+    @Value("${dataapi.url.list}")
+    private String dataApiUrl;
+
+    @Value("${dataapi.path}")
+    private String dataApiPath;
+
+    @Value("${dataapi.params}")
+    private String queryParams;
+
     @Override
     public BaseEntityService<DataApplication> getBaseEntityService() {
         return dataApplicationService;
@@ -39,6 +53,16 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
         if (status == 1) {
             DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
             dataService.setCustId(dataApplication.getOwner());
+            if (dataService.getType() == 0) {   //pull 服务, 配置接口信息
+                dataService.setUrl(dataApiUrl);
+                dataService.setPath(dataApiPath);
+
+                Map<String, String> pullConfig = new HashMap<>();
+                for (String param : queryParams.split(",")) {
+                    pullConfig.put(param.split(":")[0], param.split(":")[1]);
+                }
+                dataService.setPullConfiguration(pullConfig);
+            }
             dataServiceEntityService.saveOrUpdate(dataService);
         }
         return Response.ok();
