@@ -18,6 +18,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,6 +50,22 @@ public class DataService extends BaseEntity {
     @Column(length = 1, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer type;
+
+    @ApiModelProperty(value = "pull服务url列表")
+    @Column(length = 100)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String url;
+
+    @ApiModelProperty(value = "pull服务path")
+    @Column(length = 50)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String path;
+
+    @ApiModelProperty(value = "pull服务参数说明")
+    @Lob
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
+    private Map<String, String> pullConfiguration;
 
     @ApiModelProperty("调度类型：once,cron,event")
     @Column(length = 20)

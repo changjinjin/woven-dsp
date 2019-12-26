@@ -56,6 +56,8 @@ public class DataApiController implements Serializable {
     public Response pullData(@RequestBody Map<String, String> body) throws Exception {
         String dataServiceId = body.get("dataServiceId");
         String requestKey = body.get("accessKey");
+        int offset = Integer.valueOf(body.getOrDefault("offset", "0"));
+        int size = Integer.valueOf(body.getOrDefault("size", "10000"));
 
         if (dataServiceId == null) {
             return Response.error(ErrType.BAD_REQUEST, "Missing dataServiceId param");
@@ -76,7 +78,7 @@ public class DataApiController implements Serializable {
             Long dataResId = dataApplication.getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
-            return Response.ok(elasticSearchService.query(dataset.getStorageConfigurations()));
+            return Response.ok(elasticSearchService.query(dataset.getStorageConfigurations(), offset, size));
 
         } else {
             return Response.error(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");

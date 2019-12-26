@@ -24,7 +24,7 @@ import java.util.Map;
 public class ElasticSearchServiceImpl implements ElasticSearchService {
 
     @Override
-    public SearchResponse query(Map<String, String> conf) {
+    public SearchResponse query(Map<String, String> conf, int offset, int size) {
         String clusterName = conf.get("clusterName");
         String ipAddresses = conf.get("ipAddresses");
         String index = conf.get("index");
@@ -45,7 +45,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
         QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
 
-        SearchResponse response = client.prepareSearch(index).setTypes(indexType).setQuery(queryBuilder).setFrom(1).setSize(1).get();
+        SearchResponse response = client.prepareSearch(index).setTypes(indexType).setQuery(queryBuilder).setFrom(offset).setSize(size).get();
 
         client.close();
         return response;
