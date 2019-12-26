@@ -51,6 +51,12 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
         return BaseEntityController.super.update(t);
     }
 
+    @Override
+    public Response<IPage<CustDataSource>> page(ExampleQuery query) {
+        return BaseEntityController.super.page(
+            ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+    }
+
     @ApiOperation(value = "查询数据库驱动信息", notes = "如果是JDBC类型的数据源，查询系统内置的数据库驱动信息用于用户创建数据源")
     @PostMapping("/dbDrivers")
     @ResponseBody

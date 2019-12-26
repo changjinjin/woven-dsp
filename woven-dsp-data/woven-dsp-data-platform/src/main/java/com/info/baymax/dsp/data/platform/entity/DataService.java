@@ -5,8 +5,6 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
-import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
-import com.info.baymax.common.mybatis.type.clob.ClobVsObjectTypeHandler;
 import com.info.baymax.dsp.data.platform.bean.JobInfo;
 import com.info.baymax.dsp.data.platform.bean.TransformRule;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsJobInfoTypeHandler;
@@ -24,8 +22,7 @@ import java.util.Map;
 
 /**
  * @Author: haijun
- * @Date: 2019/12/16 10:14
- * 数据服务即管理员审批通过生成的记录,供消费者调用
+ * @Date: 2019/12/16 10:14 数据服务即管理员审批通过生成的记录,供消费者调用
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -33,23 +30,28 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_service", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
-        @Index(columnList = "lastModifiedTime DESC")})
+    @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
+    @Index(columnList = "lastModifiedTime DESC")})
 public class DataService extends BaseEntity {
     private static final long serialVersionUID = -6235196279782590695L;
 
     @ApiModelProperty(value = "消费者申请记录ID,与DataApplication id关联")
-    @Column(length = 255, nullable = false)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Column(length = 20, nullable = false)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long applicationId;
 
+    @ApiModelProperty(value = "消费者ID")
+    @Column(length = 50, nullable = false)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String custId;
+
     @ApiModelProperty(value = "服务启动类型: 0 pull, 1 push")
-    @Column(length = 11, nullable = false)
+    @Column(length = 1, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer type;
 
     @ApiModelProperty("调度类型：once,cron,event")
-    @Column(length = 50)
+    @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String scheduleType;
 
@@ -119,6 +121,7 @@ public class DataService extends BaseEntity {
     private Long expiredTime;// = 0L;
     // 9999-12-31
     protected static Long MAX_DATE_TIME = 253402214400L;
+
     @Transient
     public Long getExpiredPeriod() {
         if (expiredTime == null || expiredTime == 0 || expiredTime.longValue() >= MAX_DATE_TIME.longValue()) {

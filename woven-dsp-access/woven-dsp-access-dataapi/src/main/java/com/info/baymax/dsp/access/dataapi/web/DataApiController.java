@@ -74,7 +74,7 @@ public class DataApiController implements Serializable {
         String[] accessIp = custApp.getAccessIp();
         if (accessKey.equals(requestKey)) {
             Long dataResId = dataApplication.getDataResId();
-            DataResource dataResource = dataResourceService.getDataResource(dataResId);
+            DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
             return Response.ok(elasticSearchService.query(dataset.getStorageConfigurations()));
 
