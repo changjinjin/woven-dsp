@@ -26,7 +26,7 @@ public interface CommonEntityController<ID extends Serializable, T extends Commo
             throw new ControllerException(ErrType.BAD_REQUEST, "保存对象不能为空");
         }
         getCommonEntityService().saveOrUpdate(t);
-        return Response.ok();
+        return Response.ok(t.getId());
     }
 
     @ApiOperation(value = "修改记录", notes = "编辑数据记录，编辑时根据主键查找修改记录，ID值不能为空，当只需要更新部分字段时可只传部分字段的值，其他字段值为空，或者传全部字段")

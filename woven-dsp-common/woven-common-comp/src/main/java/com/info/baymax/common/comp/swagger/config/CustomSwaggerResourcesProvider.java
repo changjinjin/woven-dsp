@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.swagger;
+package com.info.baymax.common.comp.swagger.config;
 
 import java.util.List;
 

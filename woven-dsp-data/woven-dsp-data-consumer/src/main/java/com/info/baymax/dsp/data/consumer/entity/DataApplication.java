@@ -19,8 +19,7 @@ import java.util.Map;
 
 /**
  * @Author: haijun
- * @Date: 2019/12/13 19:19
- * 消费者申请数据资源生成的记录
+ * @Date: 2019/12/13 19:19 消费者申请数据资源生成的记录
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -28,8 +27,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_application", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"dataResId", "creator","transferType"})}, indexes = {
-        @Index(columnList = "lastModifiedTime DESC")})
+    @UniqueConstraint(columnNames = {"dataResId", "creator", "transferType"})}, indexes = {
+    @Index(columnList = "lastModifiedTime DESC")})
 public class DataApplication extends BaseEntity {
     private static final long serialVersionUID = 8381030191792735602L;
 
@@ -37,9 +36,14 @@ public class DataApplication extends BaseEntity {
     protected static Long MAX_DATE_TIME = 253402214400L;
 
     @ApiModelProperty(value = "数据资源ID")
+    @Column(length = 20, nullable = false)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    private Long dataResId;
+
+    @ApiModelProperty(value = "数据资源名称")
     @Column(length = 255, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private Long dataResId;
+    private String dataResName;
 
     @ApiModelProperty(value = "数据传输类型: 0 pull, 1 push")
     @Column(length = 11, nullable = false)
@@ -50,6 +54,11 @@ public class DataApplication extends BaseEntity {
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long custDataSourceId;
+
+    @ApiModelProperty("数据源名称")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String custDataSourceName;
 
     @ApiModelProperty("PULL操作配置,关联CustApp获取接入配置信息")
     @Column(length = 20)
@@ -71,7 +80,7 @@ public class DataApplication extends BaseEntity {
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String,String> fieldMappings;
+    private Map<String, String> fieldMappings;
 
     @ApiModelProperty("过期时间")
     @JsonIgnore

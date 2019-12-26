@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.swagger;
+package com.info.baymax.common.comp.swagger.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

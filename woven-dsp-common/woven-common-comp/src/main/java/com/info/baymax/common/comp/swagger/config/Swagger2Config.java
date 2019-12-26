@@ -2,7 +2,7 @@
  * Copyright 2019 www.inforefiner.com Inc. All rights reserved.
  ******************************************************************************/
 
-package com.info.baymax.common.comp.swagger;
+package com.info.baymax.common.comp.swagger.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;

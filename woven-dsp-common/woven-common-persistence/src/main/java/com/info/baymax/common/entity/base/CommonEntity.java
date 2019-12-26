@@ -32,7 +32,7 @@ public abstract class CommonEntity<ID extends Serializable> implements PreEntity
      *
      * @return 主键值
      */
-    abstract ID getId();
+    public abstract ID getId();
 
     @ApiModelProperty("名称")
     @Column(length = 255)
