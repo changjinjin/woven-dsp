@@ -7,4 +7,6 @@ package com.info.baymax.dsp.data.consumer.constant;
 public class ScheduleJobStatus {
     public static final Integer JOB_STATUS_READY = 0;
     public static final Integer JOB_STATUS_RUNNING = 1;
+    public static final Integer JOB_STATUS_FAILED = 2;
+    public static final Integer JOB_STATUS_SUCCEED = 3;
 }

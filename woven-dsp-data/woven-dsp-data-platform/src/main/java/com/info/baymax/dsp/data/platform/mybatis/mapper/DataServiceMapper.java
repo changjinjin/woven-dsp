@@ -13,14 +13,11 @@ import java.util.List;
 @Mapper
 public interface DataServiceMapper extends MyIdableMapper<DataService> {
 
-    @Select("select * from dsp_data_service where (schedule_type = 'once' or schedule_type='cron') and type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
-    List<DataService> querySpecialDataService(@Param("type") int type, @Param("status") int status, @Param("isRunning") int isRunning);
-
     @Update("update dsp_data_service set is_running = 1 where type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER}")
     void updateSpecialDataServiceToRunning(@Param("type") int type, @Param("status") int status, @Param("isRunning") int isRunning);
 
-    @Update("update dsp_data_service set is_running = 1 where id = #{id, jdbcType=BIGINT}")
-    void updateDataServiceToRunning(@Param("id") Long id);
+    @Update("update dsp_data_service set is_running = #{isRunning, jdbcType=INTEGER} where id = #{id, jdbcType=BIGINT}")
+    void updateDataServiceRunningStatus(@Param("id") Long id, @Param("isRunning") Integer isRunning);
 
 
     @Update("update dsp_data_service set is_running = 0 where status = 1 and is_running = 1")

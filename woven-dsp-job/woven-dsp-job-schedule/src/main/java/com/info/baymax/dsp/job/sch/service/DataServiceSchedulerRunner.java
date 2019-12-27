@@ -50,14 +50,27 @@ public class DataServiceSchedulerRunner {
         }
     }
 
-//    @Scheduled(initialDelay = 1000*60, fixedRate = scheduler_scan_rate)
+//    @Scheduled(initialDelay = 1000*10, fixedRate = 10L)
+//    public void runScheduler(){
+//        try {
+//            sendReadyService();
+//        }catch (Exception e){
+//            log.error("schedule data service exception: ", e);
+//        }
+//    }
+
     @PostConstruct
     public void runScheduler_push(){
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                sendReadyService();
+                try {
+                    sendReadyService();
+                }catch (Exception e){
+                    log.error("schedule data service exception: ", e);
+                }
+
             }
         }, 1000*60, scheduler_scan_rate);
     }
@@ -66,15 +79,23 @@ public class DataServiceSchedulerRunner {
 
     @Transactional
     public void sendReadyService(){
-        List<DataService> list = dataServiceEntityService.querySpecialDataService(DataServiceType.SERVICE_TYPE_PUSH, DataServiceStatus.SERVICE_STATUS_DEPLOYED, ScheduleJobStatus.JOB_STATUS_READY);
+        List<DataService> list =
+            dataServiceEntityService.querySpecialDataService (
+                        DataServiceType.SERVICE_TYPE_PUSH,
+                        DataServiceStatus.SERVICE_STATUS_DEPLOYED,
+                        ScheduleJobStatus.JOB_STATUS_READY
+                );
         log.debug("select ready dataservice size is " + list.size());
-        for (DataService pushService : list) {
-            dataShareScheduler.schedule(pushService, DataShareJob.class);
-        }
 
         if (list != null && list.size() > 0) {
+            //发送任务到执行器
+            for (DataService pushService : list) {
+                dataShareScheduler.schedule(pushService, DataShareJob.class);
+            }
+
+            //更新DB
             for (DataService dataService : list) {
-                dataServiceEntityService.updateDataServiceToRunning(dataService.getId());
+                dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_RUNNING);//防止被其他timer重复调用
             }
             log.info("start to run push service, count : {}", list.size());
         }

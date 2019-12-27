@@ -4,6 +4,8 @@ import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ExecutorFlowConf;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
@@ -26,6 +28,7 @@ import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
 import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.job.exec.util.HdfsUtil;
 import lombok.extern.slf4j.Slf4j;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,15 +84,16 @@ public class ExecutorDataServiceController {
         Integer type = Integer.parseInt(body.get("type")+"");
         String schedulerType = body.get("scheduleType")+"";
         Long serviceId = Long.parseLong(body.get("serviceId")+"");
-        Long tenantId = Long.parseLong(body.get("tenantId")+"");
-        Long owner = Long.parseLong(body.get("owner")+"");
+        String tenantId = body.get("tenantId")+"";
+        String owner = body.get("owner")+"";
         DataService dataService = JsonBuilder.getInstance().fromJson(body.get("dataService").toString(), DataService.class);
 
         if(type == DataServiceType.SERVICE_TYPE_PUSH){
             DataApplication application = dataApplicationService.findOne(dataService.getTenantId(), dataService.getApplicationId());
             DataResource dataResource = dataResourceService.findOne(application.getTenantId(),application.getDataResId());
+            Dataset dataset = datasetService.findOne(dataResource.getDatasetId());
             CustDataSource custDataSource = custDataSourceService.findOne(application.getTenantId(),application.getCustDataSourceId());
-            executePushServiceAsync(dataService,application, dataResource, custDataSource);
+            executePushServiceAsync(dataset, dataService,application, dataResource, custDataSource);
         }
 
         return Mono.just("OK");
@@ -108,7 +112,7 @@ public class ExecutorDataServiceController {
     }
 
     @Async
-    public void executePushServiceAsync(DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource) {
+    public void executePushServiceAsync(Dataset dataset, DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource) {
         try {
             //-------------TODO----flow generate------------
 /*          根据dataResource组成Source step,
@@ -127,7 +131,7 @@ public class ExecutorDataServiceController {
             flow加一个标识,标识它是共享数据flow,完成后给平台和用户发一个通知,列表显示通知。
 */
             FlowDesc flowDesc = null;
-
+            String clusterId = dataset.getStorageConfigurations().get("clusterId");
             if(dataService.getJobInfo() != null && StringUtils.isNotEmpty(dataService.getJobInfo().getFlowId())){
                 String flowId = dataService.getJobInfo().getFlowId();
                 flowDesc = flowDescService.selectByPrimaryKey(flowId);
@@ -135,9 +139,9 @@ public class ExecutorDataServiceController {
                     List<FlowField> filterInputs = new ArrayList<>();
                     for (StepDesc step : flowDesc.getSteps()) {
                         if (step.getType().equals("filter")) {
-                            List<Map<String, String>> fmap = (ArrayList<Map<String, String>>) step.getInputConfigurations().get(0).get("fields");
-                            for (Map<String, String> f : fmap) {
-                                FlowField field = new FlowField(f.get("column"), f.get("type"), f.get("alias"), f.get("description"));
+                            JSONArray fmap = (JSONArray) step.getInputConfigurations().get(0).get("fields");
+                            for (Object obj : fmap) {
+                                FlowField field = JsonBuilder.getInstance().fromJson(JsonBuilder.getInstance().toJson(obj), FlowField.class);
                                 filterInputs.add(field);
                             }
                             String filterCondition = flowGenUtil.getCondition(dataResource, dataApplication, dataService, filterInputs);
@@ -164,9 +168,35 @@ public class ExecutorDataServiceController {
                 dataServiceEntityService.saveOrUpdate(dataService);
             }
 
-            boolean commitSchedule = false;
-            List<ConfigItem> runtimePros = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
-            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService, flowDesc, runtimePros);
+            List<ConfigItem> runtimePros = null;
+            try {
+                runtimePros = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
+            }catch (Exception e){
+                log.error("connect platform to query runtime properties exception: " , e);
+//                throw new RuntimeException("connect platform to query runtime properties exception: " , e);
+                //给个默认值
+                String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
+                List<Map<String,Object>> list = (List<Map<String,Object>>)JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
+                runtimePros = new ArrayList<ConfigItem>();
+                for(Map<String,Object> map : list){
+                    ConfigItem item = new ConfigItem(map.get("name").toString(), map.get("value"));
+                    runtimePros.add(item);
+                }
+            }
+            //Format runtime properties
+            for(ConfigItem item : runtimePros){
+                if(item.getValue() instanceof List || item.getValue() instanceof Object[]){
+                    if(item.getName().equals("all.runtime.cluster-id") && StringUtils.isNotEmpty(clusterId)){
+                          item.setValue(clusterId.toString());
+                    }else {
+                        String value = item.getValue().toString();
+                        String[] vals = value.substring(1, value.length() - 1).split(",");
+                        item.setValue(vals[0].trim());
+                    }
+                }
+            }
+
+            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService,custDataSource, flowDesc, runtimePros);
             //提交任务到woven-server平台
             try {
                 Response rs = platformServerRestClient.runScheduler(scheduler);
@@ -175,56 +205,65 @@ public class ExecutorDataServiceController {
                     dataService.getJobInfo().setScheduleId(scheduler.getId());
                     dataService.setLastModifiedTime(new Date());
                     dataServiceEntityService.updateByPrimaryKey(dataService);
-                    commitSchedule = true;
                 }
             }catch (Exception ex){
-                log.error("send scheduler request error: ", ex);
+                log.error("send scheduler request to platform exception: ", ex);
+                //更新dataservice的isRunning为失败状态
+                dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
+                log.error("send scheduler request to platform exception and restore dataService status : {}", dataService.getId());
+                throw new RuntimeException("send scheduler request to platform exception: ", ex);
             }
 
+            //检查execution执行进度,超时退出, 获取增量字段的更新值
+            Long startTime = System.currentTimeMillis();
             try {
-                //检查execution执行进度,超时退出, 获取增量字段的更新值
-                Long startTime = System.currentTimeMillis();
-                if(commitSchedule) {
-                    try {//生成execution有时间差
-                        Thread.sleep(30 * 1000L);
-                    } catch (Exception e) {
-                    }
-                    while (true) {
-                        List<FlowExecution> flowExecutions = flowExecutionService.findByFlowSchedulerId(scheduler.getId());
-                        FlowExecution execution = null;
-                        if (flowExecutions != null && flowExecutions.size() > 0) {
-                            execution = flowExecutions.get(0);
-                            if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
-                                dataService.getJobInfo().setExecutionId(execution.getId());
-                                dataService.setLastModifiedTime(new Date());
-                                if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataApplication.getServiceMode() == DataServiceMode.increment_mode) {
-                                    String path = ExecutorFlowConf.dataset_cursor_dir + ExecutorFlowConf.dataset_cursor_file_prefix + dataService.getId();
-                                    if (HdfsUtil.getInstance().exist(path)) {
-                                        List<String> records = HdfsUtil.getInstance().read(path);
-                                        if (records != null && records.size() > 0) {
-                                            String cursorVal = records.get(records.size() - 1).trim();
-                                            dataService.setCursorVal(cursorVal);
-                                        }
+                //延迟30s再去检查execution
+                Thread.sleep(30 * 1000L);
+            } catch (Exception e) {
+            }
+            while (true) {
+                try {
+                    List<FlowExecution> flowExecutions = flowExecutionService.findByFlowSchedulerId(scheduler.getId());
+                    FlowExecution execution = null;
+                    if (flowExecutions != null && flowExecutions.size() > 0) {
+                        execution = flowExecutions.get(0);
+                        if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
+                            dataService.getJobInfo().setExecutionId(execution.getId());
+                            dataService.setLastModifiedTime(new Date());
+                            if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataApplication.getServiceMode() == DataServiceMode.increment_mode) {
+                                String path = ExecutorFlowConf.dataset_cursor_dir + ExecutorFlowConf.dataset_cursor_file_prefix + dataService.getId();
+                                if (HdfsUtil.getInstance().exist(path)) {
+                                    List<String> records = HdfsUtil.getInstance().read(path);
+                                    if (records != null && records.size() > 0) {
+                                        String cursorVal = records.get(records.size() - 1).trim();
+                                        dataService.setCursorVal(cursorVal);
                                     }
                                 }
-                                dataServiceEntityService.updateByPrimaryKey(dataService);
-                                break;
-                            } else {
-                                try {
-                                    Thread.sleep(30 * 1000L);
-                                } catch (Exception e) {
-                                }
+                            }
+
+                            //更新isRunning状态
+                            if(ScheduleType.SCHEDULER_TYPE_ONCE.equals(dataService.getScheduleType())) {
+                                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_SUCCEED);
+                            }else if(ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())){
+                                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_RUNNING);
+                            }
+                            dataServiceEntityService.updateByPrimaryKey(dataService);
+                            break;
+                        } else {
+                            try {
+                                Thread.sleep(30 * 1000L);
+                            } catch (Exception e) {
                             }
                         }
-
-                        if (System.currentTimeMillis() - startTime > execution_timeout) {
-                            log.warn("dataservice has timeout, id = {}, scheduler = {}, execution = {}", dataService.getId(), scheduler.getId(), execution != null ? execution.getId() : "");
-                            break;
-                        }
                     }
-                }
-            }catch (Exception e){
+                }catch (Exception e){
 
+                }
+
+                if (System.currentTimeMillis() - startTime > execution_timeout) {
+                    log.warn("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
+                    break;
+                }
             }
 
         } catch (Exception e){
@@ -242,6 +281,12 @@ public class ExecutorDataServiceController {
         } finally {
 //            LogCollector.disableMDC();
         }
+    }
+
+    public static void main(String[] args){
+        String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
+        List<Object> list = JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
+        System.out.println(list.size());
     }
 
 

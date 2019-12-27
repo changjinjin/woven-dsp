@@ -2,6 +2,7 @@ package com.info.baymax.dsp.job.exec;
 
 import com.info.baymax.common.comp.config.profile.EnableExtProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchRestHealthIndicatorAutoConfiguration;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @Date: 2019/12/19 14:29
  */
 @SpringCloudApplication
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.exec"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")

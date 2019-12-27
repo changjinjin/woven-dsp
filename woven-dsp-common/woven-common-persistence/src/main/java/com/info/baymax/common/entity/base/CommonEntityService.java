@@ -106,10 +106,10 @@ public interface CommonEntityService<ID extends Serializable, T extends CommonEn
 				.end());
 	}
 
-	default T findOne(String tenantId) {
+	default T findOne(ID id) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
 				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
+				.andEqualTo(PROPERTY_ID, id)//
 				.end());
 	}
 

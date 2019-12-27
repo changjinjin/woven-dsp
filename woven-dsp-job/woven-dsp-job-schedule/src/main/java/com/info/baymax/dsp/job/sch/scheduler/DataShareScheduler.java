@@ -86,7 +86,9 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
                 Long startTime = Long.parseLong(ds.getServiceConfiguration().get("startTime"));
                 startMiss =  startTime;
             } catch (NumberFormatException ex) {
-                log.error("NumberFormatException: For input string : {}", ds.getServiceConfiguration().get("startTime"));
+                log.error("NumberFormatException: For input parameter startTime : {}", ds.getServiceConfiguration().get("startTime"));
+            } catch (NullPointerException ex) {
+                log.error("NullPointException: : For input parameter not found startTime");
             }
 
             if (ds.getLastExecutedTime() != null && ds.getLastExecutedTime().getTime() > startMiss) {
@@ -95,7 +97,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
 
             TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger().withIdentity(triggerKey).startAt(new Date(startMiss)).forJob(myJob);
 
-            if (ds.getServiceConfiguration().get("endTime") != null) {
+            if (ds.getServiceConfiguration()!=null && ds.getServiceConfiguration().get("endTime") != null) {
                 long lastMiss = Long.parseLong(ds.getServiceConfiguration().get("endTime"));
 
                 if (ds.getServiceConfiguration().get("endTime") != null && lastMiss < startMiss) {
@@ -114,6 +116,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
 
             scheduler.scheduleJob(myJob, trigger);
         } catch (Exception e) {
+            log.error("schedule dataservice [" + ds.getId() +"] failed", e);
             throw new RuntimeException("schedule dataservice [" + ds.getId() +"] failed", e);
         }
     }
