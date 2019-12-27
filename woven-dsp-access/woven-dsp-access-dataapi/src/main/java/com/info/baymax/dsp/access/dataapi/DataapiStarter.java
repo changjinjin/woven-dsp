@@ -13,9 +13,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @MapperScan(basePackages = {"com.jusfoun.services.ops.server.mapper"})
-@EnableExtProperties("classpath*:**/access-dataapi*.properties")
-public class Starter {
+@EnableExtProperties({"classpath:dsp-common.properties", "classpath:dsp-access-dataapi.properties"})
+public class DataapiStarter {
     public static void main(String[] args) {
-        SpringApplication.run(Starter.class, args);
+        SpringApplication.run(DataapiStarter.class, args);
     }
 }

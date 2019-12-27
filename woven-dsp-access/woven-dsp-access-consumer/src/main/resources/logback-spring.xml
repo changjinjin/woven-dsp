@@ -60,7 +60,7 @@
 	<logger name="com.zaxxer.hikari" level="ERROR" />
 	<logger name="io.lettuce" level="ERROR" />
 	<logger name="io.netty" level="ERROR" />
-	<logger name="reactor.core" level="ERROR" />
+	<logger name="reactor" level="ERROR" />
 	<logger name="com.ulisesbocchio" level="ERROR" />
 	<logger name="com.netflix" level="ERROR" />
 	<logger name="com.codingapi" level="ERROR" />
@@ -84,20 +84,20 @@
 	<!-- 配置mongodb中日志输出级别 -->
 	<logger name="org.springframework.data.mongodb.core" level="ERROR" />
 	<logger name="org.mongodb.driver" level="ERROR" />
-    <logger name="org.springframework" level="ERROR" />
+    <logger name="org.springframework" level="INFO" />
 
 	<!-- 开发、测试环境 -->
 	<springProfile name="dev,test">
-		<logger name="com.jusfoun" level="INFO" additivity="true" />
+		<logger name="com.info.baymax" level="INFO" additivity="true" />
 	</springProfile>
 
 	<!-- 生产环境 -->
 	<springProfile name="prod">
-		<logger name="com.jusfoun" level="ERROR" additivity="true" />
+		<logger name="com.info.baymax" level="ERROR" additivity="true" />
 	</springProfile>
 
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
+<!-- 		<appender-ref ref="FILE" /> -->
 	</root>
 </configuration>

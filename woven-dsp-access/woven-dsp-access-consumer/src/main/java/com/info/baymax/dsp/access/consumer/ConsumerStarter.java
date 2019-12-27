@@ -16,7 +16,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@EnableExtProperties("classpath*:**/access-consumer*.properties")
+@EnableExtProperties({"classpath:dsp-common.properties", "classpath:dsp-access-consumer.properties"})
 public class ConsumerStarter {
 
     public static void main(String[] args) {

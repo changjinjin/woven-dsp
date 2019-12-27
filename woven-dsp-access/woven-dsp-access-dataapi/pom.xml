@@ -15,6 +15,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.runtime.startClass>com.info.baymax.dsp.access.dataapi.DataapiStarter</project.runtime.startClass>
     </properties>
     <dependencies>
         <dependency>
@@ -208,29 +209,6 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <profileActive>dev</profileActive>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>prd</id>
-            <properties>
-                <profileActive>prd</profileActive>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <profileActive>test</profileActive>
-            </properties>
-        </profile>
-    </profiles>
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <defaultGoal>install</defaultGoal>
@@ -238,29 +216,22 @@
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
-            <!-- 先将resources目录下的文件排除掉，有后面的操作选择性打包 -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>/**</exclude>
-                </excludes>
-            </resource>
-            <!-- 将resources下的文件打包到jar里面 -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>/mapper/**/*.xml</include>
-                </includes>
-            </resource>
-            <!-- 将需要修改的配置文件单独存放 -->
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <targetPath>config</targetPath>
+                <!-- <targetPath>config</targetPath> -->
                 <includes>
-                    <include>access-dataapi.properties</include>
-                    <include>access-dataapi-${profileActive}.properties</include>
+                    <include>*.properties</include>
                     <include>logback-spring.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/bin</directory>
+                <filtering>true</filtering>
+                <targetPath>bin</targetPath>
+                <includes>
+                    <include>*.bat</include>
+                    <include>*.sh</include>
                 </includes>
             </resource>
         </resources>
@@ -269,9 +240,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>${project.runtime.startClass}</mainClass>
                     <layout>ZIP</layout>
                     <includeSystemScope>true</includeSystemScope>
-                    <mainClass>com.info.baymax.dsp.access.dataapi.Starter</mainClass>
                     <includes>
                         <include>
                             <groupId>non-exists</groupId>

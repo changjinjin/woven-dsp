@@ -150,29 +150,6 @@
             <artifactId>swagger-bootstrap-ui</artifactId>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <profileActive>dev</profileActive>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>prd</id>
-            <properties>
-                <profileActive>prd</profileActive>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <profileActive>test</profileActive>
-            </properties>
-        </profile>
-    </profiles>
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <defaultGoal>install</defaultGoal>
@@ -182,17 +159,11 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>/*.properties</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <!-- <targetPath>config</targetPath> -->
                 <includes>
-                    <include>auth-server.properties</include>
-                    <include>auth-server-${profileActive}.properties</include>
+                    <include>/*.properties</include>
+                    <include>logback-spring.xml</include>
                 </includes>
             </resource>
         </resources>
