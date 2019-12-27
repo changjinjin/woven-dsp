@@ -94,7 +94,6 @@ public class DataApplication extends BaseEntity {
     private Long expiredTime;// = 0L;
 
     @ApiModelProperty("申请状态， 0: 待审批，1: 通过审批， -1:未通过审批")
-    @JsonIgnore
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")

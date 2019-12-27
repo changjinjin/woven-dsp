@@ -16,6 +16,7 @@ public interface BaseEntityService<T extends BaseEntity> extends CommonEntitySer
         return selectCount(ExampleQuery.builder(getEntityClass())//
                 .fieldGroup()//
                 .andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
+                .andNotEqualTo(PROPERTY_EXPIREDTIME, 0)//
                 .end());
     }
 
@@ -23,6 +24,7 @@ public interface BaseEntityService<T extends BaseEntity> extends CommonEntitySer
         return selectList(ExampleQuery.builder(getEntityClass())//
                 .fieldGroup()//
                 .andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
+                .andNotEqualTo(PROPERTY_EXPIREDTIME, 0)//
                 .end());
     }
 

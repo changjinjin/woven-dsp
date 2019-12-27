@@ -68,7 +68,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 dataService.setPath(dataApiPath);
 
                 Map<String, String> pullConfig = new HashMap<>();
-                for (String param : queryParams.split(",")) {
+                for (String param : queryParams.split("#")) {
                     pullConfig.put(param.split(":")[0], param.split(":")[1]);
                 }
                 dataService.setPullConfiguration(pullConfig);
