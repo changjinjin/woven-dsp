@@ -1,6 +1,8 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.service.criteria.example.ExampleHelper;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataServiceMapper;
@@ -29,19 +31,27 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
 
     @Override
     public List<DataService> querySpecialDataService(Integer type, Integer status, Integer isRunning) {
-        return dataServiceMapper.querySpecialDataService(type,status,isRunning);
+        //select * from dsp_data_service where (schedule_type = 'once' or schedule_type='cron') and type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
+        ExampleQuery query = ExampleQuery.builder(DataService.class)//
+                .fieldGroup()
+                .andIn("scheduleType", new String[] { "cron", "once"})//
+                .andEqualTo("type", type)
+                .andEqualTo("status", status)
+                .andEqualTo("isRunning", isRunning)
+                .end();
+        List<DataService> list = selectByExample(ExampleHelper.createExample(query,getEntityClass()));
+        return list;
     }
 
     @Override
-    public void updateDataServiceToRunning(Integer type, Integer status, Integer isRunning){
-        dataServiceMapper.updateSpecialDataServiceToRunning(type,status,isRunning);
+    public void updateDataServiceRunningStatus(Long id, Integer isRunning) {
+        dataServiceMapper.updateDataServiceRunningStatus(id, isRunning);
     }
 
     @Override
-    public void updateDataServiceToRunning(Long id) {
-        dataServiceMapper.updateDataServiceToRunning(id);
+    public void restoreDataServiceRunningStatus(Long id){
+        dataServiceMapper.updateDataServiceRunningStatus(id, 0);
     }
-
 
     @Override
     public void recoverDataService() {

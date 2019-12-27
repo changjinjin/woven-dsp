@@ -1,6 +1,8 @@
 package com.info.baymax.dsp.data.platform.service;
 
 import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.service.BaseIdableService;
+import com.info.baymax.common.service.criteria.ExampleQueryService;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * @Author: guofeng.wu
  * @Date: 2019/12/18
  */
-public interface DataServiceEntityService extends BaseEntityService<DataService> {
+public interface DataServiceEntityService extends BaseEntityService<DataService>, BaseIdableService<DataService>, ExampleQueryService<DataService> {
 
     /**
      * 根据服务类型,部署状态,运行状态查询
@@ -21,14 +23,18 @@ public interface DataServiceEntityService extends BaseEntityService<DataService>
     List<DataService> querySpecialDataService(Integer type, Integer status, Integer isRunning);
 
     /**
-     * 将待执行的服务更新为正在执行状态
-     * @param type
-     * @param status
+     * 根据id更新dataService的isRunning值
+     * @param id
      * @param isRunning
      */
-    void updateDataServiceToRunning(Integer type, Integer status, Integer isRunning);
+    void updateDataServiceRunningStatus(Long id, Integer isRunning);
 
-    void updateDataServiceToRunning(Long id);
+    /**
+     * 当dataservice重新配置后更新其为待运行状态
+     * @param id
+     */
+    void restoreDataServiceRunningStatus(Long id);
+
 
     /**
      * 服务重启时恢复之前正在running的服务

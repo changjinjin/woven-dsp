@@ -99,7 +99,7 @@ public class TestFlow {
             FlowDesc flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
             System.out.println(JsonBuilder.getInstance().toJson(flowDesc));
             List<ConfigItem> list = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
-            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService, flowDesc, list);
+            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService,custDataSource, flowDesc, list);
             System.out.println(JsonBuilder.getInstance().toJson(scheduler));
         }catch (Exception e){
 

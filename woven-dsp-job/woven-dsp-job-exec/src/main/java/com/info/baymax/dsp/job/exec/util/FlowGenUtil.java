@@ -512,7 +512,7 @@ public class FlowGenUtil {
         return fh;
     }
 
-    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
+    public FlowSchedulerDesc generateScheduler(DataService dataService, CustDataSource custDataSource, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
         String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         String name = "ds_"+ dataService.getName()+ "_" + time;
         ConfigObject configurations = new ConfigObject();
@@ -524,10 +524,19 @@ public class FlowGenUtil {
             log.error("NumberFormatException: For input string : {}", dataService.getServiceConfiguration().get("startTime"));
         }
         configurations.put("startTime", startTime);
-        FlowSchedulerDesc scheduler = new FlowSchedulerDesc(name, "dsflow", "once", flowDesc.getId(), flowDesc.getName(), configurations);
+        if(custDataSource.getAttributes()!=null && custDataSource.getAttributes().get("jarPath")!=null && custDataSource.getAttributes().get("jarPath").toString().length()>0){
+            configurations.put("dependencies", custDataSource.getAttributes().get("jarPath").toString());
+        }
+        FlowSchedulerDesc scheduler = new FlowSchedulerDesc();
+        scheduler.setId(UUID.randomUUID().toString());
+        scheduler.setName(name);
+        scheduler.setSource("dsflow");
+        scheduler.setSchedulerId("once");
+        scheduler.setFlowId(flowDesc.getId());
+        scheduler.setFlowName(flowDesc.getName());
+        scheduler.setConfigurations(configurations);
         scheduler.setFlowType("dataflow");
         scheduler.setTotalExecuted(0);
-        scheduler.setId(UUID.randomUUID().toString());
 
         logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
 
