@@ -156,17 +156,17 @@
         <directory>${project.basedir}/target</directory>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
-        <resources>
+        <!-- <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <!-- <targetPath>config</targetPath> -->
+                <targetPath>config</targetPath>
                 <includes>
                     <include>/*.properties</include>
                     <include>logback-spring.xml</include>
                 </includes>
             </resource>
-        </resources>
+        </resources> -->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

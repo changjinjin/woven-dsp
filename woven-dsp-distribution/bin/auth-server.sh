@@ -9,7 +9,7 @@ WOVEN_BIN=${WOVEN_BIN:-${bin}}
 WOVEN_HOME=`cd $(dirname $0)/..; pwd`
 WOVEN_CONF=${WOVEN_CONF:-${WOVEN_HOME}/conf}
 
-WOVEN_COM_NAME=access-platform
+WOVEN_COM_NAME=auth-server
 . ${WOVEN_CONF}/dsp-env.sh
 . ${WOVEN_BIN}/process-check.sh
 

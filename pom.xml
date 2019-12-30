@@ -132,28 +132,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Internal libs -->
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>woven-dsp-access-platform</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>woven-dsp-access-dataapi</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>woven-dsp-access-consumer</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>woven-dsp-auth-server</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
 			<!-- Import dependency management -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>

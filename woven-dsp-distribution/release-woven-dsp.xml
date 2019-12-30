@@ -2,17 +2,17 @@
 	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
-	<id>woven-dsp-hadoop2-${project.version}</id>
+	<id>release-woven-dsp</id>
 	<formats>
-		<format>dir</format>
-		<format>zip</format>
+		<!-- <format>dir</format> -->
 		<format>tar.gz</format>
+		<!-- <format>zip</format> -->
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
 			<directory>${project.basedir}/bin</directory>
-			<outputDirectory>${assembly.name}/bin</outputDirectory>
+			<outputDirectory>./bin</outputDirectory>
 			<includes>
 				<include>*</include>
 			</includes>
@@ -21,24 +21,31 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}/bin</directory>
-			<outputDirectory>${assembly.name}/conf</outputDirectory>
+			<directory>${project.basedir}/conf</directory>
+			<outputDirectory>./conf</outputDirectory>
 			<includes>
 				<include>*.properties</include>
 				<include>*.xml</include>
 				<include>*.sh</include>
 			</includes>
 		</fileSet>
-
 		<fileSet>
 			<directory>${project.parent.basedir}/</directory>
-			<outputDirectory>${assembly.name}/</outputDirectory>
+			<outputDirectory>./</outputDirectory>
 			<includes>
 				<include>NOTICE</include>
 				<include>LICENSE</include>
 				<include>*.md</include>
 				<include>version.txt</include>
 			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>logs</directory>
+			<outputDirectory>./logs</outputDirectory>
+			<fileMode>644</fileMode>
+			<excludes>
+				<exclude>*.*</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
 
@@ -52,14 +59,13 @@
 			<destName>NOTICE</destName>
 		</file>
 	</files>
-
 	<dependencySets>
 		<dependencySet>
 			<unpack>false</unpack>
 			<useProjectArtifact>false</useProjectArtifact>
-			<outputDirectory>libs/access-platform</outputDirectory>
-			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<useStrictFiltering>true</useStrictFiltering>
+			<useTransitiveFiltering>true</useTransitiveFiltering>
+			<outputDirectory>libs/access-platform</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-access-platform</include>
@@ -68,9 +74,9 @@
 		<dependencySet>
 			<unpack>false</unpack>
 			<useProjectArtifact>false</useProjectArtifact>
-			<outputDirectory>libs/access-consumer</outputDirectory>
-			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<useStrictFiltering>true</useStrictFiltering>
+			<useTransitiveFiltering>true</useTransitiveFiltering>
+			<outputDirectory>libs/access-consumer</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-access-consumer</include>
@@ -79,12 +85,23 @@
 		<dependencySet>
 			<unpack>false</unpack>
 			<useProjectArtifact>false</useProjectArtifact>
-			<outputDirectory>libs/access-dataapi</outputDirectory>
-			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<useStrictFiltering>true</useStrictFiltering>
+			<useTransitiveFiltering>true</useTransitiveFiltering>
+			<outputDirectory>libs/access-dataapi</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-access-dataapi</include>
+			</includes>
+		</dependencySet>
+		<dependencySet>
+			<unpack>false</unpack>
+			<useProjectArtifact>false</useProjectArtifact>
+			<useStrictFiltering>true</useStrictFiltering>
+			<useTransitiveFiltering>true</useTransitiveFiltering>
+			<outputDirectory>libs/auth-server</outputDirectory>
+			<fileMode>666</fileMode>
+			<includes>
+				<include>com.info.baymax:woven-dsp-auth-server</include>
 			</includes>
 		</dependencySet>
 	</dependencySets>

@@ -10,7 +10,7 @@ WOVEN_HOME=`cd $(dirname $0)/..; pwd`
 WOVEN_CONF=${WOVEN_CONF:-${WOVEN_HOME}/conf}
 
 WOVEN_COM_NAME=access-dataapi
-. ${WOVEN_CONF}/woven-env.sh
+. ${WOVEN_CONF}/dsp-env.sh
 . ${WOVEN_BIN}/process-check.sh
 
 checkAction "${action}" "${WOVEN_COM_NAME}.sh"

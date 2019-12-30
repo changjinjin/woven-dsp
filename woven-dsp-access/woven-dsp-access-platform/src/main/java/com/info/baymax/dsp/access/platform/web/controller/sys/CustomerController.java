@@ -1,15 +1,5 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
@@ -22,12 +12,18 @@ import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.platform.config.SysInitConfig;
+import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
+import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = "系统管理：消费者管理", description = "消费者管理")
 @RestController
@@ -36,6 +32,8 @@ public class CustomerController implements MainTableController<Customer> {
 
     @Autowired
     private CustomerService consumerService;
+    @Autowired
+    private DataCustAppService dataCustAppService;
     @Autowired
     private SysInitConfig sysInitConfig;
 
@@ -88,4 +86,12 @@ public class CustomerController implements MainTableController<Customer> {
         return Response.ok();
     }
 
+    @ApiOperation(value = "消费者应用配置查询", notes = "消费者应用配置查询")
+    @PostMapping("/appPage")
+    public Response<IPage<DataCustApp>> appPage(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
+        if (query == null) {
+            return Response.error(ErrType.BAD_REQUEST, "查询参数不能为空！");
+        }
+        return Response.ok(dataCustAppService.selectPage(query));
+    }
 }

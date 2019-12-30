@@ -61,7 +61,7 @@ public abstract class CommonEntity<ID extends Serializable> implements PreEntity
     protected String creator;
 
     @ApiModelProperty("创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date createTime;
 
@@ -71,7 +71,7 @@ public abstract class CommonEntity<ID extends Serializable> implements PreEntity
     protected String lastModifier;
 
     @ApiModelProperty("修改时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date lastModifiedTime;

@@ -2,6 +2,10 @@ package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.mybatis.page.IPage;
+import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import io.swagger.annotations.Api;
@@ -21,4 +25,11 @@ public class DataCustAppController implements BaseEntityController<DataCustApp> 
     public BaseEntityService<DataCustApp> getBaseEntityService() {
         return dataCustAppService;
     }
+
+    @Override
+    public Response<IPage<DataCustApp>> page(ExampleQuery query) {
+        return BaseEntityController.super.page(
+            ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+    }
+
 }
