@@ -246,7 +246,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
+           <!--  <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
@@ -271,7 +271,7 @@
                         <exclude>logs/**</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 </project>

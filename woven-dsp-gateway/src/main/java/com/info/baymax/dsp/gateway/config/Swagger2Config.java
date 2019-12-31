@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.gateway;
+package com.info.baymax.dsp.gateway.config;
 
 import java.util.ArrayList;
 import java.util.List;
