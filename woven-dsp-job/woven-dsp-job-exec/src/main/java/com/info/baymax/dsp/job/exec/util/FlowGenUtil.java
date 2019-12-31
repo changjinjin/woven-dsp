@@ -26,6 +26,7 @@ import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
 import com.info.baymax.dsp.data.dataset.utils.ConstantInfo;
 import com.info.baymax.dsp.data.dataset.utils.Flows;
+import com.info.baymax.dsp.data.platform.bean.FieldMapping;
 import com.info.baymax.dsp.data.platform.bean.TransformRule;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
@@ -98,16 +99,22 @@ public class FlowGenUtil {
      * @param fieldMappings
      * @return
      */
-    public List<FlowField> getSourceOutputFields(List<FlowField> inputFields, Map<String,String> fieldMappings) {
+    public List<FlowField> getSourceOutputFields(List<FlowField> inputFields, List<FieldMapping> fieldMappings) {
         if(fieldMappings == null || fieldMappings.size() == 0){
             return inputFields;
+        }
+        Map<String,FieldMapping> resourceFields = new HashMap<>();
+        for(FieldMapping fieldMapping : fieldMappings){
+            if(StringUtils.isNotEmpty(fieldMapping.getTargetField())){
+                resourceFields.put(fieldMapping.getSourceField(), fieldMapping);
+            }
         }
 
         List<FlowField> result = new ArrayList<>();
         for (int i = 0; i < inputFields.size(); i++) {
             FlowField inputField = inputFields.get(i);
-            if(fieldMappings.containsKey(inputField.getColumn())) {
-                FlowField flowField = new FlowField(inputField.getColumn(), inputField.getType(), fieldMappings.get(inputField.getColumn()),inputField.getDescription());
+            if(resourceFields.containsKey(inputField.getColumn())) {
+                FlowField flowField = new FlowField(inputField.getColumn(), resourceFields.get(inputField.getColumn()).getTargetType(), resourceFields.get(inputField.getColumn()).getTargetField(),inputField.getDescription());
                 result.add(flowField);
             }
         }

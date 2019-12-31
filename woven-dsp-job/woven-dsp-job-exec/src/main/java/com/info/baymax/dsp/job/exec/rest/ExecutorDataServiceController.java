@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.job.exec.rest;
 
+import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
@@ -171,14 +172,18 @@ public class ExecutorDataServiceController {
             List<ConfigItem> runtimePros = null;
             try {
                 runtimePros = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
+                log.info("runtimePros is null : " + String.valueOf(runtimePros==null));
             }catch (Exception e){
                 log.error("connect platform to query runtime properties exception: " , e);
 //                throw new RuntimeException("connect platform to query runtime properties exception: " , e);
-                //给个默认值
+            }
+
+            //给个默认值
+            if(runtimePros == null) {
                 String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
-                List<Map<String,Object>> list = (List<Map<String,Object>>)JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
+                List<Map<String, Object>> list = (List<Map<String, Object>>) JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
                 runtimePros = new ArrayList<ConfigItem>();
-                for(Map<String,Object> map : list){
+                for (Map<String, Object> map : list) {
                     ConfigItem item = new ConfigItem(map.get("name").toString(), map.get("value"));
                     runtimePros.add(item);
                 }
