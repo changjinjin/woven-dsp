@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2019 www.inforefiner.com Inc. All rights reserved.
  ******************************************************************************/
-package com.info.baymax.dsp.gateway;
+package com.info.baymax.dsp.gateway.config;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -40,6 +40,11 @@
                 <artifactId>woven-dsp-auth-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>woven-dsp-gateway</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -70,6 +75,10 @@
                 <dependency>
                     <groupId>com.info.baymax</groupId>
                     <artifactId>woven-dsp-auth-server</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>woven-dsp-gateway</artifactId>
                 </dependency>
             </dependencies>
         </profile>
@@ -164,7 +173,7 @@
                 </executions>
                 <configuration>
                     <name>current.time</name>
-                    <pattern>yyyyMMdd</pattern>
+                    <pattern>yyyyMMdd_HHmm</pattern>
                     <timeZone>GMT+8</timeZone>
                 </configuration>
             </plugin>
@@ -186,6 +195,24 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution>
+                        <id>uncompress</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>
+                        ${project.basedir}/binaries/${release.finalName}/${release.finalName}-${project.version}-${current.time}/build.sh
+                    </executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>

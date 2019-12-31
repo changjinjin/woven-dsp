@@ -6,8 +6,8 @@
     <id>release-access-platform</id>
     <includeBaseDirectory>false</includeBaseDirectory>
     <formats>
-        <!-- <format>dir</format> -->
-        <format>tar.gz</format>
+        <format>dir</format>
+        <!-- <format>tar.gz</format> -->
         <!-- <format>zip</format> -->
     </formats>
     <fileSets>
@@ -46,6 +46,11 @@
         <file>
             <source>bin/access-platform.sh</source>
             <destName>bin/startup.sh</destName>
+            <fileMode>755</fileMode>
+        </file>
+        <file>
+            <source>${project.basedir}/bin/build.sh</source>
+            <destName>./build.sh</destName>
             <fileMode>755</fileMode>
         </file>
         <file>

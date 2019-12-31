@@ -1,0 +1,105 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: woven-dsp-gateway
+  devtools:
+    restart:
+      enabled: false
+  cloud:
+    consul:
+#      host: 192.168.1.81
+#      port: 8123
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        register: true
+        serviceName: ${spring.application.name}
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 15s
+        tags: urlprefix-/${spring.application.name}
+        instanceId: ${spring.application.name}:${server.port}
+zuul:
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 60000
+    connection-request-timeout-millis: 60000
+    time-unit: seconds
+  routes:
+    auth:
+      path: /api/auth/**
+      sensitive-headers: '*'
+      service-id: woven-dsp-auth-server
+      stripPrefix: false
+    access-platform:
+      path: /api/dsp/platform/**
+      sensitive-headers: '*'
+      service-id: woven-dsp-access-platform
+      stripPrefix: false
+    access-consumer:
+      path: /api/dsp/consumer/**
+      sensitive-headers: '*'
+      service-id: woven-dsp-access-consumer
+      stripPrefix: false
+  add-proxy-headers: true
+  ribbon:
+    eager-load:
+      enabled: true
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+management:
+  endpoint:
+    health:
+      enabled: true
+    beans:
+      enabled: true
+    env:
+      enabled: true
+    info:
+      enabled: true
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      serviceId: ${spring.application.name}
+      user-info-uri: http://localhost:8004/api/auth/oauth/user
+      prefer-token-info: false
+    client:
+      access-token-uri: http://localhost:8004/api/auth/oauth/token
+      user-authorization-uri: http://localhost:8004/api/auth/oauth/authorize
+      client-id: dsp
+      client-secret: 123456
+  token:
+    ignored:
+      staticResources:
+        - /
+        - /static/**
+        - /webjars/**
+        - /**/*.js*
+        - /**/*.css*
+        - /**/*.html*
+        - /**/*.ico*
+        - /**/*.json*
+      anyMethods:
+        - /
+        - /actuator/**
+        - /v2/**
+        - /swagger**
+        - /api/auth/oauth/**
+        - /**/v2/*
+swagger2:
+  enabled: true
+  resources:
+    - name: gateway
+      url: /v2/api-docs
+      swaggerVersion: 0.1.0
+    - name: auth-server
+      url: /api/auth/v2/api-docs
+      swaggerVersion: 0.1.0
+    - name: access-platform
+      url: /api/dsp/platform/v2/api-docs
+      swaggerVersion: 0.1.0
+    - name: access-consumer
+      url: /api/dsp/consumer/v2/api-docs
+      swaggerVersion: 0.1.0
