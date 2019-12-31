@@ -6,17 +6,19 @@ import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
-import com.info.baymax.dsp.data.platform.bean.FieldMapping;
-import com.info.baymax.dsp.data.platform.mybatis.mapper.type.GZBase64ClobVsListFieldMappingTypeHandler;
+import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
+import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,6 +117,10 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListFieldMappingTypeHandler.class)
     private List<FieldMapping> fieldMappings;
 
+    @ApiModelProperty(value = "关联后保留的字段列表")
+    @Transient
+    private Map<String,FieldMapping> targetFields;
+
     @ApiModelProperty("管理员在关联数据集时进行的一些基本配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
@@ -151,6 +157,20 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("Baymax")
     private String source;
+
+    @Transient
+    public Map<String,FieldMapping> getTargetFields(){
+        Map<String,FieldMapping> targetFields = new HashMap<>();
+        if(fieldMappings != null){
+            for(FieldMapping fieldMapping : fieldMappings){
+                if(StringUtils.isNotEmpty(fieldMapping.getTargetField())){
+                    targetFields.put(fieldMapping.getTargetField(), fieldMapping);
+                }
+            }
+        }
+        return targetFields;
+    }
+
 
     @Transient
     public Long getExpiredPeriod() {

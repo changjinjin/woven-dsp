@@ -53,8 +53,8 @@ import java.util.Map;
 public class ExecutorDataServiceController {
     @Autowired
     DataServiceEntityService dataServiceEntityService;
-    @Autowired
-    DataApplicationService dataApplicationService;
+//    @Autowired
+//    DataApplicationService dataApplicationService;
     @Autowired
     DataResourceService dataResourceService;
     @Autowired
@@ -87,14 +87,14 @@ public class ExecutorDataServiceController {
         Long serviceId = Long.parseLong(body.get("serviceId")+"");
         String tenantId = body.get("tenantId")+"";
         String owner = body.get("owner")+"";
-        DataService dataService = JsonBuilder.getInstance().fromJson(body.get("dataService").toString(), DataService.class);
+//        DataService dataService = JsonBuilder.getInstance().fromJson(body.get("dataService").toString(), DataService.class);
 
-        if(type == DataServiceType.SERVICE_TYPE_PUSH){
-            DataApplication application = dataApplicationService.findOne(dataService.getTenantId(), dataService.getApplicationId());
-            DataResource dataResource = dataResourceService.findOne(application.getTenantId(),application.getDataResId());
+        DataService dataService = dataServiceEntityService.findOne(tenantId, serviceId);
+        if(type == DataServiceType.SERVICE_TYPE_PUSH && dataService != null){
+            DataResource dataResource = dataResourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getDataResId());
             Dataset dataset = datasetService.findOne(dataResource.getDatasetId());
-            CustDataSource custDataSource = custDataSourceService.findOne(application.getTenantId(),application.getCustDataSourceId());
-            executePushServiceAsync(dataset, dataService,application, dataResource, custDataSource);
+            CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
+            executePushServiceAsync(dataset, dataService, dataResource, custDataSource);
         }
 
         return Mono.just("OK");
@@ -113,7 +113,7 @@ public class ExecutorDataServiceController {
     }
 
     @Async
-    public void executePushServiceAsync(Dataset dataset, DataService dataService, DataApplication dataApplication, DataResource dataResource, CustDataSource custDataSource) {
+    public void executePushServiceAsync(Dataset dataset, DataService dataService, DataResource dataResource, CustDataSource custDataSource) {
         try {
             //-------------TODO----flow generate------------
 /*          根据dataResource组成Source step,
@@ -145,7 +145,7 @@ public class ExecutorDataServiceController {
                                 FlowField field = JsonBuilder.getInstance().fromJson(JsonBuilder.getInstance().toJson(obj), FlowField.class);
                                 filterInputs.add(field);
                             }
-                            String filterCondition = flowGenUtil.getCondition(dataResource, dataApplication, dataService, filterInputs);
+                            String filterCondition = flowGenUtil.getCondition(dataResource, dataService, filterInputs);
                             if (StringUtils.isNotEmpty(filterCondition)) {
                                 step.getOtherConfigurations().put("condition", filterCondition);
                                 //更新flowDesc
@@ -155,13 +155,13 @@ public class ExecutorDataServiceController {
                         }
                     }
                 }else{
-                    flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
+                    flowDesc = flowGenUtil.generateDataServiceFlow(dataService, dataResource, custDataSource);
                     dataService.getJobInfo().setFlowId(flowDesc.getId());
                     dataService.setLastModifiedTime(new Date());
                     dataServiceEntityService.saveOrUpdate(dataService);
                 }
             }else{
-                flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
+                flowDesc = flowGenUtil.generateDataServiceFlow(dataService, dataResource, custDataSource);
                 JobInfo jobInfo = new JobInfo();
                 jobInfo.setFlowId(flowDesc.getId());
                 dataService.setJobInfo(jobInfo);
@@ -235,7 +235,7 @@ public class ExecutorDataServiceController {
                         if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
                             dataService.getJobInfo().setExecutionId(execution.getId());
                             dataService.setLastModifiedTime(new Date());
-                            if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataApplication.getServiceMode() == DataServiceMode.increment_mode) {
+                            if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
                                 String path = ExecutorFlowConf.dataset_cursor_dir + ExecutorFlowConf.dataset_cursor_file_prefix + dataService.getId();
                                 if (HdfsUtil.getInstance().exist(path)) {
                                     List<String> records = HdfsUtil.getInstance().read(path);
