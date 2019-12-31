@@ -6,6 +6,8 @@ import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
+import com.info.baymax.dsp.data.platform.bean.FieldMapping;
+import com.info.baymax.dsp.data.platform.mybatis.mapper.type.GZBase64ClobVsListFieldMappingTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,6 +17,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -109,8 +112,8 @@ public class DataResource extends BaseEntity {
     @ApiModelProperty("开放字段及配置字段映射关系")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> fieldMappings;
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListFieldMappingTypeHandler.class)
+    private List<FieldMapping> fieldMappings;
 
     @ApiModelProperty("管理员在关联数据集时进行的一些基本配置")
     @Lob
