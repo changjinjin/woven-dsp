@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "消费端：消费者应用配置管理", description = "消费者应用配置管理")
 @RestController
-@RequestMapping("/cust")
+@RequestMapping("/custApp")
 public class DataCustAppController implements BaseEntityController<DataCustApp> {
 
     @Autowired
