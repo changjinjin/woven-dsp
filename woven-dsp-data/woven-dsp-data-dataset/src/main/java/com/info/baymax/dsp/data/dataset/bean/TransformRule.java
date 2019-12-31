@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.data.platform.bean;
+package com.info.baymax.dsp.data.dataset.bean;
 
 import lombok.Data;
 
