@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.data.platform.bean;
+package com.info.baymax.dsp.data.dataset.bean;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +22,8 @@ public class FieldMapping implements Comparable, Serializable {
     private String targetType;
 
     private String encrypt; // BLANK, MIX
+
+    private TransformRule transformRule;
 
     public FieldMapping(String sourceField, String targetField) {
         this.sourceField = sourceField;

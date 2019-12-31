@@ -5,10 +5,12 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
+import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
+import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
 import com.info.baymax.dsp.data.platform.bean.JobInfo;
-import com.info.baymax.dsp.data.platform.bean.TransformRule;
+import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsApplyConfigTypeHandler;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsJobInfoTypeHandler;
-import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsMapStringKeyTransformRuleValueTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,6 +20,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -71,12 +74,6 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String scheduleType;
 
-    @ApiModelProperty("数据字段相关配置,包括加密,脱敏,转换等")
-    @Lob
-    @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyTransformRuleValueTypeHandler.class)
-    private Map<String, TransformRule> fieldConfiguration;
-
     @ApiModelProperty("服务相关的一些配置,如限速限流,开始时间结束时间,周期cron信息等配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
@@ -128,6 +125,19 @@ public class DataService extends BaseEntity {
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsJobInfoTypeHandler.class)
     private JobInfo jobInfo;
+
+    @ApiModelProperty("从Application同步过来的一些配置")
+    @Lob
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsApplyConfigTypeHandler.class)
+    private ApplyConfiguration applyConfiguration;
+
+    @ApiModelProperty("特殊配置的字段及字段映射关系")
+    @Lob
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListFieldMappingTypeHandler.class)
+    private List<FieldMapping> fieldMappings;
+
 
     @ApiModelProperty("服务过期时间")
     @JsonIgnore
