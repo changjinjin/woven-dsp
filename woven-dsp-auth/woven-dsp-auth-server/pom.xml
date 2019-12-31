@@ -80,7 +80,6 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--mybatis spring -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -90,15 +89,33 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
-        <!--mapper -->
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis-spring</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.persistence</groupId>
+                    <artifactId>persistence-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!--pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis.spring.boot</groupId>
+                    <artifactId>mybatis-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.penggle</groupId>
@@ -156,40 +173,7 @@
         <directory>${project.basedir}/target</directory>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
-        <!-- <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <targetPath>config</targetPath>
-                <includes>
-                    <include>/*.properties</include>
-                    <include>logback-spring.xml</include>
-                </includes>
-            </resource>
-        </resources> -->
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <layout>ZIP</layout>
-                    <includeSystemScope>true</includeSystemScope>
-                    <mainClass>${project.runtime.startClass}</mainClass>
-                    <includes>
-                        <include>
-                            <groupId>non-exists</groupId>
-                            <artifactId>non-exists</artifactId>
-                        </include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -245,8 +229,7 @@
                     </execution>
                 </executions>
             </plugin>
-
-           <!--  <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
@@ -261,17 +244,12 @@
                             </Class-Path>
                         </manifestEntries>
                     </archive>
-                    <includes>
-                        <include>com/merce/woven/dsp/access/platform/**</include>
-                    </includes>
                     <excludes>
-                        <exclude>bin/**</exclude>
-                        <exclude>db/**</exclude>
-                        <exclude>conf/**</exclude>
-                        <exclude>logs/**</exclude>
+                        <exclude>/*.properties</exclude>
+                        <exclude>/logback-spring.xml</exclude>
                     </excludes>
                 </configuration>
-            </plugin> -->
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -215,49 +215,7 @@
         <directory>${project.basedir}/target</directory>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <!-- <targetPath>config</targetPath> -->
-                <includes>
-                    <include>*.properties</include>
-                    <include>logback-spring.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/bin</directory>
-                <filtering>true</filtering>
-                <targetPath>bin</targetPath>
-                <includes>
-                    <include>*.bat</include>
-                    <include>*.sh</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>${project.runtime.startClass}</mainClass>
-                    <layout>ZIP</layout>
-                    <includeSystemScope>true</includeSystemScope>
-                    <includes>
-                        <include>
-                            <groupId>non-exists</groupId>
-                            <artifactId>non-exists</artifactId>
-                        </include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -304,7 +262,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <outputDirectory>target/lib</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
@@ -312,6 +270,27 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${project.runtime.startClass}</mainClass>
+                            <classpathPrefix>../lib</classpathPrefix>
+                            <addClasspath>false</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path><![CDATA[]]>
+                            </Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <excludes>
+                        <exclude>/*.properties</exclude>
+                        <exclude>/logback-spring.xml</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
+import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
@@ -59,6 +60,6 @@ public class DatasetController {
         if (id == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
         }
-        return Response.ok(datasetService.selectByPrimaryKey(id));
+        return Response.ok(datasetService.getSingleResult(QueryObject.builder().addField("id", id)));
     }
 }

@@ -32,8 +32,17 @@ do
      cd ${woven_dsp_dir}/$file
      ln -f -s ../bin bin
      ln -f -s ../conf conf
-     ln -f -s ../libs/$file libs
+     ln -f -s ../libs/$file lib
      ln -f -s ../logs/$file logs
  fi
  done
 echo ">>>link jars end"
+
+cd ${woven_dsp_dir}
+project_path=$(cd `dirname $0`; pwd)
+project_name="${project_path##*/}"
+echo $project_path
+echo $project_name
+
+cd ../
+tar -zvcf ${project_name}.tar.gz $project_name

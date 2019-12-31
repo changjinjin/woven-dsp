@@ -14,7 +14,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-         <project.runtime.startClass>com.info.baymax.dsp.gateway.GatewayStarter</project.runtime.startClass>
+        <project.runtime.startClass>com.info.baymax.dsp.gateway.GatewayStarter</project.runtime.startClass>
         <swagger2.version>2.9.2</swagger2.version>
     </properties>
     <dependencies>
@@ -129,51 +129,7 @@
         <directory>${project.basedir}/target</directory>
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <!-- <targetPath>config</targetPath> -->
-                <includes>
-                    <include>*.properties</include>
-                    <include>*.yml</include>
-                    <include>logback-spring.xml</include>
-                </includes>
-            </resource>
-            <!-- 打包执行脚本 -->
-            <resource>
-                <directory>src/main/bin</directory>
-                <filtering>true</filtering>
-                <targetPath>bin</targetPath>
-                <includes>
-                    <include>*.bat</include>
-                    <include>*.sh</include>
-                </includes>
-            </resource>
-        </resources>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <layout>ZIP</layout>
-                    <includeSystemScope>true</includeSystemScope>
-                    <mainClass>${project.runtime.startClass}</mainClass>
-                    <includes>
-                        <include>
-                            <groupId>non-exists</groupId>
-                            <artifactId>non-exists</artifactId>
-                        </include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -228,6 +184,28 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${project.runtime.startClass}</mainClass>
+                            <classpathPrefix>../lib</classpathPrefix>
+                            <addClasspath>false</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path><![CDATA[]]>
+                            </Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <excludes>
+                        <exclude>/*.yml</exclude>
+                        <exclude>/*.properties</exclude>
+                        <exclude>/logback-spring.xml</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

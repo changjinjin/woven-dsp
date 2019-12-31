@@ -13,6 +13,7 @@
         <fileSet>
             <directory>${project.basedir}/bin</directory>
             <outputDirectory>./bin</outputDirectory>
+            <directoryMode>755</directoryMode>
             <fileMode>755</fileMode>
             <includes>
                 <include>*</include>
@@ -24,6 +25,7 @@
         <fileSet>
             <directory>${project.basedir}/conf</directory>
             <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
             <fileMode>755</fileMode>
             <includes>
                 <include>*.properties</include>
@@ -35,6 +37,7 @@
         <fileSet>
             <directory>${project.parent.basedir}/</directory>
             <outputDirectory>./</outputDirectory>
+            <directoryMode>644</directoryMode>
             <fileMode>644</fileMode>
             <includes>
                 <include>NOTICE</include>
@@ -46,7 +49,8 @@
         <fileSet>
             <directory>logs</directory>
             <outputDirectory>./logs</outputDirectory>
-            <fileMode>644</fileMode>
+            <directoryMode>666</directoryMode>
+            <fileMode>666</fileMode>
             <excludes>
                 <exclude>*.*</exclude>
             </excludes>
@@ -120,32 +124,67 @@
             <fileMode>644</fileMode>
         </file>
     </files>
-    <!-- <dependencySets> <dependencySet> <unpack>false</unpack> <useProjectArtifact>false</useProjectArtifact>
-        <useStrictFiltering>true</useStrictFiltering> <useTransitiveFiltering>true</useTransitiveFiltering>
-        <outputDirectory>libs/jars</outputDirectory> <scope>compile</scope> <fileMode>666</fileMode>
-        <includes> <include>com.info.baymax:woven-dsp-gateway</include> <include>com.info.baymax:woven-dsp-auth-server</include>
-        <include>com.info.baymax:woven-dsp-access-platform</include> <include>com.info.baymax:woven-dsp-access-consumer</include>
-        <include>com.info.baymax:woven-dsp-access-dataapi</include> </includes> </dependencySet>
-        </dependencySets> -->
-    <!-- <dependencySets> <dependencySet> <unpack>false</unpack> <useProjectArtifact>false</useProjectArtifact>
-        <useStrictFiltering>true</useStrictFiltering> <useTransitiveFiltering>true</useTransitiveFiltering>
-        <outputDirectory>libs/access-platform</outputDirectory> <scope>runtime</scope>
-        <fileMode>666</fileMode> <includes> <include>com.info.baymax:woven-dsp-access-platform</include>
-        </includes> </dependencySet> <dependencySet> <unpack>false</unpack> <useProjectArtifact>false</useProjectArtifact>
-        <useStrictFiltering>true</useStrictFiltering> <useTransitiveFiltering>true</useTransitiveFiltering>
-        <useTransitiveDependencies>true</useTransitiveDependencies> <outputDirectory>libs/access-consumer</outputDirectory>
-        <scope>runtime</scope> <fileMode>666</fileMode> <includes> <include>com.info.baymax:woven-dsp-access-consumer</include>
-        </includes> </dependencySet> <dependencySet> <unpack>false</unpack> <useProjectArtifact>false</useProjectArtifact>
-        <useStrictFiltering>true</useStrictFiltering> <useTransitiveFiltering>true</useTransitiveFiltering>
-        <useTransitiveDependencies>true</useTransitiveDependencies> <outputDirectory>libs/access-dataapi</outputDirectory>
-        <scope>runtime</scope> <fileMode>666</fileMode> <includes> <include>com.info.baymax:woven-dsp-access-dataapi</include>
-        </includes> </dependencySet> <dependencySet> <unpack>false</unpack> <useProjectArtifact>false</useProjectArtifact>
-        <useStrictFiltering>true</useStrictFiltering> <useTransitiveFiltering>true</useTransitiveFiltering>
-        <useTransitiveDependencies>true</useTransitiveDependencies> <outputDirectory>libs/auth-server</outputDirectory>
-        <scope>runtime</scope> <fileMode>666</fileMode> <includes> <include>com.info.baymax:woven-dsp-auth-server</include>
-        </includes> </dependencySet> <dependencySet> <unpack>false</unpack> <useProjectArtifact>false</useProjectArtifact>
-        <useStrictFiltering>true</useStrictFiltering> <useTransitiveFiltering>true</useTransitiveFiltering>
-        <useTransitiveDependencies>true</useTransitiveDependencies> <outputDirectory>libs/dsp-gateway</outputDirectory>
-        <scope>runtime</scope> <fileMode>666</fileMode> <includes> <include>com.info.baymax:woven-dsp-gateway</include>
-        </includes> </dependencySet> </dependencySets> -->
+
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useStrictFiltering>true</useStrictFiltering>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <outputDirectory>libs/access-platform</outputDirectory>
+            <scope>runtime</scope>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>com.info.baymax:woven-dsp-access-platform</include>
+            </includes>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useStrictFiltering>true</useStrictFiltering>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <outputDirectory>libs/access-consumer</outputDirectory>
+            <scope>runtime</scope>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>com.info.baymax:woven-dsp-access-consumer</include>
+            </includes>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useStrictFiltering>true</useStrictFiltering>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <outputDirectory>libs/access-dataapi</outputDirectory>
+            <scope>runtime</scope>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>com.info.baymax:woven-dsp-access-dataapi</include>
+            </includes>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useStrictFiltering>true</useStrictFiltering>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <outputDirectory>libs/auth-server</outputDirectory>
+            <scope>runtime</scope>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>com.info.baymax:woven-dsp-auth-server</include>
+            </includes>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useStrictFiltering>true</useStrictFiltering>
+            <useTransitiveFiltering>false</useTransitiveFiltering>
+            <outputDirectory>libs/dsp-gateway</outputDirectory>
+            <scope>runtime</scope>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>com.info.baymax:woven-dsp-gateway</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
 </assembly>

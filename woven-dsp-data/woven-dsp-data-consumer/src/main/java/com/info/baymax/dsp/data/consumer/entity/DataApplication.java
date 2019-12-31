@@ -60,10 +60,15 @@ public class DataApplication extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String custDataSourceName;
 
-    @ApiModelProperty("PULL操作配置,关联CustApp获取接入配置信息")
+    @ApiModelProperty("PULL操作配置ID,关联CustApp获取接入配置信息")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long custAppId;
+    
+    @ApiModelProperty("PULL操作配置名称,关联CustApp获取接入配置信息")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String custAppName;
 
     @Transient
     @ApiModelProperty("接入配置信息")

@@ -247,49 +247,7 @@
 		<directory>${project.basedir}/target</directory>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<!-- <targetPath>config</targetPath> -->
-				<includes>
-					<include>*.properties</include>
-					<include>logback-spring.xml</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/bin</directory>
-				<filtering>true</filtering>
-				<targetPath>bin</targetPath>
-				<includes>
-					<include>*.bat</include>
-					<include>*.sh</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<layout>ZIP</layout>
-					<includeSystemScope>true</includeSystemScope>
-					<mainClass>${project.runtime.startClass}</mainClass>
-					<includes>
-						<include>
-							<groupId>non-exists</groupId>
-							<artifactId>non-exists</artifactId>
-						</include>
-					</includes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -345,8 +303,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
@@ -361,17 +318,12 @@
 							</Class-Path>
 						</manifestEntries>
 					</archive>
-					<includes>
-						<include>com/merce/woven/dsp/access/platform/**</include>
-					</includes>
 					<excludes>
-						<exclude>bin/**</exclude>
-						<exclude>db/**</exclude>
-						<exclude>conf/**</exclude>
-						<exclude>logs/**</exclude>
+						<exclude>/*.properties</exclude>
+						<exclude>/logback-spring.xml</exclude>
 					</excludes>
 				</configuration>
-			</plugin> -->
+			</plugin>
 		</plugins>
 	</build>
 </project>
