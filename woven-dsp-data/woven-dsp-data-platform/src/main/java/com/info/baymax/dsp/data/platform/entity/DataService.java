@@ -140,34 +140,10 @@ public class DataService extends BaseEntity {
 
 
     @ApiModelProperty("服务过期时间")
-    @JsonIgnore
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
     private Long expiredTime;// = 0L;
     // 9999-12-31
     protected static Long MAX_DATE_TIME = 253402214400L;
-
-    @Transient
-    public Long getExpiredPeriod() {
-        if (expiredTime == null || expiredTime == 0 || expiredTime.longValue() >= MAX_DATE_TIME.longValue()) {
-            return 0L;
-        } else {
-            if (createTime == null) {
-                createTime = new Date();
-            }
-            return expiredTime - createTime.getTime() / 1000;
-        }
-    }
-
-    public void setExpiredPeriod(Long expiredPeriod) {
-        if (expiredPeriod == 0) {
-            expiredTime = MAX_DATE_TIME;
-        } else {
-            if (createTime == null) {
-                createTime = new Date();
-            }
-            expiredTime = createTime.getTime() / 1000 + expiredPeriod;
-        }
-    }
 }
