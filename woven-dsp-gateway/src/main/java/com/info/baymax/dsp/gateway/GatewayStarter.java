@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.gateway;
 
+import com.info.baymax.dsp.gateway.config.resource.YamlPropertySourceFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 @EnableOAuth2Sso
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableAutoConfiguration
-//@PropertySource(value = { "classpath:/dsp-gateway.yml" })
+@PropertySource(value = {"classpath:/dsp-gateway.yml"}, factory = YamlPropertySourceFactory.class)
 public class GatewayStarter {
     public static void main(String[] args) {
         SpringApplication.run(GatewayStarter.class, args);
