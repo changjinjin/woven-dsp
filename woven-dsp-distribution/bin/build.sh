@@ -41,8 +41,8 @@ echo ">>>link jars end"
 cd ${woven_dsp_dir}
 project_path=$(cd `dirname $0`; pwd)
 project_name="${project_path##*/}"
-echo $project_path
-echo $project_name
+echo "current path ${project_path}"
+echo "current dir ${project_name}"
 
 cd ../
 dir_path=$(pwd)
@@ -51,9 +51,15 @@ echo "current path ${dir_path}"
 echo "current dir ${dir_name}"
 
 tarFile=${project_name}.tar.gz
+echo "The final archive file name is ${tarFile}"
+
+mkdir -p ../../../binaries/$dir_name
 rm -rf ../../../binaries/$dir_name/*
 tar -zvcf ../../../binaries/$dir_name/$tarFile $project_name
 
 echo 'clean current dir'
 rm -rf ./*
 
+cd ../../../binaries/$dir_name/
+dir_path=$(pwd)
+echo "The final archive file path is ${dir_path}${tarFile}"
