@@ -157,25 +157,6 @@ public class DataResource extends BaseEntity {
     @DefaultValue("Baymax")
     private String source;
 
-    @Transient
-    public Map<String, FieldMapping> getTargetFields() {
-        Map<String, FieldMapping> targetFields = new HashMap<>();
-        if (fieldMappings != null) {
-            for (FieldMapping fieldMapping : fieldMappings) {
-                if (StringUtils.isNotEmpty(fieldMapping.getTargetField())) {
-                    targetFields.put(fieldMapping.getTargetField(), fieldMapping);
-                }
-            }
-        }
-        return targetFields;
-    }
-
-    @Transient
-    public void setExpiredTime(Long expiredPeriod) {
-        if (expiredPeriod == 0) {
-            expiredTime = MAX_DATE_TIME;
-        }
-    }
 
     public DataResource() {
     }
