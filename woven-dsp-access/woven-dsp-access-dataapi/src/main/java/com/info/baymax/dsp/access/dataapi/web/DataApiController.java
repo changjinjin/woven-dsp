@@ -37,9 +37,6 @@ public class DataApiController implements Serializable {
     DataServiceEntityService dataServiceEntityService;
 
     @Autowired
-    DataApplicationService dataApplicationService;
-
-    @Autowired
     DataCustAppService custAppService;
 
     @Autowired
@@ -66,19 +63,18 @@ public class DataApiController implements Serializable {
         if (dataService.getType() == 1) {
             return Response.error(ErrType.BAD_REQUEST, "Don't support push type");
         }
-        Long dataApplicationId = dataService.getApplicationId();
-        DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataApplicationId);
-
-        Long custAppId = dataApplication.getCustAppId();
+        Long custAppId = dataService.getApplyConfiguration().getCustAppId();
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
 
         String accessKey = custApp.getAccessKey();
         String[] accessIp = custApp.getAccessIp();
         if (accessKey.equals(requestKey)) {
-            Long dataResId = dataApplication.getDataResId();
+            Long dataResId = dataService.getApplyConfiguration().getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
-            return Response.ok(elasticSearchService.query(dataset.getStorageConfigurations(), offset, size));
+            //todo 获取dataset需要返回的字段列表
+            String[] includes = new String[0];
+            return Response.ok(elasticSearchService.query(dataset.getStorageConfigurations(), offset, size, includes));
 
         } else {
             return Response.error(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");

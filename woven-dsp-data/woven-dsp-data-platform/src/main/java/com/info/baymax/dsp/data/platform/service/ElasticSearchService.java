@@ -10,6 +10,6 @@ import java.util.Map;
  */
 public interface ElasticSearchService  {
 
-    SearchResponse query(Map<String, String> conf, int offset, int size);
+    SearchResponse query(Map<String, String> conf, int offset, int size, String[] includes);
 
 }
