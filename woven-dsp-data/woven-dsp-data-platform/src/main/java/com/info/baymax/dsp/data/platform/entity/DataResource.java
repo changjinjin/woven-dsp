@@ -32,8 +32,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_resource", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {@Index(columnList = "tenantId,storage"),
-    @Index(columnList = "lastModifiedTime DESC")})
+        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {@Index(columnList = "tenantId,storage"),
+        @Index(columnList = "lastModifiedTime DESC")})
 public class DataResource extends BaseEntity {
     private static final long serialVersionUID = -1646060649387068719L;
 
@@ -119,7 +119,7 @@ public class DataResource extends BaseEntity {
 
     @ApiModelProperty(value = "关联后保留的字段列表")
     @Transient
-    private Map<String,FieldMapping> targetFields;
+    private Map<String, FieldMapping> targetFields;
 
     @ApiModelProperty("管理员在关联数据集时进行的一些基本配置")
     @Lob
@@ -140,7 +140,6 @@ public class DataResource extends BaseEntity {
     private Integer openStatus;
 
     @ApiModelProperty("此数据资源的有效期,服务期限")
-    @JsonIgnore
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
@@ -159,11 +158,11 @@ public class DataResource extends BaseEntity {
     private String source;
 
     @Transient
-    public Map<String,FieldMapping> getTargetFields(){
-        Map<String,FieldMapping> targetFields = new HashMap<>();
-        if(fieldMappings != null){
-            for(FieldMapping fieldMapping : fieldMappings){
-                if(StringUtils.isNotEmpty(fieldMapping.getTargetField())){
+    public Map<String, FieldMapping> getTargetFields() {
+        Map<String, FieldMapping> targetFields = new HashMap<>();
+        if (fieldMappings != null) {
+            for (FieldMapping fieldMapping : fieldMappings) {
+                if (StringUtils.isNotEmpty(fieldMapping.getTargetField())) {
                     targetFields.put(fieldMapping.getTargetField(), fieldMapping);
                 }
             }
@@ -171,27 +170,10 @@ public class DataResource extends BaseEntity {
         return targetFields;
     }
 
-
     @Transient
-    public Long getExpiredPeriod() {
-        if (expiredTime == null || expiredTime == 0 || expiredTime.longValue() >= MAX_DATE_TIME.longValue()) {
-            return 0L;
-        } else {
-            if (createTime == null) {
-                createTime = new Date();
-            }
-            return expiredTime - createTime.getTime() / 1000;
-        }
-    }
-
-    public void setExpiredPeriod(Long expiredPeriod) {
+    public void setExpiredTime(Long expiredPeriod) {
         if (expiredPeriod == 0) {
             expiredTime = MAX_DATE_TIME;
-        } else {
-            if (createTime == null) {
-                createTime = new Date();
-            }
-            expiredTime = createTime.getTime() / 1000 + expiredPeriod;
         }
     }
 

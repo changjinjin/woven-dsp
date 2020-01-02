@@ -17,12 +17,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -50,9 +48,10 @@ public class DataApiController implements Serializable {
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
-    public Response pullData(@RequestBody Map<String, String> body) throws Exception {
+    public Response pullData(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) throws Exception {
         String dataServiceId = body.get("dataServiceId");
         String requestKey = body.get("accessKey");
+        String host = header.get("host");
         int offset = Integer.valueOf(body.getOrDefault("offset", "0"));
         int size = Integer.valueOf(body.getOrDefault("size", "10000"));
 
@@ -68,7 +67,7 @@ public class DataApiController implements Serializable {
 
         String accessKey = custApp.getAccessKey();
         String[] accessIp = custApp.getAccessIp();
-        if (accessKey.equals(requestKey)) {
+        if (accessKey.equals(requestKey) && Arrays.asList(accessIp).contains(host)) {
             Long dataResId = dataService.getApplyConfiguration().getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
