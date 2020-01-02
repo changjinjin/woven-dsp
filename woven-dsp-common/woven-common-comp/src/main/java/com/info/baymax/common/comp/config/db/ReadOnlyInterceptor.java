@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 
 @Slf4j
-@Aspect
-@Component
-@ConditionalOnBean(HikariDbProperties.class)
-@ConditionalOnClass(HikariDbProperties.class)
+//@Aspect
+//@Component
+//@ConditionalOnBean(HikariDbProperties.class)
+//@ConditionalOnClass(HikariDbProperties.class)
 public class ReadOnlyInterceptor implements Ordered {
 
     @Autowired
