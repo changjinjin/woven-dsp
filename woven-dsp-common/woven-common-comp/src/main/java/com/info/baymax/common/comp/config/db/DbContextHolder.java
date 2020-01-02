@@ -37,7 +37,7 @@ public class DbContextHolder {
             counter.set(1);
         }
         String lookupKey = DbType.SLAVE.name() + counter.getAndIncrement();
-        log.debug("slaves nums: " + slavesNum + "routing to slave: " + lookupKey);
+        log.debug("slaves nums: " + slavesNum + ",routing to slave: " + lookupKey);
         set(lookupKey);
     }
 

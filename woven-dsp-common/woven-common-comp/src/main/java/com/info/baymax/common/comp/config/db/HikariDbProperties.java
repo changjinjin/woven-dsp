@@ -1,6 +1,5 @@
 package com.info.baymax.common.comp.config.db;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -10,7 +9,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ConditionalOnProperty(prefix = "spring.datasource.multiple", name = "enabled", havingValue = "true", matchIfMissing = true)
 @ConfigurationProperties(prefix = "spring.datasource.hikari")
 public class HikariDbProperties implements DbConfig<HikariDataSource> {
     /**
