@@ -1,6 +1,10 @@
 server:
   address: 192.168.2.183
   port: 8000
+  compression:
+    enabled: true
+    mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 2048
 spring:
   application:
     name: woven-dsp-gateway
@@ -19,6 +23,9 @@ spring:
         healthCheckInterval: 15s
         tags: urlprefix-/${spring.application.name}
         instanceId: ${spring.application.name}:${server.port}
+  resources:
+    static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+    add-mappings: true
 zuul:
   host:
     connect-timeout-millis: 15000
