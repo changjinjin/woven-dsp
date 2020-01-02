@@ -65,27 +65,12 @@ public class TestFlow {
         dataResource.setTenantId("4566632217889");
         dataResource.setOwner("21342423545");
 
-        DataApplication dataApplication = new DataApplication();
-        dataApplication.setId(101L);
-        dataApplication.setDataResId(100L);
-        dataApplication.setTransferType(1);
-        dataApplication.setName("test_apply");
-        Map<String,String> fields = new HashMap<>();
-        fields.put("ID", "id");
-        fields.put("NAME", "name");
-        fields.put("AGE", "age");
-        fields.put("CITY", "city");
-        fields.put("CREATETIME", "createtime");
-        dataApplication.setFieldMappings(fields);
 
         CustDataSource custDataSource = new CustDataSource();
         custDataSource.setId(102L);
         custDataSource.setType("HDFS");
         Map<String,String> configs = new HashMap<>();
         configs.put("", "");
-
-        dataApplication.setCustDataSourceId(102L);
-
 
         DataService dataService = new DataService();
         dataService.setApplicationId(101L);
@@ -96,7 +81,7 @@ public class TestFlow {
         dataService.setStatus(1);
 
         try {
-            FlowDesc flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataApplication, dataResource, custDataSource);
+            FlowDesc flowDesc = flowGenUtil.generateDataServiceFlow(dataService,dataResource, custDataSource);
             System.out.println(JsonBuilder.getInstance().toJson(flowDesc));
             List<ConfigItem> list = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
             FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService,custDataSource, flowDesc, list);
