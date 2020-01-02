@@ -1,6 +1,8 @@
 package com.info.baymax.common.comp.config.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -13,6 +15,8 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  * @date 2018-09-03
  */
 @Configuration
+@ConditionalOnBean(DbProperties.class)
+@ConditionalOnClass(DbProperties.class)
 public class RoutingDataSourceConfig {
 
 	@Bean

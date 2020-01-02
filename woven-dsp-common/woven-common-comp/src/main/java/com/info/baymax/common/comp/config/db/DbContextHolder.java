@@ -24,6 +24,11 @@ public class DbContextHolder {
 	}
 
 	public static void slave(DbConfig<?> dbConfig) {
+		// 如果从节点数为0，则设置master
+		if (dbConfig.getSlavesNum() == 0) {
+			set(DbType.MASTER.name());
+		}
+
 		if (counter.get() > dbConfig.getSlavesNum()) {
 			counter.set(1);
 		}
@@ -33,7 +38,8 @@ public class DbContextHolder {
 	}
 
 	public static void clearDbType() {
-		master();
+		contextHolder.remove();
+		log.debug("clear datasource contextHolder");
 	}
 
 }

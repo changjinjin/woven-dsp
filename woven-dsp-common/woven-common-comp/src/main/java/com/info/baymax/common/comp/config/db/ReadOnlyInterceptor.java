@@ -4,6 +4,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Aspect
 @Component
+@ConditionalOnBean(DbProperties.class)
+@ConditionalOnClass(DbProperties.class)
 public class ReadOnlyInterceptor implements Ordered {
 
 	@Autowired
@@ -30,7 +34,7 @@ public class ReadOnlyInterceptor implements Ordered {
 			return joinPoint.proceed();
 		} finally {
 			DbContextHolder.clearDbType();
-			log.info("清除threadLocal");
+			log.info("clear threadLocal");
 		}
 	}
 
