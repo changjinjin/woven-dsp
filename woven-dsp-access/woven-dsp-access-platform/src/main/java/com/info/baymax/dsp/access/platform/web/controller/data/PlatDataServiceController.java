@@ -29,7 +29,7 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
     }
 
     @ApiOperation(value = "启用停用", notes = "服务启用停用接口")
-    @GetMapping("/updateStatus")
+    @PostMapping("/updateStatus")
     @ResponseBody
     public Response<?> updateStatus(@ApiParam(value = "启用停用对象，传ID和状态值", required = true) @RequestBody DataService t) {
         if (t == null) {

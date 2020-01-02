@@ -1,5 +1,5 @@
 server:
-  address: 192.168.2.187
+  address: 192.168.2.183
   port: 8000
 spring:
   application:
@@ -13,6 +13,7 @@ spring:
       port: 8123
       discovery:
         register: true
+        preferIpAddress: true
         serviceName: ${spring.application.name}
         healthCheckPath: /actuator/health
         healthCheckInterval: 15s

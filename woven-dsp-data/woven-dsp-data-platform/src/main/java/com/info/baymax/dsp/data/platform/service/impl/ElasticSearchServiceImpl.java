@@ -8,6 +8,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ import java.util.Map;
 public class ElasticSearchServiceImpl implements ElasticSearchService {
 
     @Override
-    public SearchResponse query(Map<String, String> conf, int offset, int size) {
+    public SearchResponse query(Map<String, String> conf, int offset, int size, String[] includes) {
         String clusterName = conf.get("clusterName");
         String ipAddresses = conf.get("ipAddresses");
         String index = conf.get("index");
@@ -45,7 +47,12 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
 
         QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
 
-        SearchResponse response = client.prepareSearch(index).setTypes(indexType).setQuery(queryBuilder).setFrom(offset).setSize(size).get();
+        String[] excludes = new String[0];
+
+        SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource().fetchSource(includes, excludes);
+
+        SearchResponse response = client.prepareSearch(index).setTypes(indexType).setSource(searchSourceBuilder)
+                .setQuery(queryBuilder).setFrom(offset).setSize(size).get();
 
         client.close();
         return response;
