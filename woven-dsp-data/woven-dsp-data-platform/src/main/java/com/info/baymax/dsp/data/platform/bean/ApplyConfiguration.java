@@ -22,9 +22,6 @@ public class ApplyConfiguration implements Serializable {
     @ApiModelProperty(value = "数据资源名称")
     private String dataResName;
 
-    @ApiModelProperty(value = "数据传输类型: 0 pull, 1 push")
-    private Integer transferType;
-
     @ApiModelProperty("PUSH操作相关配置,关联CustDataResource获取push信息")
     private Long custDataSourceId;
 

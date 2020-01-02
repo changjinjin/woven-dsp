@@ -7,6 +7,7 @@ import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
+import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
@@ -26,10 +27,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/application")
 public class PlatDataApplicationController implements BaseEntityController<DataApplication> {
+
     @Autowired
     private DataApplicationService dataApplicationService;
+
     @Autowired
     private DataServiceEntityService dataServiceEntityService;
+
     @Autowired
     private DataCustAppService dataCustAppService;
 
@@ -58,12 +62,24 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
 
     @ApiOperation(value = "审批消费者申请记录")
     @PostMapping("/approval/{status}")
-    public Response<?> approvalDataApplication(@PathVariable Integer status, @RequestBody DataService dataService)
-        throws Exception {
+    public Response<?> approvalDataApplication(@PathVariable Integer status, @RequestBody DataService dataService) throws Exception {
         dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), status);
         if (status == 1) {
             DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
             dataService.setCustId(dataApplication.getOwner());
+
+            //审批通过把DataApplication中的pull/push配置信息写入DataService
+            ApplyConfiguration applyConfiguration = new ApplyConfiguration();
+            applyConfiguration.setCustAppId(dataApplication.getCustAppId());
+            applyConfiguration.setCustDataSourceId(dataApplication.getCustDataSourceId());
+            applyConfiguration.setCustDataSourceName(dataApplication.getCustDataSourceName());
+            applyConfiguration.setDataResId(dataApplication.getDataResId());
+            applyConfiguration.setDataResName(dataApplication.getDataResName());
+            applyConfiguration.setServiceMode(dataApplication.getServiceMode());
+            dataService.setApplyConfiguration(applyConfiguration);
+
+            dataService.setFieldMappings(dataApplication.getFieldMappings());
+
             if (dataService.getType() == 0) { // pull 服务, 配置接口信息
                 dataService.setUrl(dataApiUrl);
                 dataService.setPath(dataApiPath);
