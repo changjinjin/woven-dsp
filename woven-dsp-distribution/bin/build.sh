@@ -45,4 +45,12 @@ echo $project_path
 echo $project_name
 
 cd ../
-tar -zvcf ${project_name}.tar.gz $project_name
+tarFile=${project_name}.tar.gz
+tar -zvcf $tarFile $project_name
+
+echo 'copy zip file to target dir'
+rm -rf ../../../binaries/*
+cp ${project_name}.tar.gz ../../../binaries/
+
+echo 'clean current dir'
+rm -rf ./*
