@@ -22,7 +22,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @EnableExtProperties({"classpath:dsp-common.properties", "classpath:dsp-job-schedule.properties",
     "classpath:quartz.properties"})
-@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class, DataSourceAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class,
+    DataSourceAutoConfiguration.class})
 public class SchedulerServer {
 
     public static void main(String[] args) {
