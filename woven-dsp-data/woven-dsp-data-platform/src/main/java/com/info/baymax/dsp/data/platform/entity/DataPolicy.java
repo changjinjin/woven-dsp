@@ -63,9 +63,7 @@ public class DataPolicy extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String,Map<String,String>> transformMappings;
 
-
     @ApiModelProperty("此数据服务的有效期")
-    @JsonIgnore
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
@@ -74,27 +72,5 @@ public class DataPolicy extends BaseEntity {
     // 9999-12-31
     protected static Long MAX_DATE_TIME = 253402214400L;
 
-    @Transient
-    public Long getExpiredPeriod() {
-        if (serviceExpiredTime == null || serviceExpiredTime == 0 || serviceExpiredTime.longValue() >= MAX_DATE_TIME.longValue()) {
-            return 0L;
-        } else {
-            if (createTime == null) {
-                createTime = new Date();
-            }
-            return serviceExpiredTime - createTime.getTime() / 1000;
-        }
-    }
-
-    public void setExpiredPeriod(Long expiredPeriod) {
-        if (expiredPeriod == 0) {
-            serviceExpiredTime = MAX_DATE_TIME;
-        } else {
-            if (createTime == null) {
-                createTime = new Date();
-            }
-            serviceExpiredTime = createTime.getTime() / 1000 + expiredPeriod;
-        }
-    }
 
 }

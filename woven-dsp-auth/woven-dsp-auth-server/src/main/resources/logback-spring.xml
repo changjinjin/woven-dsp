@@ -3,7 +3,7 @@
 	debug="false">
 	<contextName>woven-dsp-auth-server</contextName>
 	<!-- 定义日志出输出路径 -->
-	<property name="LOG_PATH" value="D:/target/logs" />
+	<property name="LOG_PATH" value="${WOVEN_LOGS_DIR}/${WOVEN_COM_NAME}" />
 	<!-- <property name="LOG_PATTERN" value=".%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] 
 		%-5level %logger{36} - %msg %n" /> -->
 	<property name="LOG_PATTERN"
@@ -28,11 +28,11 @@
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>TRACE</level>
 		</filter>
-		<File>${LOG_PATH}/log.txt</File>
+		<File>${LOG_PATH}/${WOVEN_COM_NAME}.log</File>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>
-				${LOG_PATH}/log.%d{yyyy-MM-dd}.%i.txt
+				${LOG_PATH}/${WOVEN_COM_NAME}.%d{yyyy-MM-dd}.%i.log
 			</FileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
