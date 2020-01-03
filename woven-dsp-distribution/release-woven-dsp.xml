@@ -125,11 +125,6 @@
 	</fileSets>
 	<files>
 		<file>
-			<source>${project.basedir}/bin/build.sh</source>
-			<destName>./build.sh</destName>
-			<fileMode>755</fileMode>
-		</file>
-		<file>
 			<source>LICENSE-BIN</source>
 			<destName>LICENSE</destName>
 			<fileMode>644</fileMode>

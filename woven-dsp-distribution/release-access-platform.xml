@@ -29,6 +29,7 @@
             <includes>
                 <include>bin/process_helper.sh</include>
                 <include>bin/process-check.sh</include>
+                <include>bin/build.sh</include>
             </includes>
             <fileMode>0755</fileMode>
         </fileSet>
@@ -46,11 +47,6 @@
         <file>
             <source>bin/access-platform.sh</source>
             <destName>bin/startup.sh</destName>
-            <fileMode>755</fileMode>
-        </file>
-        <file>
-            <source>${project.basedir}/bin/build.sh</source>
-            <destName>./build.sh</destName>
             <fileMode>755</fileMode>
         </file>
         <file>

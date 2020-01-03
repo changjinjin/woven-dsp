@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo ">>>run build shell"
+cd ../
 workdir=$(cd $(dirname $0); pwd)
 echo "workdir: ${workdir}"
 woven_dsp_dir=${workdir}/

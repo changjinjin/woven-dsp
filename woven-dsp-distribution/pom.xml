@@ -262,7 +262,7 @@
                 </executions>
                 <configuration>
                     <executable>
-                        ${project.basedir}/binaries/${release.finalName}/${release.finalName}-${project.version}-${current.time}/build.sh
+                        ${project.basedir}/binaries/${release.finalName}/${release.finalName}-${project.version}-${current.time}/bin/build.sh
                     </executable>
                 </configuration>
             </plugin>
