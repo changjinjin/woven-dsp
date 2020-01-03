@@ -47,7 +47,7 @@ public class SaasContext implements Serializable {
     }
 
     public static String getCurrentTenantName() {
-        return getCurrentSaasContext().getTenantId();
+        return getCurrentSaasContext().getTenantName();
     }
 
     public static String getCurrentUserId() {
