@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="false" scanPeriod="60 seconds"
 	debug="false">
-	<contextName>woven-dsp-auth-server</contextName>
-	<!-- 定义日志出输出路径 -->
-	<property name="LOG_PATH" value="${WOVEN_LOGS_DIR}/${WOVEN_COM_NAME}" />
-	<!-- <property name="LOG_PATTERN" value=".%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] 
-		%-5level %logger{36} - %msg %n" /> -->
+	<contextName>woven-dsp</contextName>
+	<property name="LOG_PATH"
+		value="${WOVEN_LOGS_DIR:-/logs}/${WOVEN_COM_NAME:-/logs}" />
+	<property name="LOG_NAME" value="${WOVEN_COM_NAME:-log}" />
 	<property name="LOG_PATTERN"
 		value=".%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n" />
 
-	<!-- 控制台输出 -->
 	<appender name="STDOUT"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -22,17 +20,16 @@
 		</encoder>
 	</appender>
 
-	<!-- 按天滚动文件输出 -->
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>TRACE</level>
+			<level>DEBUG</level>
 		</filter>
-		<File>${LOG_PATH}/${WOVEN_COM_NAME}.log</File>
+		<File>${LOG_PATH}/${LOG_NAME}.log</File>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>
-				${LOG_PATH}/${WOVEN_COM_NAME}.%d{yyyy-MM-dd}.%i.log
+				${LOG_PATH}/${LOG_NAME}.%d{yyyy-MM-dd}.%i.log
 			</FileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -94,17 +91,7 @@
 	<logger name="org.apache.tomcat" level="ERROR" />
 
 	<logger name="org.springframework" level="INFO" />
-
-
-	<!-- 开发、测试环境 -->
-	<springProfile name="dev,test">
-		<logger name="com.info.baymax" level="DEBUG" additivity="true" />
-	</springProfile>
-
-	<!-- 生产环境 -->
-	<springProfile name="prod">
-		<logger name="com.info.baymax" level="ERROR" additivity="true" />
-	</springProfile>
+	<logger name="com.info.baymax" level="INFO" />
 
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />

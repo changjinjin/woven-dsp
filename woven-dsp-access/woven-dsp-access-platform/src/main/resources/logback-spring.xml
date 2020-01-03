@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false" scanPeriod="720 seconds"
+<configuration scan="false" scanPeriod="60 seconds"
 	debug="false">
-	<contextName>wfny</contextName>
-	<!-- 定义日志出输出路径 -->
-	<property name="LOG_PATH" value="target/logs" />
-	<!-- <property name="LOG_PATTERN" value=".%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] 
-		%-5level %logger{36} - %msg %n" /> -->
+	<contextName>woven-dsp</contextName>
+	<property name="LOG_PATH"
+		value="${WOVEN_LOGS_DIR:-/logs}/${WOVEN_COM_NAME:-/logs}" />
+	<property name="LOG_NAME" value="${WOVEN_COM_NAME:-log}" />
 	<property name="LOG_PATTERN"
 		value=".%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n" />
 
-	<!-- 控制台输出 -->
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
 		<encoder>
 			<Pattern>
 				${LOG_PATTERN}
 			</Pattern>
 		</encoder>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>DEBUG</level>
-		</filter>
 	</appender>
 
-	<!-- 按天滚动文件输出 -->
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
+			<level>DEBUG</level>
 		</filter>
-		<File>${LOG_PATH}/log.txt</File>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<File>${LOG_PATH}/${LOG_NAME}.log</File>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>
-				${LOG_PATH}/log.%d{yyyy-MM-dd}.%i.txt
+				${LOG_PATH}/${LOG_NAME}.%d{yyyy-MM-dd}.%i.log
 			</FileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -60,11 +59,11 @@
 	<logger name="com.zaxxer.hikari" level="ERROR" />
 	<logger name="io.lettuce" level="ERROR" />
 	<logger name="io.netty" level="ERROR" />
-	<logger name="reactor" level="ERROR" />
+	<logger name="reactor.core" level="ERROR" />
 	<logger name="com.ulisesbocchio" level="ERROR" />
 	<logger name="com.netflix" level="ERROR" />
 	<logger name="com.codingapi" level="ERROR" />
-	
+
 	<!-- hibernate日志输出 -->
 	<logger name="org.hibernate" level="ERROR" />
 	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
@@ -72,8 +71,10 @@
 	<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
 		level="ERROR" />
 	<logger name="org.hibernate.SQL" level="ERROR" />
-	<logger name="org.hibernate.engine.QueryParameters" level="ERROR" />
-	<logger name="org.hibernate.engine.query.HQLQueryPlan" level="ERROR" />
+	<logger name="org.hibernate.engine.QueryParameters"
+		level="ERROR" />
+	<logger name="org.hibernate.engine.query.HQLQueryPlan"
+		level="ERROR" />
 
 	<!-- 配置sql中日志输出级别 -->
 	<logger name="java.sql" level="DEBUG" />
@@ -82,22 +83,18 @@
 	<logger name="org.mybatis" level="ERROR" />
 	<logger name="org.apache.ibatis" level="ERROR" />
 	<!-- 配置mongodb中日志输出级别 -->
-	<logger name="org.springframework.data.mongodb.core" level="ERROR" />
+	<logger name="org.springframework.data.mongodb.core"
+		level="ERROR" />
 	<logger name="org.mongodb.driver" level="ERROR" />
-    <logger name="org.springframework" level="INFO" />
+	<logger name="javax" level="ERROR" />
+	<logger name="sun" level="ERROR" />
+	<logger name="org.apache.tomcat" level="ERROR" />
 
-	<!-- 开发、测试环境 -->
-	<springProfile name="dev,test">
-		<logger name="com.info.baymax" level="INFO" additivity="true" />
-	</springProfile>
-
-	<!-- 生产环境 -->
-	<springProfile name="prod">
-		<logger name="com.info.baymax" level="ERROR" additivity="true" />
-	</springProfile>
+	<logger name="org.springframework" level="INFO" />
+	<logger name="com.info.baymax" level="INFO" />
 
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
-<!-- 		<appender-ref ref="FILE" /> -->
+		<!-- <appender-ref ref="FILE" /> -->
 	</root>
 </configuration>
