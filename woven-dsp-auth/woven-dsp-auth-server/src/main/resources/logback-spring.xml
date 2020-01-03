@@ -3,7 +3,7 @@
 	debug="false">
 	<contextName>woven-dsp-auth-server</contextName>
 	<!-- 定义日志出输出路径 -->
-	<property name="LOG_PATH" value="D:/${WOVEN_LOGS_DIR}/${WOVEN_COM_NAME}" />
+	<property name="LOG_PATH" value="${WOVEN_LOGS_DIR}/${WOVEN_COM_NAME}" />
 	<!-- <property name="LOG_PATTERN" value=".%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] 
 		%-5level %logger{36} - %msg %n" /> -->
 	<property name="LOG_PATTERN"
