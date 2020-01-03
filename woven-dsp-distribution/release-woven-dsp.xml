@@ -99,14 +99,6 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${project.parent.basedir}/woven-dsp-gateway/target/lib/</directory>
-			<outputDirectory>libs/dsp-gateway</outputDirectory>
-			<fileMode>666</fileMode>
-			<includes>
-				<include>*.jar</include>
-			</includes>
-		</fileSet>
-		<fileSet>
 			<directory>${project.parent.basedir}/woven-dsp-job/woven-dsp-job-exec/target/lib/</directory>
 			<outputDirectory>libs/job-exec</outputDirectory>
 			<fileMode>666</fileMode>
@@ -117,6 +109,14 @@
 		<fileSet>
 			<directory>${project.parent.basedir}/woven-dsp-job/woven-dsp-job-schedule/target/lib/</directory>
 			<outputDirectory>libs/job-schedule</outputDirectory>
+			<fileMode>666</fileMode>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.parent.basedir}/woven-dsp-gateway/target/lib/</directory>
+			<outputDirectory>libs/dsp-gateway</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>*.jar</include>
@@ -148,7 +148,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/access-platform</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-access-platform</include>
@@ -160,7 +159,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/access-consumer</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-access-consumer</include>
@@ -172,7 +170,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/access-dataapi</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-access-dataapi</include>
@@ -184,7 +181,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/auth-server</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-auth-server</include>
@@ -196,7 +192,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/job-exec</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-job-exec</include>
@@ -208,7 +203,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/job-schedule</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-job-schedule</include>
@@ -220,7 +214,6 @@
 			<useStrictFiltering>true</useStrictFiltering>
 			<useTransitiveFiltering>false</useTransitiveFiltering>
 			<outputDirectory>libs/dsp-gateway</outputDirectory>
-			<scope>runtime</scope>
 			<fileMode>666</fileMode>
 			<includes>
 				<include>com.info.baymax:woven-dsp-gateway</include>
