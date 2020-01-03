@@ -2,10 +2,9 @@ package com.info.baymax.dsp.access.dataapi.web;
 
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
+import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
@@ -16,11 +15,15 @@ import com.info.baymax.dsp.data.platform.service.ElasticSearchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -72,8 +75,19 @@ public class DataApiController implements Serializable {
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
             //todo 获取dataset需要返回的字段列表
-            String[] includes = new String[0];
-            return Response.ok(elasticSearchService.query(dataset.getStorageConfigurations(), offset, size, includes));
+            List<FieldMapping> dataServiceFieldMappings = dataService.getFieldMappings();
+            List<FieldMapping> dataResourceFieldMappings = dataResource.getFieldMappings();
+            List<String> includes = new ArrayList<>();
+            for (FieldMapping fieldMapping : dataServiceFieldMappings) {
+                includes.add(fieldMapping.getSourceField());
+            }
+            SearchResponse searchResponse = elasticSearchService.query(dataset.getStorageConfigurations(),
+                    offset, size, includes.toArray(new String[0]));
+
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            for (SearchHit hit : searchHits) {
+            }
+            return Response.ok();
 
         } else {
             return Response.error(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
