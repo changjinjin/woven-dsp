@@ -45,6 +45,16 @@
                 <artifactId>woven-dsp-gateway</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>woven-dsp-job-exec</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>woven-dsp-job-schedule</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -79,6 +89,14 @@
                 <dependency>
                     <groupId>com.info.baymax</groupId>
                     <artifactId>woven-dsp-gateway</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>woven-dsp-job-exec</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>woven-dsp-job-schedule</artifactId>
                 </dependency>
             </dependencies>
         </profile>
@@ -147,6 +165,40 @@
                 <dependency>
                     <groupId>com.info.baymax</groupId>
                     <artifactId>woven-dsp-auth-server</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>release-job-exec</id>
+            <properties>
+                <profileActive>release-job-exec</profileActive>
+                <release.finalName>job-exec</release.finalName>
+                <hadoop.version>2.7.3</hadoop.version>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>woven-dsp-job-exec</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>release-job-schedule</id>
+            <properties>
+                <profileActive>release-job-schedule</profileActive>
+                <release.finalName>job-schedule</release.finalName>
+                <hadoop.version>2.7.3</hadoop.version>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>woven-dsp-job-schedule</artifactId>
                 </dependency>
             </dependencies>
         </profile>
