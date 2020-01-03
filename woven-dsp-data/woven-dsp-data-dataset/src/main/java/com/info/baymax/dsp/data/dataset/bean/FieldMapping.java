@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor
 @Data
-public class FieldMapping implements Comparable, Serializable {
+public class FieldMapping implements Comparable<FieldMapping>, Serializable {
 
     private static final long serialVersionUID = -8980720618228630927L;
 
@@ -38,8 +38,7 @@ public class FieldMapping implements Comparable, Serializable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        FieldMapping another = (FieldMapping) o;
-        return this.index > another.index ? 1 : -1;
+    public int compareTo(FieldMapping o) {
+        return this.index > o.index ? 1 : -1;
     }
 }

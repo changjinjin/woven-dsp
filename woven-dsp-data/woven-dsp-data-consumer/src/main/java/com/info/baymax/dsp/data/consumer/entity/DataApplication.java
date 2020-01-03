@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.data.consumer.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
@@ -15,7 +14,6 @@ import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

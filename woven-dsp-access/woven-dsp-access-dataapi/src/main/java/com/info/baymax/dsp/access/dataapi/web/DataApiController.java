@@ -2,6 +2,7 @@ package com.info.baymax.dsp.access.dataapi.web;
 
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -11,7 +12,6 @@ import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
-import com.info.baymax.dsp.data.platform.service.ElasticSearchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -76,18 +73,23 @@ public class DataApiController implements Serializable {
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
             //todo 获取dataset需要返回的字段列表
             List<FieldMapping> dataServiceFieldMappings = dataService.getFieldMappings();
-            List<FieldMapping> dataResourceFieldMappings = dataResource.getFieldMappings();
             List<String> includes = new ArrayList<>();
+            Map<String, String> fieldMap = new HashMap<>();
             for (FieldMapping fieldMapping : dataServiceFieldMappings) {
                 includes.add(fieldMapping.getSourceField());
+                fieldMap.put(fieldMapping.getSourceField(), fieldMapping.getTargetField());
             }
             SearchResponse searchResponse = elasticSearchService.query(dataset.getStorageConfigurations(),
                     offset, size, includes.toArray(new String[0]));
-
             SearchHit[] searchHits = searchResponse.getHits().getHits();
+            Map<String, Object> res = new HashMap<>();
             for (SearchHit hit : searchHits) {
+                Map<String, Object> map = hit.getSourceAsMap();
+                for (String key : map.keySet()) {
+                    res.put(fieldMap.get(key), map.get(key));
+                }
             }
-            return Response.ok();
+            return Response.ok(res);
 
         } else {
             return Response.error(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
