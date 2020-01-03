@@ -8,9 +8,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringCloudApplication
+@EnableTransactionManagement(proxyTargetClass = true)
 @EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class})
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.consumer"})
 @ComponentScan(basePackages = {"com.info.baymax"})
