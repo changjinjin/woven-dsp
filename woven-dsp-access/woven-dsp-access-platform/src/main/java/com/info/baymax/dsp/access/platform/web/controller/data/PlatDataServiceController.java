@@ -38,4 +38,8 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         dataServiceEntityService.saveOrUpdate(t);
         return Response.ok();
     }
+
+    /**
+     * 数据服务一但生成就不支持修改了，如果后期允许修改涉及到很多属性的置空
+     */
 }

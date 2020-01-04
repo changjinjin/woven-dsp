@@ -2,7 +2,6 @@ package com.info.baymax.dsp.job.exec.message.sender;
 
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
-import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,7 @@ import java.util.List;
 @FeignClient(qualifier = "platformServerRestClient",  name = "platform", configuration = FeignClientConfiguration.class)
 public interface PlatformServerRestClient {
     @PostMapping(value = "/api/schedulers")
-    Response runScheduler(@RequestBody FlowSchedulerDesc scheduler) throws Exception;
+    Object runScheduler(@RequestBody FlowSchedulerDesc scheduler) throws Exception;
 
     @GetMapping(value = "/api/flows/{id}/runtime-properties")
     List<ConfigItem> getRuntimeProperties(@PathVariable("id") String id) throws Exception;

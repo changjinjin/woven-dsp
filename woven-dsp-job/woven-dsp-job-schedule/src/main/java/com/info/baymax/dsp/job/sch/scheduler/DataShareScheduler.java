@@ -4,6 +4,7 @@ import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -97,14 +98,19 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
 
             TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger().withIdentity(triggerKey).startAt(new Date(startMiss)).forJob(myJob);
 
-            if (ds.getServiceConfiguration()!=null && ds.getServiceConfiguration().get("endTime") != null) {
-                long lastMiss = Long.parseLong(ds.getServiceConfiguration().get("endTime"));
+            if (ds.getServiceConfiguration()!=null && StringUtils.isNotEmpty(ds.getServiceConfiguration().get("endTime"))) {
+                try {
+                    long lastMiss = Long.parseLong(ds.getServiceConfiguration().get("endTime"));
 
-                if (ds.getServiceConfiguration().get("endTime") != null && lastMiss < startMiss) {
-                    log.warn("{} is out time range, skip it now. [{}--{}]", ds.getId(), new Date(startMiss), new Date(lastMiss));
+                    if (lastMiss < startMiss) {
+                        log.warn("{} is out time range, skip it now. [{}--{}]", ds.getId(), new Date(startMiss), new Date(lastMiss));
+                        return;
+                    }
+                    triggerBuilder.endAt(new Date(lastMiss));
+                }catch (Exception e){
+                    log.error("end time is error: " + ds.getServiceConfiguration().get("endTime"));
                     return;
                 }
-                triggerBuilder.endAt(new Date(lastMiss));
             }
 
             if (ScheduleType.SCHEDULER_TYPE_CRON.equals(ds.getScheduleType())) {
