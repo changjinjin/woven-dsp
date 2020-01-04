@@ -1,7 +1,6 @@
 package com.info.baymax.dsp.job.exec.config;
 
 import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.dsp.data.sys.entity.security.*;
 import feign.Logger;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

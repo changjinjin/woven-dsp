@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
+import com.info.baymax.common.comp.swagger.annotation.ApiModelFields;
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
@@ -34,11 +35,9 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     }
 
     @Override
-    public Response<?> save(
-			/*
-			 * @ApiModelFields(requiredFields = {"name", "type", "attributes"}, filterFields = {"id", "enabled",
-			 * "tenantId", "owner", "createTime", "creator", "lastModifiedTime", "lastModifier"}, includeMode = false)
-			 */ CustDataSource t) {
+    public Response<?> save(@ApiModelFields(requiredFields = {"name", "type", "attributes"}, filterFields = {"id",
+        "enabled", "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
+        "lastModifier"}, includeMode = false) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);
         if (!response.success()) {
             return response;
@@ -47,7 +46,9 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     }
 
     @Override
-    public Response<?> update(CustDataSource t) {
+    public Response<?> update(@ApiModelFields(requiredFields = {"name", "type", "attributes"}, filterFields = {
+        "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
+        "lastModifier"}, includeMode = false) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);
         if (!response.success()) {
             return response;
@@ -76,19 +77,4 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
             .end();
         return Response.ok(processConfigService.selectPage(query));
     }
-
-	/*
-	 * @ApiOperation(value = "测试文档注解", notes = "测试文档注解")
-	 * 
-	 * @PostMapping("/test")
-	 * 
-	 * @ResponseBody public Response<?> test(@ApiModelMap(value = {
-	 * 
-	 * @ApiModelProperty(value = "主键", name = "id", dataType = "long", notes = "主键", allowableValues = "1,2",
-	 * allowEmptyValue = false, position = 1, required = true),
-	 * 
-	 * @ApiModelProperty(value = "名称", name = "name", dataType = "string", notes = "名称", position = 2)}) Map<String,
-	 * Object> map) { return Response.ok(); }
-	 */
-
 }
