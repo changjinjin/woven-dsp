@@ -1,5 +1,7 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
+import com.info.baymax.common.message.exception.ControllerException;
+import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
@@ -25,11 +27,8 @@ public class CustDataResourceController {
     @ApiOperation(value = "消费者查询可申请的数据资源，分页查询")
     @PostMapping("/page")
     public Response<IPage<DataResource>> page(@ApiParam("查询条件") @RequestBody ExampleQuery query) throws Exception {
-        query = ExampleQuery.builder(query)//
-            .fieldGroup()//
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
-            .andEqualTo("openStatus", 1)//
-            .end();
+        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("openStatus", 1);
         return Response.ok(dataResourceService.selectPage(query));
     }
+
 }

@@ -41,7 +41,7 @@ public class CustDataApplicationController implements BaseEntityController<DataA
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
         // 过滤当前消费者的数据
-        query = ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end();
+        query.getFieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end();
         return BaseEntityController.super.page(query);
     }
 
