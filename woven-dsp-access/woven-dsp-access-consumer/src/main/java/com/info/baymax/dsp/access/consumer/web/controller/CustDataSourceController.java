@@ -20,6 +20,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dss")
 @Api(tags = "消费端: 数据源管理接口", value = "数据源管理接口")
@@ -64,7 +66,6 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 
     @ApiOperation(value = "查询数据库驱动信息", notes = "如果是JDBC类型的数据源，查询系统内置的数据库驱动信息用于用户创建数据源")
     @PostMapping("/dbDrivers")
-    @ResponseBody
     public Response<IPage<ProcessConfig>> dbDrivers(
         @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
         if (query == null) {
@@ -76,5 +77,17 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
             .andEqualTo("processConfigType", "jdbc driver")//
             .end();
         return Response.ok(processConfigService.selectPage(query));
+    }
+
+    @PostMapping("jdbc/try")
+    @ApiOperation(value = "数据源链接测试")
+    public Response<?> jdbcConnectionTry(CustDataSource dataSource) {
+        return Response.ok(custDataSourceService.jdbcConnect(dataSource));
+    }
+
+    @ApiOperation(value = "查询数据源所有的表名", notes = "根据ID查询数据源的数据表名称")
+    @GetMapping("table/list")
+    public Response<List<String>> getTableList(@ApiParam(required = true) @RequestParam String id) {
+        return Response.ok(custDataSourceService.selectTableList(id));
     }
 }
