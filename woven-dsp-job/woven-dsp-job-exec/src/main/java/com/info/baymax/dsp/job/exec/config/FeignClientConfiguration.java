@@ -1,5 +1,7 @@
 package com.info.baymax.dsp.job.exec.config;
 
+import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.dsp.data.sys.entity.security.*;
 import feign.Logger;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -32,21 +34,36 @@ public class FeignClientConfiguration {
     }
 
     @Bean
-    public FeignBasicAuthRequestInterceptor basicAuthRequestInterceptor() {
-        return new FeignBasicAuthRequestInterceptor(restInternalToken);
+    public TransmitTokenFeighClientIntercepter basicAuthRequestInterceptor() {
+        return new TransmitTokenFeighClientIntercepter();
     }
 }
 
-class FeignBasicAuthRequestInterceptor  implements RequestInterceptor {
+//class FeignBasicAuthRequestInterceptor  implements RequestInterceptor {
+//
+//    private String internalToken;
+//
+//    public FeignBasicAuthRequestInterceptor(String restInternalToken) {
+//        this.internalToken = restInternalToken;
+//    }
+//
+//    @Override
+//    public void apply(RequestTemplate template) {
+//        template.header("INTERNAL-TOKEN", internalToken);
+//    }
+//}
 
-    private String internalToken;
 
-    public FeignBasicAuthRequestInterceptor(String restInternalToken) {
-        this.internalToken = restInternalToken;
-    }
-
+class TransmitTokenFeighClientIntercepter implements RequestInterceptor {
     @Override
-    public void apply(RequestTemplate template) {
-        template.header("INTERNAL-TOKEN", internalToken);
+    public void apply(RequestTemplate requestTemplate) {
+        if (SaasContext.getCurrentUserId() == null) {
+            requestTemplate.header("temp", "true");
+            return;
+        }
+        requestTemplate.header("userId", SaasContext.getCurrentUserId());
+        requestTemplate.header("loginId", SaasContext.getCurrentUsername());
+        requestTemplate.header("tenantName", SaasContext.getCurrentTenantName());
+        requestTemplate.header("tenantId", SaasContext.getCurrentTenantId());
     }
 }

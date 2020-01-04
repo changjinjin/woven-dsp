@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.job.exec.rest;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
@@ -8,9 +8,7 @@ import com.info.baymax.dsp.data.consumer.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
-import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.Status;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
@@ -24,6 +22,9 @@ import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.sys.entity.security.*;
+import com.info.baymax.dsp.data.sys.service.security.TenantService;
+import com.info.baymax.dsp.data.sys.service.security.UserService;
 import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
 import com.info.baymax.dsp.data.dataset.entity.core.*;
@@ -73,6 +74,10 @@ public class ExecutorDataServiceController {
     private PlatformServerRestClient platformServerRestClient;
     @Autowired
     private FlowExecutionService flowExecutionService;
+    @Autowired
+    private TenantService tenantService;
+    @Autowired
+    private UserService userService;
 
     @Value(value = "${execution.checkout.timeout:1800000}")
     private Long execution_timeout = 30 * 60 * 1000L;
@@ -169,6 +174,11 @@ public class ExecutorDataServiceController {
                 dataServiceEntityService.saveOrUpdate(dataService);
             }
 
+            //initSaasContext()
+            if(StringUtils.isEmpty(SaasContext.getCurrentUserId()) || StringUtils.isEmpty(SaasContext.getCurrentTenantId())){
+                initSaasContext(flowDesc.getTenantId(), flowDesc.getOwner());
+            }
+
             List<ConfigItem> runtimePros = null;
             try {
                 runtimePros = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
@@ -202,15 +212,17 @@ public class ExecutorDataServiceController {
             }
 
             FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService,custDataSource, flowDesc, runtimePros);
+            log.info("flowDesc for DataService [{}] : {}", dataService.getId(), JsonBuilder.getInstance().toJson(flowDesc));
+            log.info("scheduler for DataService [{}] : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler));
+
+
             //提交任务到woven-server平台
             try {
-                Response rs = platformServerRestClient.runScheduler(scheduler);
-                if(rs.getStatus() == 200 || rs.getStatus() == 201) {
-                    //schedule触发成功,更新Dataservice的schedulerId
-                    dataService.getJobInfo().setScheduleId(scheduler.getId());
-                    dataService.setLastModifiedTime(new Date());
-                    dataServiceEntityService.updateByPrimaryKey(dataService);
-                }
+                platformServerRestClient.runScheduler(scheduler);
+                //schedule触发成功,更新Dataservice的schedulerId
+                dataService.getJobInfo().setScheduleId(scheduler.getId());
+                dataService.setLastModifiedTime(new Date());
+                dataServiceEntityService.updateByPrimaryKey(dataService);
             }catch (Exception ex){
                 log.error("send scheduler request to platform exception: ", ex);
                 //更新dataservice的isRunning为失败状态
@@ -267,6 +279,7 @@ public class ExecutorDataServiceController {
 
                 if (System.currentTimeMillis() - startTime > execution_timeout) {
                     log.warn("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
+                    dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
                     break;
                 }
             }
@@ -292,6 +305,31 @@ public class ExecutorDataServiceController {
         String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
         List<Object> list = JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
         System.out.println(list.size());
+    }
+
+    private void initSaasContext(String tenantId, String userId){
+        SaasContext ctx = SaasContext.getCurrentSaasContext();
+        Tenant tenant = null;
+        if (StringUtils.isNotEmpty(tenantId)) {
+            tenant = tenantService.selectByPrimaryKey(tenantId);
+        }
+        if (tenant == null) {
+            return;
+        }
+
+        // 查询用户信息
+        User user = null;
+        if (StringUtils.isNotEmpty(userId)) {
+            user = userService.selectByPrimaryKey(userId);
+        }
+        if (user == null) {
+            return;
+        }
+
+        ctx.setTenantId(tenantId);
+        ctx.setTenantName(tenant.getName());
+        ctx.setUserId(userId);
+        ctx.setUsername(user.getUsername());
     }
 
 

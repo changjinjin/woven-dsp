@@ -41,6 +41,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -237,9 +238,7 @@ public class FlowGenUtil {
                 .withPosition(585, 203).input(inputFields).output(outputFields).build();
 
         return step;
-
     }
-
 
     private StepDesc getSinkStep(String stepId, Dataset sourceDataset, DataService dataService, List<FlowField> inputFields) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
@@ -254,25 +253,120 @@ public class FlowGenUtil {
         if(!custDataSource.getAttributes().containsKey("mode")){
             stepBuilder.config("mode", "append");
         }
-        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), ExecutorFlowConf.schema_sink_prefix +dataService.getId());
-        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), ExecutorFlowConf.dataset_sink_prefix +dataService.getId());
+        String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId();
+        String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId();
+        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), schemaName);
+        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), datasetName);
         String schemaId = "";
         String datasetId = "";
-        if(schema != null){
-            schemaId = schema.getId();
+        if(schema == null){
+            //新建schema, 此时输出字段都已经知道了
+            schema = createSchema(sourceDataset, dataService, inputFields, schemaName);
         }
-        if(dataset != null){
-            datasetId = dataset.getId();
+        schemaId = schema.getId();
+
+        if(dataset == null) {
+            dataset = createDataset(schema, sourceDataset, dataService, custDataSource, datasetName);
         }
+        datasetId = dataset.getId();
+
         if(StringUtils.isNotEmpty(schemaId) && StringUtils.isNotEmpty(datasetId)){
             stepBuilder.config("autoSchema","false");
         }else{
             stepBuilder.config("autoSchema","true");
         }
 
-        stepBuilder.config("schemaId", schemaId).config("schema", ExecutorFlowConf.schema_sink_prefix +dataService.getId()).config("datasetId", datasetId).config("dataset", ExecutorFlowConf.dataset_sink_prefix + dataService.getId());
+        stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
         StepDesc step = stepBuilder.withPosition(585, 203).input(inputFields).build();
         return step;
+    }
+
+    public Schema createSchema(Dataset sourceDataset, DataService dataService, List<FlowField> inputFields, String schemaName){
+        Schema schema = new Schema(schemaName, new ArrayList<DataField>());
+        schema.setId(UUID.randomUUID().toString());
+        schema.setCreateTime(new Date());
+        schema.setLastModifiedTime(schema.getCreateTime());
+        ResourceDesc schema_resource = resourceDescService.findRootsByName(sourceDataset.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_SCHEMA);// 暂时放在schemas根目录下
+        schema.setResource(schema_resource);
+        for(FlowField flowField : inputFields){
+            DataField dataField = new DataField(flowField.getColumn(),flowField.getType(),flowField.getAlias(),flowField.getDescription());
+            String fieldName = dataField.getName();
+            if (StringUtils.isNotEmpty(dataField.getAlias())) {
+                dataField.setName(dataField.getAlias());
+                dataField.setAlias(fieldName);
+            }
+            schema.getFields().add(dataField);
+        }
+        schema.setTenantId(sourceDataset.getTenantId());
+        schema.setOwner(sourceDataset.getOwner());
+        schema.setCreator(sourceDataset.getCreator());
+        schema.setLastModifier(sourceDataset.getCreator());
+        try {
+            schema = schemaService.save(schema);
+        } catch (Exception e) {
+            logger.error("save schema error: " + e.getMessage());
+        }
+        return schema;
+    }
+
+    public Dataset createDataset(Schema schema, Dataset sourceDataset, DataService dataService, CustDataSource custDataSource, String datasetName){
+        Dataset dataset = new Dataset();
+        dataset.setId(UUID.randomUUID().toString());
+        dataset.setName(datasetName);
+        dataset.setSchema(schema);
+        ResourceDesc resourceDesc = resourceDescService.findRootsByName(sourceDataset.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
+        dataset.setResource(resourceDesc);
+        Map storageConfigurations = new HashMap();
+
+        Iterator<Map.Entry<String,Object>> attributes= custDataSource.getAttributes().entrySet().iterator();
+        while (attributes.hasNext()){
+            Map.Entry<String,Object> entry = attributes.next();
+            String key = entry.getKey();
+            Object val = entry.getValue();
+            storageConfigurations.put(key, val.toString());
+        }
+        // 删除schema属性,防止和jdbc的跨用户的schema冲突
+        if (storageConfigurations.get("schema") != null
+                && storageConfigurations.get("schema").toString().equals(schema.getName())) {
+            storageConfigurations.remove("schema");
+        }
+        if (storageConfigurations.containsKey("schemaId")) {
+            storageConfigurations.remove("schemaId");
+        }
+        if (storageConfigurations.containsKey("dataset")) {
+            storageConfigurations.remove("dataset");
+        }
+        if (storageConfigurations.containsKey("datasetId")) {
+            storageConfigurations.remove("datasetId");
+        }
+        storageConfigurations.put("table", "test_ds_"+ dataService.getId());
+
+        dataset.setStorageConfigurations(storageConfigurations);
+        dataset.setSliceTime("");
+        dataset.setSliceType("H");
+        Object type = storageConfigurations.get("type");
+        String storage = null;
+        if(type != null && StringUtils.isNotEmpty(type.toString())){
+            storage = type.toString();
+        }else{
+            storage = "JDBC";
+        }
+        dataset.setStorage(storage);
+        dataset.setTenantId(sourceDataset.getTenantId());
+        dataset.setOwner(sourceDataset.getId());
+        dataset.setCreateTime(new Date());
+        dataset.setLastModifiedTime(dataset.getCreateTime());
+        dataset.setCreator(sourceDataset.getCreator());
+        dataset.setLastModifier(dataset.getCreator());
+
+        dataset.setVersion(1);
+        dataset.setExpiredPeriod(0L);
+        try {
+            dataset = datasetService.save(dataset);
+        }catch (Exception e){
+        }
+
+        return dataset;
     }
 
     private StepDesc getSQLStep(String stepId, DataResource dataResource, List<FlowField> inputFields, List<FlowField> outputFields) throws Exception{
@@ -291,7 +385,7 @@ public class FlowGenUtil {
         }
         log.info("not found incrementField from output fields: {} ", dataResource.getIncrementField());
 
-        return step;
+        return null;
     }
 
     private StepDesc getSqlSinkStep(String stepId, Dataset sourceDS, DataService dataService,List<FlowField> inputFields){
@@ -570,6 +664,8 @@ public class FlowGenUtil {
         scheduler.setConfigurations(configurations);
         scheduler.setFlowType("dataflow");
         scheduler.setTotalExecuted(0);
+        scheduler.setOwner(flowDesc.getOwner());
+        scheduler.setTenantId(flowDesc.getTenantId());
 
         logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
 
