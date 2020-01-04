@@ -124,7 +124,7 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
     default List<T> select(T record) {
         return getMyBaseMapper().select(record);
     }
-     
+
     /**
      * 查询并排序
      *
@@ -179,7 +179,7 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
      */
     default IPage<T> selectPage(T s, IPageable pageable) {
         IPage<T> page = new IPage<T>(pageable);
-        if (pageable == null) {// 查询所有
+        if (pageable == null || !pageable.isPageable()) {// 查询所有
             int totalCount = selectCount(s);
             page.setTotalCount(totalCount);
             if (totalCount <= 0)

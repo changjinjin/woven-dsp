@@ -243,10 +243,6 @@
                             <classpathPrefix>../lib</classpathPrefix>
                             <addClasspath>false</addClasspath>
                         </manifest>
-                        <manifestEntries>
-                            <Class-Path><![CDATA[]]>
-                            </Class-Path>
-                        </manifestEntries>
                     </archive>
                     <excludes>
                         <exclude>/*.properties</exclude>
