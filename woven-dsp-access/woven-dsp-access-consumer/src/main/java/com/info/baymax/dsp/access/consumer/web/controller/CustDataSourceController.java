@@ -8,6 +8,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
@@ -68,6 +69,9 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
         @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
+        }
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
         }
         query.getFieldGroup()
             .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//

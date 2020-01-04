@@ -8,6 +8,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import io.swagger.annotations.Api;
@@ -41,6 +42,9 @@ public class CustDataApplicationController implements BaseEntityController<DataA
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
         // 过滤当前消费者的数据
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
+        }
         query.getFieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end();
         return BaseEntityController.super.page(query);
     }

@@ -1,11 +1,14 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
+import com.info.baymax.common.comp.base.BaseEntityController;
+import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
@@ -26,9 +29,11 @@ public class CustDataResourceController {
 
     @ApiOperation(value = "消费者查询可申请的数据资源，分页查询")
     @PostMapping("/page")
-    public Response<IPage<DataResource>> page(@ApiParam("查询条件") @RequestBody ExampleQuery query) throws Exception {
+    public Response<IPage<DataResource>> queryPage(@ApiParam("查询条件") @RequestBody ExampleQuery query) {
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
+        }
         query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("openStatus", 1);
-        return Response.ok(dataResourceService.selectPage(query));
+        return  Response.ok(dataResourceService.selectPage(query));
     }
-
 }

@@ -6,6 +6,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import io.swagger.annotations.Api;
@@ -28,6 +29,9 @@ public class DataCustAppController implements BaseEntityController<DataCustApp> 
 
     @Override
     public Response<IPage<DataCustApp>> page(ExampleQuery query) {
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
+        }
         query.getFieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
         return BaseEntityController.super.page(query);
     }
