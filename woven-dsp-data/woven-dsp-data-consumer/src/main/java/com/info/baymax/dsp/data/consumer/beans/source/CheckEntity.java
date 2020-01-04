@@ -105,7 +105,7 @@ public class CheckEntity {
                     }
                 }
             }
-            if (DataSourceType.socket.getValue().equals(dataSource.getType())) {
+            if (DataSourceType.SOCKET.getValue().equals(dataSource.getType())) {
             	Map<String, Object> storageMap = dataSource.getAttributes();
                 if (storageMap == null) {
                     return Response.error(ErrType.BAD_REQUEST, "dataSource[Attributes] is null");
