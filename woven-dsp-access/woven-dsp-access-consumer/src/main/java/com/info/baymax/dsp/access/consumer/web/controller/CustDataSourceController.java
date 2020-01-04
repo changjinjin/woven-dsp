@@ -69,11 +69,9 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        query = ExampleQuery.builder(query)//
-            .fieldGroup()//
+        query.getFieldGroup()
             .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
-            .andEqualTo("processConfigType", "jdbc driver")//
-            .end();
+            .andEqualTo("processConfigType", "jdbc driver");
         return Response.ok(processConfigService.selectPage(query));
     }
 

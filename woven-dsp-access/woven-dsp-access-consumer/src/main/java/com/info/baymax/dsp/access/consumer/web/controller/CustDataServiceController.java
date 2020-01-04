@@ -30,11 +30,8 @@ public class CustDataServiceController {
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        query = ExampleQuery.builder(query)//
-            .fieldGroup()//
-            .andEqualTo("custId", SaasContext.getCurrentUserId())//
-            .end();
-        return Response.ok(dataServiceEntityService.selectPage(ExampleQuery.builder(query)));
+        query.getFieldGroup().andEqualTo("custId", SaasContext.getCurrentUserId());
+        return Response.ok(dataServiceEntityService.selectPage(query));
     }
 
 
