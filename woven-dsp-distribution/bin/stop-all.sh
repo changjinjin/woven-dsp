@@ -8,12 +8,12 @@ WOVEN_BIN=${WOVEN_BIN:-${bin}}
 WOVEN_HOME=`cd $(dirname $0)/..; pwd`
 WOVEN_CONF=${WOVEN_CONF:-${WOVEN_HOME}/conf}
 
-. ${WOVEN_CONF}/woven-env.sh
+. ${WOVEN_CONF}/dsp-env.sh
 . ${WOVEN_BIN}/process-check.sh
 
 cd ${WOVEN_HOME}
 
-for component in more-executors df-executor pipeline-server woven-server woven-discovery;
+for component in access-platform access-dataapi access-consumer auth-server dsp-gateway job-exec job-schedule;
 do
     # start  component if it is present
     if [ -f "${WOVEN_HOME}"/bin/${component}.sh ];
@@ -25,11 +25,6 @@ do
     fi
 done
 
-# stop livy-server
-if [ -f "${WOVEN_HOME}"/livy-server/bin/livy-server ];
-then
- "${WOVEN_HOME}"/livy-server/bin/livy-server stop
-fi
 
 
 
