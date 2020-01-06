@@ -21,12 +21,7 @@ public interface CommonEntityController<ID extends Serializable, T extends Commo
     @ApiOperation(value = "添加记录", notes = "新建数据记录，新建时主键为空值")
     @PostMapping("/save")
     @ResponseBody
-    default Response<?> save(
-        @ApiParam(value = "待新建记录") /*
-         * @ApiModelFields(requiredFields = {"name"}, filterFields = { "id", "enabled",
-         * "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
-         * "lastModifier"}, includeMode = false)
-         */ @RequestBody T t) {
+    default Response<?> save(@ApiParam(value = "待新建记录") @RequestBody T t) {
         if (t == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "保存对象不能为空");
         }
@@ -37,12 +32,7 @@ public interface CommonEntityController<ID extends Serializable, T extends Commo
     @ApiOperation(value = "修改记录", notes = "编辑数据记录，编辑时根据主键查找修改记录，ID值不能为空，当只需要更新部分字段时可只传部分字段的值，其他字段值为空，或者传全部字段")
     @PostMapping("/update")
     @ResponseBody
-    default Response<?> update(
-        @ApiParam(value = "待编辑记录") /*
-         * @ApiModelFields(requiredFields = {"id"}, filterFields = { "id", "enabled",
-         * "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
-         * "lastModifier"}, includeMode = false)
-         */ @RequestBody T t) {
+    default Response<?> update(@ApiParam(value = "待编辑记录") @RequestBody T t) {
         if (t == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "编辑对象不能为空");
         }

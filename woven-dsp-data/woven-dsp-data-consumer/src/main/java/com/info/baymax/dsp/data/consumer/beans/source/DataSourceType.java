@@ -3,7 +3,7 @@ package com.info.baymax.dsp.data.consumer.beans.source;
 public enum DataSourceType {
     DB("DB"),
     HTTP("HTTP"),
-    socket("socket"),
+    SOCKET("SOCKET"),
     FTP("FTP"),
     MONGODB("MONGODB"),
     ES("ES"),
