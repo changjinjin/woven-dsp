@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
 echo ">>>run build shell"
-workdir=$(cd $(dirname $0); pwd)
+workdir=$(cd $(dirname "$PWD"); pwd)
+woven_dsp_dir=${workdir}/
 echo "workdir: ${workdir}"
-
-cd ${workdir}
-cd ../
-woven_dsp_dir=${pwd}/
 echo "woven_dsp_dir: ${woven_dsp_dir}"
 
 echo ">>>create jars dir"
@@ -48,6 +45,8 @@ echo "current path ${project_path}"
 echo "current dir ${project_name}"
 
 cd ../
+echo "current path $(pwd)"
+
 dir_path=$(pwd)
 dir_name="${dir_path##*/}"
 echo "current path ${dir_path}"
@@ -61,8 +60,8 @@ mkdir -p ../../../binaries/$dir_name
 tar -zvcf ../../../binaries/$dir_name/$tarFile $project_name
 
 echo 'clean current dir'
-#rm -rf ./$project_name
+rm -rf ./$project_name
 
 cd ../../../binaries/$dir_name/
 dir_path=$(pwd)
-echo "The final archive file path is ${dir_path}${tarFile}"
+echo "The final archive file path is ${dir_path}/${tarFile}"
