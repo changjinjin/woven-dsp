@@ -71,15 +71,14 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        query.getFieldGroup()
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
+        query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
             .andEqualTo("processConfigType", "jdbc driver");
         return Response.ok(processConfigService.selectPage(query));
     }
 
     @PostMapping("jdbc/try")
     @ApiOperation(value = "数据源链接测试")
-    public Response<?> jdbcConnectionTry(CustDataSource dataSource) {
+    public Response<?> jdbcConnectionTry(@ApiParam("数据源配置信息") @RequestBody CustDataSource dataSource) {
         return Response.ok(custDataSourceService.jdbcConnect(dataSource));
     }
 
