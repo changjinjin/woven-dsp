@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.job.sch.service;
+package com.info.baymax.dsp.job.sch.service.schedule;
 
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
@@ -10,8 +10,6 @@ import com.info.baymax.dsp.job.sch.scheduler.DataShareScheduler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +23,8 @@ import java.util.TimerTask;
  * @Date: 2019/12/18 20:00
  */
 @Component
-@EnableScheduling
 @Slf4j
-public class DataServiceSchedulerRunner {
+public class DataServiceScheduler {
     @Value(value = "${scheduler.scan.dataservice.rate:10000}")
     private final Integer scheduler_scan_rate = 10000;
 
@@ -49,15 +46,6 @@ public class DataServiceSchedulerRunner {
 
         }
     }
-
-//    @Scheduled(initialDelay = 1000*10, fixedRate = 10L)
-//    public void runScheduler(){
-//        try {
-//            sendReadyService();
-//        }catch (Exception e){
-//            log.error("schedule data service exception: ", e);
-//        }
-//    }
 
     @PostConstruct
     public void runScheduler_push(){

@@ -34,7 +34,7 @@ public class DataEntityCleaner {
     @Autowired
     DataShareScheduler dataShareScheduler;
 
-    @Scheduled(cron="0 */5 * * * ?")
+    @Scheduled(cron="0 */30 * * * ?")
     public void cleanDB(){
         cleanDataService();
         cleanDataResource();
