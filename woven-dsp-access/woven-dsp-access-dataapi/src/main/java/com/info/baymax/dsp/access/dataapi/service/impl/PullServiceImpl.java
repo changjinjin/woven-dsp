@@ -6,6 +6,7 @@ import com.info.baymax.dsp.access.dataapi.service.PullService;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,14 +21,17 @@ import java.util.Map;
 @Service
 @Slf4j
 public class PullServiceImpl implements PullService {
+
+    @Autowired
+    ElasticSearchService elasticSearchService;
+
     @Override
     public List<Map<String, Object>> query(String storage, Map<String, String> fieldMap, Map<String, String> conf,
                                            int offset, int size, String[] includes) {
         List<Map<String, Object>> res = new ArrayList<>();
         switch (Engine.valueOf(storage.toUpperCase())) {
             case ELASTICSEARCH:
-                ElasticSearchService service = new ElasticSearchServiceImpl();
-                SearchResponse response = service.query(conf, offset, size, includes);
+                SearchResponse response = elasticSearchService.query(conf, offset, size, includes);
                 SearchHit[] searchHits = response.getHits().getHits();
                 for (SearchHit hit : searchHits) {
                     Map<String, Object> src = hit.getSourceAsMap();
