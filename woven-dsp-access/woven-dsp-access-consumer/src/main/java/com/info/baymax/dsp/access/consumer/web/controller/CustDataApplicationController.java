@@ -10,6 +10,8 @@ import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.platform.entity.DataResource;
+import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,9 +30,22 @@ public class CustDataApplicationController implements BaseEntityController<DataA
     @Autowired
     private DataApplicationService dataApplicationService;
 
+    @Autowired
+    private DataResourceService dataResourceService;
+
     @Override
     public BaseEntityService<DataApplication> getBaseEntityService() {
         return dataApplicationService;
+    }
+
+    @Override
+    public Response<?> save(@ApiParam(value = "待新建记录") @RequestBody DataApplication t) {
+        if (t == null) {
+            throw new ControllerException(ErrType.BAD_REQUEST, "保存对象不能为空");
+        }
+        DataResource dataResource = dataResourceService.selectByPrimaryKey(t.getDataResId());
+        t.setFieldMappings(dataResource.getFieldMappings());
+        return BaseEntityController.super.save(t);
     }
 
     @ApiOperation(value = "分页查询")

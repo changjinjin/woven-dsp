@@ -34,12 +34,12 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
         //select * from dsp_data_service where (schedule_type = 'once' or schedule_type='cron') and type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
         ExampleQuery query = ExampleQuery.builder(DataService.class)//
                 .fieldGroup()
-                .andIn("scheduleType", new String[] { "cron", "once"})//
+                .andIn("scheduleType", new String[]{"cron", "once"})//
                 .andEqualTo("type", type)
                 .andEqualTo("status", status)
                 .andEqualTo("isRunning", isRunning)
                 .end();
-        List<DataService> list = selectByExample(ExampleHelper.createExample(query,getEntityClass()));
+        List<DataService> list = selectByExample(ExampleHelper.createExample(query, getEntityClass()));
         return list;
     }
 
@@ -49,7 +49,7 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
     }
 
     @Override
-    public void restoreDataServiceRunningStatus(Long id){
+    public void restoreDataServiceRunningStatus(Long id) {
         dataServiceMapper.updateDataServiceRunningStatus(id, 0);
     }
 

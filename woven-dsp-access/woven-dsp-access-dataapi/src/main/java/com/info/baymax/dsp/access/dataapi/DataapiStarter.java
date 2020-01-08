@@ -21,6 +21,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableExtProperties({"classpath:dsp-common.properties", "classpath:dsp-access-dataapi.properties"})
 public class DataapiStarter {
     public static void main(String[] args) {
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(DataapiStarter.class, args);
     }
 }

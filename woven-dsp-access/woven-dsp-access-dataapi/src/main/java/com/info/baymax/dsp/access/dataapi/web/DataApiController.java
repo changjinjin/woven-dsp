@@ -56,23 +56,38 @@ public class DataApiController implements Serializable {
         int size = Integer.valueOf(body.getOrDefault("size", "10000"));
 
         if (dataServiceId == null) {
-            return Response.error(ErrType.BAD_REQUEST, "Missing dataServiceId param");
+            return Response.error(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
         }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(Long.valueOf(dataServiceId));
+        if (dataService == null) {
+            return Response.error(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
+        }
         if (dataService.getType() == 1) {
-            return Response.error(ErrType.BAD_REQUEST, "Don't support push type");
+            return Response.error(ErrType.BAD_REQUEST, "不支持push共享方式");
         }
         Long custAppId = dataService.getApplyConfiguration().getCustAppId();
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
+        if (custApp == null) {
+            return Response.error(ErrType.ENTITY_NOT_EXIST, "接入配置" + custAppId + " 不存在");
+        }
 
         String accessKey = custApp.getAccessKey();
         String[] accessIp = custApp.getAccessIp();
         if (accessKey.equals(requestKey) && Arrays.asList(accessIp).contains(host)) {
             Long dataResId = dataService.getApplyConfiguration().getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
+            if (dataResource == null) {
+                return Response.error(ErrType.ENTITY_NOT_EXIST, "数据资源" + dataResId + " 不存在");
+            }
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
-            //todo 获取dataset需要返回的字段列表
+            if (dataset == null) {
+                return Response.error(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
+            }
+
             List<FieldMapping> dataServiceFieldMappings = dataService.getFieldMappings();
+            if (dataServiceFieldMappings == null) {
+                dataServiceFieldMappings = dataResource.getFieldMappings();
+            }
             List<String> includes = new ArrayList<>();
             Map<String, String> fieldMap = new HashMap<>();
             for (FieldMapping fieldMapping : dataServiceFieldMappings) {
@@ -82,12 +97,14 @@ public class DataApiController implements Serializable {
             SearchResponse searchResponse = elasticSearchService.query(dataset.getStorageConfigurations(),
                     offset, size, includes.toArray(new String[0]));
             SearchHit[] searchHits = searchResponse.getHits().getHits();
-            Map<String, Object> res = new HashMap<>();
+            List<Map<String, Object>> res = new ArrayList<>();
             for (SearchHit hit : searchHits) {
-                Map<String, Object> map = hit.getSourceAsMap();
-                for (String key : map.keySet()) {
-                    res.put(fieldMap.get(key), map.get(key));
+                Map<String, Object> src = hit.getSourceAsMap();
+                Map<String, Object> target = new HashMap<>();
+                for (String key : src.keySet()) {
+                    target.put(fieldMap.get(key), src.get(key));
                 }
+                res.add(target);
             }
             return Response.ok(res);
 
