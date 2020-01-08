@@ -39,6 +39,7 @@ public class CustDataApplicationController implements BaseEntityController<DataA
         return dataApplicationService;
     }
 
+    //todo 前端申请页面增加字段选择
     @Override
     public Response<?> save(@ApiParam(value = "待新建记录") @RequestBody DataApplication t) {
         if (t == null) {

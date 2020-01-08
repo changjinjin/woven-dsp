@@ -38,6 +38,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
                 String[] ipPort = ipAndPort.split(":");
                 client.addTransportAddress(
                     new InetSocketTransportAddress(InetAddress.getByName(ipPort[0]), 9303));
+                //todo dataset 配置es端口
             }
         } catch (UnknownHostException e) {
             log.error("unknown es host", e);

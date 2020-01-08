@@ -3,6 +3,7 @@ package com.info.baymax.dsp.access.dataapi.web;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
+import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -45,6 +46,9 @@ public class DataApiController implements Serializable {
 
     @Autowired
     ElasticSearchService elasticSearchService;
+
+    @Autowired
+    PullService pullService;
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
@@ -94,18 +98,8 @@ public class DataApiController implements Serializable {
                 includes.add(fieldMapping.getSourceField());
                 fieldMap.put(fieldMapping.getSourceField(), fieldMapping.getTargetField());
             }
-            SearchResponse searchResponse = elasticSearchService.query(dataset.getStorageConfigurations(),
+            List<Map<String, Object>> res = pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
                     offset, size, includes.toArray(new String[0]));
-            SearchHit[] searchHits = searchResponse.getHits().getHits();
-            List<Map<String, Object>> res = new ArrayList<>();
-            for (SearchHit hit : searchHits) {
-                Map<String, Object> src = hit.getSourceAsMap();
-                Map<String, Object> target = new HashMap<>();
-                for (String key : src.keySet()) {
-                    target.put(fieldMap.get(key), src.get(key));
-                }
-                res.add(target);
-            }
             return Response.ok(res);
 
         } else {
