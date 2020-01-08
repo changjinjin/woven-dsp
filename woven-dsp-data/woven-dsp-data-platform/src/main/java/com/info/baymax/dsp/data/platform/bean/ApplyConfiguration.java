@@ -28,6 +28,9 @@ public class ApplyConfiguration implements Serializable {
     @ApiModelProperty("数据源名称")
     private String custDataSourceName;
 
+    @ApiModelProperty("数据源表名称")
+    private String custTableName;
+
     @ApiModelProperty("PULL操作配置,关联CustApp获取接入配置信息")
     private Long custAppId;
 
