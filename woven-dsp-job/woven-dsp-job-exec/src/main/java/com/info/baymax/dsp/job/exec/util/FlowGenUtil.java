@@ -253,6 +253,10 @@ public class FlowGenUtil {
         if(!custDataSource.getAttributes().containsKey("mode")){
             stepBuilder.config("mode", "append");
         }
+        if(dataService.getApplyConfiguration() != null && StringUtils.isNotEmpty(dataService.getApplyConfiguration().getCustTableName())){
+            stepBuilder.config("table", dataService.getApplyConfiguration().getCustTableName());
+        }
+
         String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId();
         String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId();
         Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), schemaName);

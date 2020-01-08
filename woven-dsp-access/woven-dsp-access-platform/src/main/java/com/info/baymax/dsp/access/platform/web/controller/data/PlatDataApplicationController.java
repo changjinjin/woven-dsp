@@ -73,6 +73,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
             applyConfiguration.setCustAppId(dataApplication.getCustAppId());
             applyConfiguration.setCustDataSourceId(dataApplication.getCustDataSourceId());
             applyConfiguration.setCustDataSourceName(dataApplication.getCustDataSourceName());
+            applyConfiguration.setCustTableName(dataApplication.getCustTableName());
             applyConfiguration.setDataResId(dataApplication.getDataResId());
             applyConfiguration.setDataResName(dataApplication.getDataResName());
             applyConfiguration.setServiceMode(dataApplication.getServiceMode());
