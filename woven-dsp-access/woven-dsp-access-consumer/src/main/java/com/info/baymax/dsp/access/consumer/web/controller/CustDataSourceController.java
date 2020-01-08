@@ -9,6 +9,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
@@ -19,6 +20,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/dss")
@@ -58,23 +61,35 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 
     @Override
     public Response<IPage<CustDataSource>> page(ExampleQuery query) {
-        return BaseEntityController.super.page(
-            ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+        query = ExampleQuery.builder(query);
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
+        }
+        query.getFieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+        return BaseEntityController.super.page(query);
     }
 
     @ApiOperation(value = "查询数据库驱动信息", notes = "如果是JDBC类型的数据源，查询系统内置的数据库驱动信息用于用户创建数据源")
     @PostMapping("/dbDrivers")
-    @ResponseBody
     public Response<IPage<ProcessConfig>> dbDrivers(
         @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        query = ExampleQuery.builder(query)//
-            .fieldGroup()//
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
-            .andEqualTo("processConfigType", "jdbc driver")//
-            .end();
+        query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
+            .andEqualTo("processConfigType", "jdbc driver");
         return Response.ok(processConfigService.selectPage(query));
+    }
+
+    @PostMapping("jdbc/try")
+    @ApiOperation(value = "数据源链接测试")
+    public Response<?> jdbcConnectionTry(@ApiParam("数据源配置信息") @RequestBody CustDataSource dataSource) {
+        return Response.ok(custDataSourceService.jdbcConnect(dataSource));
+    }
+
+    @ApiOperation(value = "查询数据源所有的表名", notes = "根据ID查询数据源的数据表名称")
+    @GetMapping("table/list")
+    public Response<List<String>> getTableList(@ApiParam(required = true) @RequestParam String id) {
+        return Response.ok(custDataSourceService.selectTableList(id));
     }
 }

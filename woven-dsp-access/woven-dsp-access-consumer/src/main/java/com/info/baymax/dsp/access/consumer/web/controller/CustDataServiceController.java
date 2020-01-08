@@ -6,6 +6,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
@@ -30,11 +31,11 @@ public class CustDataServiceController {
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        query = ExampleQuery.builder(query)//
-            .fieldGroup()//
-            .andEqualTo("custId", SaasContext.getCurrentUserId())//
-            .end();
-        return Response.ok(dataServiceEntityService.selectPage(ExampleQuery.builder(query)));
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
+        }
+        query.getFieldGroup().andEqualTo("custId", SaasContext.getCurrentUserId());
+        return Response.ok(dataServiceEntityService.selectPage(query));
     }
 
 

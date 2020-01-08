@@ -27,8 +27,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_application", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"dataResId", "creator", "transferType", "custAppId", "custDataSourceId"})},
-        indexes = {@Index(columnList = "lastModifiedTime DESC")})
+    @UniqueConstraint(columnNames = {"dataResId", "creator", "transferType", "custAppId",
+        "custDataSourceId"})}, indexes = {@Index(columnList = "lastModifiedTime DESC")})
 public class DataApplication extends BaseEntity {
     private static final long serialVersionUID = 8381030191792735602L;
 
@@ -59,6 +59,11 @@ public class DataApplication extends BaseEntity {
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String custDataSourceName;
+
+    @ApiModelProperty("数据源表名称")
+    @Column(length = 50)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String custTableName;
 
     @ApiModelProperty("PULL操作配置ID,关联CustApp获取接入配置信息")
     @Column(length = 20)
