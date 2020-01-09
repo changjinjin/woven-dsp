@@ -128,7 +128,8 @@
 		<module>woven-dsp-service</module>
 		<module>woven-dsp-gateway</module>
 		<module>woven-dsp-distribution</module>
-	</modules>
+    <module>woven-dsp-oauth2-client</module>
+  </modules>
 
 	<dependencyManagement>
 		<dependencies>
