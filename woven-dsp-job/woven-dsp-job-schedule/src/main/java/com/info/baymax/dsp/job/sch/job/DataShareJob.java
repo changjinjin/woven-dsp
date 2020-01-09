@@ -49,7 +49,7 @@ public class DataShareJob implements Job {
         try {
             executorRestClient.deployDataservice(body);
         } catch (Exception e) {
-            log.error("call rest api throw Exception:{}", serviceId, e);
+            log.error("call rest api throw Exception: " + serviceId, e);
             //--------------TODO-------如果执行启动失败怎么办-------------
             //更新dataservice为可执行状态
             try {
