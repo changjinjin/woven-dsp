@@ -54,8 +54,6 @@ import java.util.Map;
 public class ExecutorDataServiceController {
     @Autowired
     DataServiceEntityService dataServiceEntityService;
-//    @Autowired
-//    DataApplicationService dataApplicationService;
     @Autowired
     DataResourceService dataResourceService;
     @Autowired
