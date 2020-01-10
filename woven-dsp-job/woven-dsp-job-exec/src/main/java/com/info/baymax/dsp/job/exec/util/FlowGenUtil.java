@@ -2,9 +2,7 @@ package com.info.baymax.dsp.job.exec.util;
 
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
-import com.info.baymax.dsp.data.consumer.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
-import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.bean.TransformRule;
@@ -33,6 +31,7 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataPolicyService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -41,7 +40,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -172,7 +170,7 @@ public class FlowGenUtil {
                 .config("schema", cdo.getSchema().getName()).config("schemaId", cdo.getSchema().getId())
                 .config("dataset", cdo.getName()).config("datasetId", cdo.getId())
                 .config("sessionCache","").config("ignoreMissingPath", false).config("interceptor", "")
-                .withPosition(129, 216).output(outputFields).build();
+                .withPosition(100, 200).output(outputFields).build();
         step.setInputConfigurations(null);// steps规范:(左）无input （右）多个output
 
         return step;
@@ -187,7 +185,7 @@ public class FlowGenUtil {
         Flows.StepBuilder filterStep = Flows.step("filter", stepId, stepId);
         StepDesc step = filterStep.config("condition", condition)
                 .config("sessionCache","").config("interceptor", "")
-                .withPosition(330, 75).input(inputFields).output(outputFields).build();
+                .withPosition(300, 200).input(inputFields).output(outputFields).build();
         return step;
     }
 
@@ -235,12 +233,12 @@ public class FlowGenUtil {
 
         StepDesc step = transStep
                 .config("sessionCache","").config("interceptor", "")
-                .withPosition(585, 203).input(inputFields).output(outputFields).build();
+                .withPosition(500, 200).input(inputFields).output(outputFields).build();
 
         return step;
     }
 
-    private StepDesc getSinkStep(String stepId, Dataset sourceDataset, DataService dataService, List<FlowField> inputFields) throws Exception{
+    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         Iterator<Map.Entry<String,Object>> iter = custDataSource.getAttributes().entrySet().iterator();
@@ -259,18 +257,18 @@ public class FlowGenUtil {
 
         String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId();
         String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId();
-        Schema schema = schemaService.findOneByName(sourceDataset.getTenantId(), schemaName);
-        Dataset dataset = datasetService.findOneByName(sourceDataset.getTenantId(), datasetName);
+        Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
+        Dataset dataset = datasetService.findOneByName(dataService.getTenantId(), datasetName);
         String schemaId = "";
         String datasetId = "";
         if(schema == null){
             //新建schema, 此时输出字段都已经知道了
-            schema = createSchema(sourceDataset, dataService, inputFields, schemaName);
+            schema = createSchema(dataService, inputFields, schemaName);
         }
         schemaId = schema.getId();
 
         if(dataset == null) {
-            dataset = createDataset(schema, sourceDataset, dataService, custDataSource, datasetName);
+            dataset = createDataset(schema, dataService, custDataSource, datasetName);
         }
         datasetId = dataset.getId();
 
@@ -281,16 +279,16 @@ public class FlowGenUtil {
         }
 
         stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
-        StepDesc step = stepBuilder.withPosition(585, 203).input(inputFields).build();
+        StepDesc step = stepBuilder.withPosition(800, 100).input(inputFields).build();
         return step;
     }
 
-    public Schema createSchema(Dataset sourceDataset, DataService dataService, List<FlowField> inputFields, String schemaName){
+    public Schema createSchema(DataService dataService, List<FlowField> inputFields, String schemaName){
         Schema schema = new Schema(schemaName, new ArrayList<DataField>());
         schema.setId(UUID.randomUUID().toString());
         schema.setCreateTime(new Date());
         schema.setLastModifiedTime(schema.getCreateTime());
-        ResourceDesc schema_resource = resourceDescService.findRootsByName(sourceDataset.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_SCHEMA);// 暂时放在schemas根目录下
+        ResourceDesc schema_resource = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_SCHEMA);// 暂时放在schemas根目录下
         schema.setResource(schema_resource);
         for(FlowField flowField : inputFields){
             DataField dataField = new DataField(flowField.getColumn(),flowField.getType(),flowField.getAlias(),flowField.getDescription());
@@ -301,10 +299,10 @@ public class FlowGenUtil {
             }
             schema.getFields().add(dataField);
         }
-        schema.setTenantId(sourceDataset.getTenantId());
-        schema.setOwner(sourceDataset.getOwner());
-        schema.setCreator(sourceDataset.getCreator());
-        schema.setLastModifier(sourceDataset.getCreator());
+        schema.setTenantId(dataService.getTenantId());
+        schema.setOwner(dataService.getOwner());
+        schema.setCreator(dataService.getCreator());
+        schema.setLastModifier(dataService.getCreator());
         try {
             schema = schemaService.save(schema);
         } catch (Exception e) {
@@ -313,13 +311,17 @@ public class FlowGenUtil {
         return schema;
     }
 
-    public Dataset createDataset(Schema schema, Dataset sourceDataset, DataService dataService, CustDataSource custDataSource, String datasetName){
+    public Dataset createDataset(Schema schema, DataService dataService, CustDataSource custDataSource, String datasetName){
         Dataset dataset = new Dataset();
         dataset.setId(UUID.randomUUID().toString());
         dataset.setName(datasetName);
         dataset.setSchema(schema);
-        ResourceDesc resourceDesc = resourceDescService.findRootsByName(sourceDataset.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
+        dataset.setSchemaId(schema.getId());
+        dataset.setSchemaVersion(schema.getVersion());
+
+        ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
         dataset.setResource(resourceDesc);
+        dataset.setResourceId(resourceDesc.getId());
         Map storageConfigurations = new HashMap();
 
         Iterator<Map.Entry<String,Object>> attributes= custDataSource.getAttributes().entrySet().iterator();
@@ -356,12 +358,12 @@ public class FlowGenUtil {
             storage = "JDBC";
         }
         dataset.setStorage(storage);
-        dataset.setTenantId(sourceDataset.getTenantId());
-        dataset.setOwner(sourceDataset.getId());
+        dataset.setTenantId(dataService.getTenantId());
+        dataset.setOwner(dataService.getOwner());
         dataset.setCreateTime(new Date());
         dataset.setLastModifiedTime(dataset.getCreateTime());
-        dataset.setCreator(sourceDataset.getCreator());
-        dataset.setLastModifier(dataset.getCreator());
+        dataset.setCreator(dataService.getCreator());
+        dataset.setLastModifier(dataService.getCreator());
 
         dataset.setVersion(1);
         dataset.setExpiredPeriod(0L);
@@ -381,9 +383,8 @@ public class FlowGenUtil {
                 stepBuilder
                         .config("sessionCache","").config("interceptor", "")
                         .config("sql","select max("+dataResource.getIncrementField()+") as cursorVal from input");
-                outputFields = new ArrayList<>();
                 outputFields.add(new FlowField("cursorVal","string","", ""));
-                step = stepBuilder.withPosition(700,290).input(inputFields).output(outputFields).build();
+                step = stepBuilder.withPosition(700,300).input(inputFields).output(outputFields).build();
                 return step;
             }
         }
@@ -392,54 +393,98 @@ public class FlowGenUtil {
         return null;
     }
 
-    private StepDesc getSqlSinkStep(String stepId, Dataset sourceDS, DataService dataService,List<FlowField> inputFields){
+    private StepDesc getSqlSinkStep(String stepId, DataService dataService,List<FlowField> inputFields){
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
-        Schema schema = schemaService.findOneByName(sourceDS.getTenantId(), ExecutorFlowConf.schema_cursor_name);
-        Dataset dataset = datasetService.findOneByName(sourceDS.getTenantId(), ExecutorFlowConf.dataset_cursor_prefix + dataService.getId());
+        String schemaName = ExecutorFlowConf.schema_cursor_name;
+        String datasetName = ExecutorFlowConf.dataset_cursor_prefix + dataService.getId();
+        Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
+        Dataset dataset = datasetService.findOneByName(dataService.getTenantId(), datasetName);
         //没有则创建
         String schemaId = "";
         String datasetId = "";
         if(schema != null){
             schemaId = schema.getId();
+        }else{
+            //新建schema, 此时输出字段都已经知道了
+            schema = createSchema(dataService, inputFields, schemaName);
+            schemaId = schema.getId();
         }
+        Map<String,String> storageConfiguration = null;
+
         if(dataset != null){
             datasetId = dataset.getId();
-        }
-        if(StringUtils.isNotEmpty(schemaId) && StringUtils.isNotEmpty(datasetId)){
-            stepBuilder.config("autoSchema","false");
+            storageConfiguration = dataset.getStorageConfigurations();
         }else{
-            stepBuilder.config("autoSchema","true");
-        }
-        stepBuilder.config("mode", "overwrite");
+            storageConfiguration = initSqlSinkConfiguration(dataset, schema, dataService);
+            dataset = new Dataset(datasetName, schema, "HDFS", storageConfiguration);
+            dataset.setId(UUID.randomUUID().toString());
+            dataset.setSchemaId(schema.getId());
+            dataset.setSchemaVersion(schema.getVersion());
+            ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
+            dataset.setResource(resourceDesc);
+            dataset.setResourceId(resourceDesc.getId());
+            dataset.setStorageConfigurations(storageConfiguration);
+            dataset.setSliceTime("");
+            dataset.setSliceType("H");
+            dataset.setTenantId(dataService.getTenantId());
+            dataset.setOwner(dataService.getOwner());
+            dataset.setCreateTime(new Date());
+            dataset.setLastModifiedTime(dataset.getCreateTime());
+            dataset.setCreator(dataService.getCreator());
+            dataset.setLastModifier(dataService.getCreator());
+            dataset.setVersion(1);
+            dataset.setExpiredPeriod(0L);
+            try {
+                dataset = datasetService.save(dataset);
+            }catch (Exception e){
+            }
 
-        stepBuilder.config("schemaId", schemaId).config("schema", ExecutorFlowConf.schema_cursor_name).config("datasetId", datasetId).config("dataset", ExecutorFlowConf.dataset_cursor_prefix + dataService.getId());
-        stepBuilder.config("quoteChar", "\"")
-                .config("escapeChar", "\\")
-                .config("schemaVersion", "")
+            datasetId = dataset.getId();
+        }
+
+        stepBuilder.config("mode", "overwrite");
+        stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
+        Iterator<Map.Entry<String,String>> iterator = storageConfiguration.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String,String> entry = iterator.next();
+            String key = entry.getKey();
+            String val = entry.getValue();
+            stepBuilder.config(key, val);
+        }
+        stepBuilder.config("schemaVersion", schema.getVersion())
                 .config("sliceTimeColumn", "")
-                .config("format", "csv")
                 .config("description", "")
                 .config("maxFileSize", "")
                 .config("type", "HDFS")
                 .config("maxFileNumber", "")
-                .config("autoSchema", "true")
-                .config("separator", "")
                 .config("nullValue", "")
                 .config("expiredTime", "0")
-                .config("mode", "overwrite")
-                .config("path", ExecutorFlowConf.dataset_cursor_dir + ExecutorFlowConf.dataset_cursor_file_prefix + dataService.getId())
                 .config("countWrittenRecord", "")
                 .config("sliceType", "");
 
-        StepDesc step = stepBuilder.withPosition(912, 200).input(inputFields).build();
+        StepDesc step = stepBuilder.withPosition(900, 300).input(inputFields).build();
         return step;
+    }
+
+    private Map<String,String> initSqlSinkConfiguration(Dataset dataset, Schema schema, DataService dataService){
+        Map<String,String> storageConfiguration = new HashMap<String,String>();
+        storageConfiguration.put("path", ExecutorFlowConf.dataset_cursor_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file);
+        storageConfiguration.put("relativePath", ExecutorFlowConf.dataset_cursor_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file);
+        storageConfiguration.put("quoteChar", "\"");
+        storageConfiguration.put("escapeChar", "\\");
+        storageConfiguration.put("format", "csv");
+        storageConfiguration.put("separator", ",");
+        storageConfiguration.put("pathMode", "exact");
+        storageConfiguration.put("header","false");
+
+        return storageConfiguration;
     }
 
     public FlowDesc generateDataServiceFlow(DataService dataService, DataResource dataResource, CustDataSource custDataSource)
         throws Exception {
-        final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
-        final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
-        final String flowType = "dataflow";
+//        final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
+//        final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
+//        final String flowType = "dataflow";
 
         String flowName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
         Dataset sourceDataset = null;
@@ -491,16 +536,16 @@ public class FlowGenUtil {
         }
 
         //构建sink step
-        StepDesc sinkStep = getSinkStep("sink_4", sourceDataset, dataService, outputFileds);
+        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFileds);
 
         //构建sql step和sink step 2
         StepDesc sqlStep = null;
         StepDesc sinkStep_2 = null;
         if(StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode){
-            List<FlowField> sqlOutFields = null;
+            List<FlowField> sqlOutFields = new ArrayList<>();
             sqlStep = getSQLStep("sql_5", dataResource, outputFileds, sqlOutFields);
             if(sqlStep != null){
-                sinkStep_2 = getSqlSinkStep("sink_6", sourceDataset, dataService, sqlOutFields);
+                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields);
             }
         }
 
@@ -543,23 +588,23 @@ public class FlowGenUtil {
 
         //dataservice flow都放在Flows/ds_flow目录下
         ResourceDesc flowResource = null;
-        flowResource = resourceDescService.findRootsByName(sourceDataset.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_FLOW);
-        ResourceDesc dataserviceFlowRes = resourceDescService.findByNameAndParent(sourceDataset.getTenantId(), ConstantInfo.DS_OUTPUT_FLOW_DIR, flowResource.getId());
+        flowResource = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_FLOW);
+        ResourceDesc dataserviceFlowRes = resourceDescService.findByNameAndParent(dataService.getTenantId(), ConstantInfo.DS_OUTPUT_FLOW_DIR, flowResource.getId());
 
         if (dataserviceFlowRes == null) {
             ResourceDesc dsResDesc = new ResourceDesc();
             dsResDesc.setCreateTime(new Date());
-            dsResDesc.setCreator(sourceDataset.getCreator());
+            dsResDesc.setCreator(dataService.getCreator());
             dsResDesc.setEnabled(1);
             dsResDesc.setExpiredTime(0L);
             dsResDesc.setLastModifiedTime(dsResDesc.getCreateTime());
-            dsResDesc.setLastModifier(sourceDataset.getCreator());
+            dsResDesc.setLastModifier(dataService.getCreator());
             dsResDesc.setModuleVersion(0);
             dsResDesc.setName(ConstantInfo.DS_OUTPUT_FLOW_DIR);
-            dsResDesc.setOwner(sourceDataset.getOwner());
+            dsResDesc.setTenantId(dataService.getTenantId());
+            dsResDesc.setOwner(dataService.getOwner());
             dsResDesc.setVersion(0);
             dsResDesc.setResType(ConstantInfo.RES_TYPE_FLOW);
-            dsResDesc.setTenantId(sourceDataset.getTenantId());
             dsResDesc.setParentId(flowResource.getId());
             dsResDesc.setIsHide(1);// qa flow文件夹不显示在Flows目录下
 
@@ -569,11 +614,12 @@ public class FlowGenUtil {
 
         flow.setResource(dataserviceFlowRes);
         flow.setResourceId(dataserviceFlowRes.getId());
-        flow.setTenantId(sourceDataset.getTenantId());
-        flow.setOwner(sourceDataset.getOwner());
+        flow.setTenantId(dataService.getTenantId());
+        flow.setOwner(dataService.getOwner());
         flow.setDescription("dataserviceId:" + dataService.getId());
         flow.setOid("$null");
         flow.setIsHide(1);// qa flow不显示在Flows目录下
+        flow.setVersion(1);
 
         logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
         FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
@@ -581,7 +627,7 @@ public class FlowGenUtil {
 
         // flow创建成功，关联拷贝一份history记录
         logger.info("copy history flow begin ...");
-        FlowHistDesc fh = copyToHistory(flowCreated, sourceDataset);
+        FlowHistDesc fh = copyToHistory(flowCreated);
         logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
 
         return flowCreated;
@@ -627,7 +673,7 @@ public class FlowGenUtil {
         return condition;
     }
 
-    private FlowHistDesc copyToHistory(FlowDesc flow, Dataset sourceDS) {
+    private FlowHistDesc copyToHistory(FlowDesc flow) {
         FlowHistDesc fh = new FlowHistDesc();
         BeanUtils.copyProperties(flow, fh);
         Integer version = flowHistDescService.findMaxVersionByFlowId(flow.getId());
@@ -638,14 +684,15 @@ public class FlowGenUtil {
         }
         fh.setId(null);
         fh.setOid(flow.getId());
-        fh.setTenantId(sourceDS.getTenantId());
+        fh.setTenantId(flow.getTenantId());
+        fh.setOwner(flow.getOwner());
         fh = flowHistDescService.saveOrUpdate(fh);
         return fh;
     }
 
     public FlowSchedulerDesc generateScheduler(DataService dataService, CustDataSource custDataSource, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
         String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
-        String name = "ds_"+ dataService.getName()+ "_" + time;
+        String schName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
         ConfigObject configurations = new ConfigObject();
         configurations.put("properties", runtime_properties);
         Long startTime = System.currentTimeMillis();
@@ -660,7 +707,7 @@ public class FlowGenUtil {
         }
         FlowSchedulerDesc scheduler = new FlowSchedulerDesc();
         scheduler.setId(UUID.randomUUID().toString());
-        scheduler.setName(name);
+        scheduler.setName(schName);
         scheduler.setSource("dsflow");
         scheduler.setSchedulerId("once");
         scheduler.setFlowId(flowDesc.getId());
@@ -668,8 +715,8 @@ public class FlowGenUtil {
         scheduler.setConfigurations(configurations);
         scheduler.setFlowType("dataflow");
         scheduler.setTotalExecuted(0);
-        scheduler.setOwner(flowDesc.getOwner());
-        scheduler.setTenantId(flowDesc.getTenantId());
+        scheduler.setTenantId(dataService.getTenantId());
+        scheduler.setOwner(dataService.getOwner());
 
         logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
 
