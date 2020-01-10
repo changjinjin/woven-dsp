@@ -4,7 +4,6 @@ import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
-import com.info.baymax.dsp.data.consumer.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
@@ -25,6 +24,7 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import com.info.baymax.dsp.data.sys.entity.security.*;
 import com.info.baymax.dsp.data.sys.service.security.TenantService;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
+import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
 import com.info.baymax.dsp.data.dataset.entity.core.*;
@@ -42,7 +42,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -242,11 +241,12 @@ public class ExecutorDataServiceController {
                     FlowExecution execution = null;
                     if (flowExecutions != null && flowExecutions.size() > 0) {
                         execution = flowExecutions.get(0);
+                        log.debug("execution {} for dataService {} status is : {}", execution.getId(), dataService.getId(), execution.getStatus().getType());
                         if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
                             dataService.getJobInfo().setExecutionId(execution.getId());
                             dataService.setLastModifiedTime(new Date());
                             if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
-                                String path = ExecutorFlowConf.dataset_cursor_dir + ExecutorFlowConf.dataset_cursor_file_prefix + dataService.getId();
+                                String path = ExecutorFlowConf.dataset_cursor_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file;
                                 if (HdfsUtil.getInstance().exist(path)) {
                                     List<String> records = HdfsUtil.getInstance().read(path);
                                     if (records != null && records.size() > 0) {
