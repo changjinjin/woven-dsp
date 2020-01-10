@@ -42,12 +42,14 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -577,13 +579,31 @@ public class FlowGenUtil {
             logger.error("build flow exception: ", e);
         }
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
-        if(custDataSource.getType().equalsIgnoreCase("jdbc") && custDataSource.getAttributes().containsKey("jarPath")){
+        //添加对源数据集的依赖
+        if(sourceDataset.getStorage().equals("JDBC") && sourceDataset.getStorageConfigurations()!=null && StringUtils.isNotEmpty(sourceDataset.getStorageConfigurations().get("jarPath"))){
+            ParameterDesc param = new ParameterDesc();
+            param.setName(sourceDataset.getStorageConfigurations().get("jarPath"));
+            param.setCategory("ref");
+            if(flow.getDependencies() != null){
+                flow.getDependencies().add(param);
+            }else {
+                List<ParameterDesc> depenList = new ArrayList<>();
+                depenList.add(param);
+                flow.setDependencies(depenList);
+            }
+        }
+        //添加对sink jdbc数据集的依赖
+        if(custDataSource.getType().equalsIgnoreCase("jdbc") && StringUtils.isNotEmpty(custDataSource.getAttributes().getOrDefault("jarPath","").toString())){
             ParameterDesc param = new ParameterDesc();
             param.setName(custDataSource.getAttributes().getOrDefault("jarPath","").toString());
             param.setCategory("ref");
-            List<ParameterDesc> depenList = new ArrayList<>();
-            depenList.add(param);
-            flow.setDependencies(depenList);
+            if(flow.getDependencies() != null){
+                flow.getDependencies().add(param);
+            }else {
+                List<ParameterDesc> depenList = new ArrayList<>();
+                depenList.add(param);
+                flow.setDependencies(depenList);
+            }
         }
 
         //dataservice flow都放在Flows/ds_flow目录下
@@ -690,7 +710,7 @@ public class FlowGenUtil {
         return fh;
     }
 
-    public FlowSchedulerDesc generateScheduler(DataService dataService, CustDataSource custDataSource, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
+    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
         String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         String schName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
         ConfigObject configurations = new ConfigObject();
@@ -702,9 +722,14 @@ public class FlowGenUtil {
             log.error("NumberFormatException: For input string : {}", dataService.getServiceConfiguration().get("startTime"));
         }
         configurations.put("startTime", startTime);
-        if(custDataSource.getAttributes()!=null && custDataSource.getAttributes().get("jarPath")!=null && custDataSource.getAttributes().get("jarPath").toString().length()>0){
-            configurations.put("dependencies", custDataSource.getAttributes().get("jarPath").toString());
+        if(flowDesc.getDependencies()!=null && flowDesc.getDependencies().size()>0){
+            Map<String,String> jars = new HashMap<>();
+            for(ParameterDesc param : flowDesc.getDependencies()){
+                jars.put(param.getName(), "");
+            }
+            configurations.put("dependencies", jars.keySet().stream().collect(Collectors.joining(",")));
         }
+
         FlowSchedulerDesc scheduler = new FlowSchedulerDesc();
         scheduler.setId(UUID.randomUUID().toString());
         scheduler.setName(schName);

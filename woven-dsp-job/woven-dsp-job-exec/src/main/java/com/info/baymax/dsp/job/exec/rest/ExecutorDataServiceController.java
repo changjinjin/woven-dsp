@@ -208,7 +208,7 @@ public class ExecutorDataServiceController {
                 }
             }
 
-            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService,custDataSource, flowDesc, runtimePros);
+            FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService, flowDesc, runtimePros);
             log.info("flowDesc for DataService [{}] : {}", dataService.getId(), JsonBuilder.getInstance().toJson(flowDesc));
             log.info("scheduler for DataService [{}] : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler));
 
