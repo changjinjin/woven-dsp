@@ -6,6 +6,7 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -114,6 +115,30 @@ public class HdfsUtil {
             reader.close();
             dis.close();
             return output;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String[] files(String folder) {
+        return files(folder, null);
+    }
+
+    public String[] files(String folder, PathFilter filter) {
+        try {
+            Path f = new Path(folder);
+            FileStatus[] files = null;
+            if (filter == null) {
+                files = fs.listStatus(f);
+            } else {
+                files = fs.listStatus(f, filter);
+            }
+            String[] result = new String[files.length];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = files[i].getPath().getName();
+            }
+//			hdfs.close();
+            return result;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
