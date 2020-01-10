@@ -42,7 +42,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -470,8 +469,8 @@ public class FlowGenUtil {
 
     private Map<String,String> initSqlSinkConfiguration(Dataset dataset, Schema schema, DataService dataService){
         Map<String,String> storageConfiguration = new HashMap<String,String>();
-        storageConfiguration.put("path", ExecutorFlowConf.dataset_cursor_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file);
-        storageConfiguration.put("relativePath", ExecutorFlowConf.dataset_cursor_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file);
+        storageConfiguration.put("path", ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
+        storageConfiguration.put("relativePath", ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
         storageConfiguration.put("quoteChar", "\"");
         storageConfiguration.put("escapeChar", "\\");
         storageConfiguration.put("format", "csv");

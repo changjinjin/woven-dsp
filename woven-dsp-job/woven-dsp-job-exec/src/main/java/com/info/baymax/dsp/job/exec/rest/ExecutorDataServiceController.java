@@ -32,6 +32,8 @@ import com.info.baymax.dsp.job.exec.util.HdfsUtil;
 import lombok.extern.slf4j.Slf4j;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -76,8 +78,8 @@ public class ExecutorDataServiceController {
     @Autowired
     private UserService userService;
 
-    @Value(value = "${execution.checkout.timeout:1800000}")
-    private Long execution_timeout = 30 * 60 * 1000L;
+    @Value(value = "${execution.checkout.timeout:30}")
+    private Long execution_timeout = 30L; //单位：分钟
 
     @PostMapping("/execute")
     public Mono<String> executeDataservice(@RequestBody Map<String, Object> body) {
@@ -233,22 +235,30 @@ public class ExecutorDataServiceController {
             try {
                 //延迟30s再去检查execution
                 Thread.sleep(30 * 1000L);
-            } catch (Exception e) {
-            }
-            while (true) {
-                try {
+
+                while (true) {
+                    boolean statusComplete = false;
                     List<FlowExecution> flowExecutions = flowExecutionService.findByFlowSchedulerId(scheduler.getId());
                     FlowExecution execution = null;
                     if (flowExecutions != null && flowExecutions.size() > 0) {
                         execution = flowExecutions.get(0);
-                        log.debug("execution {} for dataService {} status is : {}", execution.getId(), dataService.getId(), execution.getStatus().getType());
-                        if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
+                        if(!dataService.getJobInfo().equals(execution.getId())){
                             dataService.getJobInfo().setExecutionId(execution.getId());
                             dataService.setLastModifiedTime(new Date());
+                            dataServiceEntityService.updateByPrimaryKey(dataService);
+                        }
+                        log.debug("execution {} for dataService {} status is : {}", execution.getId(), dataService.getId(), execution.getStatus().getType());
+                        if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
                             if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
-                                String path = ExecutorFlowConf.dataset_cursor_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file;
-                                if (HdfsUtil.getInstance().exist(path)) {
-                                    List<String> records = HdfsUtil.getInstance().read(path);
+                                String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
+                                String[] files = HdfsUtil.getInstance().files(path, new PathFilter() {
+                                    @Override
+                                    public boolean accept(Path path) {
+                                        return path.getName().endsWith(".csv");
+                                    }
+                                });
+                                if (files!=null && files.length>0 && HdfsUtil.getInstance().exist(path + "/" + files[0])) {
+                                    List<String> records = HdfsUtil.getInstance().read(path + "/" + files[0]);
                                     if (records != null && records.size() > 0) {
                                         String cursorVal = records.get(records.size() - 1).trim();
                                         dataService.setCursorVal(cursorVal);
@@ -262,24 +272,44 @@ public class ExecutorDataServiceController {
                             }else if(ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())){
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_RUNNING);
                             }
-                            dataServiceEntityService.updateByPrimaryKey(dataService);
-                            break;
+                            dataService.setLastModifiedTime(new Date());
+                            log.info("execution {} for dataService {} success.", execution.getId(), dataService.getId());
+                            statusComplete = true;
+                        } else if (execution.getStatus().isComplete()) {
+                            log.error("execution {} for dataService {} has failed.", execution.getId(), dataService.getId());
+                            dataService.setIsRunning(2);
+                            dataService.setLastModifiedTime(new Date());
+                            statusComplete = true;
                         } else {
                             try {
                                 Thread.sleep(30 * 1000L);
                             } catch (Exception e) {
                             }
                         }
+                    } else {
+                        try {
+                            Thread.sleep(30 * 1000L);
+                        } catch (Exception e) {
+                        }
                     }
-                }catch (Exception e){
 
+                    if (System.currentTimeMillis() - startTime > execution_timeout*60*1000L) {
+                        dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
+                        log.error("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
+                        break;
+                    }else if(statusComplete){
+                        dataServiceEntityService.updateByPrimaryKey(dataService);
+                        log.info("dataservice has completed, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
+                        break;
+                    }
                 }
+                log.info("dataService {} finished for scheduler {}", dataService.getId(), scheduler.getId());
 
-                if (System.currentTimeMillis() - startTime > execution_timeout) {
-                    log.warn("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
-                    dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
-                    break;
-                }
+            } catch (Exception e) {
+                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
+                dataService.setLastModifiedTime(new Date());
+                dataServiceEntityService.updateByPrimaryKey(dataService);
+                log.error("dataservice " + dataService.getId()+" execute has exception", e);
             }
 
         } catch (Exception e){
