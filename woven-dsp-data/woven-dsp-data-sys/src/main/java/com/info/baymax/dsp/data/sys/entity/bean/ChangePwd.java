@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.platform.web.controller.sys;
+package com.info.baymax.dsp.data.sys.entity.bean;
 
 import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;

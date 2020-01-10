@@ -3,8 +3,6 @@ package com.info.baymax.dsp.access.platform.web.controller.sys;
 import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
-import com.info.baymax.common.crypto.annotation.Cryptoable;
-import com.info.baymax.common.crypto.annotation.Decrypt;
 import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
@@ -19,7 +17,6 @@ import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,18 +49,6 @@ public class CustomerController implements MainTableController<Customer> {
     @Override
     public Response<Customer> infoById(String id) {
         return MainTableController.super.infoById(id);
-    }
-
-    @ApiOperation(value = "修改密码")
-    @PostMapping("/changePwd")
-    @Cryptoable(enableParam = true)
-    public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt ChangePwd changePwd) {
-        if (changePwd == null || StringUtils.isEmpty(changePwd.getNewPass())
-            || StringUtils.isEmpty(changePwd.getOldPass())) {
-            return Response.error(ErrType.BAD_REQUEST);
-        }
-        consumerService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), sysInitConfig.isPwdStrict());
-        return Response.ok();
     }
 
     @ApiOperation(value = "重置用户密码")
