@@ -66,7 +66,6 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
         dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), status);
         if (status == 1) {
             DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
-            dataService.setCustId(dataApplication.getOwner());
 
             //审批通过把DataApplication中的pull/push配置信息写入DataService
             ApplyConfiguration applyConfiguration = new ApplyConfiguration();
@@ -77,6 +76,10 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
             applyConfiguration.setDataResId(dataApplication.getDataResId());
             applyConfiguration.setDataResName(dataApplication.getDataResName());
             applyConfiguration.setServiceMode(dataApplication.getServiceMode());
+            applyConfiguration.setApplicationId(dataApplication.getId());
+            applyConfiguration.setApplicationName(dataApplication.getName());
+            applyConfiguration.setCustId(dataApplication.getOwner());
+            applyConfiguration.setCustName(dataApplication.getCreator());
             dataService.setApplyConfiguration(applyConfiguration);
 
             dataService.setFieldMappings(dataApplication.getFieldMappings());

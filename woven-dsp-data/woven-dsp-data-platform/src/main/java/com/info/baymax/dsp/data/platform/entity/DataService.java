@@ -43,11 +43,6 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long applicationId;
 
-    @ApiModelProperty(value = "消费者ID")
-    @Column(length = 50, nullable = false)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String custId;
-
     @ApiModelProperty(value = "服务启动类型: 0 pull, 1 push")
     @Column(length = 1, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
