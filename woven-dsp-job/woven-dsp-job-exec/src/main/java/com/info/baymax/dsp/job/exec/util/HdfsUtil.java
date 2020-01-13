@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.job.exec.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class HdfsUtil {
 
     private static HdfsUtil hdfsUtil = new HdfsUtil();
@@ -41,12 +43,11 @@ public class HdfsUtil {
             String CONF_PATH = System.getenv("HADOOP_CONF_DIR");
             if (StringUtils.isNotBlank(CONF_PATH)) {
                 conf.addResource(new Path(CONF_PATH + File.separator + "core-site.xml"));
-                conf.addResource(new Path(CONF_PATH + File.separator + "core-site.xml"));
+                conf.addResource(new Path(CONF_PATH + File.separator + "hdfs-site.xml"));
             }
-            conf.setBoolean("fs.hdfs.impl.disable.cache", true);
             this.fs = FileSystem.get(conf);
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.error("init hdfs FileSystem exception :", e);
         }
     }
 

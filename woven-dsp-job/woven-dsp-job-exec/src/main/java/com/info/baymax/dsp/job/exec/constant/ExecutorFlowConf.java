@@ -10,5 +10,5 @@ public class ExecutorFlowConf {
     public static final String dataset_cursor_prefix = "ds_sql_sink_";
     public static final String dataset_sink_prefix = "ds_sink_";
     public static final String dataset_cursor_tmp_dir = "/tmp/sink/dataservice";
-    public static final String dataset_cursor_file_dir = "sql_sink";
+    public static final String dataset_cursor_file_dir = "cursor_file";
 }
