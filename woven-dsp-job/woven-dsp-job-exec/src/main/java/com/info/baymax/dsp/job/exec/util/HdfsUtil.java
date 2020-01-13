@@ -41,9 +41,8 @@ public class HdfsUtil {
             String CONF_PATH = System.getenv("HADOOP_CONF_DIR");
             if (StringUtils.isNotBlank(CONF_PATH)) {
                 conf.addResource(new Path(CONF_PATH + File.separator + "core-site.xml"));
-                conf.addResource(new Path(CONF_PATH + File.separator + "core-site.xml"));
+                conf.addResource(new Path(CONF_PATH + File.separator + "hdfs-site.xml"));
             }
-            conf.setBoolean("fs.hdfs.impl.disable.cache", true);
             this.fs = FileSystem.get(conf);
         } catch (Throwable e) {
             e.printStackTrace();
