@@ -34,7 +34,7 @@
 
 	<select id="selectByRoleId" parameterType="String" resultMap="BaseResultMap">
 	<![CDATA[
-       select p.*,rr.half_select from dsp_sys_menu p left join dsp_sys_rolemenu_ref rr
+       select p.*,rr.half_select from dsp_sys_menu p left join ref_role_permission rr
        on p.id = rr.permission_id where rr.role_id = #{roleId,jdbcType=VARCHAR}
 	]]>
 	</select>
