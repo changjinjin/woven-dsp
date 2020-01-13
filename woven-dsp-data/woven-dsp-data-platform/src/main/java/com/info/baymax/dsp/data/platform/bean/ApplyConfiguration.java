@@ -16,6 +16,18 @@ import java.io.Serializable;
 public class ApplyConfiguration implements Serializable {
     private static final long serialVersionUID = 2172351208078908585L;
 
+    @ApiModelProperty(value = "申请记录ID")
+    private Long applicationId;
+
+    @ApiModelProperty(value = "申请记录Name")
+    private String applicationName;
+
+    @ApiModelProperty(value = "消费者ID")
+    private String custId;
+
+    @ApiModelProperty(value = "消费者Name")
+    private String custName;
+
     @ApiModelProperty(value = "数据资源ID")
     private Long dataResId;
 
