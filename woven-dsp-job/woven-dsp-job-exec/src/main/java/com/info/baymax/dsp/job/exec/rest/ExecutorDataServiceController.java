@@ -221,6 +221,9 @@ public class ExecutorDataServiceController {
                 //schedule触发成功,更新Dataservice的schedulerId
                 dataService.getJobInfo().setScheduleId(scheduler.getId());
                 dataService.setLastModifiedTime(new Date());
+                dataService.setTotalExecuted(dataService.getTotalExecuted()+1);
+                dataService.setExecutedTimes(dataService.getExecutedTimes()+1);
+                dataService.setLastExecutedTime(new Date());
                 dataServiceEntityService.updateByPrimaryKey(dataService);
             }catch (Exception ex){
                 log.error("send scheduler request to platform exception: ", ex);
@@ -238,6 +241,7 @@ public class ExecutorDataServiceController {
 
                 while (true) {
                     boolean statusComplete = false;
+                    boolean statusSuccess = false;
                     List<FlowExecution> flowExecutions = flowExecutionService.findByFlowSchedulerId(scheduler.getId());
                     FlowExecution execution = null;
                     if (flowExecutions != null && flowExecutions.size() > 0) {
@@ -261,6 +265,7 @@ public class ExecutorDataServiceController {
                                     List<String> records = HdfsUtil.getInstance().read(path + "/" + files[0]);
                                     if (records != null && records.size() > 0) {
                                         String cursorVal = records.get(records.size() - 1).trim();
+                                        log.info("cursor value for dataservice {} is {}", dataService.getId(), cursorVal);
                                         dataService.setCursorVal(cursorVal);
                                     }
                                 }
@@ -274,7 +279,7 @@ public class ExecutorDataServiceController {
                             }
                             dataService.setLastModifiedTime(new Date());
                             log.info("execution {} for dataService {} success.", execution.getId(), dataService.getId());
-                            statusComplete = true;
+                            statusSuccess = true;
                         } else if (execution.getStatus().isComplete()) {
                             log.error("execution {} for dataService {} has failed.", execution.getId(), dataService.getId());
                             dataService.setIsRunning(2);
@@ -294,18 +299,24 @@ public class ExecutorDataServiceController {
                     }
 
                     if (System.currentTimeMillis() - startTime > execution_timeout*60*1000L) {
-                        dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
+                        dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                        dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
+                        dataServiceEntityService.updateByPrimaryKey(dataService);
                         log.error("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
                         break;
-                    }else if(statusComplete){
+                    }else if(statusSuccess){
                         dataServiceEntityService.updateByPrimaryKey(dataService);
-                        log.info("dataservice has completed, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
+                        break;
+                    }else if(statusComplete){
+                        dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                        dataServiceEntityService.updateByPrimaryKey(dataService);
                         break;
                     }
                 }
                 log.info("dataService {} finished for scheduler {}", dataService.getId(), scheduler.getId());
 
             } catch (Exception e) {
+                dataService.setFailedTimes(dataService.getFailedTimes()+1);
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                 dataService.setLastModifiedTime(new Date());
                 dataServiceEntityService.updateByPrimaryKey(dataService);

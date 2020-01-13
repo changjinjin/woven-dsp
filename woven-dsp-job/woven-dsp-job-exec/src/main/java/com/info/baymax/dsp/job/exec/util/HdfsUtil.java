@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.job.exec.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class HdfsUtil {
 
     private static HdfsUtil hdfsUtil = new HdfsUtil();
@@ -45,7 +47,7 @@ public class HdfsUtil {
             }
             this.fs = FileSystem.get(conf);
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.error("init hdfs FileSystem exception :", e);
         }
     }
 

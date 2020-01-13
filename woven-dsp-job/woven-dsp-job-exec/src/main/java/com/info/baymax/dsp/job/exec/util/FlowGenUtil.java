@@ -239,7 +239,7 @@ public class FlowGenUtil {
         return step;
     }
 
-    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields) throws Exception{
+    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         Iterator<Map.Entry<String,Object>> iter = custDataSource.getAttributes().entrySet().iterator();
@@ -256,8 +256,8 @@ public class FlowGenUtil {
             stepBuilder.config("table", dataService.getApplyConfiguration().getCustTableName());
         }
 
-        String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId();
-        String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId();
+        String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId() + "_" + timeSuffix;
+        String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId() + "_" + timeSuffix;
         Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
         Dataset dataset = datasetService.findOneByName(dataService.getTenantId(), datasetName);
         String schemaId = "";
@@ -394,10 +394,10 @@ public class FlowGenUtil {
         return null;
     }
 
-    private StepDesc getSqlSinkStep(String stepId, DataService dataService,List<FlowField> inputFields){
+    private StepDesc getSqlSinkStep(String stepId, DataService dataService,List<FlowField> inputFields, String timeSuffix){
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         String schemaName = ExecutorFlowConf.schema_cursor_name;
-        String datasetName = ExecutorFlowConf.dataset_cursor_prefix + dataService.getId();
+        String datasetName = ExecutorFlowConf.dataset_cursor_prefix + dataService.getId() + "_" + timeSuffix;
         Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
         Dataset dataset = datasetService.findOneByName(dataService.getTenantId(), datasetName);
         //没有则创建
@@ -486,8 +486,9 @@ public class FlowGenUtil {
 //        final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
 //        final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
 //        final String flowType = "dataflow";
+        String timestamp = getDateStr("yyyyMMddHHmmss");
 
-        String flowName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
+        String flowName = "dataservice_" + dataService.getId() + "_" + timestamp;
         Dataset sourceDataset = null;
         try {
             sourceDataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
@@ -537,7 +538,7 @@ public class FlowGenUtil {
         }
 
         //构建sink step
-        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFileds);
+        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFileds, timestamp);
 
         //构建sql step和sink step 2
         StepDesc sqlStep = null;
@@ -546,7 +547,7 @@ public class FlowGenUtil {
             List<FlowField> sqlOutFields = new ArrayList<>();
             sqlStep = getSQLStep("sql_5", dataResource, outputFileds, sqlOutFields);
             if(sqlStep != null){
-                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields);
+                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp);
             }
         }
 
@@ -669,8 +670,8 @@ public class FlowGenUtil {
                             condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
                         } else if (flowField.getType().equals("timestamp")) {
                             condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
-                        } else {
-                            condition = filterCol + " > " + dataService.getCursorVal();
+//                        } else {
+//                            condition = filterCol + " > " + dataService.getCursorVal();
                         }
                         break;
                     }
@@ -711,7 +712,7 @@ public class FlowGenUtil {
 
     public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
         String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
-        String schName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMdd_HHmmss_SSS");
+        String schedulerName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMddHHmmss");
         ConfigObject configurations = new ConfigObject();
         configurations.put("properties", runtime_properties);
         Long startTime = System.currentTimeMillis();
@@ -731,7 +732,7 @@ public class FlowGenUtil {
 
         FlowSchedulerDesc scheduler = new FlowSchedulerDesc();
         scheduler.setId(UUID.randomUUID().toString());
-        scheduler.setName(schName);
+        scheduler.setName(schedulerName);
         scheduler.setSource("dsflow");
         scheduler.setSchedulerId("once");
         scheduler.setFlowId(flowDesc.getId());
