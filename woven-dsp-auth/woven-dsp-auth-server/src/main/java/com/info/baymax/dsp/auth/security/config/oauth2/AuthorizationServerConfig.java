@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.auth.security.config.oauth2;
 
 import com.info.baymax.dsp.auth.api.exception.CustomWebResponseExceptionTranslator;
+import com.info.baymax.dsp.auth.security.authentication.CustomTokenServices;
 import com.info.baymax.dsp.auth.security.authentication.GrantedAuthoritiesService;
 import com.info.baymax.dsp.auth.security.authentication.customer.TenantCustomerResourceOwnerPasswordTokenGranter;
 import com.info.baymax.dsp.auth.security.authentication.manager.TenantManagerResourceOwnerPasswordTokenGranter;
@@ -53,6 +54,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new InMemoryClientDetailsService();
     }
 
+    private CustomTokenServices customTokenServices(AuthorizationServerEndpointsConfigurer endpoints) {
+        CustomTokenServices tokenServices = new CustomTokenServices();
+        tokenServices.setTokenStore(tokenStore());
+        tokenServices.setSupportRefreshToken(true);// 支持刷新token
+        tokenServices.setReuseRefreshToken(true);
+        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        return tokenServices;
+    }
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)//
@@ -61,6 +72,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             // refresh_token需要userDetailsService
             .reuseRefreshTokens(false)//
             .tokenStore(tokenStore())//
+            .tokenServices(customTokenServices(endpoints))//
             .allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET, HttpMethod.OPTIONS)//
             .exceptionTranslator(new CustomWebResponseExceptionTranslator());
 

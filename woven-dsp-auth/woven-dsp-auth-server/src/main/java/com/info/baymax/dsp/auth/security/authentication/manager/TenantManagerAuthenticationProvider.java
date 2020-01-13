@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 public class TenantManagerAuthenticationProvider implements AuthenticationProvider {
     protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
@@ -59,6 +60,7 @@ public class TenantManagerAuthenticationProvider implements AuthenticationProvid
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return (TenantManagerAuthenticationToken.class.isAssignableFrom(authentication));
+        return (TenantManagerAuthenticationToken.class.isAssignableFrom(authentication)
+            || (PreAuthenticatedAuthenticationToken.class.isAssignableFrom(authentication)));
     }
 }
