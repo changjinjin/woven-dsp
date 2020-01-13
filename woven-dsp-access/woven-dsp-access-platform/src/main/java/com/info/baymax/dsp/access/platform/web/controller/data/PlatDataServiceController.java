@@ -5,6 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
@@ -42,4 +43,28 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
     /**
      * 数据服务一但生成就不支持修改了，如果后期允许修改涉及到很多属性的置空
      */
+
+    @Override
+    public Response<DataService> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
+        if (id == null) {
+            throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
+        }
+
+        DataService dataService = dataServiceEntityService.selectByPrimaryKey(id);
+        if(dataService.getType() == DataServiceType.SERVICE_TYPE_PULL){
+            dataService.setTotalExecuted(null);
+            dataService.setExecutedTimes(null);
+            dataService.setFailedTimes(null);
+            dataService.setLastExecutedTime(null);
+            dataService.setIsRunning(null);
+            dataService.setJobInfo(null);
+
+        }else if(dataService.getType() == DataServiceType.SERVICE_TYPE_PUSH){
+            dataService.setUrl(null);
+            dataService.setPath(null);
+            dataService.setPullConfiguration(null);
+        }
+
+        return Response.ok(dataService);
+    }
 }
