@@ -50,7 +50,7 @@ public class DataApplication extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer transferType;
 
-    @ApiModelProperty("PUSH操作相关配置,关联CustDataResource获取push信息")
+    @ApiModelProperty("PUSH操作相关配置,关联CustDataSource获取push信息")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long custDataSourceId;
