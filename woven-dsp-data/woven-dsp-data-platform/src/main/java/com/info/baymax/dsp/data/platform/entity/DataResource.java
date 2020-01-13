@@ -73,20 +73,20 @@ public class DataResource extends BaseEntity {
     @DefaultValue("0")
     private Integer type;
 
-    @ApiModelProperty(value = "标签别名")
+    @ApiModelProperty(value = "关联的baymax系统中数据集ID")
+    @Column(length = 255, nullable = false)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String datasetId;
+
+    @ApiModelProperty(value = "数据集名称")
     @Column(length = 255, nullable = true)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String label;
+    private String datasetName;
 
     @ApiModelProperty(value = "增量字段,可以为空,增量字段只有一个并且只支持整型和时间戳类型")
     @Column(length = 255, nullable = true)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String incrementField;
-
-    @ApiModelProperty(value = "关联的baymax系统中数据集ID")
-    @Column(length = 255, nullable = false)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String datasetId;
 
     @ApiModelProperty(value = "数据集存储引擎")
     @Column(length = 255, nullable = false)
