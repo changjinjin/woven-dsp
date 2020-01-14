@@ -12,6 +12,7 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @Author: haijun
  * @Date: 2019/12/16 14:44 管理员针对消费者的申请记录进行操作
  */
+@Slf4j
 @Api(tags = "数据管理：管理员审批相关接口", description = "管理员审批相关接口")
 @RestController
 @RequestMapping("/application")
@@ -67,37 +69,43 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
         if (status == 1) {
             DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
 
-            //审批通过把DataApplication中的pull/push配置信息写入DataService
-            ApplyConfiguration applyConfiguration = new ApplyConfiguration();
-            applyConfiguration.setCustAppId(dataApplication.getCustAppId());
-            applyConfiguration.setCustDataSourceId(dataApplication.getCustDataSourceId());
-            applyConfiguration.setCustDataSourceName(dataApplication.getCustDataSourceName());
-            applyConfiguration.setCustTableName(dataApplication.getCustTableName());
-            applyConfiguration.setDataResId(dataApplication.getDataResId());
-            applyConfiguration.setDataResName(dataApplication.getDataResName());
-            applyConfiguration.setServiceMode(dataApplication.getServiceMode());
-            applyConfiguration.setApplicationId(dataApplication.getId());
-            applyConfiguration.setApplicationName(dataApplication.getName());
-            applyConfiguration.setCustId(dataApplication.getOwner());
-            applyConfiguration.setCustName(dataApplication.getCreator());
-            dataService.setApplyConfiguration(applyConfiguration);
+            try {
+                //审批通过把DataApplication中的pull/push配置信息写入DataService
+                ApplyConfiguration applyConfiguration = new ApplyConfiguration();
+                applyConfiguration.setCustAppId(dataApplication.getCustAppId());
+                applyConfiguration.setCustDataSourceId(dataApplication.getCustDataSourceId());
+                applyConfiguration.setCustDataSourceName(dataApplication.getCustDataSourceName());
+                applyConfiguration.setCustTableName(dataApplication.getCustTableName());
+                applyConfiguration.setDataResId(dataApplication.getDataResId());
+                applyConfiguration.setDataResName(dataApplication.getDataResName());
+                applyConfiguration.setServiceMode(dataApplication.getServiceMode());
+                applyConfiguration.setApplicationId(dataApplication.getId());
+                applyConfiguration.setApplicationName(dataApplication.getName());
+                applyConfiguration.setCustId(dataApplication.getOwner());
+                applyConfiguration.setCustName(dataApplication.getCreator());
+                dataService.setApplyConfiguration(applyConfiguration);
 
-            dataService.setFieldMappings(dataApplication.getFieldMappings());
+                dataService.setFieldMappings(dataApplication.getFieldMappings());
 
-            if (dataService.getType() == 0) { // pull 服务, 配置接口信息
-                dataService.setUrl(dataApiUrl);
-                dataService.setPath(dataApiPath);
+                if (dataService.getType() == 0) { // pull 服务, 配置接口信息
+                    dataService.setUrl(dataApiUrl);
+                    dataService.setPath(dataApiPath);
 
-                Map<String, String> pullConfig = new HashMap<>();
-                for (String param : queryParams.split("#")) {
-                    pullConfig.put(param.split(":")[0], param.split(":")[1]);
+                    Map<String, String> pullConfig = new HashMap<>();
+                    for (String param : queryParams.split("#")) {
+                        pullConfig.put(param.split(":")[0], param.split(":")[1]);
+                    }
+                    dataService.setPullConfiguration(pullConfig);
                 }
-                dataService.setPullConfiguration(pullConfig);
+                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
+                dataServiceEntityService.saveOrUpdate(dataService);
+            }catch (Exception e){
+                log.error("approval and save dataservice exception :", e);
+                dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), 0);
+                log.info("restore dataApplication status success :{}, {}", dataApplication.getId(), 0);
             }
-            dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
-            dataServiceEntityService.saveOrUpdate(dataService);
         }
-        return Response.ok();
+        return Response.ok(dataService.getId());
     }
 
 }
