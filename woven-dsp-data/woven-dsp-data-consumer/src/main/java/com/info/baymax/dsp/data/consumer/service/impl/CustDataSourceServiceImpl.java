@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -21,8 +20,6 @@ import java.util.Properties;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class CustDataSourceServiceImpl extends EntityClassServiceImpl<CustDataSource> implements CustDataSourceService {
-
-    private final Map<String, List<String>> dsTableCache = new HashMap<String, List<String>>();
 
     @Autowired
     private CustDataSourceMapper custDataSourceMapper;
@@ -41,36 +38,30 @@ public class CustDataSourceServiceImpl extends EntityClassServiceImpl<CustDataSo
     @SuppressWarnings("unchecked")
     private List<String> getTableListInner(CustDataSource dataSource) {
         String url = (String) dataSource.getAttributes().get("url");
-        List<String> list = dsTableCache.get(url);
-        if (list == null || list.size() == 0) {
-            log.info("table list cache missed resource.attributes.url  {}, will fetch from database.", url);
-            String driver = (String) dataSource.getAttributes().get("driver");
-            String user = (String) dataSource.getAttributes().get("user");
-            String password = (String) dataSource.getAttributes().get("password");
-            String catalog = (String) dataSource.getAttributes().get("catalog");
-            String schema = (String) dataSource.getAttributes().get("schema");
-            String jarPath = (String) dataSource.getAttributes().get("jarPath");
-            List<Map<String, String>> properties = (List<Map<String, String>>) dataSource.getAttributes()
-                .get("properties");
-            Properties p = null;
-            if (properties != null) {
-                p = new Properties();
-                for (Map<String, String> e : properties) {
-                    Map.Entry<String, String> m = e.entrySet().iterator().next();
-                    if (StringUtils.isNotEmpty(m.getKey()) && StringUtils.isNotEmpty(m.getValue())) {
-                        p.setProperty(m.getKey(), m.getValue());
-                    }
+        List<String> list = null;
+        log.info("table list cache missed resource.attributes.url  {}, will fetch from database.", url);
+        String driver = (String) dataSource.getAttributes().get("driver");
+        String user = (String) dataSource.getAttributes().get("user");
+        String password = (String) dataSource.getAttributes().get("password");
+        String catalog = (String) dataSource.getAttributes().get("catalog");
+        String schema = (String) dataSource.getAttributes().get("schema");
+        String jarPath = (String) dataSource.getAttributes().get("jarPath");
+        List<Map<String, String>> properties = (List<Map<String, String>>) dataSource.getAttributes().get("properties");
+        Properties p = null;
+        if (properties != null) {
+            p = new Properties();
+            for (Map<String, String> e : properties) {
+                Map.Entry<String, String> m = e.entrySet().iterator().next();
+                if (StringUtils.isNotEmpty(m.getKey()) && StringUtils.isNotEmpty(m.getValue())) {
+                    p.setProperty(m.getKey(), m.getValue());
                 }
             }
-            try {
-                list = DataBaseUtil.getTableList(driver, url, user, password, catalog, schema, p, jarPath);
-                dsTableCache.put(url, list);
-            } catch (Throwable e) {
-                log.error("getTableList error", e);
-                throw new RuntimeException(e);
-            }
-        } else {
-            log.info("table list cache hit resource.attributes.url {}", url);
+        }
+        try {
+            list = DataBaseUtil.getTableList(driver, url, user, password, catalog, schema, p, jarPath);
+        } catch (Throwable e) {
+            log.error("getTableList error", e);
+            throw new RuntimeException(e);
         }
         return list;
     }
