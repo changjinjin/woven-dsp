@@ -222,7 +222,6 @@ public class FlowGenUtil {
             return null;
         }
 
-        outputFields = new ArrayList<>();
         for(FlowField field : inputFields){
             if(transformFields.containsKey(field.getColumn())){
                 FlowField output = new FlowField(transformFields.get(field.getColumn()),"string","",field.getDescription());
@@ -256,6 +255,19 @@ public class FlowGenUtil {
             stepBuilder.config("table", dataService.getApplyConfiguration().getCustTableName());
         }
 
+        List<FieldMapping> fieldMappings = dataService.getFieldMappings();
+        Map<String,FieldMapping> fieldMap = new HashMap<>();
+        for(FieldMapping mapping : fieldMappings){
+            fieldMap.put(mapping.getSourceField(), mapping);
+        }
+        List<FlowField> targetFields = new ArrayList<>();
+        for(FlowField flowField : inputFields){
+            if(fieldMap.containsKey(flowField.getColumn())){
+                FlowField field = new FlowField(flowField.getColumn(),fieldMap.get(flowField.getColumn()).getTargetType(),fieldMap.get(flowField.getColumn()).getTargetField(),flowField.getDescription());
+                targetFields.add(field);
+            }
+        }
+
         String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId() + "_" + timeSuffix;
         String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId() + "_" + timeSuffix;
         Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
@@ -264,7 +276,7 @@ public class FlowGenUtil {
         String datasetId = "";
         if(schema == null){
             //新建schema, 此时输出字段都已经知道了
-            schema = createSchema(dataService, inputFields, schemaName);
+            schema = createSchema(dataService, targetFields, schemaName);
         }
         schemaId = schema.getId();
 
@@ -280,7 +292,7 @@ public class FlowGenUtil {
         }
 
         stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
-        StepDesc step = stepBuilder.withPosition(800, 100).input(inputFields).build();
+        StepDesc step = stepBuilder.withPosition(800, 100).input(targetFields).build();
         return step;
     }
 
@@ -509,7 +521,7 @@ public class FlowGenUtil {
         //Source step input
         List<FlowField> sourceInputs = getSchemaFiled(sourceDataset.getSchemaId());
         //source step output
-        List<FlowField> sourceOutputs = getSourceOutputFields(sourceInputs, dataService.getFieldMappings());
+        List<FlowField> sourceOutputs = getSourceOutputFields(sourceInputs, dataResource.getFieldMappings());
         //filter step input
         List<FlowField> filterInputs = getInputFields(sourceOutputs);
         //filter step output
@@ -522,30 +534,30 @@ public class FlowGenUtil {
 
         //构建filter step
         StepDesc filterStep = null;
-        String condition = getCondition(dataResource, dataService, sourceOutputs);
+        String condition = getCondition(dataResource, dataService, filterInputs);
         filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition);
 
         //构建transform step
         StepDesc transStep = null;
-        List<FlowField> outputFileds = null;
+        List<FlowField> outputFields = new ArrayList<>();
         if(dataService.getFieldMappings()!=null && dataService.getFieldMappings().size()>0){
-            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFileds);
+            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFields);
             if(transStep == null){
-                outputFileds = transInputFields;
+                outputFields = transInputFields;
             }
         }else{
-            outputFileds = transInputFields;
+            outputFields = transInputFields;
         }
 
         //构建sink step
-        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFileds, timestamp);
+        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFields, timestamp);
 
         //构建sql step和sink step 2
         StepDesc sqlStep = null;
         StepDesc sinkStep_2 = null;
-        if(StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode){
+        if(dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode && getIncrementFieldType(dataResource.getIncrementField(), outputFields) != null){
             List<FlowField> sqlOutFields = new ArrayList<>();
-            sqlStep = getSQLStep("sql_5", dataResource, outputFileds, sqlOutFields);
+            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields);
             if(sqlStep != null){
                 sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp);
             }
@@ -653,44 +665,42 @@ public class FlowGenUtil {
         return flowCreated;
     }
 
-    public String getCondition(DataResource dataResource, DataService dataService, List<FlowField> sourceOutputs){
+    public String getCondition(DataResource dataResource, DataService dataService, List<FlowField> filterInputs){
         String condition = "1 == 1";
+
         if(dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
-            if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && StringUtils.isNotEmpty(dataService.getCursorVal())) {
-                String incrementField = dataResource.getIncrementField();
-                for (FlowField flowField : sourceOutputs) {
-                    if (flowField.getColumn().equals(incrementField)) {
-                        String filterCol = incrementField;
-                        if(StringUtils.isNotEmpty(flowField.getAlias())){
-                            filterCol = flowField.getAlias();
-                        }
-                        if (flowField.getType().equals("int") || flowField.getType().equals("short") || flowField.getType().equals("bigint")) {
-                            condition = filterCol + " > " + dataService.getCursorVal();
-                        } else if (flowField.getType().equals("date")) {
-                            condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
-                        } else if (flowField.getType().equals("timestamp")) {
-                            condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
-//                        } else {
-//                            condition = filterCol + " > " + dataService.getCursorVal();
-                        }
-                        break;
+            String filterType = getIncrementFieldType(dataResource.getIncrementField(), filterInputs);
+            if(filterType != null) {//有type说明有增量字段
+                if (StringUtils.isNotEmpty(dataService.getCursorVal())) {
+                    String filterCol = dataResource.getIncrementField();
+                    if (filterType.equals("int") || filterType.equals("short") || filterType.equals("bigint")) {
+                        condition = filterCol + " > " + dataService.getCursorVal();
+                    } else if (filterType.equals("date")) {
+                        condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
+                    } else if (filterType.equals("timestamp")) {
+                        condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
+                    }else{
+                        log.error("you have selected error increment field {} and type is {}",filterCol, filterType);
                     }
+                } else {
+                    String filterCol = dataResource.getIncrementField();
+                    condition = filterCol + " IS NOT NULL";
                 }
-            } else if (StringUtils.isNotEmpty(dataResource.getIncrementField())) {
-                String incrementField = dataResource.getIncrementField();
-                String filterCol = incrementField;
-                for (FlowField flowField : sourceOutputs) {
-                    if (flowField.getColumn().equals(incrementField)) {
-                        if (StringUtils.isNotEmpty(flowField.getAlias())) {
-                            filterCol = flowField.getAlias();
-                        }
-                        break;
-                    }
-                }
-                condition = filterCol + " IS NOT NULL";
             }
         }
         return condition;
+    }
+
+    private String getIncrementFieldType(String fieldName, List<FlowField> inputFields){
+        if(StringUtils.isNotEmpty(fieldName)){
+            for(FlowField flowField : inputFields){
+                if(flowField.getColumn().equals(fieldName)){
+                    return flowField.getType();
+                }
+            }
+        }
+
+        return null;
     }
 
     private FlowHistDesc copyToHistory(FlowDesc flow) {

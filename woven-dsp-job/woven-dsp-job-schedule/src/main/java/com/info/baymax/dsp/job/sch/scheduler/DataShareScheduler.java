@@ -61,7 +61,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
             String jobGroup = ds.getTenantId()+"_" + ds.getOwner();
             TriggerKey triggerKey = new TriggerKey("tg-" + jobName, jobGroup);
 
-            log.info("begin to run scheduler: {}" ,triggerKey);
+            log.info("begin to run scheduler: {} for dataService: {}" ,triggerKey, ds.getId());
 
             if (scheduler.checkExists(triggerKey)) {
                 log.info("skip schedule {}", jobName);
@@ -121,6 +121,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
             Trigger trigger = triggerBuilder.build();
 
             scheduler.scheduleJob(myJob, trigger);
+            log.info("success to run scheduler: {} for dataService: {}" ,triggerKey, ds.getId());
         } catch (Exception e) {
             log.error("schedule dataservice [" + ds.getId() +"] failed", e);
             throw new RuntimeException("schedule dataservice [" + ds.getId() +"] failed", e);
