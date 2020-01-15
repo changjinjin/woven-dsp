@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.data.platform.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
@@ -121,6 +120,11 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsJobInfoTypeHandler.class)
     private JobInfo jobInfo;
 
+    @ApiModelProperty("所属消费者ID")
+    @Column(length = 20)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String custId;
+    
     @ApiModelProperty("从Application同步过来的一些配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)

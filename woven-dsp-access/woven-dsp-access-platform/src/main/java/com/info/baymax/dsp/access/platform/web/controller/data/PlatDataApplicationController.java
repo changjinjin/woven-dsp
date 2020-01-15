@@ -84,6 +84,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 applyConfiguration.setCustId(dataApplication.getOwner());
                 applyConfiguration.setCustName(dataApplication.getCreator());
                 dataService.setApplyConfiguration(applyConfiguration);
+                dataService.setCustId(dataApplication.getOwner());
 
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
 
