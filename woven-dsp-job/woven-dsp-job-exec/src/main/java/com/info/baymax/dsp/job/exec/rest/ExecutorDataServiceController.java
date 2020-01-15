@@ -3,6 +3,7 @@ package com.info.baymax.dsp.job.exec.rest;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
@@ -274,6 +275,7 @@ public class ExecutorDataServiceController {
                             //更新isRunning状态
                             if(ScheduleType.SCHEDULER_TYPE_ONCE.equals(dataService.getScheduleType())) {
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_SUCCEED);
+                                dataService.setStatus(DataServiceStatus.SERVICE_STATUS_FINISHED);
                             }else if(ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())){
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_RUNNING);
                             }
