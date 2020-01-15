@@ -227,10 +227,9 @@ public class ExecutorDataServiceController {
                 dataService.setLastExecutedTime(new Date());
                 dataServiceEntityService.updateByPrimaryKey(dataService);
             }catch (Exception ex){
-                log.error("send scheduler request to platform exception: ", ex);
+                log.error("send scheduler request to platform exception and restore dataService [" + dataService.getId() + "] status :", ex);
                 //更新dataservice的isRunning为失败状态
                 dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
-                log.error("send scheduler request to platform exception and restore dataService status : {}", dataService.getId());
                 throw new RuntimeException("send scheduler request to platform exception: ", ex);
             }
 
@@ -252,9 +251,12 @@ public class ExecutorDataServiceController {
                             dataService.setLastModifiedTime(new Date());
                             dataServiceEntityService.updateByPrimaryKey(dataService);
                         }
-                        log.debug("execution {} for dataService {} status is : {}", execution.getId(), dataService.getId(), execution.getStatus().getType());
+                        log.info("execution {} for dataService {} status is : {}", execution.getId(), dataService.getId(), execution.getStatus().getType());
                         if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
-                            if (StringUtils.isNotEmpty(dataResource.getIncrementField()) && dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
+                            if (dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode
+                                    && StringUtils.isNotEmpty(dataResource.getIncrementField())
+                                    && isCursorFlow(flowDesc))
+                            {
                                 String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
                                 String[] files = HdfsUtil.getInstance().files(path, new PathFilter() {
                                     @Override
@@ -318,17 +320,26 @@ public class ExecutorDataServiceController {
                 log.info("dataService {} finished for scheduler {}", dataService.getId(), scheduler.getId());
 
             } catch (Exception e) {
+                log.error("dataservice " + dataService.getId()+" execute has exception", e);
                 dataService.setFailedTimes(dataService.getFailedTimes()+1);
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                 dataService.setLastModifiedTime(new Date());
                 dataServiceEntityService.updateByPrimaryKey(dataService);
-                log.error("dataservice " + dataService.getId()+" execute has exception", e);
             }
 
         } catch (Exception e){
             log.error("execute DataService "+ dataService.getId()+" exception:", e);
         } finally {
         }
+    }
+
+    private boolean isCursorFlow(FlowDesc flowDesc){
+        for(StepDesc step : flowDesc.getSteps()){
+            if(step.getType().equals("sink") && step.getId().equals("sink_6")){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Async

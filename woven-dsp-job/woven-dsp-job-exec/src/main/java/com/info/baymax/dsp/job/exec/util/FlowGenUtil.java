@@ -267,6 +267,9 @@ public class FlowGenUtil {
                 targetFields.add(field);
             }
         }
+        if(targetFields.size() == 0){
+            targetFields.addAll(inputFields);
+        }
 
         String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId() + "_" + timeSuffix;
         String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId() + "_" + timeSuffix;
@@ -358,7 +361,7 @@ public class FlowGenUtil {
         if (storageConfigurations.containsKey("datasetId")) {
             storageConfigurations.remove("datasetId");
         }
-        storageConfigurations.put("table", "test_ds_"+ dataService.getId());
+        storageConfigurations.put("table", dataService.getApplyConfiguration().getCustTableName());
 
         dataset.setStorageConfigurations(storageConfigurations);
         dataset.setSliceTime("");
@@ -543,10 +546,10 @@ public class FlowGenUtil {
         if(dataService.getFieldMappings()!=null && dataService.getFieldMappings().size()>0){
             transStep = getTransformStep("transform_3", dataService, transInputFields, outputFields);
             if(transStep == null){
-                outputFields = transInputFields;
+                outputFields = filterOutputs;
             }
         }else{
-            outputFields = transInputFields;
+            outputFields = filterOutputs;
         }
 
         //构建sink step
@@ -592,29 +595,40 @@ public class FlowGenUtil {
         }
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
         //添加对源数据集的依赖
-        if(sourceDataset.getStorage().equals("JDBC") && sourceDataset.getStorageConfigurations()!=null && StringUtils.isNotEmpty(sourceDataset.getStorageConfigurations().get("jarPath"))){
-            ParameterDesc param = new ParameterDesc();
-            param.setName(sourceDataset.getStorageConfigurations().get("jarPath"));
-            param.setCategory("ref");
-            if(flow.getDependencies() != null){
-                flow.getDependencies().add(param);
-            }else {
-                List<ParameterDesc> depenList = new ArrayList<>();
-                depenList.add(param);
-                flow.setDependencies(depenList);
+        if(sourceDataset.getStorage().equals("JDBC")){
+            if(sourceDataset.getStorageConfigurations()!=null && StringUtils.isNotEmpty(sourceDataset.getStorageConfigurations().get("jarPath"))){
+                ParameterDesc param = new ParameterDesc();
+                param.setName(sourceDataset.getStorageConfigurations().get("jarPath"));
+                param.setCategory("ref");
+                if(flow.getDependencies() != null){
+                    flow.getDependencies().add(param);
+                }else {
+                    List<ParameterDesc> depenList = new ArrayList<>();
+                    depenList.add(param);
+                    flow.setDependencies(depenList);
+                }
+            }else{
+                logger.error("not found jarPath for Jdbc dataset: "+ sourceDataset.getName());
+                throw new RuntimeException("not found jarPath for Jdbc dataset: "+ sourceDataset.getName());
             }
+
         }
         //添加对sink jdbc数据集的依赖
-        if(custDataSource.getType().equalsIgnoreCase("jdbc") && StringUtils.isNotEmpty(custDataSource.getAttributes().getOrDefault("jarPath","").toString())){
-            ParameterDesc param = new ParameterDesc();
-            param.setName(custDataSource.getAttributes().getOrDefault("jarPath","").toString());
-            param.setCategory("ref");
-            if(flow.getDependencies() != null){
-                flow.getDependencies().add(param);
-            }else {
-                List<ParameterDesc> depenList = new ArrayList<>();
-                depenList.add(param);
-                flow.setDependencies(depenList);
+        if(custDataSource.getType().equalsIgnoreCase("DB")){
+            if(StringUtils.isNotEmpty(custDataSource.getAttributes().getOrDefault("jarPath","").toString())){
+                ParameterDesc param = new ParameterDesc();
+                param.setName(custDataSource.getAttributes().getOrDefault("jarPath","").toString());
+                param.setCategory("ref");
+                if(flow.getDependencies() != null){
+                    flow.getDependencies().add(param);
+                }else {
+                    List<ParameterDesc> depenList = new ArrayList<>();
+                    depenList.add(param);
+                    flow.setDependencies(depenList);
+                }
+            }else{
+                logger.error("not found jarPath for custDataSource : "+ custDataSource.getName());
+                throw new RuntimeException("not found jarPath for custDataSource : "+ custDataSource.getName());
             }
         }
 
@@ -653,14 +667,14 @@ public class FlowGenUtil {
         flow.setIsHide(1);// qa flow不显示在Flows目录下
         flow.setVersion(1);
 
-        logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
+//        logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
         FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
-        logger.info("save ds flow success : id=" + flowCreated.getId());
+//        logger.info("save ds flow success : id=" + flowCreated.getId());
 
         // flow创建成功，关联拷贝一份history记录
-        logger.info("copy history flow begin ...");
+//        logger.info("copy history flow begin ...");
         FlowHistDesc fh = copyToHistory(flowCreated);
-        logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
+//        logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
 
         return flowCreated;
     }
@@ -753,7 +767,7 @@ public class FlowGenUtil {
         scheduler.setTenantId(dataService.getTenantId());
         scheduler.setOwner(dataService.getOwner());
 
-        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
+//        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
 
         return scheduler;
     }
