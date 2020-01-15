@@ -121,7 +121,7 @@ public class DataService extends BaseEntity {
     private JobInfo jobInfo;
 
     @ApiModelProperty("所属消费者ID")
-    @Column(length = 20)
+    @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String custId;
     
