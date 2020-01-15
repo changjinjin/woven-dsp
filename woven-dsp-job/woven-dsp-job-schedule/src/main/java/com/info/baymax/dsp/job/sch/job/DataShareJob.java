@@ -47,8 +47,11 @@ public class DataShareJob implements Job {
         body.putAll(jobDataMap);
 
         try {
-            log.info("job-schedule send execute request to executor, dataserviceId :" + serviceId);
+            log.info("jobSchedule send request to executor, dataserviceId :" + serviceId);
+            //对于周期任务,当前日期可能是2或3,在执行之前更新为1
+            dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_RUNNING);
             executorRestClient.deployDataservice(body);
+            log.info("jobSchedule success to send request to executor, dataserviceId :" + serviceId);
         } catch (Exception e) {
             log.error("call rest api throw Exception: " + serviceId, e);
             //--------------TODO-------如果执行启动失败怎么办-------------

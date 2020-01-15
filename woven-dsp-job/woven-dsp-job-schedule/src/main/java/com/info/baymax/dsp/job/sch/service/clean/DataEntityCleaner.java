@@ -2,6 +2,7 @@ package com.info.baymax.dsp.job.sch.service.clean;
 
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
@@ -58,7 +59,7 @@ public class DataEntityCleaner {
             List<String> needDeleteIds = new ArrayList<>();
             for (DataService dataService : dataServiceList) {
                 count++;
-                dataService.setStatus(2);
+                dataService.setStatus(DataServiceStatus.SERVICE_STATUS_EXPIRED);
                 dataService.setLastModifiedTime(new Date());
                 dataService.setLastModifier(SaasContext.getCurrentUsername());
                 //删除已经启动的job
