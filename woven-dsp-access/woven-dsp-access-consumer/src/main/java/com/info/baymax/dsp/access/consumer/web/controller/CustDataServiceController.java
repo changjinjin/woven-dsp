@@ -10,10 +10,14 @@ import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
+import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,9 @@ public class CustDataServiceController implements BaseEntityController<DataServi
 
     @Autowired
     DataServiceEntityService dataServiceEntityService;
+
+    @Autowired
+    private FlowExecutionService flowExecutionService;
 
     @Override
     public BaseEntityService<DataService> getBaseEntityService() {
@@ -66,6 +73,22 @@ public class CustDataServiceController implements BaseEntityController<DataServi
         }
 
         return Response.ok(dataService);
+    }
+
+    @ApiOperation(value = "查找Execution", notes = "多条件查询Execution")
+    @ResponseBody
+    @GetMapping("/tasklist/{flowId}")
+    public Response<IPage<FlowExecution>> query(@PathVariable String flowId) {
+        if (StringUtils.isEmpty(flowId)) {
+            throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
+        }
+        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
+        if(query.getFieldGroup() == null){
+            query.setFieldGroup(new FieldGroup());
+        }
+        query.getFieldGroup().andEqualTo("flowId", flowId);
+        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
+        return Response.ok(flowExecutionService.selectPage(query));
     }
 
 }

@@ -97,7 +97,7 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private Date lastExecutedTime;
 
-    @ApiModelProperty("该服务审核通过后是否已经部署就位,0 待部署,1 部署成功, 2 停止服务")
+    @ApiModelProperty("该服务审核通过后是否已经部署就位,0 待部署,1 部署成功, 2 停止服务, 4 关联的调度已停止, 5 服务已过期")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("0")
