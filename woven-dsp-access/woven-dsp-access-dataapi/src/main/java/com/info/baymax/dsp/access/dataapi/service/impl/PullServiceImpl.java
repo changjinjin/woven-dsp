@@ -43,6 +43,7 @@ public class PullServiceImpl implements PullService {
                 }
                 return res;
             default:
+                log.info("{} storage doesn't support PULL type", storage);
                 return null;
         }
     }

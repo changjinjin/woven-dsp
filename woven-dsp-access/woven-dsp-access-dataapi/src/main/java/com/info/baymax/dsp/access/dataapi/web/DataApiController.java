@@ -16,8 +16,6 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +53,7 @@ public class DataApiController implements Serializable {
     public Response pullData(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) throws Exception {
         String dataServiceId = body.get("dataServiceId");
         String requestKey = body.get("accessKey");
-        String host = header.get("host");
+        String host = header.get("host").split(":")[0];
         int offset = Integer.valueOf(body.getOrDefault("offset", "0"));
         int size = Integer.valueOf(body.getOrDefault("size", "10000"));
 
@@ -88,15 +86,17 @@ public class DataApiController implements Serializable {
                 return Response.error(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
             }
 
-            List<FieldMapping> dataServiceFieldMappings = dataService.getFieldMappings();
-            if (dataServiceFieldMappings == null) {
-                dataServiceFieldMappings = dataResource.getFieldMappings();
-            }
+            List<FieldMapping> dataServiceMappings = dataService.getFieldMappings();
+            List<FieldMapping> dataResourceMappings = dataResource.getFieldMappings();
             List<String> includes = new ArrayList<>();
             Map<String, String> fieldMap = new HashMap<>();
-            for (FieldMapping fieldMapping : dataServiceFieldMappings) {
-                includes.add(fieldMapping.getSourceField());
-                fieldMap.put(fieldMapping.getSourceField(), fieldMapping.getTargetField());
+            for (FieldMapping dataServiceMapping : dataServiceMappings) {
+                for (FieldMapping dataResourceMapping : dataResourceMappings) {
+                    if (dataServiceMapping.getSourceField().equals(dataResourceMapping.getTargetField())) {
+                        includes.add(dataResourceMapping.getSourceField());
+                        fieldMap.put(dataResourceMapping.getSourceField(), dataServiceMapping.getTargetField());
+                    }
+                }
             }
             List<Map<String, Object>> res = pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
                     offset, size, includes.toArray(new String[0]));
