@@ -15,7 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.runtime.startClass>com.info.baymax.dsp.gateway.GatewayStarter</project.runtime.startClass>
-        <swagger2.version>2.9.2</swagger2.version>
     </properties>
     <dependencies>
         <dependency>
