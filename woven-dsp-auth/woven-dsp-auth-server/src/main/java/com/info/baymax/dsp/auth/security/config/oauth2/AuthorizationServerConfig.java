@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
@@ -54,27 +55,40 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new InMemoryClientDetailsService();
     }
 
-    private CustomTokenServices customTokenServices(AuthorizationServerEndpointsConfigurer endpoints) {
+    @Bean
+    public TokenEnhancer accessTokenEnhancer() {
+        return new AccessTokenEnhancer();
+//    	return new CustomJwtAccessTokenConverter();
+    }
+
+    @Bean
+    public CustomTokenServices customTokenServices() {
         CustomTokenServices tokenServices = new CustomTokenServices();
         tokenServices.setTokenStore(tokenStore());
         tokenServices.setSupportRefreshToken(true);// 支持刷新token
         tokenServices.setReuseRefreshToken(true);
-        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
-        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        // tokenServices.setClientDetailsService(inMemoryClientDetailsService());
+        // tokenServices.setTokenEnhancer(accessTokenEnhancer());
         return tokenServices;
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)//
-            .tokenEnhancer(new AccessTokenEnhancer())//
+            .tokenEnhancer(accessTokenEnhancer())//
             // .accessTokenConverter(new CustomJwtAccessTokenConverter())//
             // refresh_token需要userDetailsService
             .reuseRefreshTokens(false)//
             .tokenStore(tokenStore())//
-            .tokenServices(customTokenServices(endpoints))//
+            // .tokenServices(customTokenServices)//
             .allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET, HttpMethod.OPTIONS)//
             .exceptionTranslator(new CustomWebResponseExceptionTranslator());
+
+        // 自定义tokenServices
+        CustomTokenServices customTokenServices = customTokenServices();
+        customTokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        customTokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        endpoints.tokenServices(customTokenServices);
 
         // 添加自定义的TokenGranters
         List<TokenGranter> tokenGranters = getTokenGranters(endpoints.getTokenServices(),
