@@ -9,9 +9,11 @@ import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringCloudApplication
+@EnableSwagger2WebFlux
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class})
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})

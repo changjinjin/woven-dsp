@@ -1,7 +1,7 @@
-package com.info.baymax.common.comp.swagger.plugin;
+package com.info.baymax.dsp.common.swagger.plugin;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.info.baymax.common.comp.swagger.annotation.ApiModelMap;
+import com.info.baymax.dsp.common.swagger.annotation.ApiModelMap;
 import io.swagger.annotations.ApiModelProperty;
 import javassist.*;
 import javassist.bytecode.AnnotationsAttribute;
@@ -10,7 +10,6 @@ import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.BooleanMemberValue;
 import javassist.bytecode.annotation.IntegerMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import springfox.documentation.schema.ModelRef;
@@ -24,13 +23,10 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-@Order // plugin加载顺序，默认是最后加载
+@Order
 public class ApiModelMapReader implements ParameterBuilderPlugin {
 
     public static int CLASS_INDEX = 1;
-
-    @Autowired
-    private TypeResolver typeResolver;
 
     @Override
     public void apply(ParameterContext parameterContext) {
@@ -43,7 +39,7 @@ public class ApiModelMapReader implements ParameterBuilderPlugin {
                 ApiModelProperty[] properties = optional.get().value();
                 String name = "MapClass_" + System.currentTimeMillis() + "_" + (CLASS_INDEX++);
                 parameterContext.getDocumentationContext().getAdditionalModels()
-                    .add(typeResolver.resolve(createRefModel(properties, name))); // 像documentContext的Models中添加我们新生成的Class
+                    .add(new TypeResolver().resolve(createRefModel(properties, name))); // 像documentContext的Models中添加我们新生成的Class
 
                 parameterContext.parameterBuilder() // 修改Map参数的ModelRef为我们动态生成的class
                     .parameterType("body").modelRef(new ModelRef(name)).name(name);

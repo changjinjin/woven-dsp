@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.gateway.config.resource;
+package com.info.baymax.dsp.gateway.config;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;

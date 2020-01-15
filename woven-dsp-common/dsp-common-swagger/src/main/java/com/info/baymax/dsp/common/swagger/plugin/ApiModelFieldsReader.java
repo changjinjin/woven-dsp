@@ -1,9 +1,8 @@
-package com.info.baymax.common.comp.swagger.plugin;
+package com.info.baymax.dsp.common.swagger.plugin;
 
 import com.fasterxml.classmate.TypeResolver;
-import com.google.common.collect.Sets;
-import com.info.baymax.common.comp.swagger.annotation.ApiModelFields;
-import com.info.baymax.common.utils.ClassUtils;
+import com.info.baymax.dsp.common.swagger.annotation.ApiModelFields;
+import com.info.baymax.dsp.common.swagger.utils.ClassUtils;
 import io.swagger.annotations.ApiModelProperty;
 import javassist.*;
 import javassist.bytecode.AnnotationsAttribute;
@@ -12,7 +11,6 @@ import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.BooleanMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import springfox.documentation.schema.ModelRef;
@@ -23,18 +21,12 @@ import springfox.documentation.spi.service.contexts.ParameterContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 @Order
 public class ApiModelFieldsReader implements ParameterBuilderPlugin {
-    @Autowired
-    private TypeResolver typeResolver;
-
     public static int CLASS_INDEX = 1;
 
     @Override
@@ -47,7 +39,7 @@ public class ApiModelFieldsReader implements ParameterBuilderPlugin {
                 + (CLASS_INDEX++); // model 名称
             try {
                 parameterContext.getDocumentationContext().getAdditionalModels()
-                    .add(typeResolver.resolve(createRefModelIgp(apiModelFields.get(), name, originClass))); // 像documentContext的Models中添加我们新生成的Class
+                    .add(new TypeResolver().resolve(createRefModelIgp(apiModelFields.get(), name, originClass))); // 像documentContext的Models中添加我们新生成的Class
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
@@ -66,8 +58,8 @@ public class ApiModelFieldsReader implements ParameterBuilderPlugin {
         try {
             List<Field> fields = ClassUtils.getFields(origin, null, null);
             if (fields != null && !fields.isEmpty()) {
-                Set<String> requiredFields = Sets.newHashSet(Arrays.asList(ann.requiredFields()));
-                Set<String> filterFields = Sets.newHashSet(Arrays.asList(ann.filterFields()));
+                Set<String> requiredFields = new HashSet<String>(Arrays.asList(ann.requiredFields()));
+                Set<String> filterFields = new HashSet<String>(Arrays.asList(ann.filterFields()));
                 boolean includeMode = ann.includeMode();
 
                 List<Field> dealFileds = fields.stream()

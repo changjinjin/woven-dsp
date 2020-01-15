@@ -15,8 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.runtime.startClass>com.info.baymax.dsp.gateway.GatewayStarter</project.runtime.startClass>
-        <swagger2.version>2.9.2</swagger2.version>
-        <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -77,51 +75,13 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>dsp-common-swagger</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.github.classgraph</groupId>
-                    <artifactId>classgraph</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.bytebuddy</groupId>
-                    <artifactId>byte-buddy</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-context</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.plugin</groupId>
-                    <artifactId>spring-plugin-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.plugin</groupId>
-                    <artifactId>spring-plugin-metadata</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-core</artifactId>
-            <version>${spring-plugin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.plugin</groupId>
-            <artifactId>spring-plugin-metadata</artifactId>
-            <version>${spring-plugin.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.plugin</groupId>
-                    <artifactId>spring-plugin-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>springfox-spring-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.swagger.annotation;
+package com.info.baymax.dsp.common.swagger.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

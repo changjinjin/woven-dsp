@@ -1,7 +1,6 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
-import com.info.baymax.common.comp.swagger.annotation.ApiModelFields;
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
@@ -10,6 +9,7 @@ import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
+import com.info.baymax.dsp.common.swagger.annotation.ApiModelFields;
 import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
