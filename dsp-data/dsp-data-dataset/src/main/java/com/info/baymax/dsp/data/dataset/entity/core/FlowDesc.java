@@ -68,7 +68,7 @@ public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
      */
     @ApiModelProperty("是否隐藏,对于qa flow不需要展示在Flow目录下，1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer isHide;
 

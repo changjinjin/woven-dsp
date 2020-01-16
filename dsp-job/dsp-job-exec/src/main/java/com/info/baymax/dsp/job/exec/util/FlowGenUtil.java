@@ -319,6 +319,7 @@ public class FlowGenUtil {
         schema.setOwner(dataService.getOwner());
         schema.setCreator(dataService.getCreator());
         schema.setLastModifier(dataService.getCreator());
+        schema.setIsHide(1);
         try {
             schema = schemaService.save(schema);
         } catch (Exception e) {
@@ -380,7 +381,7 @@ public class FlowGenUtil {
         dataset.setLastModifiedTime(dataset.getCreateTime());
         dataset.setCreator(dataService.getCreator());
         dataset.setLastModifier(dataService.getCreator());
-
+        dataset.setIsHide(1);
         dataset.setVersion(1);
         dataset.setExpiredPeriod(0L);
         try {
@@ -450,6 +451,7 @@ public class FlowGenUtil {
             dataset.setLastModifier(dataService.getCreator());
             dataset.setVersion(1);
             dataset.setExpiredPeriod(0L);
+            dataset.setIsHide(1);
             try {
                 dataset = datasetService.save(dataset);
             }catch (Exception e){
@@ -652,7 +654,7 @@ public class FlowGenUtil {
             dsResDesc.setVersion(0);
             dsResDesc.setResType(ConstantInfo.RES_TYPE_FLOW);
             dsResDesc.setParentId(flowResource.getId());
-            dsResDesc.setIsHide(1);// qa flow文件夹不显示在Flows目录下
+            dsResDesc.setIsHide(1);// Ds_flow文件夹不显示在Flows目录下
 
             resourceDescService.saveOrUpdate(dsResDesc);
             dataserviceFlowRes = dsResDesc;
