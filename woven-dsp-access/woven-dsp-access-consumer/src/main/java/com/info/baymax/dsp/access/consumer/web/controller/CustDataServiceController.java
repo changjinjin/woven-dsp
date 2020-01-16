@@ -77,12 +77,14 @@ public class CustDataServiceController implements BaseEntityController<DataServi
 
     @ApiOperation(value = "查找Execution", notes = "多条件查询Execution")
     @ResponseBody
-    @GetMapping("/tasklist/{flowId}")
-    public Response<IPage<FlowExecution>> query(@PathVariable String flowId) {
+    @PostMapping("/tasklist/{flowId}")
+    public Response<IPage<FlowExecution>> query(@PathVariable String flowId, @RequestBody ExampleQuery query) {
         if (StringUtils.isEmpty(flowId)) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
+        if(query == null) {
+            query = ExampleQuery.builder(FlowExecution.class);
+        }
         if(query.getFieldGroup() == null){
             query.setFieldGroup(new FieldGroup());
         }

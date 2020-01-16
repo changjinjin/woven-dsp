@@ -735,7 +735,6 @@ public class FlowGenUtil {
     }
 
     public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
-        String time = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
         String schedulerName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMddHHmmss");
         ConfigObject configurations = new ConfigObject();
         configurations.put("properties", runtime_properties);

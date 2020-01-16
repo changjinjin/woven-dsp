@@ -20,16 +20,15 @@ import java.util.List;
 @Slf4j
 public class HdfsUtil {
 
-    private static HdfsUtil hdfsUtil = new HdfsUtil();
-
-    public static HdfsUtil getInstance() {
-        return hdfsUtil;
-    }
-
     private FileSystem fs;
 
-    private HdfsUtil() {
+    public HdfsUtil() {
         init();
+    }
+
+
+    public HdfsUtil(String confFile){
+        initConf(confFile);
     }
 
     private void init() {
@@ -45,6 +44,22 @@ public class HdfsUtil {
                 conf.addResource(new Path(CONF_PATH + File.separator + "core-site.xml"));
                 conf.addResource(new Path(CONF_PATH + File.separator + "hdfs-site.xml"));
             }
+            this.fs = FileSystem.get(conf);
+        } catch (Throwable e) {
+            log.error("init hdfs FileSystem exception :", e);
+        }
+    }
+
+    private void initConf(String confFile){
+        try {
+            Configuration conf = new Configuration();
+//            String USER_NAME = System.getenv("HADOOP_USER_NAME");
+//            if (StringUtils.isBlank(USER_NAME)) {
+//                USER_NAME = "merce";
+//            }
+//            System.setProperty("HADOOP_USER_NAME", USER_NAME);
+            conf.addResource(confFile);
+
             this.fs = FileSystem.get(conf);
         } catch (Throwable e) {
             log.error("init hdfs FileSystem exception :", e);

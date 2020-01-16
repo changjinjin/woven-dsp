@@ -10,7 +10,9 @@ import com.info.baymax.common.mybatis.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
@@ -23,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -48,7 +52,15 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         if (t == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
         }
-        dataServiceEntityService.saveOrUpdate(t);
+        DataService dataService = dataServiceEntityService.selectByPrimaryKey(t.getId());
+        dataService.setStatus(t.getStatus());
+        dataService.setLastModifiedTime(new Date());
+        dataService.setLastModifier(SaasContext.getCurrentUsername());
+        if(t.getStatus() == DataServiceStatus.SERVICE_STATUS_DEPLOYED){
+            dataService.setJobInfo(null);
+            dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
+        }
+        dataServiceEntityService.saveOrUpdate(dataService);
         return Response.ok();
     }
 
@@ -82,12 +94,14 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
 
     @ApiOperation(value = "查找Execution", notes = "多条件查询Execution")
     @ResponseBody
-    @GetMapping("/tasklist/{flowId}")
-    public Response<IPage<FlowExecution>> query(@PathVariable String flowId) {
+    @PostMapping("/tasklist/{flowId}")
+    public Response<IPage<FlowExecution>> query(@PathVariable String flowId, @RequestBody ExampleQuery query) {
         if (StringUtils.isEmpty(flowId)) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
+        if(query == null) {
+            query = ExampleQuery.builder(FlowExecution.class);
+        }
         if(query.getFieldGroup() == null){
             query.setFieldGroup(new FieldGroup());
         }
