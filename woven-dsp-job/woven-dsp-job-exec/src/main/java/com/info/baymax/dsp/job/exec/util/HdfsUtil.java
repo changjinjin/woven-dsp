@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.job.exec.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -9,13 +10,20 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 @Slf4j
 public class HdfsUtil {
@@ -27,7 +35,7 @@ public class HdfsUtil {
     }
 
 
-    public HdfsUtil(String confFile){
+    public HdfsUtil(byte[] confFile){
         initConf(confFile);
     }
 
@@ -50,15 +58,9 @@ public class HdfsUtil {
         }
     }
 
-    private void initConf(String confFile){
+    private void initConf(byte[] confBuff){
         try {
-            Configuration conf = new Configuration();
-//            String USER_NAME = System.getenv("HADOOP_USER_NAME");
-//            if (StringUtils.isBlank(USER_NAME)) {
-//                USER_NAME = "merce";
-//            }
-//            System.setProperty("HADOOP_USER_NAME", USER_NAME);
-            conf.addResource(confFile);
+            Configuration conf = buildConfiguration(confBuff);
 
             this.fs = FileSystem.get(conf);
         } catch (Throwable e) {
@@ -158,5 +160,42 @@ public class HdfsUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Configuration buildConfiguration(byte[] buff) {
+        if (buff == null || buff.length == 0){
+            throw new RuntimeException("hadoop conf file can't be null or empty.");
+        }
+        String LOCAL_TEMP_PATH = "/tmp/dsp_hadoop_config.zip";
+        File tmpZipFile = new File(LOCAL_TEMP_PATH);
+
+        Configuration configuration = new Configuration(false);
+        try {
+            //TODO 将byte[]写入本地临时zip文件.
+            FileUtils.writeByteArrayToFile(tmpZipFile, buff, false);
+            //TODO 获取文件输入流
+            ByteArrayInputStream input = new ByteArrayInputStream(buff);
+            //TODO 获取ZIP输入流
+            ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(input), StandardCharsets.UTF_8);
+
+            ZipFile zipFile = new ZipFile(tmpZipFile);
+            ZipEntry ze = null;
+            while ((ze = zipInputStream.getNextEntry()) != null) {
+                if (ze.getName().endsWith(".xml")) {
+                    configuration.addResource(zipFile.getInputStream(ze), ze.getName());
+                    log.info("add resource:{}", ze.getName());
+                }
+            }
+
+            //TODO close input stream.
+            zipInputStream.closeEntry();
+            input.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            tmpZipFile.deleteOnExit();
+        }
+
+        return configuration;
     }
 }

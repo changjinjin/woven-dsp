@@ -48,7 +48,7 @@ public class DataShareJob implements Job {
 
         try {
             log.info("jobSchedule send request to executor, dataserviceId :" + serviceId);
-            //对于周期任务,当前日期可能是2或3,在执行之前更新为1
+            //对于周期任务,当前running状态可能是2或3,在执行之前更新为1
             dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_RUNNING);
             executorRestClient.deployDataservice(body);
             log.info("jobSchedule success to send request to executor, dataserviceId :" + serviceId);
@@ -58,7 +58,7 @@ public class DataShareJob implements Job {
             //更新dataservice为可执行状态
             try {
                 dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_FAILED);
-                log.info("dataService [{}] deploy failed, restore running status to 0", serviceId);
+                log.info("dataService [{}] deploy failed, restore running status to failed", serviceId);
             }catch (Exception ex){
                 log.error("dataService ["+ serviceId+ "] deploy failed, restore running status exception: ", e);
             }

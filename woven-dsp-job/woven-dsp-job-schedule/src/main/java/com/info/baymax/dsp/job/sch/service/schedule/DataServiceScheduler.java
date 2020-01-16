@@ -104,7 +104,7 @@ public class DataServiceScheduler {
             for (DataService dataService : list) {
                 dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_RUNNING);//防止被其他timer重复调用
             }
-            log.info("start to run push dataservice, count : {}", list.size());
+            log.info("success to run push dataservice, count : {}", list.size());
         }
     }
 
