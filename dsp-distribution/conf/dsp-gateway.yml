@@ -1,51 +1,105 @@
 server:
+  address: 192.168.2.145
   port: 8000
+  reactive:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 2048
 spring:
   application:
     name: dsp-gateway
   devtools:
     restart:
       enabled: false
+  resources:
+    add-mappings: true
+    static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   cloud:
     consul:
-      host: 192.168.1.81
-      port: 8123
+#      host: 192.168.1.81
+#      port: 8123
+      host: 127.0.0.1
+      port: 8500
       discovery:
         register: true
+        preferIpAddress: true
         serviceName: ${spring.application.name}
         healthCheckPath: /actuator/health
         healthCheckInterval: 15s
         tags: urlprefix-/${spring.application.name}
         instanceId: ${spring.application.name}:${server.port}
-zuul:
-  host:
-    connect-timeout-millis: 15000
-    socket-timeout-millis: 60000
-    connection-request-timeout-millis: 60000
-    time-unit: seconds
-  routes:
-    auth:
-      path: /api/auth/**
-      sensitive-headers: '*'
-      service-id: dsp-auth-server
-      stripPrefix: false
-    access-platform:
-      path: /api/dsp/platform/**
-      sensitive-headers: '*'
-      service-id: dsp-access-platform
-      stripPrefix: false
-    access-consumer:
-      path: /api/dsp/consumer/**
-      sensitive-headers: '*'
-      service-id: dsp-access-consumer
-      stripPrefix: false
-  add-proxy-headers: true
-  ribbon:
-    eager-load:
-      enabled: true
-ribbon:
-  ReadTimeout: 10000
-  ConnectTimeout: 10000
+    gateway:
+      httpclient:
+        pool:
+          type: DISABLED
+      default-filters:
+      - SetResponseHeader=X-Frame-Options, DENY
+      routes:
+      - id: auth
+        uri: lb://dsp-auth-server
+        order: 2
+        predicates:
+        - Path=/api/auth/**
+        filters:
+        - PreserveHostHeader
+        - RemoveRequestHeader=Expect
+      - id: access-platform
+        uri: lb://dsp-access-platform
+        order: 2
+        predicates:
+        - Path=/api/dsp/platform/**
+        filters:
+        - PreserveHostHeader
+        - RemoveRequestHeader=Expect
+      - id: access-consumer
+        uri: lb://dsp-access-consumer
+        order: 2
+        predicates:
+        - Path=/api/dsp/consumer/**
+        filters:
+        - PreserveHostHeader
+        - RemoveRequestHeader=Expect
+      - id: access-dataapi
+        uri: lb://dsp-access-dataapi
+        order: 2
+        predicates:
+        - Path=/api/dsp/dataapi/**
+        filters:
+        - PreserveHostHeader
+        - RemoveRequestHeader=Expect
+      - id: welcome
+        uri: http://${server.address}:${server.port}
+        predicates:
+        - Path=/
+        filters:
+        - RewritePath=/(?<segment>.*), /index.html
+        - PreserveHostHeader
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
+      client:
+        registration:
+          dsp-gateway:
+            client-id: dsp-gateway
+            client-name: dsp-gateway
+            client-secret: 123456
+            client-authentication-method: Basic
+            authorization-grant-type: authorization_code
+            scope: api,resource,login,read,write,trust
+            redirect-uri-template: http://localhost:8004/api/auth/oauth/authorize
+            redirect-uri: http://localhost:8004/api/auth/oauth/authorize
+        provider:
+          dsp-gateway:
+            user-name-attribute: username
+            authorization-uri: http://localhost:8004/api/auth/oauth/authorize
+            token-uri: http://localhost:8004/api/auth/oauth/token
+            user-info-uri: http://localhost:8004/api/auth/oauth/userinfo
+            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
+            user-info-authentication-method: Basic
 management:
   endpoint:
     health:
@@ -57,47 +111,38 @@ management:
     info:
       enabled: true
 security:
-  oauth2:
-    resource:
-      id: ${spring.application.name}
-      serviceId: ${spring.application.name}
-      user-info-uri: http://localhost:8004/api/auth/oauth/user
-      prefer-token-info: false
-    client:
-      access-token-uri: http://localhost:8004/api/auth/oauth/token
-      user-authorization-uri: http://localhost:8004/api/auth/oauth/authorize
-      client-id: dsp
-      client-secret: 123456
   token:
     ignored:
       staticResources:
-        - /
-        - /static/**
-        - /webjars/**
-        - /**/*.js*
-        - /**/*.css*
-        - /**/*.html*
-        - /**/*.ico*
-        - /**/*.json*
+      - /
+      - /static/**
+      - /webjars/**
+      - /**/*.js*
+      - /**/*.css*
+      - /**/*.html*
+      - /**/*.ico*
+      - /**/*.json*
+      - /*.html**
       anyMethods:
-        - /
-        - /actuator/**
-        - /v2/**
-        - /swagger**
-        - /api/auth/oauth/**
-        - /**/v2/*
+      - /
+      - /actuator/**
+      - /v2/**
+      - /swagger**
+      - /api/auth/**
+      - /api/auth/v2/api-docs
+      - /api/*/*/v2/api-docs
 swagger2:
   enabled: true
   resources:
-    - name: gateway
-      url: /v2/api-docs
-      swaggerVersion: 0.1.0
-    - name: auth-server
-      url: /api/auth/v2/api-docs
-      swaggerVersion: 0.1.0
-    - name: access-platform
-      url: /api/dsp/platform/v2/api-docs
-      swaggerVersion: 0.1.0
-    - name: access-consumer
-      url: /api/dsp/consumer/v2/api-docs
-      swaggerVersion: 0.1.0
+  - name: gateway
+    url: /v2/api-docs
+    swaggerVersion: 0.1.0
+  - name: auth-server
+    url: /api/auth/v2/api-docs
+    swaggerVersion: 0.1.0
+  - name: access-platform
+    url: /api/dsp/platform/v2/api-docs
+    swaggerVersion: 0.1.0
+  - name: access-consumer
+    url: /api/dsp/consumer/v2/api-docs
+    swaggerVersion: 0.1.0

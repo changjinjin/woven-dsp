@@ -83,24 +83,23 @@ spring:
           jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
       client:
         registration:
-          dsp-auth:
-            client-id: oauth2-client
-            client-name: oauth2-client
+          dsp-gateway:
+            client-id: dsp-gateway
+            client-name: dsp-gateway
             client-secret: 123456
-            authorization-grant-type: authorization_code
             client-authentication-method: Basic
-            scope:
-            - api
-            - resource
-            - login
+            authorization-grant-type: authorization_code
+            scope: api,resource,login,read,write,trust
             redirect-uri-template: http://localhost:8004/api/auth/oauth/authorize
             redirect-uri: http://localhost:8004/api/auth/oauth/authorize
         provider:
-          dsp-auth:
+          dsp-gateway:
             user-name-attribute: username
             authorization-uri: http://localhost:8004/api/auth/oauth/authorize
             token-uri: http://localhost:8004/api/auth/oauth/token
-            user-info-uri: http://localhost:8004/api/auth/oauth/user
+            user-info-uri: http://localhost:8004/api/auth/oauth/userinfo
+            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
+            user-info-authentication-method: Basic
 management:
   endpoint:
     health:
