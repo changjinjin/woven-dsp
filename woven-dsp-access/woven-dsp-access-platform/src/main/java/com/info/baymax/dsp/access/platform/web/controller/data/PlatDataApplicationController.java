@@ -2,7 +2,9 @@ package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
+import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,10 +70,13 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
     @ApiOperation(value = "审批消费者申请记录")
     @PostMapping("/approval/{status}")
     public Response<?> approvalDataApplication(@PathVariable Integer status, @RequestBody DataService dataService) throws Exception {
-        dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), status);
-        if (status == 1) {
-            DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
+        DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
+        dataApplication.setStatus(status);
+        dataApplication.setLastModifiedTime(new Date());
+        dataApplication.setLastModifier(SaasContext.getCurrentUsername());
+        dataApplicationService.update(dataApplication);
 
+        if (status == 1) {
             try {
                 //审批通过把DataApplication中的pull/push配置信息写入DataService
                 ApplyConfiguration applyConfiguration = new ApplyConfiguration();
@@ -100,14 +107,24 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                     dataService.setPullConfiguration(pullConfig);
                 }
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
+                if(dataService.getName().equals(dataApplication.getName())){
+                    dataService.setName(dataApplication.getName()+ "_" + getDateStr("yyyyMMddHHmmss"));
+                }
+
                 dataServiceEntityService.saveOrUpdate(dataService);
             }catch (Exception e){
                 log.error("approval and save dataservice exception :", e);
                 dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), 0);
                 log.info("restore dataApplication status success :{}, {}", dataApplication.getId(), 0);
+                return Response.error(ErrType.ENTITY_SAVE_ERROR, "save dataService error");
             }
         }
         return Response.ok(dataService.getId());
+    }
+
+    private String getDateStr(String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        return df.format(new Date());
     }
 
 }

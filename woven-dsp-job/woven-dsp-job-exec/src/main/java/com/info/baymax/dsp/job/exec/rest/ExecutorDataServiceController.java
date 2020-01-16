@@ -1,5 +1,7 @@
 package com.info.baymax.dsp.job.exec.rest;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
@@ -12,6 +14,7 @@ import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.Status;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
+import com.info.baymax.dsp.data.dataset.service.core.ClusterDbService;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
@@ -32,6 +35,7 @@ import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.job.exec.util.HdfsUtil;
 import lombok.extern.slf4j.Slf4j;
 import com.alibaba.fastjson.JSONArray;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
@@ -45,10 +49,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("dataservice")
@@ -78,6 +87,13 @@ public class ExecutorDataServiceController {
     private TenantService tenantService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ClusterDbService clusterDbService;
+
+    static Cache<String, ClusterEntity> clusterCache = CacheBuilder.newBuilder()
+            .maximumSize(10)
+            .expireAfterWrite(10, TimeUnit.MINUTES)
+            .build();
 
     @Value(value = "${execution.checkout.timeout:30}")
     private Long execution_timeout = 30L; //单位：分钟
@@ -201,8 +217,15 @@ public class ExecutorDataServiceController {
             //Format runtime properties
             for(ConfigItem item : runtimePros){
                 if(item.getValue() instanceof List || item.getValue() instanceof Object[]){
-                    if(item.getName().equals("all.runtime.cluster-id") && StringUtils.isNotEmpty(clusterId)){
-                          item.setValue(clusterId.toString());
+                    if(item.getName().equals("all.runtime.cluster-id")){
+                        if(StringUtils.isNotEmpty(clusterId)){
+                            item.setValue(clusterId.toString());
+                        }else{
+                            String value = item.getValue().toString();
+                            String[] vals = value.substring(1, value.length() - 1).split(",");
+                            clusterId = vals[0].trim();
+                            item.setValue(clusterId);
+                        }
                     }else {
                         String value = item.getValue().toString();
                         String[] vals = value.substring(1, value.length() - 1).split(",");
@@ -257,15 +280,43 @@ public class ExecutorDataServiceController {
                                     && StringUtils.isNotEmpty(dataResource.getIncrementField())
                                     && isCursorFlow(flowDesc))
                             {
+                                HdfsUtil hdfsUtil = null;
+                                if(StringUtils.isEmpty(clusterId)){
+                                    hdfsUtil = new HdfsUtil();
+                                }else{
+                                    ClusterEntity clusterEntity = clusterCache.getIfPresent(clusterId);
+                                    if(clusterEntity == null){
+                                        clusterEntity = clusterDbService.findOneByName(dataService.getTenantId(), clusterId, true);
+                                        if(clusterEntity != null){
+                                            clusterCache.put(clusterId, clusterEntity);
+                                        }
+                                    }
+                                    String fileName = clusterId + "_hadoop_conf";
+                                    File zipFile = null;
+                                    try {
+                                        String dir = SaasContext.getCurrentUsername().replaceAll("[^\\w]+", "_") + File.separator + "download";
+                                        File f = new File(dir);
+                                        if (!f.exists()) {
+                                            f.mkdirs();
+                                        }
+
+                                        zipFile = File.createTempFile(fileName, ".zip", f);
+                                        FileUtils.writeByteArrayToFile(zipFile, clusterEntity.getConfigFile());
+                                    } catch (IOException e) {
+                                        log.error("read hadoop conf file exception: ", e);
+                                    }
+                                    hdfsUtil = new HdfsUtil(zipFile.getAbsolutePath());
+                                }
+
                                 String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
-                                String[] files = HdfsUtil.getInstance().files(path, new PathFilter() {
+                                String[] files = hdfsUtil.files(path, new PathFilter() {
                                     @Override
                                     public boolean accept(Path path) {
                                         return path.getName().endsWith(".csv");
                                     }
                                 });
-                                if (files!=null && files.length>0 && HdfsUtil.getInstance().exist(path + "/" + files[0])) {
-                                    List<String> records = HdfsUtil.getInstance().read(path + "/" + files[0]);
+                                if (files!=null && files.length>0 && hdfsUtil.exist(path + "/" + files[0])) {
+                                    List<String> records = hdfsUtil.read(path + "/" + files[0]);
                                     if (records != null && records.size() > 0) {
                                         String cursorVal = records.get(records.size() - 1).trim();
                                         log.info("cursor value for dataservice {} is {}", dataService.getId(), cursorVal);
