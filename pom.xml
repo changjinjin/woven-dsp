@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.info.baymax</groupId>
-	<artifactId>woven-dsp</artifactId>
+	<artifactId>baymax-dsp</artifactId>
 	<version>0.1.0</version>
 	<packaging>pom</packaging>
 
-	<name>woven-dsp</name>
+	<name>baymax-dsp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -114,13 +114,14 @@
 	</properties>
 
 	<modules>
-		<module>woven-dsp-common</module>
-		<module>woven-dsp-auth</module>
-		<module>woven-dsp-access</module>
-		<module>woven-dsp-job</module>
-		<module>woven-dsp-data</module>
-		<module>woven-dsp-gateway</module>
-		<module>woven-dsp-distribution</module>
+		<module>dsp-common</module>
+		<module>dsp-auth</module>
+		<module>dsp-access</module>
+		<module>dsp-job</module>
+		<module>dsp-data</module>
+		<module>dsp-gateway</module>
+		<module>dsp-distribution</module>
+		<module>dsp-oauth2-client</module>
 	</modules>
 
 	<dependencyManagement>
