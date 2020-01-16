@@ -25,6 +25,6 @@ public class TenantCustomerAuthenticationToken extends AbstractTenantUserAuthent
 
     @Override
     public UserType getUserType() {
-        return UserType.Manager;
+        return UserType.Customer;
     }
 }
