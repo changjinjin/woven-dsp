@@ -121,7 +121,6 @@
 		<module>dsp-data</module>
 		<module>dsp-gateway</module>
 		<module>dsp-distribution</module>
-		<module>dsp-oauth2-client</module>
 	</modules>
 
 	<dependencyManagement>
