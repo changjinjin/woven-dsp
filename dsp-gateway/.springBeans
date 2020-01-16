@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:com.info.baymax.dsp.gateway.Oauth2ClientStarter</config>
+		<config>java:com.info.baymax.dsp.gateway.GatewayStarter</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

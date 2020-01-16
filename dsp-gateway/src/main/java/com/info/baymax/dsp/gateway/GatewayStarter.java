@@ -13,8 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableAutoConfiguration
 @PropertySource(value = {"classpath:/dsp-gateway.yml"}, factory = YamlPropertySourceFactory.class)
-public class Oauth2ClientStarter {
+public class GatewayStarter {
     public static void main(String[] args) {
-        SpringApplication.run(Oauth2ClientStarter.class, args);
+        SpringApplication.run(GatewayStarter.class, args);
     }
 }
