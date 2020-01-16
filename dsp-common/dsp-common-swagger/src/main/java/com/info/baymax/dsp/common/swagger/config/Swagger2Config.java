@@ -37,7 +37,7 @@ public class Swagger2Config {
         this.properties = properties;
     }
 
-    @Value("${server.servlet.context-path:/}")
+    @Value("${server.reactive.context-path:/}")
     private String contextPath;
 
     @Bean
@@ -53,7 +53,7 @@ public class Swagger2Config {
             .globalOperationParameters(globalOperationParameters())//
             .globalResponseMessage(RequestMethod.GET, responseMessages)//
             .globalResponseMessage(RequestMethod.GET, responseMessages);//
-        if (contextPath != null && contextPath.length() > 0) {
+        if (contextPath != null && !contextPath.equals("/") && contextPath.length() > 0) {
             docket.pathMapping(contextPath);
         }
         return docket;

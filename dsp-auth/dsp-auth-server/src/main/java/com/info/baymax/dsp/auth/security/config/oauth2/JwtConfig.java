@@ -53,7 +53,7 @@ public class JwtConfig {
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter(KeyPair keyPair) {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        JwtAccessTokenConverter converter = new StrongJwtAccessTokenConverter();
         converter.setKeyPair(keyPair);
         return converter;
     }
