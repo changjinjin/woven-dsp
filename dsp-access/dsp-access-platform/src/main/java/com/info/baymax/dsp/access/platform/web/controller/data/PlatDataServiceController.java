@@ -52,6 +52,9 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(t.getId());
         dataService.setStatus(t.getStatus());
+        if(t.getExpiredTime() != null && t.getExpiredTime() > 0){
+            dataService.setExpiredTime(t.getExpiredTime());
+        }
         dataService.setLastModifiedTime(new Date());
         dataService.setLastModifier(SaasContext.getCurrentUsername());
         if (t.getStatus() == DataServiceStatus.SERVICE_STATUS_DEPLOYED) {

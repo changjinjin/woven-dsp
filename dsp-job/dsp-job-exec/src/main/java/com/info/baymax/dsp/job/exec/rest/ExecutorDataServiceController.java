@@ -291,38 +291,29 @@ public class ExecutorDataServiceController {
                                             clusterCache.put(clusterId, clusterEntity);
                                         }
                                     }
-                                    String fileName = clusterId + "_hadoop_conf";
-                                    File zipFile = null;
-                                    try {
-                                        String dir = SaasContext.getCurrentUsername().replaceAll("[^\\w]+", "_") + File.separator + "download";
-                                        File f = new File(dir);
-                                        if (!f.exists()) {
-                                            f.mkdirs();
+                                    hdfsUtil = new HdfsUtil(clusterEntity.getConfigFile());
+                                }
+
+                                try {
+                                    String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
+                                    String[] files = hdfsUtil.files(path, new PathFilter() {
+                                        @Override
+                                        public boolean accept(Path path) {
+                                            return path.getName().endsWith(".csv");
                                         }
-
-                                        zipFile = File.createTempFile(fileName, ".zip", f);
-                                        FileUtils.writeByteArrayToFile(zipFile, clusterEntity.getConfigFile());
-                                    } catch (IOException e) {
-                                        log.error("read hadoop conf file exception: ", e);
+                                    });
+                                    if (files!=null && files.length>0 && hdfsUtil.exist(path + "/" + files[0])) {
+                                        List<String> records = hdfsUtil.read(path + "/" + files[0]);
+                                        if (records != null && records.size() > 0) {
+                                            String cursorVal = records.get(records.size() - 1).trim();
+                                            log.info("cursor value for dataservice {} is {}", dataService.getId(), cursorVal);
+                                            dataService.setCursorVal(cursorVal);
+                                        }
                                     }
-                                    hdfsUtil = new HdfsUtil(zipFile.getAbsolutePath());
+                                }catch (Exception e){
+                                    log.error("update cursor value for dataservice {} failed", dataService.getId());
                                 }
 
-                                String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
-                                String[] files = hdfsUtil.files(path, new PathFilter() {
-                                    @Override
-                                    public boolean accept(Path path) {
-                                        return path.getName().endsWith(".csv");
-                                    }
-                                });
-                                if (files!=null && files.length>0 && hdfsUtil.exist(path + "/" + files[0])) {
-                                    List<String> records = hdfsUtil.read(path + "/" + files[0]);
-                                    if (records != null && records.size() > 0) {
-                                        String cursorVal = records.get(records.size() - 1).trim();
-                                        log.info("cursor value for dataservice {} is {}", dataService.getId(), cursorVal);
-                                        dataService.setCursorVal(cursorVal);
-                                    }
-                                }
                             }
 
                             //更新isRunning状态
