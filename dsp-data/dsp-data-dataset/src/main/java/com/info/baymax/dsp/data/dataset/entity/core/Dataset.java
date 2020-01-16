@@ -120,6 +120,12 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Transient
     private ProjectEntity projectEntity;
 
+    @ApiModelProperty("是否隐藏,1 隐藏，0 显示，默认值为0")
+    @Column(length = 2)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @DefaultValue("0")
+    private Integer isHide;
+
     public Dataset() {
         super();
     }
