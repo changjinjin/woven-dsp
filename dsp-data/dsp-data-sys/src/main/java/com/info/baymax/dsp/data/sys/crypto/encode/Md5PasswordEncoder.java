@@ -1,13 +1,14 @@
 package com.info.baymax.dsp.data.sys.crypto.encode;
 
-import java.io.UnsupportedEncodingException;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * 密码匹配器
+ *
  * @author jingwei.yang
  * @date 2019年5月14日 下午6:21:45
  */
@@ -28,7 +29,9 @@ public class Md5PasswordEncoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return (rawPassword != null && rawPassword.length() > 0) && (encodedPassword != null && encodedPassword.length() > 0) && encode(rawPassword).equals(encodedPassword);
+        return (rawPassword != null && rawPassword.length() > 0)
+            && (encodedPassword != null && encodedPassword.length() > 0)
+            && encode(rawPassword).equals(encodedPassword);
     }
 
 }

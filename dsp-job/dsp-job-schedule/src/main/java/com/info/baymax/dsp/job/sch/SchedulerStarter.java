@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.job.sch;
 
-import com.info.baymax.common.comp.config.profile.EnableExtProperties;
+import com.info.baymax.common.comp.profile.EnableExtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchRestHealthIndicatorAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

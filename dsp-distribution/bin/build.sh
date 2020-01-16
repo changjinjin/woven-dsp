@@ -7,19 +7,19 @@ echo "script_dir: ${script_dir}"
 
 cd ${script_dir}
 cd ../
-woven_dir=$(pwd)
-echo "current path $(pwd),woven_dir: ${woven_dir}"
+dsp_dir=$(pwd)
+echo "current path $(pwd),dsp_dir: ${dsp_dir}"
 
 echo ">>>create jars dir"
 jarsdir="jars"
-mkdir -p ${woven_dir}/libs/${jarsdir}
+mkdir -p ${dsp_dir}/libs/${jarsdir}
 
-for file in `ls ${woven_dir}/libs/`
+for file in `ls ${dsp_dir}/libs/`
 do
  result=$(echo ${file} | grep "${jarsdir}")
  if [[  "$result" == "" ]]
  then
-     cd  ${woven_dir}/libs/${file}
+     cd  ${dsp_dir}/libs/${file}
      for subFile in ./*.jar
      do
        cp -f $subFile ../${jarsdir}/
@@ -32,8 +32,8 @@ do
      rm -rf $file/logs
      mkdir -p logs/$file
      
-     mkdir -p ${woven_dir}/$file
-     cd ${woven_dir}/$file
+     mkdir -p ${dsp_dir}/$file
+     cd ${dsp_dir}/$file
      ln -f -s ../bin bin
      ln -f -s ../conf conf
      ln -f -s ../libs/$file lib
@@ -42,7 +42,7 @@ do
  done
 echo ">>>link jars end"
 
-cd ${woven_dir}
+cd ${dsp_dir}
 project_path=$(pwd)
 project_name="${project_path##*/}"
 echo "current path ${project_path}"
