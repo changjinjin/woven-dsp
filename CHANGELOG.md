@@ -1,4 +1,4 @@
-# woven-dsp CHANGELOG
+# baymax-dsp CHANGELOG
 
 环境名称
 dev
@@ -9,23 +9,23 @@ target目录
 @build.directory@
 
 @basedir@/**/target/classes源代码和配置文件输出目录
-E:\\Code\\woven-dsp\\woven-dsp\\target\\classes
+E:\\Code\\baymax-dsp\\baymax-dsp\\target\\classes
 @build.outputDirectory@
 
 打包后，启动包的名称
-woven-dsp
+baymax-dsp
 @build.finalName@
 
 源代码目录，java代码
-E:\\Code\\woven-dsp\\woven-dsp\\src\\main\\java
+E:\\Code\\baymax-dsp\\baymax-dsp\\src\\main\\java
 @build.sourceDirectory@
 
 项目根目录
-E:\\Code\\woven-dsp\\woven-dsp
+E:\\Code\\baymax-dsp\\baymax-dsp
 @basedir@
 
 项目名称
-woven-dsp
+baymax-dsp
 @project.name@
 
 ### 0.2.0  2019-12-02
