@@ -9,9 +9,8 @@
         <artifactId>dsp-common</artifactId>
         <version>0.1.0</version>
     </parent>
-    <artifactId>dsp-common-webflux</artifactId>
-
-    <name>dsp-common-webflux</name>
+    <artifactId>dsp-common-webmvc</artifactId>
+    <name>dsp-common-webmvc</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,12 +32,16 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
+            <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-spring-webflux</artifactId>
+            <artifactId>springfox-spring-webmvc</artifactId>
         </dependency>
     </dependencies>
 </project>

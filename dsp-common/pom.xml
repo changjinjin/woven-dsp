@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.info.baymax</groupId>
-		<artifactId>baymax-dsp</artifactId>
-		<version>0.1.0</version>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.info.baymax</groupId>
+        <artifactId>baymax-dsp</artifactId>
+        <version>0.1.0</version>
+    </parent>
 
-	<artifactId>dsp-common</artifactId>
-	<packaging>pom</packaging>
+    <artifactId>dsp-common</artifactId>
+    <packaging>pom</packaging>
 
-	<name>dsp-common</name>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
-	</dependencies>
-	<modules>
-		<module>dsp-common-comp</module>
-		<module>dsp-common-persistence</module>
-		<module>dsp-common-tools</module>
-		<module>dsp-common-swagger</module>
-		<module>dsp-common-webflux</module>
-		<module>dsp-common-jdbc</module>
-	</modules>
+    <name>dsp-common</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+    </dependencies>
+    <modules>
+        <module>dsp-common-tools</module>
+        <module>dsp-common-persistence</module>
+        <module>dsp-common-swagger</module>
+        <module>dsp-common-jdbc</module>
+        <module>dsp-common-comp</module>
+        <module>dsp-common-webflux</module>
+        <module>dsp-common-webmvc</module>
+    </modules>
 </project>

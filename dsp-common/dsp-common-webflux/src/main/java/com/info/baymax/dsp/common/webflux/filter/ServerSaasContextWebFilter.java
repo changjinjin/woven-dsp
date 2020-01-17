@@ -1,20 +1,18 @@
 package com.info.baymax.dsp.common.webflux.filter;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
+import com.alibaba.fastjson.JSON;
+import com.info.baymax.common.saas.SaasContext;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-
-import com.alibaba.fastjson.JSON;
-import com.info.baymax.common.saas.SaasContext;
-
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * SaasContext 拦截初始化
@@ -24,7 +22,7 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Component
-public class SaasContextWebFilter implements WebFilter {
+public class ServerSaasContextWebFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {

@@ -1,18 +1,17 @@
 package com.info.baymax.dsp.common.webflux.config;
 
-import java.util.Locale;
-import java.util.stream.Collectors;
-
+import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorAttributes;
+import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorWebExceptionHandler;
+import com.info.baymax.dsp.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
+import com.info.baymax.dsp.common.webflux.server.result.ServerJackson2JsonEncoder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration.WebFluxConfig;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.ReactiveAdapterRegistry;
@@ -25,23 +24,20 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
-import org.springframework.web.reactive.config.DelegatingWebFluxConfiguration;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 import org.springframework.web.server.i18n.LocaleContextResolver;
-
-import com.info.baymax.dsp.common.webflux.serialize.ServerFilterFieldsHandlerResultHandler;
-import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorAttributes;
-import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorWebExceptionHandler;
-
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 @Configuration
-@Import({WebFluxConfig.class})
-public class WebFluxExtConfig extends DelegatingWebFluxConfiguration {
+public class WebFluxExtConfig implements WebFluxConfigurer {
 
     @Autowired
     private ServerProperties serverProperties;
@@ -64,13 +60,18 @@ public class WebFluxExtConfig extends DelegatingWebFluxConfiguration {
     @Autowired
     private ObjectProvider<ViewResolver> viewResolversProvider;
 
-    @Override
+    @Bean
     protected LocaleContextResolver createLocaleContextResolver() {
         LocaleContextHolder.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         LocaleContextHolder.setLocale(Locale.SIMPLIFIED_CHINESE);
         AcceptHeaderLocaleContextResolver acceptHeaderLocaleContextResolver = new AcceptHeaderLocaleContextResolver();
         acceptHeaderLocaleContextResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         return acceptHeaderLocaleContextResolver;
+    }
+
+    @Override
+    public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
+        configurer.customCodecs().encoder(new ServerJackson2JsonEncoder());
     }
 
     @Bean
