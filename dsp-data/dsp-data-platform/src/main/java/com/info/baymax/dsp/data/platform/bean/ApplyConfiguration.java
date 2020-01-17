@@ -2,10 +2,7 @@ package com.info.baymax.dsp.data.platform.bean;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.apache.ibatis.type.JdbcType;
-import tk.mybatis.mapper.annotation.ColumnType;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 
 /**
