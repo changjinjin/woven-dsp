@@ -24,7 +24,4 @@ public interface DataServiceMapper extends MyIdableMapper<DataService> {
 
     @Update("update dsp_data_service set is_running = 0 where status = 1 and is_running = 1")
     void recoverDataService();
-
-    @Update("update dsp_data_service set status = 3 where schedule_type = 'once' and executed_times > 0")
-    void updateFinishedDataService();
 }

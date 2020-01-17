@@ -319,7 +319,6 @@ public class ExecutorDataServiceController {
                             //更新isRunning状态
                             if(ScheduleType.SCHEDULER_TYPE_ONCE.equals(dataService.getScheduleType())) {
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_SUCCEED);
-                                dataService.setStatus(DataServiceStatus.SERVICE_STATUS_FINISHED);
                             }else if(ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())){
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_RUNNING);
                             }

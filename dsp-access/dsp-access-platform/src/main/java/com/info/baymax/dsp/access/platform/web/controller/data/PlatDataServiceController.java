@@ -60,6 +60,8 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         if (t.getStatus() == DataServiceStatus.SERVICE_STATUS_DEPLOYED) {
             dataService.setJobInfo(null);
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
+        }else if(t.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
+            dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
         }
         dataServiceEntityService.saveOrUpdate(dataService);
         return Response.ok();

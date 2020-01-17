@@ -30,19 +30,7 @@ public interface DataServiceEntityService extends BaseEntityService<DataService>
     void updateDataServiceRunningStatus(Long id, Integer isRunning);
 
     /**
-     * 停止dataservice对应的job trigger
-     * @param id
-     */
-    void stopDataServiceScheduler(Long id);
-
-
-    /**
      * 服务重启时恢复之前正在running的服务
      */
     void recoverDataService();
-
-    /**
-     * 开机启动先更新执行过的once类型的服务
-     */
-    void updateFinishedDataService();
 }
