@@ -39,11 +39,9 @@ public class DataServiceScheduler {
     @PostConstruct
     public void updateServiceStatus(){
         try {
-            log.info("start to recover running service and update finished service.");
+            log.info("start to recover running service.");
             dataServiceEntityService.recoverDataService();
-            dataServiceEntityService.updateFinishedDataService();
-
-            log.info("end to recover running service and update finished service success.");
+            log.info("end recover running service.");
         }catch (Exception e){
 
         }
@@ -114,7 +112,7 @@ public class DataServiceScheduler {
                 dataServiceEntityService.querySpecialDataService (
                         DataServiceType.SERVICE_TYPE_PUSH,
                         DataServiceStatus.SERVICE_STATUS_STOPPED,
-                        null
+                        ScheduleJobStatus.JOB_STATUS_TO_STOP
                 );
         log.debug("stop dataservice schedule size is " + list.size());
 
@@ -125,9 +123,9 @@ public class DataServiceScheduler {
                 dataShareScheduler.cancel(dataService);
             }
 
-            //更新DB status=3
+            //更新DB isRunning=5
             for (DataService dataService : list) {
-                dataServiceEntityService.stopDataServiceScheduler(dataService.getId());//防止被其他timer重复调用
+                dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(),ScheduleJobStatus.JOB_STATUS_STOPPED);//防止被其他timer重复调用
             }
             log.info("stop push dataservice, count : {}", list.size());
         }

@@ -59,17 +59,7 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
     }
 
     @Override
-    public void stopDataServiceScheduler(Long id) {
-        dataServiceMapper.updateDataServiceStatus(id, 4);
-    }
-
-    @Override
     public void recoverDataService() {
         dataServiceMapper.recoverDataService();
-    }
-
-    @Override
-    public void updateFinishedDataService() {
-        dataServiceMapper.updateFinishedDataService();
     }
 }
