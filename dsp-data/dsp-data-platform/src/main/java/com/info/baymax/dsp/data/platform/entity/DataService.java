@@ -97,13 +97,13 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private Date lastExecutedTime;
 
-    @ApiModelProperty("该服务审核通过后是否已经部署就位,0 待部署,1 部署成功, 2 停止服务, 4 关联的调度已停止, 5 服务已过期")
+    @ApiModelProperty("该服务审核通过后是否已经部署就位,0 待部署,1 部署成功, 2 停止服务, 3 服务已过期")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("0")
     private Integer status;
 
-    @ApiModelProperty("是否正在运行,由调度程序触发,0 未运行, 1 正在运行, 2 运行失败, 3 运行成功")
+    @ApiModelProperty("是否正在运行,由调度程序触发,0 未运行, 1 正在运行, 2 运行失败, 3 运行成功, 4 待停止, 5 已停止")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
