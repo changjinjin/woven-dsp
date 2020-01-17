@@ -11,7 +11,6 @@ import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
-import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,9 +28,6 @@ public class CustDataApplicationController implements BaseEntityController<DataA
 
     @Autowired
     private DataApplicationService dataApplicationService;
-
-    @Autowired
-    private DataResourceService dataResourceService;
 
     @Override
     public BaseEntityService<DataApplication> getBaseEntityService() {

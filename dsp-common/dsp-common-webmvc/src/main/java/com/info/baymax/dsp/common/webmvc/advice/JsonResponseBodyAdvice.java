@@ -80,8 +80,8 @@ public class JsonResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         try {
             jsonSerializer.toJson(response.getBody(), body);
         } catch (Exception e) {
-            log.error("报文序列化失败", e);
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "报文序列化失败，" + e.getCause());
+            log.error("result serialize failed", e);
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getCause().toString());
         }
         return null;
     }
