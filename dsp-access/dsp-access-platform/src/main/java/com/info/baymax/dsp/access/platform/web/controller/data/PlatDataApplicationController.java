@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,7 +95,6 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 dataService.setApplyConfiguration(applyConfiguration);
                 dataService.setCustId(dataApplication.getOwner());
                 dataService.setOwner(SaasContext.getCurrentUserId());//不能存customer的id,存管理员id
-
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
 
                 if (dataService.getType() == DataServiceType.SERVICE_TYPE_PULL) { // pull 服务, 配置接口信息
@@ -109,6 +109,10 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 }
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
 
+                List<DataService> records = dataServiceEntityService.findAllByTenantIdAndName(dataService.getTenantId(), dataApplication.getName());
+                if(records != null && records.size() > 0) {
+                    dataService.setName(dataApplication.getName() + "_" + getDateStr("yyyyMMddHHmmss"));
+                }
                 dataServiceEntityService.saveOrUpdate(dataService);
             } catch (Exception e) {
                 log.error("approval and save dataservice exception :", e);
