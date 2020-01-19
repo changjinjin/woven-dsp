@@ -159,6 +159,11 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 			} else {
 				user.setAuthorities(Lists.newArrayList(new SimpleGrantedAuthority("Maanger")));
 			}
+		}else {
+			String clientIds = user.getClientIds();
+			if (StringUtils.isEmpty(clientIds) || !clientIds.contains(clientId)) {
+				throw new NoGrantedAnyAuthorityException("当前用户没有授予平台" + clientId + "的访问权限，禁止登陆该平台！");
+			}
 		}
 
 		// 用户没有赋权，用户需要有权限才能登陆服务
@@ -168,6 +173,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		 * "Username {0} no authority granted"); log.debug(message); throw new NoGrantedAnyAuthorityException(message);
 		 * }
 		 */
+		
 		return new SimpleManagerDetails(clientId, tenant, user);
 	}
 

@@ -95,6 +95,12 @@ public class User extends Maintable implements CryptoBean {
     @DefaultValue("0")
     private Integer admin;
 
+    @ApiModelProperty(value = "用户所属平台，默认baymax")
+    @Column(name = "client_ids", length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @DefaultValue("baymax")
+    private String clientIds;
+
     @ApiModelProperty(value = "用户角色列表")
     @Transient
     private List<Role> roles;

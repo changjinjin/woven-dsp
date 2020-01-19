@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserMapper">
-	<resultMap id="BaseResultMap" type="com.info.baymax.dsp.data.sys.entity.security.User">
+<mapper
+	namespace="com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.info.baymax.dsp.data.sys.entity.security.User">
 		<id column="id" jdbcType="VARCHAR" property="id" />
-		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
 		<result column="creator" jdbcType="VARCHAR" property="creator" />
 		<result column="enabled" jdbcType="INTEGER" property="enabled" />
-		<result column="expired_time" jdbcType="BIGINT" property="expiredTime" />
+		<result column="expired_time" jdbcType="BIGINT"
+			property="expiredTime" />
 		<result column="last_modified_time" jdbcType="TIMESTAMP"
 			property="lastModifiedTime" />
-		<result column="last_modifier" jdbcType="VARCHAR" property="lastModifier" />
-		<result column="module_version" jdbcType="INTEGER" property="moduleVersion" />
+		<result column="last_modifier" jdbcType="VARCHAR"
+			property="lastModifier" />
+		<result column="module_version" jdbcType="INTEGER"
+			property="moduleVersion" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
-		<result column="name_duplicatable" jdbcType="BIT" property="nameDuplicatable" />
+		<result column="name_duplicatable" jdbcType="BIT"
+			property="nameDuplicatable" />
 		<result column="owner" jdbcType="VARCHAR" property="owner" />
 		<result column="version" jdbcType="INTEGER" property="version" />
-		<result column="hdfs_space_quota" jdbcType="BIGINT" property="hdfsSpaceQuota" />
+		<result column="hdfs_space_quota" jdbcType="BIGINT"
+			property="hdfsSpaceQuota" />
 		<result column="login_id" jdbcType="VARCHAR" property="loginId" />
-		<result column="password" jdbcType="VARCHAR" property="password" />
-		<result column="resource_queues" jdbcType="VARCHAR" property="resourceQueues"
+		<result column="password" jdbcType="VARCHAR"
+			property="password" />
+		<result column="resource_queues" jdbcType="VARCHAR"
+			property="resourceQueues"
 			typeHandler="com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler" />
-		<result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
+		<result column="tenant_id" jdbcType="VARCHAR"
+			property="tenantId" />
 		<result column="is_admin" jdbcType="INTEGER" property="admin" />
 		<result column="email" jdbcType="VARCHAR" property="email" />
 		<result column="phone" jdbcType="VARCHAR" property="phone" />
@@ -28,11 +39,15 @@
 			property="accountExpiredTime" />
 		<result column="pwd_expired_time" jdbcType="TIMESTAMP"
 			property="pwdExpiredTime" />
+		<result column="client_ids" jdbcType="VARCHAR"
+			property="clientIds" />
 	</resultMap>
 
-	<resultMap id="BaseWithRolesResultMap" extends="BaseResultMap"
+	<resultMap id="BaseWithRolesResultMap"
+		extends="BaseResultMap"
 		type="com.info.baymax.dsp.data.sys.entity.security.User">
-		<association property="roles" column="id" fetchType="eager"
+		<association property="roles" column="id"
+			fetchType="eager"
 			select="com.info.baymax.dsp.data.sys.mybatis.mapper.security.RoleMapper.selectWithPermsByUserId" />
 	</resultMap>
 
@@ -48,6 +63,10 @@
 			<if test="owner != null and owner != ''">and owner = #{owner,jdbcType=VARCHAR}</if>
 			<if test="version != null and version != ''">and version = #{version,jdbcType=VARCHAR}</if>
 			<if test="enabled != null">and enabled = #{enabled,jdbcType=INTEGER}</if>
+			<if test="clientIds != null and clientIds != ''">
+				<bind name="pattern" value="'%'+clientIds+'%'" />
+				and client_ids like #{clientIds,jdbcType=VARCHAR}
+			</if>
 		</where>
 	</select>
 

@@ -88,6 +88,11 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
         if (StringUtils.isEmpty(password)) {
             password = initPwd;
         }
+
+        String clientIds = t.getClientIds();
+        if (StringUtils.isEmpty(clientIds)) {
+            t.setClientIds("dsp");
+        }
         t.setPassword(passwordEncoder.encode(password));
 
         // 保存用户信息
