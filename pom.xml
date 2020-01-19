@@ -415,6 +415,11 @@
 					<newVersion>0.1.0</newVersion>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.12</version>
+			</plugin>
 		</plugins>
 	</build>
 </project>
