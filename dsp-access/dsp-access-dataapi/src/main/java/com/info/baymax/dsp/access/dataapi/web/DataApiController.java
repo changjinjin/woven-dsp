@@ -16,6 +16,7 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +68,9 @@ public class DataApiController implements Serializable {
         if (dataService.getType() == 1) {
             return Response.error(ErrType.BAD_REQUEST, "不支持push共享方式");
         }
+        if (dataService.getStatus() != 1) {
+            return Response.error(ErrType.BAD_REQUEST, "服务不可用，未部署或已停止或已过期");
+        }
         Long custAppId = dataService.getApplyConfiguration().getCustAppId();
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
         if (custApp == null) {
@@ -92,7 +96,8 @@ public class DataApiController implements Serializable {
             Map<String, String> fieldMap = new HashMap<>();
             for (FieldMapping dataServiceMapping : dataServiceMappings) {
                 for (FieldMapping dataResourceMapping : dataResourceMappings) {
-                    if (dataServiceMapping.getSourceField().equals(dataResourceMapping.getTargetField())) {
+                    if (dataServiceMapping.getSourceField().equals(dataResourceMapping.getTargetField())
+                            && !StringUtils.isEmpty(dataServiceMapping.getSourceField())) {
                         includes.add(dataResourceMapping.getSourceField());
                         fieldMap.put(dataResourceMapping.getSourceField(), dataServiceMapping.getTargetField());
                     }

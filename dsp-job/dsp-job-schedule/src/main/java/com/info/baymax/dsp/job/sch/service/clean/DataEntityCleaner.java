@@ -44,7 +44,7 @@ public class DataEntityCleaner {
     @Transactional
     public void cleanDataService(){
         try {
-            long expireTime = System.currentTimeMillis() / 1000;
+            long expireTime = System.currentTimeMillis();
             int expireCount = dataServiceEntityService.countExpired(expireTime);
             if (expireCount <= 0) {
                 return;
@@ -78,7 +78,7 @@ public class DataEntityCleaner {
     @Transactional
     public void cleanDataResource(){
         try {
-            long expireTime = System.currentTimeMillis() / 1000;
+            long expireTime = System.currentTimeMillis();
             int expireCount = dataResourceService.countExpired(expireTime);
             if (expireCount <= 0) {
                 return;
