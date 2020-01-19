@@ -113,10 +113,6 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListFieldMappingTypeHandler.class)
     private List<FieldMapping> fieldMappings;
 
-    @ApiModelProperty(value = "关联后保留的字段列表")
-    @Transient
-    private Map<String, FieldMapping> targetFields;
-
     @ApiModelProperty("管理员在关联数据集时进行的一些基本配置")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)

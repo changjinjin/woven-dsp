@@ -258,7 +258,9 @@ public class FlowGenUtil {
         List<FieldMapping> fieldMappings = dataService.getFieldMappings();
         Map<String,FieldMapping> fieldMap = new HashMap<>();
         for(FieldMapping mapping : fieldMappings){
-            fieldMap.put(mapping.getSourceField(), mapping);
+            if(StringUtils.isNotEmpty(mapping.getSourceField()) && StringUtils.isNotEmpty(mapping.getTargetField())) {
+                fieldMap.put(mapping.getSourceField(), mapping);
+            }
         }
         List<FlowField> targetFields = new ArrayList<>();
         for(FlowField flowField : inputFields){
