@@ -18,9 +18,6 @@
 			<includes>
 				<include>*</include>
 			</includes>
-			<excludes>
-				<exclude>package.sh</exclude>
-			</excludes>
 		</fileSet>
 		<fileSet>
 			<directory>${project.basedir}/conf</directory>
