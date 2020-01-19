@@ -107,9 +107,6 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                     dataService.setPullConfiguration(pullConfig);
                 }
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
-                if (dataService.getName().equals(dataApplication.getName())) {
-                    dataService.setName(dataApplication.getName() + "_" + getDateStr("yyyyMMddHHmmss"));
-                }
 
                 dataServiceEntityService.saveOrUpdate(dataService);
             } catch (Exception e) {
