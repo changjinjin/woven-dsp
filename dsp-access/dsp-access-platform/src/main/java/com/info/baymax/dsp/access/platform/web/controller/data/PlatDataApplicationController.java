@@ -93,6 +93,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 applyConfiguration.setCustName(dataApplication.getCreator());
                 dataService.setApplyConfiguration(applyConfiguration);
                 dataService.setCustId(dataApplication.getOwner());
+                dataService.setOwner(SaasContext.getCurrentUserId());//不能存customer的id,存管理员id
 
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
 
