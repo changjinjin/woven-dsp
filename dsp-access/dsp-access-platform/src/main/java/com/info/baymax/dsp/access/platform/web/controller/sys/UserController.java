@@ -58,7 +58,8 @@ public class UserController implements MainTableController<User> {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
     @Override
     public Response<IPage<User>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        query = ExampleQuery.builder(query).fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
+        query = ExampleQuery.builder(query).fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+            .andFullLike("clientIds", "dsp").end();
         IPage<User> page = userService.selectPage(query);
         return Response.ok(page);
     }

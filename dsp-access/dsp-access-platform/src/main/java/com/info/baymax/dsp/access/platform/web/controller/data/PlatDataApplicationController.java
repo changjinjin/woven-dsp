@@ -93,6 +93,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 applyConfiguration.setCustName(dataApplication.getCreator());
                 dataService.setApplyConfiguration(applyConfiguration);
                 dataService.setCustId(dataApplication.getOwner());
+                dataService.setOwner(SaasContext.getCurrentUserId());//不能存customer的id,存管理员id
 
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
 
@@ -107,9 +108,6 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                     dataService.setPullConfiguration(pullConfig);
                 }
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
-                if (dataService.getName().equals(dataApplication.getName())) {
-                    dataService.setName(dataApplication.getName() + "_" + getDateStr("yyyyMMddHHmmss"));
-                }
 
                 dataServiceEntityService.saveOrUpdate(dataService);
             } catch (Exception e) {

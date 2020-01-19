@@ -83,19 +83,4 @@ public class ServerGlobalExceptionHandler {
 			return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 	}
-
-	/**
-	 * 设置Response默认的状态码
-	 *
-	 * @param response          处理前的response
-	 * @param defaultHttpStatus 如果当前默认的
-	 * @return 设置的默认的状态码
-	 */
-	private HttpStatus defaultHttpStatus(ServerHttpResponse response, HttpStatus defaultHttpStatus) {
-		HttpStatus httpStatus = response.getStatusCode();
-		if (httpStatus == null)
-			httpStatus = defaultHttpStatus;
-		response.setStatusCode(httpStatus);
-		return httpStatus;
-	}
 }

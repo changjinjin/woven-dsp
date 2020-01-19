@@ -258,7 +258,9 @@ public class FlowGenUtil {
         List<FieldMapping> fieldMappings = dataService.getFieldMappings();
         Map<String,FieldMapping> fieldMap = new HashMap<>();
         for(FieldMapping mapping : fieldMappings){
-            fieldMap.put(mapping.getSourceField(), mapping);
+            if(StringUtils.isNotEmpty(mapping.getSourceField()) && StringUtils.isNotEmpty(mapping.getTargetField())) {
+                fieldMap.put(mapping.getSourceField(), mapping);
+            }
         }
         List<FlowField> targetFields = new ArrayList<>();
         for(FlowField flowField : inputFields){
@@ -689,7 +691,8 @@ public class FlowGenUtil {
             if(filterType != null) {//有type说明有增量字段
                 if (StringUtils.isNotEmpty(dataService.getCursorVal())) {
                     String filterCol = dataResource.getIncrementField();
-                    if (filterType.equals("int") || filterType.equals("short") || filterType.equals("bigint")) {
+                    if (filterType.equals("int") || filterType.equals("short") || filterType.equals("bigint")
+                            || filterType.equals("float") || filterType.equals("double") || filterType.startsWith("decimal")) {
                         condition = filterCol + " > " + dataService.getCursorVal();
                     } else if (filterType.equals("date")) {
                         condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试

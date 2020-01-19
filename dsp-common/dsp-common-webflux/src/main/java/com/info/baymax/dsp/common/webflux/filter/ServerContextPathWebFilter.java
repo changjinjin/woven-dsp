@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
  * 所有/contextPath前缀的请求都会自动去除该前缀
  */
 @Component
-public class ContextPathWebFilter implements WebFilter {
+public class ServerContextPathWebFilter implements WebFilter {
 
     @Value("${server.reactive.context-path:/}")
     private String contextPath;
