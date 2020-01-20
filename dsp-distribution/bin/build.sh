@@ -7,19 +7,19 @@ echo "script_dir: ${script_dir}"
 
 cd ${script_dir}
 cd ../
-dsp_dir=$(pwd)
-echo "current path $(pwd),dsp_dir: ${dsp_dir}"
+work_dir=$(pwd)
+echo "current path $(pwd),work_dir: ${work_dir}"
 
 echo ">>>create jars dir"
 jarsdir="jars"
-mkdir -p ${dsp_dir}/libs/${jarsdir}
+mkdir -p ${work_dir}/libs/${jarsdir}
 
-for file in `ls ${dsp_dir}/libs/`
+for file in `ls ${work_dir}/libs/`
 do
  result=$(echo ${file} | grep "${jarsdir}")
  if [[  "$result" == "" ]]
  then
-     cd  ${dsp_dir}/libs/${file}
+     cd  ${work_dir}/libs/${file}
      for subFile in ./*.jar
      do
        cp -f $subFile ../${jarsdir}/
@@ -32,8 +32,8 @@ do
      rm -rf $file/logs
      mkdir -p logs/$file
      
-     mkdir -p ${dsp_dir}/$file
-     cd ${dsp_dir}/$file
+     mkdir -p ${work_dir}/$file
+     cd ${work_dir}/$file
      ln -f -s ../bin bin
      ln -f -s ../conf conf
      ln -f -s ../libs/$file lib

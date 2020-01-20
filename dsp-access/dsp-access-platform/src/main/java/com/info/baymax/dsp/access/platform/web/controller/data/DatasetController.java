@@ -7,7 +7,10 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.Field;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
+import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
+import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
@@ -51,11 +54,31 @@ public class DatasetController {
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        if(query.getFieldGroup() == null){
-            query.setFieldGroup(new FieldGroup());
+        FieldGroup fieldGroup = query.fieldGroup();
+        List<Field> feilds = fieldGroup.getFeilds();
+        if (ICollections.hasElements(feilds)) {
+            for (Field field : feilds) {
+                String name = field.getName();
+                if ("resourceId".equals(name)) {
+                    field.setOper(Operator.IN);
+                    field.setValue(fetchResourceIds((String) field.getValue()[0]));
+                }
+            }
         }
-        query.getFieldGroup().andEqualTo("isHide", 0);
+        fieldGroup.andEqualTo("isHide", 0);
         return Response.ok(datasetService.selectPage(query));
+    }
+
+    public String[] fetchResourceIds(String rootId) {
+        ResourceDesc root = resourceDescService.selectByPrimaryKey(rootId);
+        if (root != null) {
+            List<ResourceDesc> list = resourceDescService.selectList(
+                ExampleQuery.builder(ResourceDesc.class).fieldGroup().andRightLike("path", root.getPath()).end());
+            if (ICollections.hasElements(list)) {
+                return list.stream().map(t -> t.getId()).toArray(String[]::new);
+            }
+        }
+        return new String[]{rootId};
     }
 
     @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
