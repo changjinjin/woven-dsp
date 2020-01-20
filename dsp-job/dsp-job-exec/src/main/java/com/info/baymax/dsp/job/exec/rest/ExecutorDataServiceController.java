@@ -3,9 +3,10 @@ package com.info.baymax.dsp.job.exec.rest;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
-import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
@@ -35,7 +36,6 @@ import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.job.exec.util.HdfsUtil;
 import lombok.extern.slf4j.Slf4j;
 import com.alibaba.fastjson.JSONArray;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
@@ -49,12 +49,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -245,8 +241,8 @@ public class ExecutorDataServiceController {
                 //schedule触发成功,更新Dataservice的schedulerId
                 dataService.getJobInfo().setScheduleId(scheduler.getId());
                 dataService.setLastModifiedTime(new Date());
-                dataService.setTotalExecuted(dataService.getTotalExecuted()+1);
-                dataService.setExecutedTimes(dataService.getExecutedTimes()+1);
+                //dataService.setExecutedTimes(dataService.getExecutedTimes()+1);//这里应该加锁
+                dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                 dataService.setLastExecutedTime(new Date());
                 dataServiceEntityService.updateByPrimaryKey(dataService);
             }catch (Exception ex){
@@ -344,7 +340,8 @@ public class ExecutorDataServiceController {
                     }
 
                     if (System.currentTimeMillis() - startTime > execution_timeout*60*1000L) {
-                        dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                        //dataService.setFailedTimes(dataService.getFailedTimes()+1);//需要加锁
+                        dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                         dataServiceEntityService.updateByPrimaryKey(dataService);
                         log.error("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
@@ -353,7 +350,8 @@ public class ExecutorDataServiceController {
                         dataServiceEntityService.updateByPrimaryKey(dataService);
                         break;
                     }else if(statusComplete){
-                        dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                        //dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                        dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataServiceEntityService.updateByPrimaryKey(dataService);
                         break;
                     }
@@ -362,7 +360,7 @@ public class ExecutorDataServiceController {
 
             } catch (Exception e) {
                 log.error("dataservice " + dataService.getId()+" execute has exception", e);
-                dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                 dataService.setLastModifiedTime(new Date());
                 dataServiceEntityService.updateByPrimaryKey(dataService);
@@ -425,5 +423,21 @@ public class ExecutorDataServiceController {
         ctx.setUsername(user.getUsername());
     }
 
+    private Integer countAllExecutions(String flowId){
+        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
+        query.setFieldGroup(new FieldGroup());
+        query.getFieldGroup().andEqualTo("flowId", flowId);
+        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
+        return flowExecutionService.selectCount(query);
+    }
+
+    private Integer countFailedExecutions(String flowId){
+        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
+        query.setFieldGroup(new FieldGroup());
+        query.getFieldGroup().andEqualTo("flowId", flowId);
+        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
+        query.getFieldGroup().andEqualTo("statusType", "FAILED");
+        return flowExecutionService.selectCount(query);
+    }
 
 }

@@ -59,7 +59,6 @@ public class CustDataServiceController implements BaseEntityController<DataServi
 
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(id);
         if (dataService.getType() == DataServiceType.SERVICE_TYPE_PULL) {
-            dataService.setTotalExecuted(null);
             dataService.setExecutedTimes(null);
             dataService.setFailedTimes(null);
             dataService.setLastExecutedTime(null);

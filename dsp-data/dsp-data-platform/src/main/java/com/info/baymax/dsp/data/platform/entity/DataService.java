@@ -25,6 +25,7 @@ import java.util.Map;
 /**
  * @Author: haijun
  * @Date: 2019/12/16 10:14 数据服务即管理员审批通过生成的记录,供消费者调用
+ * 服务一旦生成就不会再改变,push对应的flow也就确定了
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -80,13 +81,21 @@ public class DataService extends BaseEntity {
     @DefaultValue("0")
     private Integer totalExecuted;
 
-    @ApiModelProperty("本次部署后执行的次数,一个服务可能被重复部署多次,每次部署成功后此参数要恢复为0")
+    public Integer getTotalExecuted(){
+        return this.executedTimes;
+    }
+
+    public void setTotalExecuted(Integer totalExecuted){
+        this.totalExecuted = this.executedTimes;
+    }
+
+    @ApiModelProperty("该服务总共执行的次数")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer executedTimes;
 
-    @ApiModelProperty("本次部署后执行失败的次数")
+    @ApiModelProperty("该服务执行失败的次数")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
