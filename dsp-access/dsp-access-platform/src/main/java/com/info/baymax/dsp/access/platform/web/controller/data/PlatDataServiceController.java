@@ -58,7 +58,6 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         dataService.setLastModifiedTime(new Date());
         dataService.setLastModifier(SaasContext.getCurrentUsername());
         if (t.getStatus() == DataServiceStatus.SERVICE_STATUS_DEPLOYED) {
-            dataService.setJobInfo(null);
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
         }else if(t.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
@@ -79,7 +78,6 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
 
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(id);
         if (dataService.getType() == DataServiceType.SERVICE_TYPE_PULL) {
-            dataService.setTotalExecuted(null);
             dataService.setExecutedTimes(null);
             dataService.setFailedTimes(null);
             dataService.setLastExecutedTime(null);

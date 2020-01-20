@@ -1,9 +1,12 @@
 package com.info.baymax.dsp.job.sch.job;
 
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
+import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import com.info.baymax.dsp.job.sch.ApplicationContextProvider;
 import com.info.baymax.dsp.job.sch.client.ExecutorRestClient;
+import com.info.baymax.dsp.job.sch.scheduler.DataShareScheduler;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -29,6 +32,9 @@ public class DataShareJob implements Job {
     @Autowired
     private DataServiceEntityService dataServiceEntityService;
 
+    @Autowired
+    DataShareScheduler dataShareScheduler;
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         /*
@@ -49,6 +55,14 @@ public class DataShareJob implements Job {
         try {
             log.info("jobSchedule send request to executor, dataserviceId :" + serviceId);
             //对于周期任务,当前running状态可能是2或3,在执行之前更新为1
+            DataService dataService = dataServiceEntityService.selectByPrimaryKey(serviceId);
+            //DataService虽然已经停止,但是trigger还没有停止,状态更新会混乱
+            if(dataService.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
+                dataShareScheduler.cancel(dataService);
+                dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_STOPPED);
+                log.info("dataService [{}] has been stopped.", dataService.getId());
+                return;
+            }
             dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_RUNNING);
             executorRestClient.deployDataservice(body);
             log.info("jobSchedule success to send request to executor, dataserviceId :" + serviceId);
