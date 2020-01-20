@@ -206,15 +206,16 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
 
     @Override
     public FieldGroup andLeftLike(String property, String value) {
-        andLike(property, value.concat("%"));
+        andLike(property, "%".concat(value));
         return this;
     }
 
     @Override
     public FieldGroup andRightLike(String property, String value) {
-        andLike(property, "%".concat(value));
+        andLike(property, value.concat("%"));
         return this;
     }
+
 
     @Override
     public FieldGroup andFullLike(String property, String value) {
@@ -230,13 +231,13 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
 
     @Override
     public FieldGroup andNotLeftLike(String property, String value) {
-        andNotLike(property, value.concat("%"));
+        andNotLike(property, "%".concat(value));
         return this;
     }
 
     @Override
     public FieldGroup andNotRightLike(String property, String value) {
-        andNotLike(property, "%".concat(value));
+        andNotLike(property, value.concat("%"));
         return this;
     }
 
