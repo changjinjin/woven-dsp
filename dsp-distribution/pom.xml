@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>baymax-dsp</artifactId>
-        <version>0.1.0</version>
+        <version>0.1</version>
     </parent>
     <artifactId>dsp-distribution</artifactId>
     <name>dsp-distribution</name>
@@ -205,7 +205,7 @@
     </profiles>
 
     <build>
-        <finalName>${release.finalName}-${project.version}-${current.time}</finalName>
+        <finalName>${release.finalName}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -238,7 +238,7 @@
                         </goals>
                         <phase>install</phase>
                         <configuration>
-                            <outputDirectory>binaries/${release.finalName}</outputDirectory>
+                            <outputDirectory>${project.build.directory}/binaries/</outputDirectory>
                             <appendAssemblyId>false</appendAssemblyId>
                             <descriptors>
                                 <descriptor>release-${release.finalName}.xml</descriptor>
@@ -261,7 +261,7 @@
                 </executions>
                 <configuration>
                     <executable>
-                        ${project.basedir}/binaries/${release.finalName}/${release.finalName}-${project.version}-${current.time}/bin/build.sh
+                        ${project.build.directory}/binaries/${release.finalName}/bin/build.sh
                     </executable>
                 </configuration>
             </plugin>

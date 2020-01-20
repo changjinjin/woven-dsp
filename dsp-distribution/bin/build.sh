@@ -41,31 +41,3 @@ do
  fi
  done
 echo ">>>link jars end"
-
-cd ${dsp_dir}
-project_path=$(pwd)
-project_name="${project_path##*/}"
-echo "current path ${project_path}"
-echo "current dir ${project_name}"
-
-cd ../
-echo "current path $(pwd)"
-
-dir_path=$(pwd)
-dir_name="${dir_path##*/}"
-echo "current path ${dir_path}"
-echo "current dir ${dir_name}"
-
-tarFile=${project_name}.tar.gz
-echo "The final archive file name is ${tarFile}"
-
-mkdir -p ../../../binaries/$dir_name
-#rm -rf ../../../binaries/$dir_name/*
-tar -zvcf ../../../binaries/$dir_name/$tarFile $project_name
-
-echo 'clean current dir'
-rm -rf ./$project_name
-
-cd ../../../binaries/$dir_name/
-dir_path=$(pwd)
-echo "The final archive file path is ${dir_path}/${tarFile}"

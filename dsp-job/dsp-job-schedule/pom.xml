@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>dsp-job</artifactId>
-        <version>0.1.0</version>
+        <version>0.1</version>
     </parent>
     <artifactId>dsp-job-schedule</artifactId>
     <name>dsp-job-schedule</name>
