@@ -12,10 +12,12 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>../</directory>
 			<includes>
-				<include>README.md</include>
+				<include>bin/process_helper.sh</include>
+				<include>bin/process-check.sh</include>
+				<include>bin/build.sh</include>
 			</includes>
+			<fileMode>0755</fileMode>
 		</fileSet>
 		<fileSet>
 			<includes>
@@ -26,20 +28,23 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<includes>
-				<include>bin/process_helper.sh</include>
-				<include>bin/process-check.sh</include>
-				<include>bin/build.sh</include>
-			</includes>
-			<fileMode>0755</fileMode>
-		</fileSet>
-		<fileSet>
 			<directory>logs</directory>
 			<outputDirectory>./logs</outputDirectory>
 			<fileMode>644</fileMode>
 			<excludes>
 				<exclude>*.*</exclude>
 			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.parent.basedir}/</directory>
+			<outputDirectory>./</outputDirectory>
+			<directoryMode>644</directoryMode>
+			<fileMode>644</fileMode>
+			<includes>
+				<include>NOTICE</include>
+				<include>LICENSE</include>
+				<include>*.md</include>
+			</includes>
 		</fileSet>
 	</fileSets>
 
@@ -48,14 +53,6 @@
 			<source>bin/job-schedule.sh</source>
 			<destName>bin/startup.sh</destName>
 			<fileMode>755</fileMode>
-		</file>
-		<file>
-			<source>LICENSE-BIN</source>
-			<destName>LICENSE</destName>
-		</file>
-		<file>
-			<source>NOTICE-BIN</source>
-			<destName>NOTICE</destName>
 		</file>
 	</files>
 	<dependencySets>
