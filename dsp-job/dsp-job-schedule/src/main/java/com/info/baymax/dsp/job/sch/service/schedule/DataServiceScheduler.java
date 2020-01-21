@@ -27,8 +27,8 @@ import java.util.TimerTask;
 @Component
 @Slf4j
 public class DataServiceScheduler {
-    @Value(value = "${scheduler.scan.dataservice.rate:10000}")
-    private final Integer scheduler_scan_rate = 10000;
+    @Value(value = "${scheduler.scan.dataservice.rate:10}")
+    private final Integer scheduler_scan_rate = 10;//单位：秒
 
     @Autowired
     DataShareScheduler dataShareScheduler;
@@ -60,7 +60,7 @@ public class DataServiceScheduler {
                 }
 
             }
-        }, 1000*60, scheduler_scan_rate*3);
+        }, 1000*60, scheduler_scan_rate*1000*3);
     }
 
 
@@ -77,7 +77,7 @@ public class DataServiceScheduler {
                 }
 
             }
-        }, 1000*60, scheduler_scan_rate);
+        }, 1000*60, scheduler_scan_rate*1000);
     }
 
 
