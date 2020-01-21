@@ -76,7 +76,7 @@ public class DataService extends BaseEntity {
     private Map<String, String> serviceConfiguration;
 
     @ApiModelProperty("总的执行次数,一个服务可能被重复部署多次")
-    @Column(length = 11, nullable = false)
+    @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer totalExecuted;
@@ -90,13 +90,13 @@ public class DataService extends BaseEntity {
     }
 
     @ApiModelProperty("该服务总共执行的次数")
-    @Column(length = 11, nullable = false)
+    @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer executedTimes;
 
     @ApiModelProperty("该服务执行失败的次数")
-    @Column(length = 11, nullable = false)
+    @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer failedTimes;
@@ -107,13 +107,13 @@ public class DataService extends BaseEntity {
     private Date lastExecutedTime;
 
     @ApiModelProperty("该服务审核通过后是否已经部署就位,0 待部署,1 部署成功, 2 停止服务, 3 服务已过期")
-    @Column(length = 11, nullable = false)
+    @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("0")
     private Integer status;
 
     @ApiModelProperty("是否正在运行,由调度程序触发,0 未运行, 1 正在运行, 2 运行失败, 3 运行成功, 4 待停止, 5 已停止")
-    @Column(length = 11, nullable = false)
+    @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer isRunning;

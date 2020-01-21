@@ -58,9 +58,9 @@ public class DataShareJob implements Job {
             DataService dataService = dataServiceEntityService.selectByPrimaryKey(serviceId);
             //DataService虽然已经停止,但是trigger还没有停止,状态更新会混乱
             if(dataService.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
+                log.info("dataService [{}] has been stopped, go to cancel job scheduler.", dataService.getId());
                 dataShareScheduler.cancel(dataService);
                 dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_STOPPED);
-                log.info("dataService [{}] has been stopped.", dataService.getId());
                 return;
             }
             dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_RUNNING);
