@@ -7,6 +7,7 @@ import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
@@ -148,6 +149,11 @@ public class ExecutorDataServiceController {
 
             flow加一个标识,标识它是共享数据flow,完成后给平台和用户发一个通知,列表显示通知。
 */
+            //构建ExampleQuery更新DataService
+            ExampleQuery exampleQuery = ExampleQuery.builder(DataService.class);
+            exampleQuery.setFieldGroup(new FieldGroup());
+            exampleQuery.getFieldGroup().andEqualTo("id", dataService.getId());
+
             FlowDesc flowDesc = null;
             String clusterId = dataset.getStorageConfigurations().get("clusterId");
             if(dataService.getJobInfo() != null && StringUtils.isNotEmpty(dataService.getJobInfo().getFlowId())){
@@ -175,7 +181,8 @@ public class ExecutorDataServiceController {
                     flowDesc = flowGenUtil.generateDataServiceFlow(dataService, dataResource, custDataSource);
                     dataService.getJobInfo().setFlowId(flowDesc.getId());
                     dataService.setLastModifiedTime(new Date());
-                    dataServiceEntityService.saveOrUpdate(dataService);
+                    dataService.setStatus(null);//不更新status
+                    dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                 }
             }else{
                 flowDesc = flowGenUtil.generateDataServiceFlow(dataService, dataResource, custDataSource);
@@ -183,7 +190,8 @@ public class ExecutorDataServiceController {
                 jobInfo.setFlowId(flowDesc.getId());
                 dataService.setJobInfo(jobInfo);
                 dataService.setLastModifiedTime(new Date());
-                dataServiceEntityService.saveOrUpdate(dataService);
+                dataService.setStatus(null);//不更新status
+                dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }
 
             //initSaasContext()
@@ -234,7 +242,6 @@ public class ExecutorDataServiceController {
             log.info("flowDesc for DataService [{}] : {}", dataService.getId(), JsonBuilder.getInstance().toJson(flowDesc));
             log.info("scheduler for DataService [{}] : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler));
 
-
             //提交任务到woven-server平台
             try {
                 platformServerRestClient.runScheduler(scheduler);
@@ -244,7 +251,8 @@ public class ExecutorDataServiceController {
                 //dataService.setExecutedTimes(dataService.getExecutedTimes()+1);//这里应该加锁
                 dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                 dataService.setLastExecutedTime(new Date());
-                dataServiceEntityService.updateByPrimaryKey(dataService);
+                dataService.setStatus(null);//不更新status
+                dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }catch (Exception ex){
                 log.error("send scheduler request to platform exception and restore dataService [" + dataService.getId() + "] status :", ex);
                 //更新dataservice的isRunning为失败状态
@@ -268,7 +276,8 @@ public class ExecutorDataServiceController {
                         if(!dataService.getJobInfo().equals(execution.getId())){
                             dataService.getJobInfo().setExecutionId(execution.getId());
                             dataService.setLastModifiedTime(new Date());
-                            dataServiceEntityService.updateByPrimaryKey(dataService);
+                            dataService.setStatus(null);//不更新status
+                            dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         }
                         log.info("execution {} for dataService {} status is : {}", execution.getId(), dataService.getId(), execution.getStatus().getType());
                         if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
@@ -318,8 +327,17 @@ public class ExecutorDataServiceController {
                             }else if(ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())){
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_RUNNING);
                             }
+
                             dataService.setLastModifiedTime(new Date());
                             log.info("execution {} for dataService {} success.", execution.getId(), dataService.getId());
+
+                            //执行成功后判断当前dataService的状态，否则要等到下一个周期执行时才能停止dataService trigger
+                            DataService service = dataServiceEntityService.selectByPrimaryKey(dataService.getId());
+                            if(service != null && service.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
+                                log.info("dataService [{}] has stopped,so update job status to_stop", dataService.getId());
+                                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
+                            }
+
                             statusSuccess = true;
                         } else if (execution.getStatus().isComplete()) {
                             log.error("execution {} for dataService {} has failed.", execution.getId(), dataService.getId());
@@ -343,16 +361,19 @@ public class ExecutorDataServiceController {
                         //dataService.setFailedTimes(dataService.getFailedTimes()+1);//需要加锁
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
-                        dataServiceEntityService.updateByPrimaryKey(dataService);
+                        dataService.setStatus(null);//不更新status
+                        dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         log.error("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
                         break;
                     }else if(statusSuccess){
-                        dataServiceEntityService.updateByPrimaryKey(dataService);
+                        dataService.setStatus(null);//不更新status
+                        dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         break;
                     }else if(statusComplete){
                         //dataService.setFailedTimes(dataService.getFailedTimes()+1);
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
-                        dataServiceEntityService.updateByPrimaryKey(dataService);
+                        dataService.setStatus(null);//不更新status
+                        dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         break;
                     }
                 }
@@ -363,7 +384,8 @@ public class ExecutorDataServiceController {
                 dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                 dataService.setLastModifiedTime(new Date());
-                dataServiceEntityService.updateByPrimaryKey(dataService);
+                dataService.setStatus(null);//不更新status
+                dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }
 
         } catch (Exception e){
