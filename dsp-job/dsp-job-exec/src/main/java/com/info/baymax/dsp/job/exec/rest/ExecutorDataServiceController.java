@@ -132,6 +132,7 @@ public class ExecutorDataServiceController {
 
     @Async
     public void executePushServiceAsync(Dataset dataset, DataService dataService, DataResource dataResource, CustDataSource custDataSource) {
+        ExampleQuery exampleQuery = null;
         try {
             //-------------TODO----flow generate------------
 /*          根据dataResource组成Source step,
@@ -150,7 +151,7 @@ public class ExecutorDataServiceController {
             flow加一个标识,标识它是共享数据flow,完成后给平台和用户发一个通知,列表显示通知。
 */
             //构建ExampleQuery更新DataService
-            ExampleQuery exampleQuery = ExampleQuery.builder(DataService.class);
+            exampleQuery = ExampleQuery.builder(DataService.class);
             exampleQuery.setFieldGroup(new FieldGroup());
             exampleQuery.getFieldGroup().andEqualTo("id", dataService.getId());
 
@@ -390,6 +391,10 @@ public class ExecutorDataServiceController {
 
         } catch (Exception e){
             log.error("execute DataService "+ dataService.getId()+" exception:", e);
+            dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
+            dataService.setLastModifiedTime(new Date());
+            dataService.setStatus(null);//不更新status
+            dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
         } finally {
         }
     }
