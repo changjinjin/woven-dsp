@@ -26,5 +26,6 @@
         <module>dsp-common-comp</module>
         <module>dsp-common-webflux</module>
         <module>dsp-common-webmvc</module>
+        <module>dsp-common-cache</module>
     </modules>
 </project>
