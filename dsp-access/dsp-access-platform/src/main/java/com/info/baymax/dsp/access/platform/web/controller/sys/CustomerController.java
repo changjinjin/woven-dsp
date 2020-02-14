@@ -4,6 +4,7 @@ import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.entity.base.BaseMaintableService;
+import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
@@ -12,6 +13,7 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.platform.config.SysInitConfig;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
+import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import io.swagger.annotations.Api;
@@ -78,5 +80,15 @@ public class CustomerController implements MainTableController<Customer> {
             return Response.error(ErrType.BAD_REQUEST, "查询参数不能为空！");
         }
         return Response.ok(dataCustAppService.selectPage(query));
+    }
+
+    @ApiOperation(value = "查询接入配置详情", notes = "根据ID查询单条数据的详情，ID不能为空")
+    @GetMapping("/app/{id}")
+    @ResponseBody
+    public Response<DataCustApp> infoById(@ApiParam(value = "记录ID", required = true) @PathVariable Long id) {
+        if (id == null) {
+            throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
+        }
+        return Response.ok(dataCustAppService.selectByPrimaryKey(id));
     }
 }

@@ -52,6 +52,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -87,10 +88,13 @@ public class ExecutorDataServiceController {
     @Autowired
     private ClusterDbService clusterDbService;
 
+    //十分钟更新一次cluster信息,保证cluster最新修改生效
     static Cache<String, ClusterEntity> clusterCache = CacheBuilder.newBuilder()
             .maximumSize(10)
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build();
+    //存放最近使用的cluster修改时间
+    static Map<String,Date> clusterRecords = new HashMap<String,Date>();
 
     @Value(value = "${execution.checkout.timeout:30}")
     private Long execution_timeout = 30L; //单位：分钟
@@ -288,7 +292,12 @@ public class ExecutorDataServiceController {
                             {
                                 HdfsUtil hdfsUtil = null;
                                 if(StringUtils.isEmpty(clusterId)){
-                                    hdfsUtil = new HdfsUtil();
+                                    if(HdfsUtil.hdfsMap.containsKey("empty")){
+                                        hdfsUtil = HdfsUtil.hdfsMap.get("empty");
+                                    }else{
+                                        hdfsUtil = new HdfsUtil();
+                                        HdfsUtil.hdfsMap.put("empty", hdfsUtil);
+                                    }
                                 }else{
                                     ClusterEntity clusterEntity = clusterCache.getIfPresent(clusterId);
                                     if(clusterEntity == null){
@@ -297,7 +306,23 @@ public class ExecutorDataServiceController {
                                             clusterCache.put(clusterId, clusterEntity);
                                         }
                                     }
-                                    hdfsUtil = new HdfsUtil(clusterEntity.getConfigFile());
+                                    boolean toUpdate = false;
+                                    if(clusterRecords.containsKey(clusterId)){
+                                        if(clusterEntity.getLastModifiedTime() != clusterRecords.get(clusterId)){
+                                            toUpdate = true;
+                                        }
+                                    }else{
+                                        clusterRecords.put(clusterId, clusterEntity.getLastModifiedTime());
+                                        toUpdate = true;
+                                    }
+
+                                    if(toUpdate || !HdfsUtil.hdfsMap.containsKey(clusterId)){
+                                        log.info("toUpdate {}, hdfsMap contains {} {}",String.valueOf(toUpdate), clusterId, String.valueOf(HdfsUtil.hdfsMap.containsKey(clusterId)));
+                                        hdfsUtil = new HdfsUtil(clusterEntity.getConfigFile());
+                                        HdfsUtil.hdfsMap.put(clusterId, hdfsUtil);
+                                    }else{
+                                        hdfsUtil = HdfsUtil.hdfsMap.get(clusterId);
+                                    }
                                 }
 
                                 try {
