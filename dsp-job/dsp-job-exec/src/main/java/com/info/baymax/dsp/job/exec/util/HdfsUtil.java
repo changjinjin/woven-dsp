@@ -20,13 +20,17 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 @Slf4j
 public class HdfsUtil {
+
+    public static Map<String,HdfsUtil> hdfsMap = new HashMap<String,HdfsUtil>();
 
     private FileSystem fs;
 
