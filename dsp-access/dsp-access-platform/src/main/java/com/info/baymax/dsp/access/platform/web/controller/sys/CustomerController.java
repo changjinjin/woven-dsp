@@ -85,7 +85,7 @@ public class CustomerController implements MainTableController<Customer> {
     @ApiOperation(value = "查询接入配置详情", notes = "根据ID查询单条数据的详情，ID不能为空")
     @GetMapping("/app/{id}")
     @ResponseBody
-    public Response<DataCustApp> infoById(@ApiParam(value = "记录ID", required = true) @PathVariable Long id) {
+    public Response<DataCustApp> queryAppById(@ApiParam(value = "记录ID", required = true) @PathVariable Long id) {
         if (id == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
         }
