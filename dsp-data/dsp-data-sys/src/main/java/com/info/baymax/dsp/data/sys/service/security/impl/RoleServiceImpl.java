@@ -1,8 +1,6 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
-import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
 import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
@@ -47,9 +45,8 @@ public class RoleServiceImpl extends EntityClassServiceImpl<Role> implements Rol
     }
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
-    @Preprocess
     @Override
-    public Role save(@PreInsert Role t) {
+    public Role save(Role t) {
         if (existsByTenantIdAndName(SaasContext.getCurrentTenantId(), t.getName())) {
             throw new ServiceException(ErrType.ENTITY_EXIST, "同名角色已经存在");
         }

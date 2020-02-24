@@ -19,9 +19,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
-import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
-import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
 import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
@@ -71,9 +68,8 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
     }
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
-    @Preprocess
     @Transactional
-    public User save(@PreInsert User t, String initPwd) {
+    public User save(User t, String initPwd) {
         if (existsByTenantIdAndName(SaasContext.getCurrentTenantId(), t.getUsername())) {
             throw new ServiceException(ErrType.ENTITY_EXIST, "同名用户已经存在");
         }
@@ -118,9 +114,8 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
     }
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
-    @Preprocess
     @Override
-    public User update(@PreUpdate User t) {
+    public User update(User t) {
         // 更新用户信息
         updateByPrimaryKeySelective(t);
         // 保存更新中间表信息
