@@ -107,5 +107,10 @@ public class DataApplication extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer status;
+    
+    @ApiModelProperty("审核意见")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String auditMind;
 
 }
