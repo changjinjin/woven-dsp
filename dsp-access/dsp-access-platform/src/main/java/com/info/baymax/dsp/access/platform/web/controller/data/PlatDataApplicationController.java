@@ -76,6 +76,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
         dataApplication.setLastModifiedTime(new Date());
         dataApplication.setLastModifier(SaasContext.getCurrentUsername());
         dataApplication.setDescription(dataService.getDescription());
+        dataApplication.setAuditMind(dataService.getAuditMind());
         dataApplicationService.update(dataApplication);
 
         if (status == 1) {

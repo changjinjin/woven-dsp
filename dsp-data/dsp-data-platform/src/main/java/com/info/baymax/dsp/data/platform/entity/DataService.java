@@ -154,4 +154,9 @@ public class DataService extends BaseEntity {
     private Long expiredTime;// = 0L;
     // 9999-12-31
     protected static Long MAX_DATE_TIME = 253402214400L;
+
+    @ApiModelProperty("审核意见")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String auditMind;
 }
