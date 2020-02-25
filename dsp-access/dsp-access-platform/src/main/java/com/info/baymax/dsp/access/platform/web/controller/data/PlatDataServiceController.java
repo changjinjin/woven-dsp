@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-@Slf4j
 @RestController
 @RequestMapping("/service")
 @Api(tags = "数据管理： 数据服务接口", value = "数据服务接口")

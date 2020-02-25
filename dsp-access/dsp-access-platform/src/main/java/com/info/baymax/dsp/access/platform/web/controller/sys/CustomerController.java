@@ -13,7 +13,6 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.platform.config.SysInitConfig;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
-import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import io.swagger.annotations.Api;

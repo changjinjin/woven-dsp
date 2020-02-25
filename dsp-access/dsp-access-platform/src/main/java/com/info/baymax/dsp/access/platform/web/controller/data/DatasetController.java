@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @Api(tags = "数据管理：数据集查询接口", description = "Baymax服务平台中dataset数据查询相关接口，用于关联转化数据资源")
 @RestController
 @RequestMapping("/dataset")
@@ -40,10 +39,10 @@ public class DatasetController {
     @ResponseBody
     public Response<List<ResourceDesc>> resourceDirTree() {
         ExampleQuery query = ExampleQuery.builder(ResourceDesc.class)//
-            .fieldGroup()//
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
-            .andEqualTo("resType", "dataset_dir")//
-            .end();
+                .fieldGroup()//
+                .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
+                .andEqualTo("resType", "dataset_dir")//
+                .end();
         return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
     }
 
@@ -65,7 +64,7 @@ public class DatasetController {
                 }
             }
         }
-        fieldGroup.andEqualTo("isHide", 0);
+        fieldGroup.andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("isHide", 0);
         return Response.ok(datasetService.selectPage(query));
     }
 
@@ -73,7 +72,7 @@ public class DatasetController {
         ResourceDesc root = resourceDescService.selectByPrimaryKey(rootId);
         if (root != null) {
             List<ResourceDesc> list = resourceDescService.selectList(
-                ExampleQuery.builder(ResourceDesc.class).fieldGroup().andRightLike("path", root.getPath()).end());
+                    ExampleQuery.builder(ResourceDesc.class).fieldGroup().andRightLike("path", root.getPath()).end());
             if (ICollections.hasElements(list)) {
                 return list.stream().map(t -> t.getId()).toArray(String[]::new);
             }

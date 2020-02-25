@@ -26,8 +26,6 @@ import java.util.Arrays;
 public class DataResourceController implements BaseEntityController<DataResource> {
     @Autowired
     private DataResourceService dataResourceService;
-    @Autowired
-    private DataApplicationService dataApplicationService;
 
     @Override
     public BaseEntityService<DataResource> getBaseEntityService() {
