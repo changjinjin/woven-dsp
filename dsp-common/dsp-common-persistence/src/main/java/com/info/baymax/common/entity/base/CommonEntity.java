@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.entity.field.resolver.DefaultFieldResolver;
+import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.entity.preprocess.PreEntity;
 import com.info.baymax.common.saas.SaasContext;
 import io.swagger.annotations.ApiModel;
@@ -24,15 +25,8 @@ import java.util.Date;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
-public abstract class CommonEntity<ID extends Serializable> implements PreEntity, Serializable {
+public abstract class CommonEntity<ID extends Serializable> implements Idable<ID>, PreEntity, Serializable {
     private static final long serialVersionUID = 4394421573081538612L;
-
-    /**
-     * 获取主键值
-     *
-     * @return 主键值
-     */
-    public abstract ID getId();
 
     @ApiModelProperty("名称")
     @Column(length = 255)

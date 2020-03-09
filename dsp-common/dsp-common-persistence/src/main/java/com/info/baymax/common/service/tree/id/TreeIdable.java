@@ -1,5 +1,6 @@
 package com.info.baymax.common.service.tree.id;
 
+import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.service.tree.Treeable;
 
 import java.io.Serializable;
@@ -12,19 +13,19 @@ import java.io.Serializable;
  * @author jingwei.yang
  * @date 2019年9月24日 下午5:20:24
  */
-public interface TreeIdable<ID extends Serializable, T extends TreeIdable<ID, T>> extends Treeable<T> {
+public interface TreeIdable<ID extends Serializable, T extends TreeIdable<ID, T>> extends Idable<ID>, Treeable<T> {
 
-    /**
-     * 获取ID
-     *
-     * @return ID
-     */
-    ID getId();
+	/**
+	 * 获取父节点ID
+	 *
+	 * @return 父节点ID
+	 */
+	ID getParentId();
 
-    /**
-     * 获取父节点ID
-     *
-     * @return 父节点ID
-     */
-    ID getParentId();
+	/**
+	 * 设置父节点ID
+	 * 
+	 * @param parentId 父节点ID
+	 */
+	void setParentId(ID parentId);
 }
