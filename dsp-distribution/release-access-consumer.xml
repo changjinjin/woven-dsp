@@ -12,7 +12,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<fileMode>0755</fileMode>
+			<fileMode>755</fileMode>
 			<includes>
 				<include>bin/process_helper.sh</include>
 				<include>bin/process-check.sh</include>
@@ -20,7 +20,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<fileMode>0755</fileMode>
+			<fileMode>755</fileMode>
 			<includes>
 				<include>conf/dsp-env.sh</include>
 				<include>conf/logback-spring.xml</include>
