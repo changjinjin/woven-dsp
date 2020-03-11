@@ -1,6 +1,6 @@
 package com.info.baymax.common.service.tree.id;
 
-import org.hibernate.service.spi.ServiceException;
+import com.info.baymax.common.message.exception.ServiceException;
 
 import java.io.Serializable;
 import java.util.List;

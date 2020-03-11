@@ -15,6 +15,7 @@ import java.io.Serializable;
 @ApiModel
 public abstract class TreeIdNode<ID extends Serializable, T extends TreeIdable<ID, T>> extends TreeNode<T>
     implements TreeIdable<ID, T> {
+    private static final long serialVersionUID = 1079089709388643511L;
 
     @ApiModelProperty("ID")
     protected ID id;
@@ -27,6 +28,7 @@ public abstract class TreeIdNode<ID extends Serializable, T extends TreeIdable<I
         return id;
     }
 
+    @Override
     public void setId(ID id) {
         this.id = id;
     }
@@ -36,6 +38,7 @@ public abstract class TreeIdNode<ID extends Serializable, T extends TreeIdable<I
         return parentId;
     }
 
+    @Override
     public void setParentId(ID parentId) {
         this.parentId = parentId;
     }
