@@ -49,7 +49,9 @@ public class RoutingCache implements Cache {
         if (cache == null) {
             // 根据配置决定cache实现
             Class<? extends Cache> cacheImplementation = getCacheImplementation();
-            cache = newBaseCacheInstance(cacheImplementation, id);
+            synchronized (id) {
+				cache = newBaseCacheInstance(cacheImplementation, id);
+			}
             caches.put(id, cache);
             if (log.isDebugEnabled()) {
                 log.debug("create Routing Cache:id={}, implementation={}", id, cacheImplementation.getName());
