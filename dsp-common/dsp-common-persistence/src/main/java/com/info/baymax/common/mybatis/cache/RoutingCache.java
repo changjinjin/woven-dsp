@@ -1,6 +1,7 @@
 package com.info.baymax.common.mybatis.cache;
 
 import com.info.baymax.common.mybatis.cache.redis.RedisCache;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.CacheException;
@@ -8,6 +9,8 @@ import org.apache.ibatis.cache.impl.PerpetualCache;
 import org.mybatis.caches.ehcache.EhcacheCache;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 
 /**
@@ -19,11 +22,14 @@ import java.util.concurrent.locks.ReadWriteLock;
 @Slf4j
 public class RoutingCache implements Cache {
 
+    private static final Map<String, Cache> caches = new ConcurrentHashMap<String, Cache>();
+
     private final String id;
 
     /**
      * 缓存类型：redis,ehcache
      */
+    @Setter
     private String cacheType;
 
     /**
@@ -38,19 +44,13 @@ public class RoutingCache implements Cache {
         this.id = id;
     }
 
-    public String getCacheType() {
-        return cacheType;
-    }
-
-    public void setCacheType(String cacheType) {
-        this.cacheType = cacheType;
-    }
-
     public Cache getCache() {
+        cache = caches.get(id);
         if (cache == null) {
             // 根据配置决定cache实现
             Class<? extends Cache> cacheImplementation = getCacheImplementation();
             cache = newBaseCacheInstance(cacheImplementation, id);
+            caches.put(id, cache);
             if (log.isDebugEnabled()) {
                 log.debug("create Routing Cache:id={}, implementation={}", id, cacheImplementation.getName());
             }
