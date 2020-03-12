@@ -21,8 +21,8 @@ public class ListPaging<T> {
         pageNum = getPageNum(pageNum, totalPage);
         int fromIndex = (pageNum - 1) * pageSize;
         int toIndex = (pageNum - 1) * pageSize + pageSize;
-        if (toIndex > list.size() - 1) {
-            toIndex = list.size() - 1;
+        if (toIndex > list.size()) {
+            toIndex = list.size();
         }
         return new IPage<T>(pageNum, pageSize, list.size(), list.subList(fromIndex, toIndex));
     }
