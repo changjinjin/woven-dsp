@@ -19,14 +19,14 @@ public interface TreeCodeable<C extends Serializable, T extends TreeCodeable<C, 
      *
      * @return 节点编码
      */
-    C getCode();
+    C getSelfCode();
 
     /**
      * 设置节点编码
      *
-     * @param code 节点编码
+     * @param selfCode 节点编码
      */
-    void setCode(C code);
+    void setSelfCode(C selfCode);
 
     /**
      * 获取父节点编码

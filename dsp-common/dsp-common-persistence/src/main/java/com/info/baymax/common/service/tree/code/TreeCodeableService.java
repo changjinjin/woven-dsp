@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * 树结构数据查询公共接口，提取一些比较通用的方法，如：平铺的数据集转化成只有根节点的数据集
  *
  * @param <C> 编码类型，即关系维护的字段类型
- * @param <T>  实体类型
+ * @param <T> 实体类型
  * @author jingwei.yang
  * @date 2019年9月24日 下午5:38:52
  */
@@ -86,7 +86,8 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
                 }
                 while (iterator.hasNext()) {
                     T next = iterator.next();
-                    if (next.getParentCode() != null && root.getCode().equals(next.getParentCode())) {
+                    if (next.getParentCode() != null && root.getSelfCode() != null
+                        && root.getSelfCode().toString().equals(next.getParentCode().toString())) {
                         children.add(next);
                         // 已经有关系的节点从非根节点集中删除以减少迭代的次数
                         iterator.remove();

@@ -31,12 +31,12 @@ public interface TreeIdable<ID extends Serializable, T extends TreeIdable<ID, T>
     void setParentId(ID parentId);
 
     @Override
-    default ID getCode() {
+    default ID getSelfCode() {
         return getId();
     }
 
     @Override
-    default void setCode(ID code) {
+    default void setSelfCode(ID code) {
         setId(code);
     }
 
