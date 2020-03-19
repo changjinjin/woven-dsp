@@ -1,30 +1,48 @@
 package com.info.baymax.common.entity.field.convertor;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeException;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.util.*;
+
 /**
- * 默认值处理器注册
+ * 默认值处理器注册，单例实现
  *
  * @author jingwei.yang
  * @date 2019年10月10日 上午9:57:51
  */
 public final class ValueConvertorRegistry {
 
+    /**
+     * 缓存注册过的转换器实例
+     */
     private final Map<Class<?>, ValueConvertor<?>> defauleValueConvertorMap = new HashMap<>();
 
-    public ValueConvertorRegistry() {
+    /**
+     * 单实例的ValueConvertorRegistry对象
+     */
+    private static ValueConvertorRegistry singleton = null;
+
+    /**
+     * 双检锁实现单利模式，避免频繁创建对象的消耗和线程安全问题
+     */
+    public static ValueConvertorRegistry getInstance() {
+        if (singleton == null) {
+            synchronized (ValueConvertorRegistry.class) {
+                if (singleton == null) {
+                    singleton = new ValueConvertorRegistry();
+                }
+            }
+        }
+        return singleton;
+    }
+
+    // 只允许内部调用
+    private ValueConvertorRegistry() {
         register(Boolean.class, new BooleanValueConvertor());
         register(boolean.class, new BooleanValueConvertor());
 
@@ -96,7 +114,7 @@ public final class ValueConvertorRegistry {
             }
         }
         if (!mappedTypeFound) {
-            register(getInstance(null, valueConvertorClass));
+            register(getConvertor(null, valueConvertorClass));
         }
     }
 
@@ -105,11 +123,11 @@ public final class ValueConvertorRegistry {
     }
 
     public void register(Class<?> javaTypeClass, Class<?> convertorClass) {
-        register(javaTypeClass, getInstance(javaTypeClass, convertorClass));
+        register(javaTypeClass, getConvertor(javaTypeClass, convertorClass));
     }
 
     @SuppressWarnings("unchecked")
-    public <T> ValueConvertor<T> getInstance(Class<?> javaTypeClass, Class<?> convertorClass) {
+    public <T> ValueConvertor<T> getConvertor(Class<?> javaTypeClass, Class<?> convertorClass) {
         if (javaTypeClass != null) {
             try {
                 Constructor<?> c = convertorClass.getConstructor(Class.class);

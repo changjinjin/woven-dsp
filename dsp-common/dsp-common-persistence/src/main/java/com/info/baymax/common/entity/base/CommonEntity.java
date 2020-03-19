@@ -100,8 +100,7 @@ public abstract class CommonEntity<ID extends Serializable> implements Idable<ID
         }
 
         // 处理@DefaultValue注解，设置默认值
-        DefaultFieldResolver fieldResolver = new DefaultFieldResolver();
-        fieldResolver.resolve(this);
+        DefaultFieldResolver.getInstance().resolve(this);
     }
 
     @Override
