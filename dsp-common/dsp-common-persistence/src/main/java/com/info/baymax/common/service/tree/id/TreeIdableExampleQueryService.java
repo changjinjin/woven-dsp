@@ -18,7 +18,7 @@ import com.info.baymax.common.utils.ICollections;
  * @date 2019年9月24日 下午5:38:52
  */
 public interface TreeIdableExampleQueryService<ID extends Serializable, T extends TreeIdable<ID, T>>
-    extends TreeIdableService<ID, T>, TreeIdableMapper<ID, T>, BaseIdableAndExampleQueryService<T> {
+    extends TreeIdableService<ID, T>, TreeIdableMapper<ID, T>, BaseIdableAndExampleQueryService<ID, T> {
 
     @Override
     default T selectTree(ID rootId) {

@@ -1,7 +1,6 @@
 package com.info.baymax.common.entity.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.mybatis.genid.UuidGenId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,12 +40,6 @@ public class Maintable extends CommonEntity<String> implements Cloneable {
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     protected Integer version;
-
-    @ApiModelProperty("模块版本")
-    @Column(length = 11)
-    @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("1")
-    protected Integer moduleVersion;
 
     @ApiModelProperty("分组数")
     @Transient

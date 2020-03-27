@@ -225,7 +225,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<distributionManagement>
 		<repository>
 			<id>thirdparty</id>

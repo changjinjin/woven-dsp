@@ -1,5 +1,6 @@
 package com.info.baymax.common.service;
 
+import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
 import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
 import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
@@ -10,6 +11,7 @@ import com.info.baymax.common.utils.ICollections;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import java.util.List;
  * @date 2019-05-29 15:22
  */
 @Transactional
-public interface BaseIdableService<T> extends BaseService<T>, MyIdableMapper<T> {
+public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>> extends BaseService<T>, MyIdableMapper<T> {
 
     MyIdableMapper<T> getMyIdableMapper();
 

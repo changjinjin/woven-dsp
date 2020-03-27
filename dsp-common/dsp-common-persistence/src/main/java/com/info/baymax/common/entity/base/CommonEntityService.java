@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface CommonEntityService<ID extends Serializable, T extends CommonEntity<ID>>
-		extends BaseIdableAndExampleQueryService<T>, PreEntityService<T> {
+		extends BaseIdableAndExampleQueryService<ID, T>, PreEntityService<T> {
 
 	public static final String PROPERTY_ID = "id";
 	public static final String PROPERTY_NAME = "name";
@@ -57,7 +57,8 @@ public interface CommonEntityService<ID extends Serializable, T extends CommonEn
 	 * @return 结果
 	 */
 	default T saveOrUpdate(T t) {
-		if (t.getId() == null) {
+		if (t.getId() == null || t.getId().toString().trim().equals("")) {
+			t.setId(null);
 			return save(t);
 		} else {
 			return update(t);
