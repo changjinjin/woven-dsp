@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.job.exec.util;
 
 import com.info.baymax.common.utils.JsonBuilder;
+import com.info.baymax.dsp.data.consumer.beans.source.DataSourceType;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
@@ -240,6 +241,11 @@ public class FlowGenUtil {
 
     private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
+        if(!DataSourceType.contains(custDataSource.getType())){
+            logger.error("DataSource type not support : "+ custDataSource.getType());
+            throw new RuntimeException("DataSource type not support : "+ custDataSource.getType());
+        }
+
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         Iterator<Map.Entry<String,Object>> iter = custDataSource.getAttributes().entrySet().iterator();
         while (iter.hasNext()){
@@ -649,7 +655,6 @@ public class FlowGenUtil {
             dsResDesc.setExpiredTime(0L);
             dsResDesc.setLastModifiedTime(dsResDesc.getCreateTime());
             dsResDesc.setLastModifier(dataService.getCreator());
-            dsResDesc.setModuleVersion(0);
             dsResDesc.setName(ConstantInfo.DS_OUTPUT_FLOW_DIR);
             dsResDesc.setTenantId(dataService.getTenantId());
             dsResDesc.setOwner(dataService.getOwner());
