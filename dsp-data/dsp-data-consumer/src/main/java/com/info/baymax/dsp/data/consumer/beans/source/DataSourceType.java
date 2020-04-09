@@ -5,9 +5,13 @@ public enum DataSourceType {
     HTTP("HTTP"),
     SOCKET("SOCKET"),
     FTP("FTP"),
+    SFTP("SFTP"),
     MONGODB("MONGODB"),
     ES("ES"),
-    LOCALFS("LOCALFS");
+    LOCALFS("LOCALFS"),
+    KAFKA("KAFKA"),
+    HDFS("HDFS");
+
 
     private String value;
 
