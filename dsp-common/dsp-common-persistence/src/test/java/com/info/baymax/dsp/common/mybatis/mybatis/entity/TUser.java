@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.common.mybatis.mybatis.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.info.baymax.common.entity.id.Idable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import tk.mybatis.mapper.annotation.ColumnType;
@@ -9,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @ApiModel
 @Table(name = "t_user")
-public class TUser implements Serializable {
+public class TUser implements Idable<Long> {
     private static final long serialVersionUID = 1844123293605109217L;
 
     /**
