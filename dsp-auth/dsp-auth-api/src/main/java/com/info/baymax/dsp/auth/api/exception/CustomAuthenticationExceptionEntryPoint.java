@@ -38,7 +38,7 @@ public class CustomAuthenticationExceptionEntryPoint implements AuthenticationEn
         result.put("timestamp", String.valueOf(new Date().getTime()));
         result.put("cause", e.getCause());
         response.setStatus(Integer.parseInt(result.get("status").toString()));
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getWriter(), result);
     }

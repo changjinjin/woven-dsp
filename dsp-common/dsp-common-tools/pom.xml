@@ -25,22 +25,18 @@
 		<dependency>
 			<artifactId>commons-io</artifactId>
 			<groupId>commons-io</groupId>
-			<version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>commons-beanutils</artifactId>
 			<groupId>commons-beanutils</groupId>
-			<version>${commons-beanutils.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>${fastjson.version}</version>
 		</dependency>
 		<dependency>
 			<artifactId>guava</artifactId>
 			<groupId>com.google.guava</groupId>
-			<version>${guava.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

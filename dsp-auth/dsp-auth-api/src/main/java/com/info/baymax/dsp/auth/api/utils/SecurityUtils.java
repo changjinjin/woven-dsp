@@ -52,7 +52,8 @@ public final class SecurityUtils {
     }
 
     // get SaasContext from Authentication
-    public static SaasContext getSaasContext() {
+    @SuppressWarnings("unchecked")
+	public static SaasContext getSaasContext() {
         Authentication authentication = SecurityUtils.getCurrentAuthentication();
         if (authentication == null) {
             return null;

@@ -17,8 +17,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencies>
-    </dependencies>
     <modules>
         <module>dsp-job-exec</module>
         <module>dsp-job-schedule</module>

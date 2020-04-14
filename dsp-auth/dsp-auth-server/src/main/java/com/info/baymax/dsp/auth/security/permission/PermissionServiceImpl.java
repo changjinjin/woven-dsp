@@ -19,9 +19,6 @@ import org.springframework.util.AntPathMatcher;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.auth.api.utils.SecurityUtils;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Component("permissionService")
 public class PermissionServiceImpl implements PermissionService {
 

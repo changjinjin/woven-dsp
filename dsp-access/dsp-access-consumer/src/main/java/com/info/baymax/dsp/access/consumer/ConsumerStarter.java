@@ -1,31 +1,27 @@
 package com.info.baymax.dsp.access.consumer;
 
-import com.info.baymax.common.comp.profile.EnableExtProperties;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchRestHealthIndicatorAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.redis.RedisHealthIndicatorAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.redis.RedisReactiveHealthIndicatorAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringCloudApplication
 @EnableSwagger2WebFlux
+@EnableAutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class, RedisHealthIndicatorAutoConfiguration.class,
-        RedisReactiveHealthIndicatorAutoConfiguration.class})
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.consumer"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@EnableExtProperties({"classpath:dsp-common.properties", "classpath:dsp-access-consumer.properties"})
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-consumer.properties"})
 public class ConsumerStarter {
 
     public static void main(String[] args) {

@@ -1,12 +1,10 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleHelper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
-import com.info.baymax.dsp.data.platform.bean.JobInfo;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataServiceMapper;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;

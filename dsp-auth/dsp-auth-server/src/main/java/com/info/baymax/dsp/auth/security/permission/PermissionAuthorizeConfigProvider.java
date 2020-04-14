@@ -13,7 +13,6 @@ public class PermissionAuthorizeConfigProvider implements AuthorizeConfigProvide
 
     @Override
     public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        config.anyRequest().access("@permissionService.hasPermission(request,authentication)");
+        config.antMatchers("/api/**").access("@permissionService.hasPermission(request,authentication)");
     }
-
 }

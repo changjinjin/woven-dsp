@@ -12,7 +12,6 @@
 		<result column="last_modified_time" jdbcType="TIMESTAMP"
 			property="lastModifiedTime" />
 		<result column="last_modifier" jdbcType="VARCHAR" property="lastModifier" />
-		<result column="module_version" jdbcType="INTEGER" property="moduleVersion" />
 		<result column="owner" jdbcType="VARCHAR" property="owner" />
 		<result column="version" jdbcType="INTEGER" property="version" />
 		<result column="type" jdbcType="INTEGER" property="type" />

@@ -12,7 +12,6 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -43,9 +42,6 @@ public class DataShareJob implements Job {
          */
          ApplicationContextProvider.processInjection(this);
 
-        //发送任务消息到对应的执行器,并更新为running状态
-        //执行次数和status由执行器更新
-        JobKey jobKey = context.getJobDetail().getKey();
         JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
         Long serviceId = jobDataMap.getLong("serviceId");
 

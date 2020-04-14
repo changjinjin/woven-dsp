@@ -1,5 +1,6 @@
 package com.info.baymax.common.comp.profile;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @date 2019年12月25日 下午4:22:59
  */
 @Configuration
+@ConditionalOnBean(annotation = {EnableExtProperties.class})
 public class PropertyResourceConfiguration implements ImportAware {
 
     @Nullable

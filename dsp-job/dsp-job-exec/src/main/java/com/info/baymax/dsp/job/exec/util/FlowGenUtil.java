@@ -1,23 +1,14 @@
 package com.info.baymax.dsp.job.exec.util;
 
-import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.beans.source.DataSourceType;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.bean.TransformRule;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
-import com.info.baymax.dsp.data.dataset.entity.core.DataField;
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowHistDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.ParameterDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.Schema;
-import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
@@ -26,12 +17,8 @@ import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
 import com.info.baymax.dsp.data.dataset.utils.ConstantInfo;
 import com.info.baymax.dsp.data.dataset.utils.Flows;
-import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataPolicyService;
-import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -42,13 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,14 +46,6 @@ public class FlowGenUtil {
     private FlowDescService flowDescService;
     @Autowired
     private SchemaService schemaService;
-    @Autowired
-    private DataResourceService dataResourceService;
-    @Autowired
-    private DataApplicationService dataApplicationService;
-    @Autowired
-    private DataServiceEntityService dataServiceEntityService;
-    @Autowired
-    private DataPolicyService dataPolicyService;
     @Autowired
     private CustDataSourceService custDataSourceService;
     @Autowired
