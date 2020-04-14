@@ -1,10 +1,15 @@
 package com.info.baymax.dsp.access.dataapi;
 
 import com.info.baymax.common.comp.profile.EnableExtProperties;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchRestHealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.redis.RedisHealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.redis.RedisReactiveHealthIndicatorAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,7 +20,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringCloudApplication
 @EnableSwagger2WebFlux
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class, RedisHealthIndicatorAutoConfiguration.class,
+        RedisReactiveHealthIndicatorAutoConfiguration.class})
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
@@ -24,6 +30,11 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class DataapiStarter {
     public static void main(String[] args) {
         System.setProperty("es.set.netty.runtime.available.processors", "false");
-        SpringApplication.run(DataapiStarter.class, args);
+        new SpringApplicationBuilder()
+                .bannerMode(Banner.Mode.OFF)
+                .properties()
+                .sources(DataapiStarter.class)
+                .web(WebApplicationType.REACTIVE)
+                .run(args);
     }
 }

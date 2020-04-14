@@ -1,11 +1,15 @@
 package com.info.baymax.dsp.job.sch;
 
 import com.info.baymax.common.comp.profile.EnableExtProperties;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.Banner;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchRestHealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.redis.RedisHealthIndicatorAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.redis.RedisReactiveHealthIndicatorAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,12 +26,17 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @EnableExtProperties({"classpath:dsp-common.properties", "classpath:dsp-job-schedule.properties",
     "classpath:quartz.properties"})
-@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class,
-    DataSourceAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {ElasticSearchRestHealthIndicatorAutoConfiguration.class, RedisReactiveHealthIndicatorAutoConfiguration.class,
+        RedisHealthIndicatorAutoConfiguration.class, DataSourceAutoConfiguration.class})
 public class SchedulerStarter {
 
     public static void main(String[] args) {
-        SpringApplication.run(SchedulerStarter.class, args);
+        new SpringApplicationBuilder()
+                .bannerMode(Banner.Mode.OFF)
+                .properties()
+                .sources(SchedulerStarter.class)
+                .web(WebApplicationType.REACTIVE)
+                .run(args);
     }
 
 }

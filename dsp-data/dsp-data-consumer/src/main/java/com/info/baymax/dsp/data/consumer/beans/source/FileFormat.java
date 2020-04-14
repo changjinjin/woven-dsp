@@ -8,7 +8,6 @@ public enum FileFormat {
     TXT("txt"),
     CSV("csv"),
     PARQUET("parquet"),
-    JSON("json"),
     ORC("orc"),
     AVRO("avro");
 
