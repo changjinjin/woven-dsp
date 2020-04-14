@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -27,27 +29,32 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_category", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"tenantId", "parentId", "name"})})
+@Comment("数据目录信息表")
 public class DataCategory extends BaseEntity implements Comparable<DataCategory>, TreeIdable<Long, DataCategory> {
     private static final long serialVersionUID = -2838835837038572690L;
 
     @ApiModelProperty("排序序号")
+    @Comment("排序序号")
     @Column(name = "ord", length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("1")
     private Integer order;
 
     @ApiModelProperty("数据资源目录路径")
+    @Comment("数据资源目录路径")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String path;
 
     @ApiModelProperty("父节点ID")
+    @Comment("父节点ID")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
     private Long parentId;
 
     @ApiModelProperty("子级节点列表")
+    @Comment("子级节点列表")
     @Transient
     private List<DataCategory> children = new ArrayList<DataCategory>();
 

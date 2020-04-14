@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -24,26 +26,31 @@ import java.util.List;
 @Table(name = "merce_schema", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"tenantId", "name", "version"})}, indexes = {
     @Index(columnList = "tenantId,resourceId"), @Index(columnList = "lastModifiedTime DESC")})
+@Comment("元数据信息表")
 public class Schema extends Maintable implements ResourceId,Cloneable {
     private static final long serialVersionUID = -8031675892724730725L;
 
     @ApiModelProperty("资源目录ID")
+    @Comment("资源目录ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String resourceId;
 
     @ApiModelProperty("字段列表")
+    @Comment("字段列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListDataFieldTypeHandler.class)
     private List<DataField> fields;
 
     @ApiModelProperty("模型")
+    @Comment("模型")
     @Column(name = "schema_mode", length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String mode;// = "";
 
     @ApiModelProperty("主键列表")
+    @Comment("主键列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListStringTypeHandler.class)
@@ -58,17 +65,20 @@ public class Schema extends Maintable implements ResourceId,Cloneable {
     private ProjectEntity projectEntity;
 
     @ApiModelProperty("原始记录id")
+    @Comment("原始记录id")
     @Column(length = 50, name="o_id")
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String oid;
 
     @ApiModelProperty("是否为最新记录,取值为1或0,默认为1")
+    @Comment("是否为最新记录,取值为1或0,默认为1")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("1")
     private Integer newest;
 
     @ApiModelProperty("是否隐藏,1 隐藏，0 显示，默认值为0")
+    @Comment("是否隐藏,1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")

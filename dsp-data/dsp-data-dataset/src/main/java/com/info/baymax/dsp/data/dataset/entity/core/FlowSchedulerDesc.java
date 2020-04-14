@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -24,46 +26,55 @@ import java.util.Date;
 @Table(name = "merce_flow_schedule", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"name", "owner"})}, indexes = {@Index(columnList = "schedulerId"),
     @Index(columnList = "createTime")})
+@Comment("流程执行调度信息表")
 public class FlowSchedulerDesc extends Maintable {
     private static final long serialVersionUID = 1655214158184860977L;
 
     @ApiModelProperty("来源")
+    @Comment("来源")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String source;
 
     @ApiModelProperty("调度类型：once,cron")
+    @Comment("调度类型：once,cron")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String schedulerId;
 
     @ApiModelProperty("流程ID")
+    @Comment("流程ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String flowId;
 
     @ApiModelProperty("流程名称")
+    @Comment("流程名称")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String flowName;
 
     @ApiModelProperty("流程类型：dataflow, workflow, streamflow")
+    @Comment("流程类型：dataflow, workflow, streamflow")
     @ValueBind(FieldType = ValueBind.fieldType.STRING, EnumStringValues = {"dataflow", "workflow", "streamflow"})
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String flowType;
 
     @ApiModelProperty("流程版本号")
+    @Comment("流程版本号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     private Integer flowVersion;// -1 mean max version
 
     @ApiModelProperty("所属日期")
+    @Comment("所属日期")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String day;
 
     @ApiModelProperty("所属小时")
+    @Comment("所属小时")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String hour;
@@ -73,18 +84,21 @@ public class FlowSchedulerDesc extends Maintable {
      * one properties: runtime properties
      */
     @ApiModelProperty("配置信息")
+    @Comment("配置信息")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsConfigObjectTypeHandler.class)
     private ConfigObject configurations;
 
     @ApiModelProperty("总的执行次数")
+    @Comment("总的执行次数")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("0")
     private Integer totalExecuted;
 
     @ApiModelProperty("最近执行时间")
+    @Comment("最近执行时间")
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private Date lastExecutedTime;

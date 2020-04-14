@@ -18,6 +18,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -33,31 +35,37 @@ import java.util.List;
 @Entity
 @Table(name = "merce_flow", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
     @Index(columnList = "tenantId,resourceId"), @Index(columnList = "lastModifiedTime DESC")})
+@Comment("流程信息表")
 public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
     private static final long serialVersionUID = 4346804653240221818L;
     @ApiModelProperty("资源目录ID")
+    @Comment("资源目录ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String resourceId;
 
     @ApiModelProperty("来源：input,output")
+    @Comment("来源：input,output")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String source;
 
     @ApiModelProperty("步骤节点信息")
+    @Comment("步骤节点信息")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListStepDescTypeHandler.class)
     private List<StepDesc> steps;
 
     @ApiModelProperty("节点连线信息")
+    @Comment("节点连线信息")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListLinkDescTypeHandler.class)
     private List<LinkDesc> links;
 
     @ApiModelProperty("流程类型：dataflow, workflow, streamflow")
+    @Comment("流程类型：dataflow, workflow, streamflow")
     @ValueBind(FieldType = ValueBind.fieldType.STRING, EnumStringValues = {"dataflow", "workflow", "streamflow"})
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
@@ -67,42 +75,49 @@ public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
      * 是否隐藏,对于qa flow不需要展示在Flow目录下，1 隐藏，0 显示，默认值为0
      */
     @ApiModelProperty("是否隐藏,对于qa flow不需要展示在Flow目录下，1 隐藏，0 显示，默认值为0")
+    @Comment("是否隐藏,对于qa flow不需要展示在Flow目录下，1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer isHide;
 
     @ApiModelProperty("参数列表")
+    @Comment("参数列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListParameterDescTypeHandler.class)
     private List<ParameterDesc> parameters;
 
     @ApiModelProperty("输入参数列表")
+    @Comment("输入参数列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListParameterDescTypeHandler.class)
     private List<ParameterDesc> inputs;
 
     @ApiModelProperty("输出参数列表")
+    @Comment("输出参数列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListParameterDescTypeHandler.class)
     private List<ParameterDesc> outputs;
 
     @ApiModelProperty("依赖参数列表")
+    @Comment("依赖参数列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListParameterDescTypeHandler.class)
     private List<ParameterDesc> dependencies;
 
     @ApiModelProperty("原ID")
+    @Comment("原ID")
     @Column(name = "o_id", length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("$null")
     private String oid;
 
     @ApiModelProperty("所属项目信息")
+    @Comment("所属项目信息")
     @Transient
     private ProjectEntity projectEntity;
 

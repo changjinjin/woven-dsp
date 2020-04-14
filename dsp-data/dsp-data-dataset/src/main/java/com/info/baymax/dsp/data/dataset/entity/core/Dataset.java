@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -28,6 +30,7 @@ import java.util.Map;
     @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
     @Index(columnList = "tenantId,resourceId"), @Index(columnList = "tenantId,storage,resourceId"),
     @Index(columnList = "lastModifiedTime DESC"), @Index(columnList = "expiredTime")})
+@Comment("数据集信息表")
 public class Dataset extends Maintable implements ResourceId, CryptoBean {
     private static final long serialVersionUID = 7644481936552526180L;
 
@@ -36,16 +39,19 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     private Long expiredPeriod = 0L;
 
     @ApiModelProperty("资源目录ID")
+    @Comment("资源目录ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String resourceId;
 
     @ApiModelProperty("元数据记录ID")
+    @Comment("元数据记录ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String schemaId;
 
     @ApiModelProperty("元数据版本号")
+    @Comment("元数据版本号")
     @Column(length = 10)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("1")
@@ -56,57 +62,67 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     private Schema schema;
 
     @ApiModelProperty("来源：input,output")
+    @Comment("来源：input,output")
     @Column(length = 10)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String source;
 
     @ApiModelProperty("数据记录数")
+    @Comment("数据记录数")
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @Column(length = 20)
     @DefaultValue("0")
     private Long recordNumber;// = 0l;
 
     @ApiModelProperty("数据字节数")
+    @Comment("数据字节数")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
     private Long byteSize;// = 0l;
 
     @ApiModelProperty("存储格式:HDFS, HIVE, JDBC, KAFKA, HBASE, FTP, ElasticSearch, SearchOne, REDIS")
+    @Comment("存储格式:HDFS, HIVE, JDBC, KAFKA, HBASE, FTP, ElasticSearch, SearchOne, REDIS")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String storage;
 
     @ApiModelProperty("分片类型：H, D, F, Q, 1, 5")
+    @Comment("分片类型：H, D, F, Q, 1, 5")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("H")
     private String sliceType;// = "H";
 
     @ApiModelProperty("分片时间")
+    @Comment("分片时间")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String sliceTime;
 
     @ApiModelProperty("分析时间")
+    @Comment("分析时间")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
     private Long analysisTime;// = 0l;
 
     @ApiModelProperty("存储配置参数")
+    @Comment("存储配置参数")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> storageConfigurations;
 
     @ApiModelProperty("格式配置参数")
+    @Comment("格式配置参数")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> formatConfigurations;
 
     @ApiModelProperty("是否关联过：0-未关联，1-已经关联")
+    @Comment("是否关联过：0-未关联，1-已经关联")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
@@ -121,6 +137,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     private ProjectEntity projectEntity;
 
     @ApiModelProperty("是否隐藏,1 隐藏，0 显示，默认值为0")
+    @Comment("是否隐藏,1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")

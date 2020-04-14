@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -24,6 +26,7 @@ import java.util.Date;
 @Entity
 @Table(name = "merce_cluster_info", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "name"})},
     indexes = {@Index(columnList = "name"), @Index(columnList = "lastModifiedTime DESC")})
+@Comment("集群信息表")
 public class ClusterEntity<T> extends Maintable {
 
     @ApiModelProperty("df-executor注册信息.")
@@ -35,20 +38,24 @@ public class ClusterEntity<T> extends Maintable {
     protected Integer dfCount;
 
     @ApiModelProperty("上传HADOOP_CONF的zip文件的id.")
+    @Comment("上传HADOOP_CONF的zip文件的id.")
     @Transient
     protected String fileId;
 
     @ApiModelProperty("hdfs访问地址(dfs.namenode.rpc-address)")
+    @Comment("hdfs访问地址(dfs.namenode.rpc-address)")
     @Column(length = 32)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String hdfsUrl;
 
     @ApiModelProperty("Livy访问地址")
+    @Comment("Livy访问地址")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String livyUrl;
 
     @ApiModelProperty("HADOOP_CONF的zip文件")
+    @Comment("HADOOP_CONF的zip文件")
     @Lob
     @ColumnType(jdbcType = JdbcType.BLOB)
     protected byte[] configFile;

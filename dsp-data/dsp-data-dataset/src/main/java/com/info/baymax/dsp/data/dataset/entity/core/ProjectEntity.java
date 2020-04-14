@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Comment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,7 @@ import java.util.List;
 @ApiModel
 @Entity
 @Table(name = "merce_project")
+@Comment("项目信息表")
 public class ProjectEntity extends Maintable {
     private static final long serialVersionUID = -4579648692041993047L;
 

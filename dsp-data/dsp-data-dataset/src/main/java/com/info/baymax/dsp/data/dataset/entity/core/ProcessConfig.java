@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Column;
@@ -18,50 +20,60 @@ import javax.persistence.UniqueConstraint;
 @ApiModel
 @Entity
 @Table(name = "merce_udf", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "owner"})})
+@Comment("进程配置信息表")
 public class ProcessConfig extends Maintable {
     private static final long serialVersionUID = -7126302005615058755L;
 
     @ApiModelProperty("类名")
+    @Comment("类名")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String className;
 
     @ApiModelProperty("配置类型")
+    @Comment("配置类型")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String processConfigType;
 
     @ApiModelProperty("jar包路径")
+    @Comment("jar包路径")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String jarpath;
 
     @ApiModelProperty("参数列表")
+    @Comment("参数列表")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String parameterlist;
 
     @ApiModelProperty("返回类型")
+    @Comment("返回类型")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String returnType;
 
     @ApiModelProperty("返回值java类型")
+    @Comment("返回值java类型")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String returnJavaType;
 
     @ApiModelProperty("别名")
+    @Comment("别名")
     @Column(length = 100)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String aliasName;
 
     @ApiModelProperty("jar包名称")
+    @Comment("jar包名称")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String jarName;
 
     @ApiModelProperty("数据库类型")
+    @Comment("数据库类型")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String dbType;

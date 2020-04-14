@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -25,34 +27,40 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_policy")
+@Comment("数据服务的策略配置信息表")
 public class DataPolicy extends BaseEntity {
 
     private static final long serialVersionUID = -2450974106259820957L;
 
     @ApiModelProperty(value = "服务类型: 0 pull, 1 push")
+    @Comment("服务类型: 0 pull, 1 push")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer serviceType;
 
     @ApiModelProperty(value = "服务方式:file，message，http等")
+    @Comment("服务方式:file，message，http等")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String serviceMethod;
 
     @ApiModelProperty("开放字段及配置字段映射关系,不加密")
+    @Comment("开放字段及配置字段映射关系,不加密")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String,String> fieldMappings;
 
     @ApiModelProperty("特殊字段配置,如:加密,脱敏,转换等")
+    @Comment("特殊字段配置,如:加密,脱敏,转换等")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String,Map<String,String>> transformMappings;
 
     @ApiModelProperty("此数据服务的有效期")
+    @Comment("此数据服务的有效期")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
