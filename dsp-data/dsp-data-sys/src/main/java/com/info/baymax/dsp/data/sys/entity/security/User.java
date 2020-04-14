@@ -20,6 +20,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,30 +40,36 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "merce_user", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
     @Index(columnList = "loginId"), @Index(columnList = "lastModifiedTime")})
+@Comment("用户信息表")
 public class User extends Maintable implements CryptoBean {
     private static final long serialVersionUID = -4066909154102918575L;
 
     @ApiModelProperty(value = "登录账号")
+    @Comment("登录账号")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String loginId;
 
     @ApiModelProperty(value = "用户密码")
+    @Comment("用户密码")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String password;
 
     @ApiModelProperty(value = "用户手机号")
+    @Comment("用户手机号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String phone;
 
     @ApiModelProperty(value = "用户邮箱")
+    @Comment("用户邮箱")
     @Column(length = 30)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String email;
 
     @ApiModelProperty("密码过期时间")
+    @Comment("密码过期时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
@@ -70,6 +77,7 @@ public class User extends Maintable implements CryptoBean {
     private Date pwdExpiredTime;
 
     @ApiModelProperty("账号过期时间")
+    @Comment("账号过期时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
@@ -77,6 +85,7 @@ public class User extends Maintable implements CryptoBean {
     private Date accountExpiredTime;
 
     @ApiModelProperty(value = "资源队列")
+    @Comment("资源队列")
     @Lob
     @Column(length = 255)
     @Convert(converter = ObjectToStringConverter.class)
@@ -84,18 +93,21 @@ public class User extends Maintable implements CryptoBean {
     private List<String> resourceQueues = new ArrayList<>();
 
     @ApiModelProperty(value = "HDFS空间限额")
+    @Comment("HDFS空间限额")
     @Column(length = 18)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @DefaultValue("0")
     private Long hdfsSpaceQuota;
 
     @ApiModelProperty(value = "是否是超级管理员:0-否，1-是，默认0")
+    @Comment("是否是超级管理员:0-否，1-是，默认0")
     @Column(name = "is_admin", length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("0")
     private Integer admin;
 
     @ApiModelProperty(value = "用户所属平台，默认baymax")
+    @Comment("用户所属平台，默认baymax")
     @Column(name = "client_ids", length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("baymax")

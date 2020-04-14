@@ -8,6 +8,10 @@ public class MySQL5DialectUTF8 extends MySQL5Dialect {
 
     public MySQL5DialectUTF8() {
     }
+    
+    public boolean supportsCommentOn() {
+		return true;
+	}
 
     @Override
     protected MySQLStorageEngine getDefaultMySQLStorageEngine() {

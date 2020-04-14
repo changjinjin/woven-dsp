@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -24,11 +26,13 @@ import java.util.List;
 @ApiModel
 @Entity
 @Table(name = "dsp_sys_menu", uniqueConstraints = { @UniqueConstraint(columnNames = { "clientId", "code" }) })
+@Comment("权限信息表")
 public class Permission extends Maintable implements Comparable<Permission>, TreeIdable<String, Permission> {
 	private static final long serialVersionUID = 4953480541587178592L;
 
-	@XmlElement(name = "客户端ID")
+	@XmlElement(name = "clientId")
 	@ApiModelProperty(value = "客户端ID")
+	@Comment("客户端ID")
 	@Column(length = 20)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	@DefaultValue("baymax")
@@ -36,24 +40,28 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 
 	@XmlElement(name = "code")
 	@ApiModelProperty(value = "权限编码，每一个编码唯一")
+	@Comment("权限编码，每一个编码唯一")
 	@Column(length = 20)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String code;
 
 	@XmlTransient
 	@ApiModelProperty("父节点ID")
+	@Comment("父节点ID")
 	@Column(length = 50)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String parentId;
 
 	@XmlElement(name = "url")
 	@ApiModelProperty(value = "权限路径")
+	@Comment("权限路径")
 	@Column(length = 150)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String url;
 
 	@XmlElement(name = "type")
 	@ApiModelProperty(value = "权限类型：1-模块，2-菜单，3-按钮，4-文件，5-资源")
+	@Comment("权限类型：1-模块，2-菜单，3-按钮，4-文件，5-资源")
 	@Column(length = 2)
 	@ColumnType(jdbcType = JdbcType.INTEGER)
 	private Integer type;
@@ -66,18 +74,21 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 
 	@XmlElement(name = "icon")
 	@ApiModelProperty(value = "图标样式")
+	@Comment("图标样式")
 	@Column(length = 150)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String icon;
 
 	@XmlElement(name = "route")
 	@ApiModelProperty(value = "前端路由")
+	@Comment("前端路由")
 	@Column(length = 150)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String route;
 
 	@XmlElement(name = "order")
 	@ApiModelProperty(value = "排序序号")
+	@Comment("排序序号")
 	@Column(name = "ord", length = 3)
 	@ColumnType(jdbcType = JdbcType.INTEGER)
 	@DefaultValue("1")

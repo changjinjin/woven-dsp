@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -22,11 +24,13 @@ import java.util.stream.Collectors;
 @ApiModel
 @Entity
 @Table(name = "merce_role", uniqueConstraints = {@UniqueConstraint(columnNames = {"tenantId", "name"})})
+@Comment("角色信息表")
 public class Role extends Maintable {
     private static final long serialVersionUID = -4302027743711660884L;
 
     @XmlElement(name = "客户端ID")
     @ApiModelProperty(value = "客户端ID")
+    @Comment("客户端ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @DefaultValue("baymax")

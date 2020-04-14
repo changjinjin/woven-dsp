@@ -13,6 +13,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -29,48 +31,57 @@ public abstract class CommonEntity<ID extends Serializable> implements Idable<ID
     private static final long serialVersionUID = 4394421573081538612L;
 
     @ApiModelProperty("名称")
+    @Comment("名称")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String name;
 
     @ApiModelProperty(value = "是否启用：0-未启用，1-启用，默认0", allowableValues = "0,1")
+    @Comment("是否启用：0-未启用，1-启用，默认0")
     @Column(length = 1)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @DefaultValue("1")
     protected Integer enabled;
 
     @ApiModelProperty("租户ID")
+    @Comment("租户ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String tenantId;
 
     @ApiModelProperty("所属人")
+    @Comment("所属人")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String owner;
 
     @ApiModelProperty("创建人")
+    @Comment("创建人")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String creator;
 
     @ApiModelProperty("创建时间")
+    @Comment("创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date createTime;
 
     @ApiModelProperty("修改人")
+    @Comment("修改人")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String lastModifier;
 
     @ApiModelProperty("修改时间")
+    @Comment("修改时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
     protected Date lastModifiedTime;
 
     @ApiModelProperty("描述信息")
+    @Comment("描述信息")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     protected String description;

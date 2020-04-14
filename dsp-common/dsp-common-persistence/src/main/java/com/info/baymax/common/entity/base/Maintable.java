@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
+
 import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -24,6 +26,7 @@ public class Maintable extends CommonEntity<String> implements Cloneable {
     protected static final Long MAX_DATE_TIME = 253402214400L;
 
     @ApiModelProperty("主键")
+    @Comment("主键")
     @Id
     @KeySql(genId = UuidGenId.class)
     @Column(length = 50)
@@ -31,12 +34,14 @@ public class Maintable extends CommonEntity<String> implements Cloneable {
     protected String id;
 
     @ApiModelProperty("过期时间戳")
+    @Comment("过期时间戳")
     @JsonIgnore
     @Column(length = 18)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     protected Long expiredTime;
 
     @ApiModelProperty("版本号")
+    @Comment("版本号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     protected Integer version;
