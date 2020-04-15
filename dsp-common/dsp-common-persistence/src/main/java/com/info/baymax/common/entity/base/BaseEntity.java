@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -25,6 +26,7 @@ public class BaseEntity extends CommonEntity<Long> implements PreEntity {
     private static final long serialVersionUID = -5099886601993514950L;
 
     @ApiModelProperty("主键")
+    @Comment("主键")
     @Id
     @KeySql(genId = SnowflakeGenId.class)
     @Column(length = 20)

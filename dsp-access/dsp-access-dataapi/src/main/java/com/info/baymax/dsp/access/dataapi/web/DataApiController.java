@@ -1,7 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.web;
 
+import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.request.PullRequest;
 import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
@@ -52,7 +54,7 @@ public class DataApiController implements Serializable {
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
-    public Response<?> pullData(@RequestBody PullRequest body, @RequestHeader String[] hosts) throws Exception {
+    public Response<IPage<Map<String, Object>>> pullData(@RequestBody PullRequest body, @RequestHeader String[] hosts)  {
         String dataServiceId = body.getDataServiceId();
         String requestKey = body.getAccessKey();
         String host = hosts[0];
@@ -60,22 +62,22 @@ public class DataApiController implements Serializable {
         int size = body.getSize();
 
         if (dataServiceId == null) {
-            return Response.error(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
+        	throw new ControllerException(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
         }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(Long.valueOf(dataServiceId));
         if (dataService == null) {
-            return Response.error(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
+        	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
         }
         if (dataService.getType() == 1) {
-            return Response.error(ErrType.BAD_REQUEST, "不支持push共享方式");
+        	throw new ControllerException(ErrType.BAD_REQUEST, "不支持push共享方式");
         }
         if (dataService.getStatus() != 1) {
-            return Response.error(ErrType.BAD_REQUEST, "服务不可用，未部署或已停止或已过期");
+        	throw new ControllerException(ErrType.BAD_REQUEST, "服务不可用，未部署或已停止或已过期");
         }
         Long custAppId = dataService.getApplyConfiguration().getCustAppId();
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
         if (custApp == null) {
-            return Response.error(ErrType.ENTITY_NOT_EXIST, "接入配置" + custAppId + " 不存在");
+        	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "接入配置" + custAppId + " 不存在");
         }
 
         String accessKey = custApp.getAccessKey();
@@ -84,11 +86,11 @@ public class DataApiController implements Serializable {
             Long dataResId = dataService.getApplyConfiguration().getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             if (dataResource == null) {
-                return Response.error(ErrType.ENTITY_NOT_EXIST, "数据资源" + dataResId + " 不存在");
+            	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据资源" + dataResId + " 不存在");
             }
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
             if (dataset == null) {
-                return Response.error(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
+            	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
             }
 
             List<FieldMapping> dataServiceMappings = dataService.getFieldMappings();
@@ -104,14 +106,11 @@ public class DataApiController implements Serializable {
                     }
                 }
             }
-            List<Map<String, Object>> res = pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
+            List<Map<String, Object>> list = pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
                     offset, size, includes.toArray(new String[0]));
-            return Response.ok(res);
-
+            return Response.ok(new IPage<Map<String, Object>>(1, list.size(), list.size(), list));
         } else {
-            return Response.error(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
+        	throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
         }
     }
-
-
 }
