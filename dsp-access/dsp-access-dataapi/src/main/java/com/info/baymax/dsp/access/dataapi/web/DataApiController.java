@@ -2,6 +2,7 @@ package com.info.baymax.dsp.access.dataapi.web;
 
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.dsp.access.dataapi.request.PullRequest;
 import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
@@ -51,12 +52,12 @@ public class DataApiController implements Serializable {
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
-    public Response pullData(@RequestBody Map<String, String> body, @RequestHeader Map<String, String> header) throws Exception {
-        String dataServiceId = body.get("dataServiceId");
-        String requestKey = body.get("accessKey");
-        String host = header.get("host").split(":")[0];
-        int offset = Integer.valueOf(body.getOrDefault("offset", "0"));
-        int size = Integer.valueOf(body.getOrDefault("size", "10000"));
+    public Response<?> pullData(@RequestBody PullRequest body, @RequestHeader String[] hosts) throws Exception {
+        String dataServiceId = body.getDataServiceId();
+        String requestKey = body.getAccessKey();
+        String host = hosts[0];
+        int offset = body.getOffset();
+        int size = body.getSize();
 
         if (dataServiceId == null) {
             return Response.error(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
