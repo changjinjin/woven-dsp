@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.info.baymax.common.comp.feign.FeignServiceClientConfiguration;
+import com.info.baymax.common.comp.feign.FeignClientConfiguration;
 
-@FeignClient(qualifier = "executorRestClient", name = "dsp-job-exec", configuration = FeignServiceClientConfiguration.class)
+@FeignClient(qualifier = "executorRestClient", name = "dsp-job-exec", configuration = FeignClientConfiguration.class)
 public interface ExecutorRestClient {
 
     @PostMapping("/api/dsp/exec/dataservice/execute")

@@ -18,7 +18,6 @@ import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 import java.util.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/dataapi")
 @Api(tags = "数据服务接口", value = "数据拉取接口")
