@@ -41,10 +41,10 @@ public class DefaultCryptorDelegater implements CryptorDelegater/* , Application
 	 */
 
 	@Override
-	public String decrypt(String ciphertext) {
+	public String decrypt(String ciphertext, String secretKey) {
 		Cryptor cryptor = get(ciphertext);
 		if (cryptor != null) {
-			return cryptor.decrypt(ciphertext);
+			return cryptor.decrypt(ciphertext, secretKey);
 		}
 		return ciphertext;
 	}
@@ -90,7 +90,7 @@ public class DefaultCryptorDelegater implements CryptorDelegater/* , Application
 	}
 
 	@Override
-	public String encrypt(CryptoType cryptoType, String plaintext) {
+	public String encrypt(String plaintext, String secretKey, CryptoType cryptoType) {
 		if (cryptoType == null || plaintext == null) {
 			throw new IllegalArgumentException("CryptoType can't be null.");
 		}
@@ -98,7 +98,7 @@ public class DefaultCryptorDelegater implements CryptorDelegater/* , Application
 		if (cryptor == null) {
 			throw new CryptoException(String.format("No suitable Cryptor to use for cryptoType:%s", cryptoType));
 		}
-		return cryptor.encrypt(plaintext);
+		return cryptor.encrypt(plaintext, secretKey);
 	}
 
 	@Override

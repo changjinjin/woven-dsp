@@ -16,9 +16,15 @@ import java.util.Iterator;
 
 public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker {
 
+	/**
+	 * 全局的secretKey
+	 */
+	private final String secretKey;
+
 	private final CryptorDelegater cryptorDelegater;
 
-	public AbstractCryptoMethodInvoker(CryptorDelegater cryptorDelegater) {
+	public AbstractCryptoMethodInvoker(String secretKey, CryptorDelegater cryptorDelegater) {
+		this.secretKey = secretKey;
 		this.cryptorDelegater = cryptorDelegater;
 	}
 
@@ -139,10 +145,10 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
 	private Object encryptSingle(Object bean, CryptoType cryptoType) {
 		if (CryptoBean.class.isAssignableFrom(bean.getClass())) {
 			CryptoBean cryptoBean = (CryptoBean) bean;
-			cryptoBean.encrypt(cryptoType, cryptorDelegater);
+			cryptoBean.encrypt(secretKey, cryptoType, cryptorDelegater);
 			return cryptoBean;
 		} else if (bean instanceof String) {
-			return cryptorDelegater.encrypt(cryptoType, (String) bean);
+			return cryptorDelegater.encrypt((String) bean, secretKey, cryptoType);
 		}
 		return bean;
 	}
@@ -169,10 +175,10 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
 	private Object decryptSingle(Object bean) {
 		if (CryptoBean.class.isAssignableFrom(bean.getClass())) {
 			CryptoBean cryptoBean = (CryptoBean) bean;
-			cryptoBean.decrypt(cryptorDelegater);
+			cryptoBean.decrypt(secretKey, cryptorDelegater);
 			return cryptoBean;
 		} else if (bean instanceof String) {
-			return cryptorDelegater.decrypt((String) bean);
+			return cryptorDelegater.decrypt(secretKey, (String) bean);
 		}
 		return bean;
 	}

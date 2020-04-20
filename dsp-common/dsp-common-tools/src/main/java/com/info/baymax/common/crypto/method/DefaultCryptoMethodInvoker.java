@@ -10,8 +10,8 @@ import com.info.baymax.common.crypto.delegater.DefaultCryptorDelegater;
  */
 public class DefaultCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
 
-	public DefaultCryptoMethodInvoker() {
-		super(new DefaultCryptorDelegater());
+	public DefaultCryptoMethodInvoker(String secretKey) {
+		super(secretKey, new DefaultCryptorDelegater());
 	}
 
 	@Override
@@ -23,5 +23,4 @@ public class DefaultCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
 	public Object beforeHandleResult(Object result) {
 		return result;
 	}
-
 }

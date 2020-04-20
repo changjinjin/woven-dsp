@@ -1,9 +1,8 @@
 package com.info.baymax.common.crypto.cryptors;
 
-import java.util.Base64;
-
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.annotation.MappedCryptoType;
+import com.info.baymax.common.utils.crypto.DESUtil;
 
 /**
  * AES加密的字符串加密解密处理器
@@ -19,13 +18,13 @@ public class DesCryptor extends AbstractCryptor {
     }
 
     @Override
-    String decryptCiphertext(String ciphertext) {
-        return new String(Base64.getDecoder().decode(ciphertext));
+    String decryptCiphertext(String ciphertext, String secretKey) {
+        return DESUtil.decrypt(ciphertext, secretKey);
     }
 
     @Override
-    String encryptPlaintext(String plaintext) {
-        return Base64.getEncoder().encodeToString(plaintext.getBytes());
+    String encryptPlaintext(String plaintext, String secretKey) {
+        return DESUtil.encrypt(plaintext, secretKey);
     }
 
 }

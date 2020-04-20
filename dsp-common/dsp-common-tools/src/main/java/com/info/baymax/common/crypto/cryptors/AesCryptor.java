@@ -2,7 +2,7 @@ package com.info.baymax.common.crypto.cryptors;
 
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.annotation.MappedCryptoType;
-import com.info.baymax.common.utils.AesUtils;
+import com.info.baymax.common.utils.crypto.AESUtil;
 
 /**
  * AES加密的字符串加密解密处理器
@@ -18,13 +18,13 @@ public class AesCryptor extends AbstractCryptor {
     }
 
     @Override
-    String decryptCiphertext(String ciphertext) {
-        return AesUtils.aesDecrypt(ciphertext);
+    String decryptCiphertext(String ciphertext, String secretKey) {
+        return AESUtil.decrypt(ciphertext, secretKey);
     }
 
     @Override
-    String encryptPlaintext(String plaintext) {
-        return AesUtils.aesEncrypt(plaintext);
+    String encryptPlaintext(String plaintext, String secretKey) {
+        return AESUtil.encrypt(plaintext, secretKey);
     }
 
 }

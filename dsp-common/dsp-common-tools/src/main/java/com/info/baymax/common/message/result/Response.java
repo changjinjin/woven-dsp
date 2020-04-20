@@ -41,19 +41,19 @@ public class Response<T> implements Serializable {
 	@JsonInclude(value = Include.NON_NULL)
 	private T content;
 
-	private Response() {
+	protected Response() {
 	}
 
-	private Response(Integer status) {
+	protected Response(Integer status) {
 		this.status = status;
 	}
 
-	private Response(Integer status, String messge) {
+	protected Response(Integer status, String messge) {
 		this.status = status;
 		this.message = messge;
 	}
 
-	private Response(Integer status, String message, T content) {
+	protected Response(Integer status, String message, T content) {
 		this.status = status;
 		this.message = message;
 		this.content = content;

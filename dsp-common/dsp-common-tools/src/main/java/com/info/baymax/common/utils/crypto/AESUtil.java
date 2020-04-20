@@ -1,23 +1,18 @@
-package com.info.baymax.common.utils;
+package com.info.baymax.common.utils.crypto;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * create by pengchuan.chen on 2019/06/03.
- */
-public class AesUtils {
+public class AESUtil {
 
-    //默认字符集
+    // 默认字符集
     private static final String DEFAULT_CARSET = "UTF-8";
-    //加密方式
+    // 加密方式
     private static final String AES = "AES";
-    //使用的加密算法
+    // 使用的加密算法
     private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
-    //密钥 (需要前端和后端保持一致)
-    private static final String KEY = "infoaeskey123456";
-    //加密结果转换成多少进制的字符串
+    // 加密结果转换成多少进制的字符串
     private static final int RADIX = 16;
 
     /**
@@ -27,9 +22,9 @@ public class AesUtils {
      * @return
      * @throws Exception
      */
-    public static String aesDecrypt(String encrypt) {
+    public static String decrypt(String encrypt, String key) {
         try {
-            return aesDecrypt(encrypt, KEY);
+            return aesDecrypt(encrypt, key);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -43,9 +38,9 @@ public class AesUtils {
      * @return
      * @throws Exception
      */
-    public static String aesEncrypt(String content) {
+    public static String encrypt(String content, String key) {
         try {
-            return aesEncrypt(content, KEY);
+            return aesEncrypt(content, key);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -69,7 +64,6 @@ public class AesUtils {
         return cipher.doFinal(content.getBytes(DEFAULT_CARSET));
     }
 
-
     /**
      * AES加密为十六进制
      *
@@ -78,7 +72,7 @@ public class AesUtils {
      * @return 加密后的base 64 code
      * @throws Exception
      */
-    public static String aesEncrypt(String content, String encryptKey) throws Exception {
+    private static String aesEncrypt(String content, String encryptKey) throws Exception {
         byte[] encodArroy = aesEncryptToBytes(content, encryptKey);
         return bytesToHex(encodArroy);
     }
@@ -91,7 +85,7 @@ public class AesUtils {
      * @return 解密后的String
      * @throws Exception
      */
-    public static String aesDecryptByBytes(byte[] encryptBytes, String decryptKey) throws Exception {
+    private static String aesDecryptByBytes(byte[] encryptBytes, String decryptKey) throws Exception {
         KeyGenerator kgen = KeyGenerator.getInstance(AES);
         kgen.init(128);
 
@@ -101,7 +95,6 @@ public class AesUtils {
         return new String(decryptBytes);
     }
 
-
     /**
      * 解密字符串
      *
@@ -110,12 +103,14 @@ public class AesUtils {
      * @return
      * @throws Exception
      */
-    public static String aesDecrypt(String encryptStr, String decryptKey) throws Exception {
-        return (encryptStr != null && encryptStr.length() > 0) ? aesDecryptByBytes(stringToByte(encryptStr, RADIX), decryptKey) : null;
+    private static String aesDecrypt(String encryptStr, String decryptKey) throws Exception {
+        return (encryptStr != null && encryptStr.length() > 0)
+            ? aesDecryptByBytes(stringToByte(encryptStr, RADIX), decryptKey)
+            : null;
     }
 
-    //Byte[] ->十六进制
-    public static String bytesToHex(byte buf[]) {
+    // Byte[] ->十六进制
+    private static String bytesToHex(byte buf[]) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < buf.length; i++) {
             String hex = Integer.toHexString(buf[i] & 0xFF);
@@ -134,7 +129,7 @@ public class AesUtils {
      * @param radix  指定是多少进制，从Character.MIN_RADIX到Character.MAX_RADIX，超出范围后变为10进制
      * @return
      */
-    public static byte[] stringToByte(String hexStr, int radix) {
+    private static byte[] stringToByte(String hexStr, int radix) {
         if (hexStr.length() < 1)
             return null;
         byte[] result = new byte[hexStr.length() / 2];
@@ -146,16 +141,17 @@ public class AesUtils {
         return result;
     }
 
-    //TEST
+    // TEST
     public static void main(String[] args) throws Exception {
+        // 密钥 (需要前端和后端保持一致)
+        String KEY = "infoaeskey123456";
         String content = "admin";
         System.out.println("加密前：" + content);
         System.out.println("加密密钥和解密密钥：" + KEY);
-        String encrypt = aesEncrypt(content);
-          encrypt = "0be8361ca73b1598caaf81b1f542116a";
+        String encrypt = encrypt(content, KEY);
+        encrypt = "0be8361ca73b1598caaf81b1f542116a";
         System.out.println("加密后：" + encrypt);
-        String decrypt = aesDecrypt(encrypt);
+        String decrypt = decrypt(encrypt, KEY);
         System.out.println("解密后：" + decrypt);
     }
 }
-

@@ -1,17 +1,16 @@
 package com.info.baymax.common.page;
 
-import java.util.List;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.List;
 
 /**
  * 分页对象
  *
  * @author: jingwei.yang
  * @date: 2019年4月23日 下午3:57:16
- * @param <T>
- *            查询类型
+ * @param <T> 查询类型
  */
 @ApiModel
 public class IPage<T> extends IPageable {
@@ -38,104 +37,118 @@ public class IPage<T> extends IPageable {
 	/**
 	 * 空参构造函数,默认会根据默认页码和默认页长构造IPage对象。<br/>
 	 */
-
-	public IPage() {
+	protected IPage() {
 		super(DEFAULT_PAGENUM, DEFAULT_PAGESIZE);
+	}
+
+	public static <T> IPage<T> of() {
+		return new IPage<T>();
 	}
 
 	/**
 	 * 空参构造函数,默认会根据默认页码和默认页长构造IPage对象。<br/>
 	 *
-	 * @param orderByClause
-	 *            排序
+	 * @param orderByClause 排序
 	 */
-	public IPage(String orderByClause) {
+	protected IPage(String orderByClause) {
 		super(DEFAULT_PAGENUM, DEFAULT_PAGESIZE, orderByClause);
 	}
 
+	public static <T> IPage<T> of(String orderByClause) {
+		return new IPage<T>(orderByClause);
+	}
+
 	/**
 	 * 构造函数,根据页码和页长构造IPage对象。<br/>
 	 *
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
+	 * @param pageNum  页码
+	 * @param pageSize 页长
 	 */
-	public IPage(int pageNum, int pageSize) {
+	protected IPage(int pageNum, int pageSize) {
 		super(true, pageNum, pageSize);
 	}
 
-	/**
-	 * 构造函数,根据页码和页长构造IPage对象。<br/>
-	 *
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param orderByClause
-	 *            排序
-	 */
-	public IPage(int pageNum, int pageSize, String orderByClause) {
-		super(true, pageNum, pageSize, orderByClause);
+	public static <T> IPage<T> of(int pageNum, int pageSize) {
+		return new IPage<T>(pageNum, pageSize);
 	}
 
 	/**
 	 * 构造函数,根据页码和页长构造IPage对象。<br/>
 	 *
-	 * @param pageable
-	 *            是否分页，默认true
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
+	 * @param pageNum       页码
+	 * @param pageSize      页长
+	 * @param orderByClause 排序
 	 */
-	public IPage(boolean pageable, int pageNum, int pageSize) {
+	protected IPage(int pageNum, int pageSize, String orderByClause) {
+		super(true, pageNum, pageSize, orderByClause);
+	}
+
+	public static <T> IPage<T> of(int pageNum, int pageSize, String orderByClause) {
+		return new IPage<T>(pageNum, pageSize, orderByClause);
+	}
+
+	/**
+	 * 构造函数,根据页码和页长构造IPage对象。<br/>
+	 *
+	 * @param pageable 是否分页，默认true
+	 * @param pageNum  页码
+	 * @param pageSize 页长
+	 */
+	protected IPage(boolean pageable, int pageNum, int pageSize) {
 		super(pageable, pageNum, pageSize, null);
 	}
 
 	/**
 	 * 构造函数,根据页码和页长构造IPage对象。<br/>
 	 *
-	 * @param pageable
-	 *            是否分页，默认true
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param orderByClause
-	 *            排序
+	 * @param pageable 是否分页，默认true
+	 * @param pageNum  页码
+	 * @param pageSize 页长
 	 */
-	public IPage(boolean pageable, int pageNum, int pageSize, String orderByClause) {
+	public static <T> IPage<T> of(boolean pageable, int pageNum, int pageSize) {
+		return new IPage<T>(pageable, pageNum, pageSize);
+	}
+
+	/**
+	 * 构造函数,根据页码和页长构造IPage对象。<br/>
+	 *
+	 * @param pageable      是否分页，默认true
+	 * @param pageNum       页码
+	 * @param pageSize      页长
+	 * @param orderByClause 排序
+	 */
+	protected IPage(boolean pageable, int pageNum, int pageSize, String orderByClause) {
 		super(pageable, pageNum, pageSize, orderByClause);
+	}
+
+	public static <T> IPage<T> of(boolean pageable, int pageNum, int pageSize, String orderByClause) {
+		return new IPage<T>(pageable, pageNum, pageSize, orderByClause);
 	}
 
 	/**
 	 * 构造函数,根据IPageable实例构造IPage对象。<br/>
 	 *
-	 * @param pageable
-	 *            IPageable实例
+	 * @param pageable IPageable实例
 	 */
-	public IPage(IPageable pageable) {
+	protected IPage(IPageable pageable) {
 		super(true, pageable.getPageNum(), pageable.getPageSize(), pageable.getOrderByClause());
+	}
+
+	public static <T> IPage<T> of(IPageable pageable) {
+		return new IPage<T>(pageable);
 	}
 
 	/**
 	 * 构造函数 <br/>
 	 *
-	 * @param pageable
-	 *            是否分页，默认true
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
-	 * @param list
-	 *            当前页数据集合
-	 * @param orderByClause
-	 *            排序
+	 * @param pageable      是否分页，默认true
+	 * @param pageNum       页码
+	 * @param pageSize      页长
+	 * @param totalCount    数据总条数
+	 * @param list          当前页数据集合
+	 * @param orderByClause 排序
 	 */
-	public IPage(boolean pageable, int pageNum, int pageSize, int totalCount, List<T> list, String orderByClause) {
+	protected IPage(boolean pageable, int pageNum, int pageSize, int totalCount, List<T> list, String orderByClause) {
 		super(pageable, pageNum, pageSize, orderByClause);
 		this.totalCount = totalCount;
 		this.totalPage = getTotalPage(pageSize, totalCount);
@@ -145,117 +158,97 @@ public class IPage<T> extends IPageable {
 		this.list = list;
 	}
 
+	public static <T> IPage<T> of(boolean pageable, int pageNum, int pageSize, int totalCount, List<T> list,
+			String orderByClause) {
+		return new IPage<T>(pageable, pageNum, pageSize, totalCount, list, orderByClause);
+	}
+
 	/**
 	 * 构造函数。<br/>
 	 *
-	 * @param pageable
-	 *            是否分页，默认true
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
-	 * @param list
-	 *            当前页数据集合
+	 * @param pageable   是否分页，默认true
+	 * @param pageNum    页码
+	 * @param pageSize   页长
+	 * @param totalCount 数据总条数
+	 * @param list       当前页数据集合
 	 */
-	public IPage(boolean pageable, int pageNum, int pageSize, int totalCount, List<T> list) {
+	protected IPage(boolean pageable, int pageNum, int pageSize, int totalCount, List<T> list) {
 		this(pageable, pageNum, pageSize, totalCount, list, null);
 	}
 
-	/**
-	 * 构造函数 <br/>
-	 *
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
-	 * @param list
-	 *            当前页数据集
-	 * @param orderByClause
-	 *            排序
-	 */
-	public IPage(int pageNum, int pageSize, int totalCount, List<T> list, String orderByClause) {
-		this(true, pageNum, pageSize, totalCount, list, orderByClause);
+	public static <T> IPage<T> of(boolean pageable, int pageNum, int pageSize, int totalCount, List<T> list) {
+		return new IPage<T>(pageable, pageNum, pageSize, totalCount, list, null);
 	}
 
 	/**
 	 * 构造函数 <br/>
 	 *
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
-	 * @param list
-	 *            当前页数据集合
+	 * @param pageNum       页码
+	 * @param pageSize      页长
+	 * @param totalCount    数据总条数
+	 * @param list          当前页数据集
+	 * @param orderByClause 排序
 	 */
-	public IPage(int pageNum, int pageSize, int totalCount, List<T> list) {
-		this(true, pageNum, pageSize, totalCount, list);
+	public static <T> IPage<T> of(int pageNum, int pageSize, int totalCount, List<T> list, String orderByClause) {
+		return new IPage<T>(true, pageNum, pageSize, totalCount, list, orderByClause);
+	}
+
+	/**
+	 * 构造函数 <br/>
+	 *
+	 * @param pageNum    页码
+	 * @param pageSize   页长
+	 * @param totalCount 数据总条数
+	 * @param list       当前页数据集合
+	 */
+	public static <T> IPage<T> of(int pageNum, int pageSize, int totalCount, List<T> list) {
+		return new IPage<T>(true, pageNum, pageSize, totalCount, list);
 	}
 
 	/**
 	 * * 构造函数 <br/>
 	 *
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
-	 * @param orderByClause
-	 *            排序
+	 * @param pageNum       页码
+	 * @param pageSize      页长
+	 * @param totalCount    数据总条数
+	 * @param orderByClause 排序
 	 */
-	public IPage(int pageNum, int pageSize, int totalCount, String orderByClause) {
-		this(true, pageNum, pageSize, totalCount, null, orderByClause);
+	public static <T> IPage<T> of(int pageNum, int pageSize, int totalCount, String orderByClause) {
+		return new IPage<T>(true, pageNum, pageSize, totalCount, null, orderByClause);
 	}
 
 	/**
 	 * 构造函数 <br/>
 	 *
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
+	 * @param pageNum    页码
+	 * @param pageSize   页长
+	 * @param totalCount 数据总条数
 	 */
-	public IPage(int pageNum, int pageSize, int totalCount) {
-		this(true, pageNum, pageSize, totalCount, null);
+	public static <T> IPage<T> of(int pageNum, int pageSize, int totalCount) {
+		return new IPage<T>(true, pageNum, pageSize, totalCount, null);
 	}
 
 	/**
 	 * 构造函数 <br/>
 	 *
-	 * @param pageable
-	 *            是否分页，分页-true，不分页-false
-	 * @param pageNum
-	 *            页码
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            数据总条数
+	 * @param pageable   是否分页，分页-true，不分页-false
+	 * @param pageNum    页码
+	 * @param pageSize   页长
+	 * @param totalCount 数据总条数
 	 */
-	public IPage(boolean pageable, int pageNum, int pageSize, int totalCount) {
-		this(pageable, pageNum, pageSize, totalCount, null);
+	public static <T> IPage<T> of(boolean pageable, int pageNum, int pageSize, int totalCount) {
+		return new IPage<T>(pageable, pageNum, pageSize, totalCount, null);
 	}
 
 	/**
-	 * 构造函数,根据page、totalCount、list构造IPage对象，其中page对象必须含有pageNum,pageSize，其他的属性将会被此构造函数替换
-	 * <br/>
+	 * 构造函数,根据page、totalCount、list构造IPage对象，其中page对象必须含有pageNum,pageSize，其他的属性将会被此构造函数替换 <br/>
 	 *
-	 * @param page
-	 *            已存在分页
-	 * @param totalCount
-	 *            总条数
-	 * @param list
-	 *            当前页数据
+	 * @param page       已存在分页
+	 * @param totalCount 总条数
+	 * @param list       当前页数据
 	 */
-	public IPage(IPage<?> page, int totalCount, List<T> list) {
-		this(page.isPageable(), page.getPageNum(), page.getPageSize(), totalCount, list);
+	public static <T> IPage<T> of(IPage<?> page, int totalCount, List<T> list) {
+		return new IPage<T>(page.isPageable(), page.getPageNum(), page.getPageSize(), totalCount, list);
 	}
 
 	/**
@@ -263,10 +256,8 @@ public class IPage<T> extends IPageable {
 	 *
 	 * @author yjw@jusfoun.com
 	 * @date 2018年1月17日 上午10:15:51
-	 * @param pageNum
-	 *            页码
-	 * @param totalPage
-	 *            总页码
+	 * @param pageNum   页码
+	 * @param totalPage 总页码
 	 * @return 是否有下一页
 	 */
 	private boolean getNextPage(int pageNum, int totalPage) {
@@ -278,10 +269,8 @@ public class IPage<T> extends IPageable {
 	 *
 	 * @author yjw@jusfoun.com
 	 * @date 2018年1月17日 上午10:16:27
-	 * @param pageNum
-	 *            页码
-	 * @param totalPage
-	 *            总页码
+	 * @param pageNum   页码
+	 * @param totalPage 总页码
 	 * @return 是否有上一页
 	 */
 	private boolean getPrevPage(int pageNum, int totalPage) {
@@ -293,10 +282,8 @@ public class IPage<T> extends IPageable {
 	 *
 	 * @author yjw@jusfoun.com
 	 * @date 2018年1月17日 上午10:16:58
-	 * @param pageSize
-	 *            页长
-	 * @param totalCount
-	 *            总条数
+	 * @param pageSize   页长
+	 * @param totalCount 总条数
 	 * @return 总页数
 	 */
 	private int getTotalPage(int pageSize, long totalCount) {

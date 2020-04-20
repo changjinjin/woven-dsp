@@ -18,17 +18,17 @@ public class ChangePwd implements CryptoBean {
     private String oldPass;
 
     @Override
-    public void encrypt(CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         // do nothing
     }
 
     @Override
-    public void decrypt(CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(newPass)) {
-            newPass = cryptorDelegater.decrypt(newPass);
+            newPass = cryptorDelegater.decrypt(newPass, secretKey);
         }
         if (StringUtils.isNotEmpty(oldPass)) {
-            oldPass = cryptorDelegater.decrypt(oldPass);
+            oldPass = cryptorDelegater.decrypt(oldPass, secretKey);
         }
     }
 }

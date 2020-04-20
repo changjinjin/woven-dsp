@@ -49,15 +49,17 @@ public interface CryptorDelegater {
      *
      * @param cryptoType 加密类型
      * @param plaintext  明文
+     * @param secretKey  秘钥
      * @return 密文
      */
-    String encrypt(CryptoType cryptoType, String plaintext);
+    String encrypt(String plaintext, String secretKey, CryptoType cryptoType);
 
     /**
      * 解密
      *
      * @param ciphertext 密文
+     * @param secretKey  秘钥
      * @return 明文
      */
-    String decrypt(String ciphertext);
+    String decrypt(String ciphertext, String secretKey);
 }

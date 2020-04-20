@@ -39,16 +39,16 @@ public class TenantRegisterBean extends Tenant implements CryptoBean {
     }
 
     @Override
-    public void encrypt(CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(adminPassword)) {
-            adminPassword = ciphertext(adminPassword, cryptoType, cryptorDelegater);
+            adminPassword = ciphertext(adminPassword, secretKey, cryptoType, cryptorDelegater);
         }
     }
 
     @Override
-    public void decrypt(CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(adminPassword)) {
-            adminPassword = plaintext(adminPassword, cryptorDelegater);
+            adminPassword = plaintext(adminPassword, secretKey, cryptorDelegater);
         }
     }
 

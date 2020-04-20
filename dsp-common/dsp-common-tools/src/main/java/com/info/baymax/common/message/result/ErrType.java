@@ -98,8 +98,11 @@ public enum ErrType implements ErrMsg {
     FILE_IO_WRITE_ERROR(1763, "文件写入失败"), //
     FILE_IO_READ_ERROR(1764, "文件写入失败"), //
     FILE_DELETE_ERROR(1765, "文件删除失败"), //
-    FILE_NOT_FOUND_ERROR(1766, "文件未找到");
+    FILE_NOT_FOUND_ERROR(1766, "文件未找到"), //
 
+    SECRET_KEY_ERROR(1801, "secret key error"), //
+    SECRET_KEY_EXPIRED(1802, "secret key expired") //
+    ;
     private final Integer status;
     private final String message;
 

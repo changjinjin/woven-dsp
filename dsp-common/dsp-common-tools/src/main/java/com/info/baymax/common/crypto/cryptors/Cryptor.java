@@ -27,7 +27,7 @@ public interface Cryptor {
     /**
      * 提取密文的文本信息，即抽取出密文的前缀或者后缀，返回密文本体，如：ENC(abc) 返回 abc
      *
-     * @param value 带有标记的密文
+     * @param ciphertext 带有标记的密文
      * @return 密文本体
      */
     String unwrapEncryptedValue(String ciphertext);
@@ -36,16 +36,18 @@ public interface Cryptor {
      * 加密
      *
      * @param plaintext 明文
+     * @param secretKey 秘钥
      * @return 密文
      */
-    String encrypt(String plaintext);
+    String encrypt(String plaintext, String secretKey);
 
     /**
      * 解密
      *
      * @param ciphertext 密文
+     * @param secretKey  秘钥
      * @return 明文
      */
-    String decrypt(String ciphertext);
+    String decrypt(String ciphertext, String secretKey);
 
 }

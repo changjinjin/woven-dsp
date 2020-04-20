@@ -1,7 +1,5 @@
 package com.info.baymax.common.comp.crypto;
 
-import org.springframework.stereotype.Component;
-
 import com.info.baymax.common.crypto.delegater.DefaultCryptorDelegater;
 import com.info.baymax.common.crypto.method.AbstractCryptoMethodInvoker;
 import com.info.baymax.common.jpa.page.Page;
@@ -14,11 +12,10 @@ import com.info.baymax.common.page.IPage;
  * @author jingwei.yang
  * @date 2019年12月6日 下午3:44:21
  */
-@Component
 public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
 
-    public CustomCryptoMethodInvoker() {
-        super(new DefaultCryptorDelegater());
+    public CustomCryptoMethodInvoker(String secretKey) {
+        super(secretKey, new DefaultCryptorDelegater());
     }
 
     @Override

@@ -178,7 +178,7 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
      * @return 查询结果，使用分页对象包装
      */
     default IPage<T> selectPage(T s, IPageable pageable) {
-        IPage<T> page = new IPage<T>(pageable);
+        IPage<T> page = IPage.<T>of(pageable);
         if (pageable == null || !pageable.isPageable()) {// 查询所有
             int totalCount = selectCount(s);
             page.setTotalCount(totalCount);

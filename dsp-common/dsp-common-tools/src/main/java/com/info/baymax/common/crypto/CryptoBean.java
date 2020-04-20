@@ -14,23 +14,26 @@ public interface CryptoBean {
     /**
      * 加密处理
      */
-    void encrypt(CryptoType cryptoType, CryptorDelegater cryptorDelegater);
+    void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater);
 
     /**
      * 解密处理
      */
-    void decrypt(CryptorDelegater cryptorDelegater);
+    void decrypt(String secretKey, CryptorDelegater cryptorDelegater);
 
     /**
      * 获取密文
      *
      * @param plaintext        明文信息
+     * @param secretKey        秘钥
+     * @param cryptoType       加密类型
      * @param cryptorDelegater 加密解密器
      * @return 密文信息
      */
-    default String ciphertext(String plaintext, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    default String ciphertext(String plaintext, String secretKey, CryptoType cryptoType,
+                              CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(plaintext)) {
-            return cryptorDelegater.encrypt(cryptoType, plaintext);
+            return cryptorDelegater.encrypt(plaintext, secretKey, cryptoType);
         }
         return plaintext;
     }
@@ -39,12 +42,13 @@ public interface CryptoBean {
      * 获取明文
      *
      * @param ciphertext       密文信息
+     * @param secretKey        秘钥
      * @param cryptorDelegater 加密解密器
      * @return 明文信息
      */
-    default String plaintext(String ciphertext, CryptorDelegater cryptorDelegater) {
+    default String plaintext(String ciphertext, String secretKey, CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(ciphertext)) {
-            return cryptorDelegater.decrypt(ciphertext);
+            return cryptorDelegater.decrypt(ciphertext, secretKey);
         }
         return ciphertext;
     }

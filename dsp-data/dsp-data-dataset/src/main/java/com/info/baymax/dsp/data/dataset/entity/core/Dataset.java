@@ -15,7 +15,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -203,25 +202,26 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     }
 
     @Override
-    public void encrypt(CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (storageConfigurations != null && !storageConfigurations.isEmpty()) {
             String password = storageConfigurations.get("password");
             if (password != null) {
-                storageConfigurations.replace("password", ciphertext(password, cryptoType, cryptorDelegater));
+                storageConfigurations.replace("password",
+                    ciphertext(password, secretKey, cryptoType, cryptorDelegater));
             }
         }
     }
 
     @Override
-    public void decrypt(CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
         if (storageConfigurations != null && !storageConfigurations.isEmpty()) {
             String password = storageConfigurations.get("password");
             if (password != null) {
-                storageConfigurations.replace("password", plaintext(password, cryptorDelegater));
+                storageConfigurations.replace("password", plaintext(password, secretKey, cryptorDelegater));
             }
             String sql = storageConfigurations.get("sql");
             if (sql != null) {
-                storageConfigurations.replace("sql", plaintext(sql, cryptorDelegater));
+                storageConfigurations.replace("sql", plaintext(sql, secretKey, cryptorDelegater));
             }
         }
     }

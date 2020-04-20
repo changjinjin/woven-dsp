@@ -98,8 +98,8 @@ public interface BaseExtensionService<T> extends BaseService<T> {
 	/**
 	 * 查询分页列表包含附加属性. <br>
 	 *
-	 * @param params 查询条件
-	 * @param pageable   分页信息，传空查询所有
+	 * @param params   查询条件
+	 * @param pageable 分页信息，传空查询所有
 	 * @return 扩展查询数据列表
 	 * @throws ServiceException
 	 */
@@ -111,13 +111,13 @@ public interface BaseExtensionService<T> extends BaseService<T> {
 	/**
 	 * 查询扩展分页数据. <br>
 	 *
-	 * @param params 查询条件
-	 * @param pageable   分页信息，传空查询所有
+	 * @param params   查询条件
+	 * @param pageable 分页信息，传空查询所有
 	 * @return 扩展分页数据
 	 * @throws ServiceException
 	 */
 	default IPage<T> selectExtensionPage(Map<?, ?> params, IPageable pageable) throws ServiceException {
-		IPage<T> page = new IPage<T>(pageable);
+		IPage<T> page = IPage.<T>of(pageable);
 		if (pageable == null) {// 查询所有
 			int totalCount = selectExtensionCount(params);
 			page.setTotalCount(totalCount);

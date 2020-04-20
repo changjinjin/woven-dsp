@@ -14,7 +14,7 @@ public class ListPaging<T> {
 
     public IPage<T> page(int pageNum, int pageSize) {
         if (ICollections.hasNoElements(list)) {
-            return new IPage<T>(pageNum, pageSize, list.size(), new ArrayList<T>());
+            return IPage.<T>of(pageNum, pageSize, list.size(), new ArrayList<T>());
         }
         pageSize = getPageSize(pageSize);
         int totalPage = getTotalPage(pageSize);
@@ -24,7 +24,7 @@ public class ListPaging<T> {
         if (toIndex > list.size()) {
             toIndex = list.size();
         }
-        return new IPage<T>(pageNum, pageSize, list.size(), list.subList(fromIndex, toIndex));
+        return IPage.<T>of(pageNum, pageSize, list.size(), list.subList(fromIndex, toIndex));
     }
 
     public IPage<T> offset(int offset, int limit) {

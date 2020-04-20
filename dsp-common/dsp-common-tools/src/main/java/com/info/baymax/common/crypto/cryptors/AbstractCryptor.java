@@ -43,18 +43,18 @@ public abstract class AbstractCryptor implements Cryptor {
     }
 
     @Override
-    public String decrypt(String ciphertext) {
+    public String decrypt(String ciphertext, String secretKey) {
         if (ciphertext != null && isEncrypted(ciphertext)) {
-            return decryptCiphertext(unwrapEncryptedValue(ciphertext));
+            return decryptCiphertext(unwrapEncryptedValue(ciphertext), secretKey);
         }
         return ciphertext;
     }
 
     @Override
-    public String encrypt(String plaintext) {
+    public String encrypt(String plaintext, String secretKey) {
         StringBuffer buff = new StringBuffer();
         if (plaintext != null && !isEncrypted(plaintext)) {
-            return buff.append(prefix).append(encryptPlaintext(plaintext)).append(suffix).toString();
+            return buff.append(prefix).append(encryptPlaintext(plaintext, secretKey)).append(suffix).toString();
         }
         return plaintext;
     }
@@ -62,17 +62,19 @@ public abstract class AbstractCryptor implements Cryptor {
     /**
      * 解密没有标识包裹的密文
      *
-     * @param unwrapEncryptedValue 没有包裹的密文本体
+     * @param ciphertext 密文
+     * @param secretKey  秘钥
      * @return 明文
      */
-    abstract String decryptCiphertext(String ciphertext);
+    abstract String decryptCiphertext(String ciphertext, String secretKey);
 
     /**
      * 加密明文
      *
      * @param plaintext 明文
+     * @param secretKey 秘钥
      * @return 密文，没有包裹前后缀
      */
-    abstract String encryptPlaintext(String plaintext);
+    abstract String encryptPlaintext(String plaintext, String secretKey);
 
 }

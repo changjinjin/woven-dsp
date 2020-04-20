@@ -105,7 +105,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
      * @return 查询结果，使用分页对象包装
      */
     default IPage<T> selectPageByExample(Example example, IPageable pageable) {
-        IPage<T> page = new IPage<T>(pageable);
+        IPage<T> page = IPage.<T>of(pageable);
         if (pageable == null || !pageable.isPageable()) {// 查询所有
             int totalCount = selectCountByExample(example);
             page.setTotalCount(totalCount);
@@ -139,7 +139,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
     }
 
     default IPage<Map<String, Object>> selectMapPageByExample(Example example, IPageable pageable) {
-        IPage<Map<String, Object>> page = new IPage<Map<String, Object>>(pageable);
+        IPage<Map<String, Object>> page = IPage.<Map<String, Object>>of(pageable);
         if (pageable == null || !pageable.isPageable()) {// 查询所有
             int totalCount = selectCountByExample(example);
             page.setTotalCount(totalCount);

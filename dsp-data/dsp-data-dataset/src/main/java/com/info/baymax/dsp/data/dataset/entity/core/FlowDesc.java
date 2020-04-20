@@ -19,7 +19,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -161,19 +160,19 @@ public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
     }
 
     @Override
-    public void encrypt(CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (steps != null && !steps.isEmpty()) {
             for (StepDesc step : steps) {
-                step.encrypt(cryptoType, cryptorDelegater);
+                step.encrypt(secretKey, cryptoType, cryptorDelegater);
             }
         }
     }
 
     @Override
-    public void decrypt(CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
         if (steps != null && !steps.isEmpty()) {
             for (StepDesc step : steps) {
-                step.decrypt(cryptorDelegater);
+                step.decrypt(secretKey, cryptorDelegater);
             }
         }
     }
