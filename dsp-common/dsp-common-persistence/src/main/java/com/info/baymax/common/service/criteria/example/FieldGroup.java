@@ -62,15 +62,15 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
     }
 
     /************************* 构造器 ******************************/
-    public FieldGroup() {
+    private FieldGroup() {
         this(AndOr.AND);
     }
 
-    public FieldGroup(AndOr andOr) {
+    private FieldGroup(AndOr andOr) {
         this.andOr = andOr;
     }
 
-    public FieldGroup(AndOr andOr, List<Field> feilds, List<FieldGroup> fieldGroups) {
+    private FieldGroup(AndOr andOr, List<Field> feilds, List<FieldGroup> fieldGroups) {
         this.andOr = andOr;
         this.feilds = feilds;
         this.fieldGroups = fieldGroups;
@@ -81,6 +81,43 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
             query = parent.getQuery();
         }
         return query;
+    }
+
+    @Override
+    public FieldGroup andOr(AndOr andOr) {
+        setAndOr(andOr);
+        return this;
+    }
+
+    @Override
+    public FieldGroup group(FieldGroup group) {
+        if (fieldGroups == null) {
+            fieldGroups = new ArrayList<>();
+        }
+        if (group != null) {
+            counter++;
+            group.setIndex(counter);
+            group.setParent(this);
+            group.setQuery(this.getQuery());
+            this.fieldGroups.add(group);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andGroup(FieldGroup group) {
+        group.setAndOr(AndOr.AND);
+        return group(group);
+    }
+
+    @Override
+    public FieldGroup orGroup(FieldGroup group) {
+        group.setAndOr(AndOr.OR);
+        return group(group);
+    }
+
+    public ExampleQuery end() {
+        return this.query;
     }
 
     /************************* 排序节点 ******************************/
@@ -215,7 +252,6 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
         andLike(property, value.concat("%"));
         return this;
     }
-
 
     @Override
     public FieldGroup andFullLike(String property, String value) {
@@ -424,39 +460,259 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
     }
 
     @Override
-    public FieldGroup andOr(AndOr andOr) {
-        setAndOr(andOr);
-        return this;
-    }
-
-    @Override
-    public FieldGroup group(FieldGroup group) {
-        if (fieldGroups == null) {
-            fieldGroups = new ArrayList<>();
-        }
-        if (group != null) {
-            counter++;
-            group.setIndex(counter);
-            group.setParent(this);
-            group.setQuery(this.getQuery());
-            this.fieldGroups.add(group);
+    public FieldGroup andEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return andEqualTo(property, value);
         }
         return this;
     }
 
     @Override
-    public FieldGroup andGroup(FieldGroup group) {
-        group.setAndOr(AndOr.AND);
-        return group(group);
+    public FieldGroup andNotEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return andNotEqualTo(property, value);
+        }
+        return this;
     }
 
     @Override
-    public FieldGroup orGroup(FieldGroup group) {
-        group.setAndOr(AndOr.OR);
-        return group(group);
+    public FieldGroup andGreaterThanIfNotNull(String property, Object value) {
+        if (value != null) {
+            return andGreaterThan(property, value);
+        }
+        return this;
     }
 
-    public ExampleQuery end() {
-        return this.query;
+    @Override
+    public FieldGroup andGreaterThanOrEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return andGreaterThanOrEqualTo(property, value);
+        }
+        return this;
     }
+
+    @Override
+    public FieldGroup andLessThanIfNotNull(String property, Object value) {
+        if (value != null) {
+            return andLessThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLessThanOrEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return andLessThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andInIfNotEmpty(String property, Object[] values) {
+        if (values != null && values.length > 0) {
+            return andIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotInIfNotEmpty(String property, Object[] values) {
+        if (values != null && values.length > 0) {
+            return andNotIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLeftLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andRightLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andFullLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andFullLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andNotLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotLeftLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andNotLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotRightLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andNotRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotFullLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return andNotFullLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return orEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return orNotEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orGreaterThanIfNotNull(String property, Object value) {
+        if (value != null) {
+            return orGreaterThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orGreaterThanOrEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return orGreaterThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLessThanIfNotNull(String property, Object value) {
+        if (value != null) {
+            return orLessThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLessThanOrEqualToIfNotNull(String property, Object value) {
+        if (value != null) {
+            return orLessThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orInIfNotEmpty(String property, Object[] values) {
+        if (values != null && values.length > 0) {
+            return orIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotInIfNotEmpty(String property, Object[] values) {
+        if (values != null && values.length > 0) {
+            return orNotIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLeftLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orRightLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orFullLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orFullLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotLikeifNotNull(String property, String value) {
+        if (value != null) {
+            return orNotLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotLeftLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orNotLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotRightLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orNotRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotFullLikeIfNotNull(String property, String value) {
+        if (value != null) {
+            return orNotFullLike(property, value);
+        }
+        return this;
+    }
+
 }

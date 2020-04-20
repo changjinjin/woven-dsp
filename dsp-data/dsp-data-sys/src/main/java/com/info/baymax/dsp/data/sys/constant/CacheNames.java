@@ -21,4 +21,9 @@ public final class CacheNames {
 	 * 持久性的缓存，缓存一些基本不变化的信息，不需要过期时间
 	 */
 	public static final String CACHE_PERSISTENT = "persistentCache";
+
+	/**
+	 * rest api 签名缓存
+	 */
+	public static final String CACHE_SIGN = "signCache";
 }

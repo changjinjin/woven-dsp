@@ -18,7 +18,7 @@ public class JacksonConfig {
     @Bean
     @Primary
     @ConditionalOnMissingBean(ObjectMapper.class)
-    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper m = builder.createXmlMapper(false).build();
 
         m.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
@@ -38,5 +38,4 @@ public class JacksonConfig {
         // serializerProvider.setNullValueSerializer(new CustomizeNullJsonSerializer.NullObjectJsonSerializer());
         return m;
     }
-
 }

@@ -9,7 +9,6 @@ import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -22,7 +21,6 @@ import java.util.*;
  * @date 2019年6月27日 上午10:08:57
  */
 @ApiModel
-@Setter
 @Getter
 @ToString
 public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
@@ -174,7 +172,7 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
 
     @Override
     public ExampleQuery pageable(IPageable pageable) {
-        setPageable(pageable);
+        this.pageable = pageable;
         return this;
     }
 
@@ -197,49 +195,47 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
 
     @Override
     public ExampleQuery page(int pageNum, int pageSize) {
-        setPageable(IPageable.page(pageNum, pageSize));
-        return this;
+        return pageable(IPageable.page(pageNum, pageSize));
     }
 
     @Override
     public ExampleQuery offset(int offset, int limit) {
-        setPageable(IPageable.offset(offset, limit));
-        return this;
+        return pageable(IPageable.offset(offset, limit));
     }
 
     @Override
     public ExampleQuery distinct(boolean distinct) {
-        setDistinct(distinct);
+        this.distinct = distinct;
         return this;
     }
 
     @Override
     public ExampleQuery forUpdate(boolean forUpdate) {
-        setForUpdate(forUpdate);
+        this.forUpdate = forUpdate;
         return this;
     }
 
     @Override
     public ExampleQuery dynamic(String dynamicTable) {
-        setDynamicTable(dynamicTable);
+        this.dynamicTable = dynamicTable;
         return this;
     }
 
     @Override
     public ExampleQuery append(String appendTable) {
-        setAppendTable(appendTable);
+        this.appendTable = appendTable;
         return this;
     }
 
     @Override
     public ExampleQuery tableAlias(String tableAlias) {
-        setTableAlias(tableAlias);
+        this.tableAlias = tableAlias;
         return this;
     }
 
     @Override
     public ExampleQuery countProperty(String countProperty) {
-        setCountProperty(countProperty);
+        this.countProperty = countProperty;
         return this;
     }
 
@@ -253,7 +249,7 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
             for (String select : selectProperties) {
                 selects.add(select);
             }
-            setSelectProperties(selects);
+            this.selectProperties = selects;
         }
         return this;
     }
@@ -268,7 +264,7 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
             for (String exclude : excludeProperties) {
                 excludes.add(exclude);
             }
-            setExcludeProperties(excludes);
+            this.excludeProperties = excludes;
         }
         return this;
     }
@@ -278,7 +274,6 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
         if (this.fieldGroup == null) {
             this.fieldGroup = FieldGroup.builder(AndOr.AND);
             fieldGroup.setQuery(this);
-            setFieldGroup(fieldGroup);
         } else {
             fieldGroup.setQuery(this);
         }
@@ -288,7 +283,7 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     @Override
     public ExampleQuery fieldGroup(FieldGroup fieldGroup) {
         if (this.fieldGroup == null) {
-            setFieldGroup(fieldGroup);
+            this.fieldGroup = fieldGroup;
         } else {
             List<CriteriaItem> ordItems = fieldGroup.ordItems();
             if (ordItems != null) {
@@ -311,7 +306,7 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
                 ordSort2 = new ArrayList<Sort>();
             }
             ordSort2.addAll(ordSort);
-            setOrdSort(ordSort2);
+            this.ordSort = ordSort2;
         }
         return this;
     }

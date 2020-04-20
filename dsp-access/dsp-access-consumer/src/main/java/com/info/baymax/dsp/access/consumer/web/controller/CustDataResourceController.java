@@ -6,7 +6,6 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;
@@ -25,11 +24,8 @@ public class CustDataResourceController {
     @ApiOperation(value = "消费者查询可申请的数据资源，分页查询")
     @PostMapping("/page")
     public Response<IPage<DataResource>> queryPage(@ApiParam("查询条件") @RequestBody ExampleQuery query) {
-        if (query.getFieldGroup() == null) {
-            query.setFieldGroup(new FieldGroup());
-        }
-        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("openStatus", 1);
-        return Response.ok(dataResourceService.selectPage(query));
+        return Response.ok(dataResourceService.selectPage(ExampleQuery.builder(query).fieldGroup()
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("openStatus", 1).end()));
     }
 
     @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")

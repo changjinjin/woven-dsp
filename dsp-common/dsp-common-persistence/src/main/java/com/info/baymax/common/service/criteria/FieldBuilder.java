@@ -35,6 +35,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andEqualTo(String property, Object value);
 
     /**
+     * value非空执行条件: AND ${property} = ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andEqualToIfNotNull(String property, Object value);
+
+    /**
      * 条件: AND ${property} <> ${value}
      *
      * @param property 属性名
@@ -42,6 +51,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andNotEqualTo(String property, Object value);
+
+    /**
+     * value非空执行条件: AND ${property} <> ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andNotEqualToIfNotNull(String property, Object value);
 
     /**
      * 条件: AND ${property} > ${value}
@@ -53,6 +71,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andGreaterThan(String property, Object value);
 
     /**
+     * value非空执行条件: AND ${property} > ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andGreaterThanIfNotNull(String property, Object value);
+
+    /**
      * 条件: AND ${property} >= ${value}
      *
      * @param property 属性名
@@ -60,6 +87,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andGreaterThanOrEqualTo(String property, Object value);
+
+    /**
+     * value非空执行条件: AND ${property} >= ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andGreaterThanOrEqualToIfNotNull(String property, Object value);
 
     /**
      * 条件: AND ${property} < ${value}
@@ -71,6 +107,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andLessThan(String property, Object value);
 
     /**
+     * value非空执行条件: AND ${property} < ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andLessThanIfNotNull(String property, Object value);
+
+    /**
      * 条件: AND ${property} <= ${value}
      *
      * @param property 属性名
@@ -78,6 +123,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andLessThanOrEqualTo(String property, Object value);
+
+    /**
+     * value非空执行条件: AND ${property} <= ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andLessThanOrEqualToIfNotNull(String property, Object value);
 
     /**
      * 条件: AND ${property} IN ${values}
@@ -89,6 +143,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andIn(String property, Object[] values);
 
     /**
+     * values非空执行条件: AND ${property} IN ${values}
+     *
+     * @param property 属性名
+     * @param values   属性值
+     * @return 建造器
+     */
+    B andInIfNotEmpty(String property, Object[] values);
+
+    /**
      * 条件: AND ${property} NOT IN ${values}
      *
      * @param property 属性名
@@ -96,6 +159,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andNotIn(String property, Object[] values);
+
+    /**
+     * value非空执行条件: AND ${property} NOT IN ${values}
+     *
+     * @param property 属性名
+     * @param values   属性值
+     * @return 建造器
+     */
+    B andNotInIfNotEmpty(String property, Object[] values);
 
     /**
      * 条件: AND ${property} BETWEEN ${value1} AND ${value2}
@@ -127,6 +199,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andLike(String property, String value);
 
     /**
+     * value非空执行条件: AND ${property} LIKE ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: AND ${property} LIKE ${value}|'%'
      *
      * @param property 属性名
@@ -134,6 +215,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andLeftLike(String property, String value);
+
+    /**
+     * value非空执行条件: AND ${property} LIKE ${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andLeftLikeIfNotNull(String property, String value);
 
     /**
      * 条件: AND ${property} LIKE '%'|${value}
@@ -145,6 +235,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andRightLike(String property, String value);
 
     /**
+     * value非空执行条件: AND ${property} LIKE '%'|${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andRightLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: AND ${property} LIKE '%'|${value}|'%'
      *
      * @param property 属性名
@@ -152,6 +251,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andFullLike(String property, String value);
+
+    /**
+     * value非空执行条件: AND ${property} LIKE '%'|${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andFullLikeIfNotNull(String property, String value);
 
     /**
      * 条件: AND ${property} NOT LIKE ${value}
@@ -163,6 +271,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andNotLike(String property, String value);
 
     /**
+     * value非空执行条件: AND ${property} NOT LIKE ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andNotLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: AND ${property} NOT LIKE ${value}|'%'
      *
      * @param property 属性名
@@ -170,6 +287,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B andNotLeftLike(String property, String value);
+
+    /**
+     * value非空执行条件: AND ${property} NOT LIKE ${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andNotLeftLikeIfNotNull(String property, String value);
 
     /**
      * 条件: AND ${property} NOT LIKE '%'|${value}
@@ -181,6 +307,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andNotRightLike(String property, String value);
 
     /**
+     * value非空执行条件: AND ${property} NOT LIKE '%'|${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andNotRightLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: AND ${property} NOT LIKE '%'|${value}|'%'
      *
      * @param property 属性名
@@ -190,8 +325,16 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andNotFullLike(String property, String value);
 
     /**
-     * 条件: AND ${param.property1} = ${param.value1} AND ${param.property2} =
-     * ${param.value2}
+     * value非空执行条件: AND ${property} NOT LIKE '%'|${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B andNotFullLikeIfNotNull(String property, String value);
+
+    /**
+     * 条件: AND ${param.property1} = ${param.value1} AND ${param.property2} = ${param.value2}
      *
      * @param param 属性名属性值列表
      * @return 建造器
@@ -199,8 +342,7 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B andEqualTo(Object param);
 
     /**
-     * 条件: AND ${param.property1} = ${param.value1} AND ${param.property2} =
-     * ${param.value2}
+     * 条件: AND ${param.property1} = ${param.value1} AND ${param.property2} = ${param.value2}
      *
      * @param param 属性名属性值列表
      * @return 建造器
@@ -233,6 +375,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orEqualTo(String property, Object value);
 
     /**
+     * value非空执行条件: OR ${property} = ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orEqualToIfNotNull(String property, Object value);
+
+    /**
      * 条件: OR ${property} <> ${value}
      *
      * @param property 属性名
@@ -240,6 +391,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orNotEqualTo(String property, Object value);
+
+    /**
+     * value非空执行条件: OR ${property} <> ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orNotEqualToIfNotNull(String property, Object value);
 
     /**
      * 条件: OR ${property} > ${value}
@@ -251,6 +411,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orGreaterThan(String property, Object value);
 
     /**
+     * value非空执行条件: OR ${property} > ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orGreaterThanIfNotNull(String property, Object value);
+
+    /**
      * 条件: OR ${property} >= ${value}
      *
      * @param property 属性名
@@ -258,6 +427,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orGreaterThanOrEqualTo(String property, Object value);
+
+    /**
+     * value非空执行条件: OR ${property} >= ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orGreaterThanOrEqualToIfNotNull(String property, Object value);
 
     /**
      * 条件: OR ${property} < ${value}
@@ -269,6 +447,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orLessThan(String property, Object value);
 
     /**
+     * value非空执行条件: OR ${property} < ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orLessThanIfNotNull(String property, Object value);
+
+    /**
      * 条件: OR ${property} <= ${value}
      *
      * @param property 属性名
@@ -276,6 +463,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orLessThanOrEqualTo(String property, Object value);
+
+    /**
+     * value非空执行条件: OR ${property} <= ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orLessThanOrEqualToIfNotNull(String property, Object value);
 
     /**
      * 条件: OR ${property} IN ${value}
@@ -287,6 +483,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orIn(String property, Object[] values);
 
     /**
+     * value非空执行条件: OR ${property} IN ${value}
+     *
+     * @param property 属性名
+     * @param values   属性值
+     * @return 建造器
+     */
+    B orInIfNotEmpty(String property, Object[] values);
+
+    /**
      * 条件: OR ${property} NOT IN ${value}
      *
      * @param property 属性名
@@ -294,6 +499,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orNotIn(String property, Object[] values);
+
+    /**
+     * value非空执行条件: OR ${property} NOT IN ${value}
+     *
+     * @param property 属性名
+     * @param values   属性值
+     * @return 建造器
+     */
+    B orNotInIfNotEmpty(String property, Object[] values);
 
     /**
      * 条件: OR ${property} BETWEEN ${value1} AND ${value2}
@@ -325,6 +539,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orLike(String property, String value);
 
     /**
+     * value非空执行条件: OR ${property} LIKE ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: OR ${property} LIKE ${value}|'%'
      *
      * @param property 属性名
@@ -332,6 +555,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orLeftLike(String property, String value);
+
+    /**
+     * value非空执行条件: OR ${property} LIKE ${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orLeftLikeIfNotNull(String property, String value);
 
     /**
      * 条件: OR ${property} LIKE '%'|${value}
@@ -343,6 +575,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orRightLike(String property, String value);
 
     /**
+     * value非空执行条件: OR ${property} LIKE '%'|${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orRightLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: OR ${property} LIKE '%'|${value}|'%'
      *
      * @param property 属性名
@@ -350,6 +591,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orFullLike(String property, String value);
+
+    /**
+     * value非空执行条件: OR ${property} LIKE '%'|${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orFullLikeIfNotNull(String property, String value);
 
     /**
      * 条件: OR ${property} NOT LIKE ${value}
@@ -361,6 +611,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orNotLike(String property, String value);
 
     /**
+     * value非空执行条件: OR ${property} NOT LIKE ${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orNotLikeifNotNull(String property, String value);
+
+    /**
      * 条件: OR ${property} NOT LIKE ${value}|'%'
      *
      * @param property 属性名
@@ -368,6 +627,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
      * @return 建造器
      */
     B orNotLeftLike(String property, String value);
+
+    /**
+     * value非空执行条件: OR ${property} NOT LIKE ${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orNotLeftLikeIfNotNull(String property, String value);
 
     /**
      * 条件: OR ${property} NOT LIKE '%'|${value}
@@ -379,6 +647,15 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orNotRightLike(String property, String value);
 
     /**
+     * value非空执行条件: OR ${property} NOT LIKE '%'|${value}
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orNotRightLikeIfNotNull(String property, String value);
+
+    /**
      * 条件: OR ${property} NOT LIKE '%'|${value}|'%'
      *
      * @param property 属性名
@@ -388,8 +665,16 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orNotFullLike(String property, String value);
 
     /**
-     * 条件: OR ${param.property1} = ${param.value1} AND ${param.property2} =
-     * ${param.value2} ...
+     * value非空执行条件: OR ${property} NOT LIKE '%'|${value}|'%'
+     *
+     * @param property 属性名
+     * @param value    属性值
+     * @return 建造器
+     */
+    B orNotFullLikeIfNotNull(String property, String value);
+
+    /**
+     * 条件: OR ${param.property1} = ${param.value1} AND ${param.property2} = ${param.value2} ...
      *
      * @param param 属性名属性值列表
      * @return 建造器
@@ -397,8 +682,7 @@ public interface FieldBuilder<B extends FieldBuilder<B>> {
     B orEqualTo(Object param);
 
     /**
-     * 条件: OR ${param.property1} = ${param.value1} AND ${param.property2} =
-     * ${param.value2} ...
+     * 条件: OR ${param.property1} = ${param.value1} AND ${param.property2} = ${param.value2} ...
      *
      * @param param 属性名属性值列表
      * @return 建造器

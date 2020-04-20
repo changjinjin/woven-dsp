@@ -8,7 +8,6 @@ import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.ClusterEntity;
 import com.info.baymax.dsp.data.dataset.mybatis.mapper.core.ClusterMapper;
 import com.info.baymax.dsp.data.dataset.service.core.ClusterDbService;
-import com.info.baymax.dsp.data.dataset.service.resource.QueryObjectByResourceOrProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +33,7 @@ public class ClusterDbServiceImpl extends EntityClassServiceImpl<ClusterEntity> 
 
   @Override
   public Page<ClusterEntity> findObjectPage(QueryObject queryObject) {
-    ExampleQuery exampleQuery = exampleQuery(queryObject);
-    Set<String> excludeproperties = new HashSet<String>() {{
-      add(CONFIG_FILE);
-    }};
-    exampleQuery.setExcludeProperties(excludeproperties);
-    return findObjectPage(exampleQuery);
+    return findObjectPage(exampleQuery(queryObject).excludeProperties(CONFIG_FILE));
   }
 
   @Override
@@ -50,10 +44,7 @@ public class ClusterDbServiceImpl extends EntityClassServiceImpl<ClusterEntity> 
             .andEqualTo(PROPERTY_NAME, name)
             .end();
     if (!includeConfFile) {
-      Set<String> excludeproperties = new HashSet<String>() {{
-        add(CONFIG_FILE);
-      }};
-      exampleQuery.setExcludeProperties(excludeproperties);
+    	exampleQuery.excludeProperties(CONFIG_FILE);
     }
     return selectOne(exampleQuery);
   }
@@ -61,13 +52,11 @@ public class ClusterDbServiceImpl extends EntityClassServiceImpl<ClusterEntity> 
   @Override
   public List<ClusterEntity> findAllEnabledCluster(String tenantId) {
     ExampleQuery exampleQuery = ExampleQuery.builder(getEntityClass())
+    		.excludeProperties(CONFIG_FILE)
             .fieldGroup()
             .andEqualTo(PROPERTY_TENANTID, tenantId)
             .andEqualTo("enabled", 1)
             .end();
-    exampleQuery.setExcludeProperties(new HashSet<String>() {{
-      add(CONFIG_FILE);
-    }});
     return selectList(exampleQuery);
   }
 }

@@ -8,7 +8,6 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
@@ -43,13 +42,9 @@ public class CustDataServiceController implements BaseEntityController<DataServi
         if (query == null) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        if (query.getFieldGroup() == null) {
-            query.setFieldGroup(new FieldGroup());
-        }
-        query.getFieldGroup().andEqualTo("custId", SaasContext.getCurrentUserId());
-        return Response.ok(dataServiceEntityService.selectPage(query));
+        return Response.ok(dataServiceEntityService.selectPage(
+            ExampleQuery.builder(query).fieldGroup().andEqualTo("custId", SaasContext.getCurrentUserId()).end()));
     }
-
 
     @Override
     public Response<DataService> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
@@ -81,15 +76,8 @@ public class CustDataServiceController implements BaseEntityController<DataServi
         if (StringUtils.isEmpty(flowId)) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        if (query == null) {
-            query = ExampleQuery.builder(FlowExecution.class);
-        }
-        if (query.getFieldGroup() == null) {
-            query.setFieldGroup(new FieldGroup());
-        }
-        query.getFieldGroup().andEqualTo("flowId", flowId);
-        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
-        return Response.ok(flowExecutionService.selectPage(query));
+        return Response.ok(flowExecutionService.selectPage(ExampleQuery.builder(query).fieldGroup()
+            .andEqualTo("flowId", flowId).andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end()));
     }
 
 }

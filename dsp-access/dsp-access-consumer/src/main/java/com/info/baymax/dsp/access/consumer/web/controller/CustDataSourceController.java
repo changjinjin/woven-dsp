@@ -8,7 +8,6 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.common.swagger.annotation.ApiModelFields;
 import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
@@ -61,12 +60,8 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 
     @Override
     public Response<IPage<CustDataSource>> page(ExampleQuery query) {
-        query = ExampleQuery.builder(query);
-        if (query.getFieldGroup() == null) {
-            query.setFieldGroup(new FieldGroup());
-        }
-        query.getFieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
-        return BaseEntityController.super.page(query);
+        return BaseEntityController.super.page(
+            ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
     }
 
     @ApiOperation(value = "查询数据库驱动信息", notes = "如果是JDBC类型的数据源，查询系统内置的数据库驱动信息用于用户创建数据源")

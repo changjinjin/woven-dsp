@@ -50,14 +50,14 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(t.getId());
         dataService.setStatus(t.getStatus());
-        if(t.getExpiredTime() != null && t.getExpiredTime() > 0){
+        if (t.getExpiredTime() != null && t.getExpiredTime() > 0) {
             dataService.setExpiredTime(t.getExpiredTime());
         }
         dataService.setLastModifiedTime(new Date());
         dataService.setLastModifier(SaasContext.getCurrentUsername());
         if (t.getStatus() == DataServiceStatus.SERVICE_STATUS_DEPLOYED) {
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
-        }else if(t.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
+        } else if (t.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED) {
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
         }
         dataServiceEntityService.update(dataService);
@@ -98,14 +98,14 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         if (StringUtils.isEmpty(flowId)) {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
-        if (query == null) {
-            query = ExampleQuery.builder(FlowExecution.class);
-        }
-        if (query.getFieldGroup() == null) {
-            query.setFieldGroup(new FieldGroup());
-        }
-        query.getFieldGroup().andEqualTo("flowId", flowId);
-        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
+        // @formatter:off
+        query = ExampleQuery
+            .builder(query)
+            .fieldGroup()
+            .andEqualTo("flowId", flowId)
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+            .end();
+        // @formatter:on
         return Response.ok(flowExecutionService.selectPage(query));
     }
 }
