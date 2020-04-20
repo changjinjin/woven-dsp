@@ -52,7 +52,7 @@ public class UserController implements MainTableController<User> {
 
     @JsonBodys({
         @JsonBody(type = User.class, excludes = {"creator", "createTime", "lastModifier", "lastModifiedTime",
-            "hdfsSpaceQuota", "moduleVersion", "password", "description", "groupCount", "groupFieldValue"}),
+            "hdfsSpaceQuota", "password", "description", "groupCount", "groupFieldValue"}),
         @JsonBody(type = Role.class, includes = {"id", "name"})})
     @Cryptoable(returnOperation = {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
@@ -66,7 +66,7 @@ public class UserController implements MainTableController<User> {
 
     @JsonBodys({
         @JsonBody(type = User.class, excludes = {"creator", "createTime", "lastModifier", "lastModifiedTime",
-            "moduleVersion", "password", "description", "groupCount", "groupFieldValue"}),
+            "password", "description", "groupCount", "groupFieldValue"}),
         @JsonBody(type = Role.class, excludes = {"permissions"})})
     @Cryptoable(returnOperation = {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
