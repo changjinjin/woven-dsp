@@ -4,7 +4,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
@@ -155,9 +154,11 @@ public class ExecutorDataServiceController {
             flow加一个标识,标识它是共享数据flow,完成后给平台和用户发一个通知,列表显示通知。
 */
             //构建ExampleQuery更新DataService
-            exampleQuery = ExampleQuery.builder(DataService.class);
-            exampleQuery.setFieldGroup(new FieldGroup());
-            exampleQuery.getFieldGroup().andEqualTo("id", dataService.getId());
+            exampleQuery = ExampleQuery
+            		.builder(DataService.class)
+            		.fieldGroup()
+                    .andEqualTo("id", dataService.getId())
+                    .end();
 
             FlowDesc flowDesc = null;
             String clusterId = dataset.getStorageConfigurations().get("clusterId");
@@ -476,19 +477,23 @@ public class ExecutorDataServiceController {
     }
 
     private Integer countAllExecutions(String flowId){
-        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
-        query.setFieldGroup(new FieldGroup());
-        query.getFieldGroup().andEqualTo("flowId", flowId);
-        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
+        ExampleQuery query = ExampleQuery
+        		.builder(FlowExecution.class)
+        		.fieldGroup()
+                .andEqualTo("flowId", flowId)
+                .andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+                .end();
         return flowExecutionService.selectCount(query);
     }
 
     private Integer countFailedExecutions(String flowId){
-        ExampleQuery query = ExampleQuery.builder(FlowExecution.class);
-        query.setFieldGroup(new FieldGroup());
-        query.getFieldGroup().andEqualTo("flowId", flowId);
-        query.getFieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId());
-        query.getFieldGroup().andEqualTo("statusType", "FAILED");
+        ExampleQuery query = ExampleQuery
+        		.builder(FlowExecution.class)
+        		.fieldGroup()
+                .andEqualTo("flowId", flowId)
+                .andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+                .andEqualTo("statusType", "FAILED")
+                .end();
         return flowExecutionService.selectCount(query);
     }
 
