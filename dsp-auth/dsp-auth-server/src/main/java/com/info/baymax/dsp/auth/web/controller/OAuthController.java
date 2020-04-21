@@ -64,6 +64,7 @@ public class OAuthController {
         return Response.ok();
     }
 
+    @ApiOperation(value = "销毁认证信息（退出登录）", hidden = true)
     @ResponseBody
     @GetMapping("/.well-known/jwks.json")
     public Map<String, Object> getKey() {

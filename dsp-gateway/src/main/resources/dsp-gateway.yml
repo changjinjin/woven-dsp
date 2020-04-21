@@ -149,3 +149,12 @@ swagger2:
   - name: access-dataapi
     url: /api/dsp/dataapi/v2/api-docs
     swaggerVersion: 0.1.0
+  global-parameters:
+  - name: AUTHORIZATION
+    description: 请求令牌
+    required: false
+    modelRef: string
+    param-type: header
+    default-value: Bearer 
+    allow-empty-value: true
+    order: 100

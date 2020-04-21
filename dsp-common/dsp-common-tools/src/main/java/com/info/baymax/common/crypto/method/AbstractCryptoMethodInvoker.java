@@ -21,6 +21,9 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
 	 */
 	private final String secretKey;
 
+	/**
+	 * 加解密的处理器委派对象
+	 */
 	private final CryptorDelegater cryptorDelegater;
 
 	public AbstractCryptoMethodInvoker(String secretKey, CryptorDelegater cryptorDelegater) {

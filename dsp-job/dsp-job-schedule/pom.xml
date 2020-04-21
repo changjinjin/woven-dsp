@@ -20,6 +20,12 @@
             <groupId>com.info.baymax</groupId>
             <artifactId>dsp-common-webflux</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>dsp-common-swagger</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
@@ -185,8 +191,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
-         <!--<dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId>
+
+        <!--<dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional> </dependency> -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

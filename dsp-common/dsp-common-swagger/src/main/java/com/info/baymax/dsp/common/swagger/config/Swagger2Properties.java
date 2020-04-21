@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.common.swagger.config;
 
+import com.info.baymax.dsp.common.swagger.binding.Parameter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,6 +8,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.swagger.web.SwaggerResource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -30,8 +32,21 @@ public class Swagger2Properties {
     private ApiInfo apiInfo;
 
     /**
+     * 全局参数
+     */
+    private List<Parameter> globalParameters;
+
+    /**
      * SwaggerResource 定义列表
      */
     private List<SwaggerResource> resources;
+
+    public List<springfox.documentation.service.Parameter> parseGlobalParameters() {
+        List<Parameter> globalParameters = getGlobalParameters();
+        if (globalParameters != null && !globalParameters.isEmpty()) {
+            return globalParameters.stream().map(t -> t.get()).collect(Collectors.toList());
+        }
+        return null;
+    }
 
 }

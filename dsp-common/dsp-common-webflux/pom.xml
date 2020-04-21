@@ -28,13 +28,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>dsp-common-swagger</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

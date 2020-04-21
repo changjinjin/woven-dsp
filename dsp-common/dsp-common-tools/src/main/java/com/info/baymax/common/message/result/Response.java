@@ -124,4 +124,9 @@ public class Response<T> implements Serializable {
 		setContent(content);
 		return this;
 	}
+
+	@Override
+	public String toString() {
+		return "Response [status=" + status + ", message=" + message + ", content=" + content + "]";
+	}
 }

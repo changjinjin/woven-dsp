@@ -8,10 +8,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
-import springfox.documentation.builders.*;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.Example;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
@@ -68,19 +70,7 @@ public class Swagger2Config {
      * @return 公共参数定义列表
      */
     private List<Parameter> globalOperationParameters() {
-        List<Parameter> parameters = new ArrayList<Parameter>();
-        parameters.add(new ParameterBuilder()//
-            .name("AUTHORIZATION")//
-            .description("请求令牌")//
-            .modelRef(new ModelRef("string"))//
-            .parameterType("header")//
-            .required(false)//
-            .defaultValue("Bearer ")//
-            .allowEmptyValue(true)//
-            .order(Ordered.LOWEST_PRECEDENCE)//
-            .build()//
-        );
-        return parameters;
+        return properties.parseGlobalParameters();
     }
 
     private ApiInfo apiInfo() {
