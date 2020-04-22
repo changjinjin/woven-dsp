@@ -243,6 +243,7 @@ public class FlowGenUtil {
             throw new RuntimeException("DataSource type not support : "+ custDataSource.getType());
         }
 
+        String storage = getDatasetType(custDataSource.getType());
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         Iterator<Map.Entry<String,Object>> iter = custDataSource.getAttributes().entrySet().iterator();
         while (iter.hasNext()){
@@ -258,7 +259,7 @@ public class FlowGenUtil {
             stepBuilder.config("table", dataService.getApplyConfiguration().getCustTableName());
         }
         //add type propreties
-        stepBuilder.config("type", getDatasetType(custDataSource.getType()));
+        stepBuilder.config("type", storage);
 
 
         List<FieldMapping> fieldMappings = dataService.getFieldMappings();
@@ -292,7 +293,7 @@ public class FlowGenUtil {
         schemaId = schema.getId();
 
         if(dataset == null) {
-            dataset = createDataset(schema, dataService, custDataSource, datasetName);
+            dataset = createDataset(schema, dataService, custDataSource, datasetName, storage);
         }
         datasetId = dataset.getId();
 
@@ -336,7 +337,7 @@ public class FlowGenUtil {
         return schema;
     }
 
-    public Dataset createDataset(Schema schema, DataService dataService, CustDataSource custDataSource, String datasetName){
+    public Dataset createDataset(Schema schema, DataService dataService, CustDataSource custDataSource, String datasetName, String storage){
         Dataset dataset = new Dataset();
         dataset.setId(UUID.randomUUID().toString());
         dataset.setName(datasetName);
@@ -370,18 +371,13 @@ public class FlowGenUtil {
         if (storageConfigurations.containsKey("datasetId")) {
             storageConfigurations.remove("datasetId");
         }
-        storageConfigurations.put("table", dataService.getApplyConfiguration().getCustTableName());
+        if("JDBC".equals(storage)) {
+            storageConfigurations.put("table", dataService.getApplyConfiguration().getCustTableName());
+        }
 
         dataset.setStorageConfigurations(storageConfigurations);
         dataset.setSliceTime("");
         dataset.setSliceType("H");
-        Object type = storageConfigurations.get("type");
-        String storage = null;
-        if(type != null && StringUtils.isNotEmpty(type.toString())){
-            storage = getDatasetType(type.toString());
-        }else{
-            storage = "JDBC";
-        }
         dataset.setStorage(storage);
         dataset.setTenantId(dataService.getTenantId());
         dataset.setOwner(dataService.getOwner());
