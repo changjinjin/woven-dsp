@@ -106,7 +106,7 @@ public class DataApiController implements Serializable {
             }
             List<Map<String, Object>> list = pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
                     offset, size, includes.toArray(new String[0]));
-            return Response.ok(new IPage<Map<String, Object>>(1, list.size(), list.size(), list));
+            return Response.ok(IPage.<Map<String, Object>>of(true, 1, list.size(), list.size(), list, null));
         } else {
         	throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
         }
