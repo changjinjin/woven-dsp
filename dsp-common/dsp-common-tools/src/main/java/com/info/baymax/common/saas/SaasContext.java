@@ -79,4 +79,11 @@ public class SaasContext implements Serializable {
         context.setUserId(null);
         context.setUsername(null);
     }
+
+    public static void initSaasContext(String tenantId, String userId){
+        SaasContext ctx = getCurrentSaasContext();
+
+        ctx.setTenantId(tenantId);
+        ctx.setUserId(userId);
+    }
 }

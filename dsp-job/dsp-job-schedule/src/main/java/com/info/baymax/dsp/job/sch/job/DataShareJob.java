@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.job.sch.job;
 
+import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.platform.entity.DataService;
@@ -60,7 +61,13 @@ public class DataShareJob implements Job {
                 return;
             }
             dataServiceEntityService.updateDataServiceRunningStatus(serviceId, ScheduleJobStatus.JOB_STATUS_RUNNING);
+
+            //设置上下文
+            SaasContext.initSaasContext(dataService.getTenantId(), dataService.getOwner());
             executorRestClient.deployDataservice(body);
+            //清空上下文
+            SaasContext.clear();
+
             log.info("jobSchedule success to send request to executor, dataserviceId :" + serviceId);
         } catch (Exception e) {
             log.error("call rest api throw Exception: " + serviceId, e);

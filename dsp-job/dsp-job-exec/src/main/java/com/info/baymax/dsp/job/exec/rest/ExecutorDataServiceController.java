@@ -200,10 +200,8 @@ public class ExecutorDataServiceController {
                 dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }
 
-            //initSaasContext()
-            if(StringUtils.isEmpty(SaasContext.getCurrentUserId()) || StringUtils.isEmpty(SaasContext.getCurrentTenantId())){
-                initSaasContext(flowDesc.getTenantId(), flowDesc.getOwner());
-            }
+            //设置上下文
+            SaasContext.initSaasContext(dataService.getTenantId(), dataService.getOwner());
 
             List<ConfigItem> runtimePros = null;
             try {
@@ -260,11 +258,14 @@ public class ExecutorDataServiceController {
                 dataService.setStatus(null);//不更新status
                 dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }catch (Exception ex){
-                log.error("send scheduler request to platform exception and restore dataService [" + dataService.getId() + "] status :", ex);
+                log.error("send scheduler request to platform exception and recover dataService [" + dataService.getId() + "] status :", ex);
                 //更新dataservice的isRunning为失败状态
                 dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
                 throw new RuntimeException("send scheduler request to platform exception: ", ex);
             }
+
+            //清空上下文
+            SaasContext.clear();
 
             //检查execution执行进度,超时退出, 获取增量字段的更新值
             Long startTime = System.currentTimeMillis();
@@ -449,31 +450,6 @@ public class ExecutorDataServiceController {
         String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
         List<Object> list = JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
         System.out.println(list.size());
-    }
-
-    private void initSaasContext(String tenantId, String userId){
-        SaasContext ctx = SaasContext.getCurrentSaasContext();
-        Tenant tenant = null;
-        if (StringUtils.isNotEmpty(tenantId)) {
-            tenant = tenantService.selectByPrimaryKey(tenantId);
-        }
-        if (tenant == null) {
-            return;
-        }
-
-        // 查询用户信息
-        User user = null;
-        if (StringUtils.isNotEmpty(userId)) {
-            user = userService.selectByPrimaryKey(userId);
-        }
-        if (user == null) {
-            return;
-        }
-
-        ctx.setTenantId(tenantId);
-        ctx.setTenantName(tenant.getName());
-        ctx.setUserId(userId);
-        ctx.setUsername(user.getUsername());
     }
 
     private Integer countAllExecutions(String flowId){

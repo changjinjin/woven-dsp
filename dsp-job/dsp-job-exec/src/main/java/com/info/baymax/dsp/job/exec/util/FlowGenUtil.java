@@ -212,6 +212,30 @@ public class FlowGenUtil {
         return step;
     }
 
+    private String getDatasetType(String datasourceType){
+        DataSourceType dataSourceType = null;
+        try{
+            dataSourceType = DataSourceType.valueOf(datasourceType.toUpperCase());
+        }catch (Exception e){
+            logger.error("DataSourceType can't convert to dataset type: " + datasourceType);
+            return "JDBC";
+        }
+        if(dataSourceType == DataSourceType.DB){
+            return "JDBC";
+        }else if(dataSourceType == DataSourceType.FTP){
+            return "FTP";
+        }else if(dataSourceType == DataSourceType.SFTP){
+            return "SFTP";
+        }else if(dataSourceType == DataSourceType.ES){
+            return "ElasticSearch";
+        }else if(dataSourceType == DataSourceType.KAFKA){
+            return "KAFKA";
+        }else if(dataSourceType == DataSourceType.HDFS){
+            return "HDFS";
+        }
+        return datasourceType.toUpperCase();
+    }
+
     private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
         if(!DataSourceType.contains(custDataSource.getType())){
@@ -233,6 +257,9 @@ public class FlowGenUtil {
         if(dataService.getApplyConfiguration() != null && StringUtils.isNotEmpty(dataService.getApplyConfiguration().getCustTableName())){
             stepBuilder.config("table", dataService.getApplyConfiguration().getCustTableName());
         }
+        //add type propreties
+        stepBuilder.config("type", getDatasetType(custDataSource.getType()));
+
 
         List<FieldMapping> fieldMappings = dataService.getFieldMappings();
         Map<String,FieldMapping> fieldMap = new HashMap<>();
@@ -351,7 +378,7 @@ public class FlowGenUtil {
         Object type = storageConfigurations.get("type");
         String storage = null;
         if(type != null && StringUtils.isNotEmpty(type.toString())){
-            storage = type.toString();
+            storage = getDatasetType(type.toString());
         }else{
             storage = "JDBC";
         }
