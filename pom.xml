@@ -360,7 +360,7 @@
 
 	<repositories>
 		<repository>
-			<name>jcenter</name>
+			<id>jcenter</id>
 			<url>http://jcenter.bintray.com</url>
 		</repository>
 		<repository>
@@ -399,7 +399,7 @@
 			<url>http://repo.spring.io/milestone</url>
 		</pluginRepository>
 		<pluginRepository>
-			<name>jcenter</name>
+			<id>jcenter</id>
 			<url>http://jcenter.bintray.com</url>
 		</pluginRepository>
 	</pluginRepositories>
