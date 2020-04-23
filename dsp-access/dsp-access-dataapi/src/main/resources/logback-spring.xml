@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false" scanPeriod="60 seconds"
+<configuration scan="true" scanPeriod="20 seconds"
                debug="false">
     <contextName>dsp</contextName>
     <property name="LOG_PATH"
@@ -87,11 +87,11 @@
     <logger name="sun" level="ERROR"/>
     <logger name="org.apache.tomcat" level="ERROR"/>
 
-    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework" level="ERROR"/>
     <logger name="com.info.baymax" level="INFO"/>
     <logger name="java.sql" level="DEBUG"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <!-- <appender-ref ref="FILE" /> -->
     </root>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false" scanPeriod="20 seconds"
+<configuration scan="true" scanPeriod="20 seconds"
                debug="false">
     <contextName>dsp</contextName>
     <property name="LOG_PATH"
@@ -88,11 +88,11 @@
     <logger name="org.apache.tomcat" level="ERROR"/>
 
     <logger name="org.springframework.cloud.consul" level="ERROR"/>
-    <logger name="org.springframework" level="TRACE"/>
+    <logger name="org.springframework" level="ERROR"/>
     <logger name="com.info.baymax" level="DEBUG"/>
     <logger name="java.sql" level="DEBUG"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <!-- <appender-ref ref="FILE" /> -->
     </root>

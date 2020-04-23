@@ -202,6 +202,17 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<profile>
+			<id>release-baymax-dsp-docs</id>
+			<properties>
+				<profileActive>release-baymax-dsp-docs</profileActive>
+				<release.finalName>baymax-dsp-docs</release.finalName>
+				<hadoop.version>2.7.3</hadoop.version>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+		</profile>
 	</profiles>
 
 	<build>
@@ -212,14 +223,46 @@
 				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+					<failOnError>false</failOnError>
+					<!--当配置true时,只清理filesets里的文件,构建目录中得文件不被清理.默认是flase. -->
+					<excludeDefaultDirectories>false</excludeDefaultDirectories>
+					<filesets>
+						<fileset>
+							<directory>${project.build.directory}</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>release-${release.finalName}</id>
+						<phase>install</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
-						<phase>install</phase>
+						<configuration>
+							<outputDirectory>${project.build.directory}/binaries/</outputDirectory>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>release-${release.finalName}.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+					<execution>
+						<id>release-baymax-dsp-docs</id>
+						<phase>test</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
 						<configuration>
 							<outputDirectory>${project.build.directory}/binaries/</outputDirectory>
 							<appendAssemblyId>false</appendAssemblyId>

@@ -32,6 +32,7 @@ import java.util.List;
 @Configuration
 @ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(Swagger2Properties.class)
+//@Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config {
     private final Swagger2Properties properties;
 
