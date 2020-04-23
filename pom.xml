@@ -360,10 +360,6 @@
 
 	<repositories>
 		<repository>
-			<id>jcenter</id>
-			<url>http://jcenter.bintray.com</url>
-		</repository>
-		<repository>
 			<id>aliyun</id>
 			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
 		</repository>
@@ -382,6 +378,10 @@
 		<repository>
 			<id>hortonworks</id>
 			<url>http://repo.hortonworks.com/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>jcenter</id>
+			<url>http://jcenter.bintray.com</url>
 		</repository>
 	</repositories>
 
