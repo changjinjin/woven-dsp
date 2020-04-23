@@ -19,8 +19,13 @@ public class JacksonConfig {
     @Primary
     @ConditionalOnMissingBean(ObjectMapper.class)
     public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper m = builder.createXmlMapper(false).build();
+        return config(builder.createXmlMapper(false).build());
+    }
 
+    public static ObjectMapper config(ObjectMapper m) {
+        if (m == null) {
+            m = Jackson2ObjectMapperBuilder.json().build();
+        }
         m.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
         m.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // m.setSerializationInclusion(Include.NON_NULL);
