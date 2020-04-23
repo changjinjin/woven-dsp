@@ -5,8 +5,9 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.request.PullRequest;
-import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
+import com.info.baymax.dsp.access.dataapi.request.PullResponse;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
+import com.info.baymax.dsp.access.dataapi.service.RestSignService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -18,6 +19,7 @@ import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,26 +35,33 @@ public class DataApiController implements Serializable {
     private static final long serialVersionUID = -5006451148239176107L;
 
     @Autowired
-    DataServiceEntityService dataServiceEntityService;
+    private DataServiceEntityService dataServiceEntityService;
 
     @Autowired
-    DataCustAppService custAppService;
+    private DataCustAppService custAppService;
 
     @Autowired
-    DataResourceService dataResourceService;
+    private DataResourceService dataResourceService;
 
     @Autowired
-    DatasetService datasetService;
+    private DatasetService datasetService;
 
     @Autowired
-    ElasticSearchService elasticSearchService;
+    private PullService pullService;
 
     @Autowired
-    PullService pullService;
+    private RestSignService restSignService;
+
+    @ApiOperation(value = "获取秘钥接口")
+    @PostMapping("/secertkey")
+    public Response<String> secertkey(@RequestParam String accessKey) {
+        return Response.ok(restSignService.secertkey(accessKey));
+    }
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
-    public Response<IPage<Map<String, Object>>> pullData(@RequestBody PullRequest body, @RequestHeader String[] hosts)  {
+    public PullResponse pullData(@ApiParam(value = "数据拉取是请求信息") @RequestBody PullRequest body,
+                                 @ApiParam(value = "请求端hosts信息，需要与申请应用对相应") @RequestHeader String[] hosts) {
         String dataServiceId = body.getDataServiceId();
         String requestKey = body.getAccessKey();
         String host = hosts[0];
@@ -60,22 +69,22 @@ public class DataApiController implements Serializable {
         int size = body.getSize();
 
         if (dataServiceId == null) {
-        	throw new ControllerException(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
+            throw new ControllerException(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
         }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(Long.valueOf(dataServiceId));
         if (dataService == null) {
-        	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
+            throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
         }
         if (dataService.getType() == 1) {
-        	throw new ControllerException(ErrType.BAD_REQUEST, "不支持push共享方式");
+            throw new ControllerException(ErrType.BAD_REQUEST, "不支持push共享方式");
         }
         if (dataService.getStatus() != 1) {
-        	throw new ControllerException(ErrType.BAD_REQUEST, "服务不可用，未部署或已停止或已过期");
+            throw new ControllerException(ErrType.BAD_REQUEST, "服务不可用，未部署或已停止或已过期");
         }
         Long custAppId = dataService.getApplyConfiguration().getCustAppId();
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
         if (custApp == null) {
-        	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "接入配置" + custAppId + " 不存在");
+            throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "接入配置" + custAppId + " 不存在");
         }
 
         String accessKey = custApp.getAccessKey();
@@ -84,11 +93,11 @@ public class DataApiController implements Serializable {
             Long dataResId = dataService.getApplyConfiguration().getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             if (dataResource == null) {
-            	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据资源" + dataResId + " 不存在");
+                throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据资源" + dataResId + " 不存在");
             }
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
             if (dataset == null) {
-            	throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
+                throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
             }
 
             List<FieldMapping> dataServiceMappings = dataService.getFieldMappings();
@@ -98,17 +107,18 @@ public class DataApiController implements Serializable {
             for (FieldMapping dataServiceMapping : dataServiceMappings) {
                 for (FieldMapping dataResourceMapping : dataResourceMappings) {
                     if (dataServiceMapping.getSourceField().equals(dataResourceMapping.getTargetField())
-                            && !StringUtils.isEmpty(dataServiceMapping.getSourceField())) {
+                        && !StringUtils.isEmpty(dataServiceMapping.getSourceField())) {
                         includes.add(dataResourceMapping.getSourceField());
                         fieldMap.put(dataResourceMapping.getSourceField(), dataServiceMapping.getTargetField());
                     }
                 }
             }
-            List<Map<String, Object>> list = pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
-                    offset, size, includes.toArray(new String[0]));
-            return Response.ok(IPage.<Map<String, Object>>of(true, 1, list.size(), list.size(), list, null));
+            List<Map<String, Object>> list = pullService.query(dataset.getStorage(), fieldMap,
+                dataset.getStorageConfigurations(), offset, size, includes.toArray(new String[0]));
+            return PullResponse.ok(IPage.<Map<String, Object>>of(1, list.size(), list.size(), list))
+                .encrypt(restSignService.signKeyIfExist(accessKey));
         } else {
-        	throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
+            throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
         }
     }
 }

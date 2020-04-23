@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.data.consumer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
@@ -9,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -50,8 +50,21 @@ public class DataCustApp extends BaseEntity {
 
     @ApiModelProperty(value = "接入KEY")
     @Comment("接入KEY")
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String accessKey;
+
+    @ApiModelProperty(value = "接口通信公钥")
+    @Comment("接口通信私钥")
+    @Column(length = 500)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String publicKey;
+
+    @JsonIgnore
+    @ApiModelProperty(value = "接口通信私钥")
+    @Comment("接口通信私钥")
+    @Column(length = 500)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String privateKey;
 
 }

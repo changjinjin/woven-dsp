@@ -5,6 +5,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
+import com.info.baymax.common.utils.crypto.RSAGenerater;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.mybatis.mapper.DataCustAppMapper;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
@@ -42,6 +43,11 @@ public class DataCustAppServiceImpl extends EntityClassServiceImpl<DataCustApp> 
         // 绑定消费者
         t.setCustId(SaasContext.getCurrentUserId());
         t.setCustName(SaasContext.getCurrentUsername());
+
+        // 设置公钥私钥
+        RSAGenerater rsa = new RSAGenerater();
+        t.setPublicKey(rsa.getPublicKey());
+        t.setPrivateKey(rsa.getPrivateKey());
         return DataCustAppService.super.save(t);
     }
 
