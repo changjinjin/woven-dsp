@@ -15,12 +15,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableAutoConfiguration
 @PropertySource(value = {"classpath:/dsp-gateway.yml"}, factory = YamlPropertySourceFactory.class)
-public class GatewayStarter {
+public class DspGatewayStarter {
     public static void main(String[] args) {
         new SpringApplicationBuilder()
                 .bannerMode(Banner.Mode.OFF)
                 .properties()
-                .sources(GatewayStarter.class)
+                .sources(DspGatewayStarter.class)
                 .web(WebApplicationType.REACTIVE)
                 .run(args);
     }

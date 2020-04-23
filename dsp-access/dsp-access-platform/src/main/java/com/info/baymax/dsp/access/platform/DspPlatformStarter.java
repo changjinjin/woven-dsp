@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.consumer;
+package com.info.baymax.dsp.access.platform;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
@@ -17,18 +17,18 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableSwagger2WebFlux
 @EnableAutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.consumer"})
+@EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.platform"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-consumer.properties"})
-public class ConsumerStarter {
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-platform.properties"})
+public class DspPlatformStarter {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder()
                 .bannerMode(Banner.Mode.OFF)
                 .properties()
-                .sources(ConsumerStarter.class)
+                .sources(DspPlatformStarter.class)
                 .web(WebApplicationType.REACTIVE)
                 .run(args);
     }

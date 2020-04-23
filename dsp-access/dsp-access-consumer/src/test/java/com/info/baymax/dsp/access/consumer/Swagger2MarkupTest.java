@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -36,9 +36,9 @@ import java.nio.file.Paths;
 
 @Slf4j
 @AutoConfigureRestDocs(outputDir = "build/asciidoc/snippets")
-@AutoConfigureMockMvc
+@AutoConfigureWebTestClient
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {ConsumerStarter.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {DspConsumerStarter.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Swagger2MarkupTest {
 

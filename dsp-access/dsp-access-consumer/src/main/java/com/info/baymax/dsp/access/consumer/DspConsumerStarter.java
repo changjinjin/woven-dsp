@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.job.sch;
+package com.info.baymax.dsp.access.consumer;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
@@ -9,29 +9,27 @@ import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 import tk.mybatis.spring.annotation.MapperScan;
 
-/**
- * @Author: haijun
- * @Date: 2019/12/12 14:17
- */
 @SpringCloudApplication
+@EnableSwagger2WebFlux
 @EnableAutoConfiguration
-@EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.sch.client"})
+@EnableTransactionManagement(proxyTargetClass = true)
+@EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.consumer"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource({ "classpath:dsp-common.properties", "classpath:dsp-job-schedule.properties",
-		"classpath:quartz.properties" })
-public class SchedulerStarter {
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-consumer.properties"})
+public class DspConsumerStarter {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder()
                 .bannerMode(Banner.Mode.OFF)
                 .properties()
-                .sources(SchedulerStarter.class)
+                .sources(DspConsumerStarter.class)
                 .web(WebApplicationType.REACTIVE)
                 .run(args);
     }
-
 }

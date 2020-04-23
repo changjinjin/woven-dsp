@@ -18,8 +18,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @PropertySource(value = {"classpath:/dsp-common.properties", "classpath:/dsp-auth-server.properties"})
-public class AuthStarter {
+public class DspAuthStarter {
     public static void main(String[] args) {
-    	SpringApplication.run(AuthStarter.class, args);
+    	SpringApplication.run(DspAuthStarter.class, args);
     }
 }

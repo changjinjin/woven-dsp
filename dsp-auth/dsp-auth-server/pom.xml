@@ -15,7 +15,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.runtime.startClass>com.info.baymax.dsp.auth.AuthStarter</project.runtime.startClass>
+        <project.runtime.startClass>com.info.baymax.dsp.auth.DspAuthStarter</project.runtime.startClass>
 
         <asciidoctor.input.directory>${project.basedir}/src/docs/asciidoc</asciidoctor.input.directory>
         <swagger.output.dir>${project.build.directory}/swagger</swagger.output.dir>

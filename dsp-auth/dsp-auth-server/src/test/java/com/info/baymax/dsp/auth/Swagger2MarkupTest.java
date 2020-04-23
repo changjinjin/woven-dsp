@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs(outputDir = "build/asciidoc/snippets")
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AuthStarter.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = DspAuthStarter.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Swagger2MarkupTest {
 

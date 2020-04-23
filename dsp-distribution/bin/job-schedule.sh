@@ -19,7 +19,7 @@ checkAction "${action}" "${WOVEN_COM_NAME}.sh"
 PID_FILE="${WOVEN_COM_NAME}.pid"
 #JVM_OPTS="${JVM_OPTS} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8606"
 JVM_OPTS="${JVM_OPTS} -DWOVEN_COM_NAME=${WOVEN_COM_NAME} -DWOVEN_APP=woven -DWOVEN_LOGS_DIR=${WOVEN_LOGS_DIR} ${JOB_SCHEDULE_JVM_OPTS}"
-JVM_OPTS="${JVM_OPTS} -classpath ${WOVEN_CONF}:${YARN_CONF_DIR}:lib/*:${ALL_EXTRA_CLASSPATH:-.} com.info.baymax.dsp.job.sch.SchedulerStarter"
+JVM_OPTS="${JVM_OPTS} -classpath ${WOVEN_CONF}:${YARN_CONF_DIR}:lib/*:${ALL_EXTRA_CLASSPATH:-.} com.info.baymax.dsp.job.sch.DspSchedulerStarter"
 
 
 APP_CMD="${JAVA_CMD} ${JVM_OPTS}"
