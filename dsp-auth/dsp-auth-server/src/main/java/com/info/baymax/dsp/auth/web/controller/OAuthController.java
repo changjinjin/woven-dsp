@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.security.KeyPair;
 import java.security.Principal;
@@ -67,6 +68,7 @@ public class OAuthController {
     @ApiOperation(value = "销毁认证信息（退出登录）", hidden = true)
     @ResponseBody
     @GetMapping("/.well-known/jwks.json")
+    @ApiIgnore
     public Map<String, Object> getKey() {
         RSAPublicKey publicKey = (RSAPublicKey) this.keyPair.getPublic();
         RSAKey key = new RSAKey.Builder(publicKey).build();

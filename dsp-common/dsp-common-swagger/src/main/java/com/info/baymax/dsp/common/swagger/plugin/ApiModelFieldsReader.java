@@ -50,7 +50,7 @@ public class ApiModelFieldsReader implements ParameterBuilderPlugin {
     }
 
     /**
-     * 根据propertys中的值动态生成含有Swagger注解的javaBeen
+     * 根据propertys中的值动态生成含有Swagger注解的javaBean
      */
     private Class<?> createRefModelIgp(ApiModelFields ann, String name, Class<?> origin) throws NotFoundException {
         ClassPool pool = ClassPool.getDefault();

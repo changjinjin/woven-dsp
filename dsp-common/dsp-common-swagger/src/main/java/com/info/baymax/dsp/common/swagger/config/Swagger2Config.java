@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.common.swagger.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -32,7 +33,8 @@ import java.util.List;
 @Configuration
 @ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(Swagger2Properties.class)
-//@Import(BeanValidatorPluginsConfiguration.class)
+// @Import(BeanValidatorPluginsConfiguration.class)
+@Slf4j
 public class Swagger2Config {
     private final Swagger2Properties properties;
 
