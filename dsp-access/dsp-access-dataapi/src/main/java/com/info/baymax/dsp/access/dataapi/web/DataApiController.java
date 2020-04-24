@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @RestController
-@RequestMapping("/dataapi")
+@RequestMapping("/data")
 @Api(tags = "数据服务接口", value = "数据拉取接口")
 @Slf4j
 public class DataApiController implements Serializable {
