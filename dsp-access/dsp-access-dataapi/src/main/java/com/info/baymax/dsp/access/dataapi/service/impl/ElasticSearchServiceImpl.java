@@ -31,6 +31,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
         String index = conf.get("index");
         String indexType = conf.get("indexType");
         Settings settings = Settings.builder().put("cluster.name", clusterName).build();
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
 
         TransportClient client = new PreBuiltTransportClient(settings);
         try {

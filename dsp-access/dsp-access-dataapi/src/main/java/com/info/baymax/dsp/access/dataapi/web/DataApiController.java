@@ -20,6 +20,7 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/dataapi")
 @Api(tags = "数据服务接口", value = "数据拉取接口")
+@Slf4j
 public class DataApiController implements Serializable {
 
     private static final long serialVersionUID = -5006451148239176107L;
@@ -53,18 +55,19 @@ public class DataApiController implements Serializable {
     private RestSignService restSignService;
 
     @ApiOperation(value = "获取秘钥接口")
-    @PostMapping("/secertkey")
-    public Response<String> secertkey(@RequestParam String accessKey) {
+    @GetMapping("/secertkey")
+    public Response<String> secertkey(
+        @ApiParam(value = "应用accessKey", required = true) @RequestParam String accessKey) {
         return Response.ok(restSignService.secertkey(accessKey));
     }
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
     public PullResponse pullData(@ApiParam(value = "数据拉取是请求信息") @RequestBody PullRequest body,
-                                 @ApiParam(value = "请求端hosts信息，需要与申请应用对相应") @RequestHeader String[] hosts) {
+                                 @ApiParam(value = "请求端hosts信息，需要与申请应用对相应") @RequestHeader String hosts) {
         String dataServiceId = body.getDataServiceId();
         String requestKey = body.getAccessKey();
-        String host = hosts[0];
+        String host = hosts.split(",")[0];
         int offset = body.getOffset();
         int size = body.getSize();
 
