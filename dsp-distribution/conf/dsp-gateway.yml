@@ -129,6 +129,7 @@ security:
       - /v2/**
       - /swagger**
       - /api/auth/**
+      - /api/dsp/dataapi/** 
       - /api/auth/v2/api-docs
       - /api/*/*/v2/api-docs
 swagger2:
