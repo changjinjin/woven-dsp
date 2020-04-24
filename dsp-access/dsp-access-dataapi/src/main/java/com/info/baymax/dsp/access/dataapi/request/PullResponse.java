@@ -124,7 +124,11 @@ public class PullResponse extends Response<Object> {
     }
 
     public PullResponse request(DataRequest request) {
+        if (request != null) {
+            request.setTimestamp(System.currentTimeMillis());
+        }
         setRequest(request);
         return this;
     }
+
 }
