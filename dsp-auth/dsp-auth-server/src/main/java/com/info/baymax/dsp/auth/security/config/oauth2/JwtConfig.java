@@ -11,8 +11,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import java.security.KeyPair;
@@ -27,11 +27,11 @@ import java.util.Arrays;
 public class JwtConfig {
 
     // @Bean
-    // public JwtAccessTokenConverter accessTokenConverter(){
-    // JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-    // accessTokenConverter.setSigningKey("ngojt2dx8mcI546j");
-    // return accessTokenConverter;
-    // }
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
+        accessTokenConverter.setSigningKey("ngojt2dx8mcI546j");
+        return accessTokenConverter;
+    }
 
     /**
      * jks秘钥配置
@@ -40,7 +40,7 @@ public class JwtConfig {
      * <p>
      * 导出公钥：keytool -list -rfc --keystore mytest.jks | openssl x509 -inform pem -pubkey > public.cert
      */
-    @Bean
+    // @Bean
     public KeyPair keyPair() {
         Resource keyStore = new ClassPathResource("mytest.jks");
         char[] keyStorePassword = "mypass".toCharArray();
@@ -51,12 +51,12 @@ public class JwtConfig {
         return keyStoreKeyFactory.getKeyPair(keyAlias, keyPassword);
     }
 
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter(KeyPair keyPair) {
-        JwtAccessTokenConverter converter = new StrongJwtAccessTokenConverter();
-        converter.setKeyPair(keyPair);
-        return converter;
-    }
+    // @Bean
+    // public JwtAccessTokenConverter accessTokenConverter(KeyPair keyPair) {
+    // JwtAccessTokenConverter converter = new StrongJwtAccessTokenConverter();
+    // converter.setKeyPair(keyPair);
+    // return converter;
+    // }
 
     @Bean
     public TokenEnhancer tokenEnhancer() {
@@ -66,15 +66,20 @@ public class JwtConfig {
     /**
      * 配置jwt token存储
      */
+    // @Bean
+    // public TokenStore tokenStore(JwtAccessTokenConverter accessTokenConverter) {
+    // return new InMemoryTokenStore()
+    // return new JwtTokenStore(accessTokenConverter);
+    // }
     @Bean
-    public TokenStore tokenStore(JwtAccessTokenConverter accessTokenConverter) {
-        return new JwtTokenStore(accessTokenConverter);
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
     }
 
     /**
      * jwt token增强, 加入自定义信息
      */
-    @Bean
+    // @Bean
     public TokenEnhancer tokenEnhancer(JwtAccessTokenConverter jwtAccessTokenConverter, TokenEnhancer tokenEnhancer) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         // 自定义token增强器, 集合元素位置不同，生成自定义参数位置不同

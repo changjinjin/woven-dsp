@@ -26,15 +26,15 @@ import java.util.Map;
 @SessionAttributes("authorizationRequest")
 public class OAuthController {
 
-    @Autowired
-    private KeyPair keyPair;
+//    @Autowired
+//    private KeyPair keyPair;
     @Autowired
     private TokenEndpoint tokenEndpoint;
     @Autowired
     private CustomTokenServices customTokenServices;
 
     @ApiOperation(value = "获取登录用户信息", notes = "获取登录用户信息")
-    @GetMapping({"/userifo"})
+    @GetMapping({"/userinfo"})
     @ResponseStatus(HttpStatus.OK)
     public Principal user(Principal user) {
         return user;
@@ -65,13 +65,13 @@ public class OAuthController {
         return Response.ok();
     }
 
-    @ApiOperation(value = "销毁认证信息（退出登录）", hidden = true)
-    @ResponseBody
-    @GetMapping("/.well-known/jwks.json")
-    @ApiIgnore
-    public Map<String, Object> getKey() {
-        RSAPublicKey publicKey = (RSAPublicKey) this.keyPair.getPublic();
-        RSAKey key = new RSAKey.Builder(publicKey).build();
-        return new JWKSet(key).toJSONObject();
-    }
+//    @ApiOperation(value = "验证 JSON Web令牌地址", hidden = true)
+//    @ResponseBody
+//    @GetMapping("/.well-known/jwks.json")
+//    @ApiIgnore
+//    public Map<String, Object> getKey() {
+//        RSAPublicKey publicKey = (RSAPublicKey) this.keyPair.getPublic();
+//        RSAKey key = new RSAKey.Builder(publicKey).build();
+//        return new JWKSet(key).toJSONObject();
+//    }
 }

@@ -3,7 +3,7 @@ package com.info.baymax.dsp.auth.security.authentication.manager;
 import com.google.common.collect.Lists;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.auth.security.authentication.GrantedAuthoritiesService;
-import com.info.baymax.dsp.auth.security.config.SecurityInitConfig;
+import com.info.baymax.dsp.auth.security.config.SecurityInitProperties;
 import com.info.baymax.dsp.auth.security.i18n.SecurityMessageSource;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
 import com.info.baymax.dsp.data.sys.crypto.pwd.PwdInfo;
@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class ManagerUserDetailsService implements UserDetailsService, GrantedAuthoritiesService {
 
 	@Autowired
-	public SecurityInitConfig initConfig;
+	public SecurityInitProperties initProps;
 
 	@Autowired
 	public PasswordEncoder passwordEncoder;
@@ -91,7 +91,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		checker.check(userDetails);
 
 		// 如果密码检查是严格模式，则登录需要检查是否需要修改密码
-		userDetails.setPwdInfo(pwdInfo(initConfig.isPwdStrict(), userDetails.getUser(), initConfig.getPassword()));
+		userDetails.setPwdInfo(pwdInfo(initProps.isPwdStrict(), userDetails.getUser(), initProps.getPassword()));
 
 		return userDetails;
 	}

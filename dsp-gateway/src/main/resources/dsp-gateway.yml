@@ -18,8 +18,6 @@ spring:
     static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   cloud:
     consul:
-#      host: 192.168.1.81
-#      port: 8123
       host: 127.0.0.1
       port: 8500
       discovery:
@@ -27,7 +25,7 @@ spring:
         preferIpAddress: true
         serviceName: ${spring.application.name}
         healthCheckPath: /actuator/health
-        healthCheckInterval: 15s
+        healthCheckInterval: 30s
         tags: urlprefix-/${spring.application.name}
         instanceId: ${spring.application.name}:${server.port}
     gateway:
@@ -79,8 +77,12 @@ spring:
   security:
     oauth2:
       resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
+#        jwt:
+#          jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
+        opaquetoken:
+          client-id: dsp-gateway
+          client-secret: 123456
+          introspection-uri: http://localhost:8004/api/auth/oauth/userinfo
       client:
         registration:
           dsp-gateway:
@@ -98,7 +100,7 @@ spring:
             authorization-uri: http://localhost:8004/api/auth/oauth/authorize
             token-uri: http://localhost:8004/api/auth/oauth/token
             user-info-uri: http://localhost:8004/api/auth/oauth/userinfo
-            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
+#            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
             user-info-authentication-method: Basic
 management:
   endpoint:
@@ -128,6 +130,7 @@ security:
       - /actuator/**
       - /v2/**
       - /swagger**
+      - /swagger-resources/**
       - /api/auth/**
       - /api/dsp/dataapi/**
       - /api/auth/v2/api-docs
@@ -135,9 +138,6 @@ security:
 swagger2:
   enabled: true
   resources:
-  - name: gateway
-    url: /v2/api-docs
-    swaggerVersion: 0.1.0
   - name: auth-server
     url: /api/auth/v2/api-docs
     swaggerVersion: 0.1.0
@@ -150,12 +150,3 @@ swagger2:
   - name: access-dataapi
     url: /api/dsp/dataapi/v2/api-docs
     swaggerVersion: 0.1.0
-  global-parameters:
-  - name: AUTHORIZATION
-    description: 请求令牌
-    required: false
-    modelRef: string
-    param-type: header
-    default-value: Bearer 
-    allow-empty-value: true
-    order: 100

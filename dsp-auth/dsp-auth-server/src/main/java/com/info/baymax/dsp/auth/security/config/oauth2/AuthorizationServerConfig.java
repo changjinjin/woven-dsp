@@ -24,8 +24,6 @@ import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.client.InMemoryClientDetailsService;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,13 +43,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private Oauth2ClientProperties oauth2ClientProperties;
     @Autowired
-    private TokenStore tokenStore;
-    @Autowired
     private CustomTokenServices customTokenServices;
+    // @Autowired
+    // private TokenStore tokenStore;
     @Autowired
     private TokenEnhancer tokenEnhancer;
-    @Autowired
-    private JwtAccessTokenConverter jwtAccessTokenConverter;
+    // @Autowired
+    // private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     @Bean
     public ClientDetailsService inMemoryClientDetailsService() {
@@ -62,10 +60,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)//
             .tokenEnhancer(tokenEnhancer)//
-            .accessTokenConverter(jwtAccessTokenConverter)//
+            // .accessTokenConverter(jwtAccessTokenConverter)//
             // refresh_token需要userDetailsService
             .reuseRefreshTokens(false)//
-            .tokenStore(tokenStore)//
+            // .tokenStore(tokenStore)//
             // .tokenServices(customTokenServices)//
             .allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET, HttpMethod.OPTIONS)//
             .exceptionTranslator(new CustomWebResponseExceptionTranslator());

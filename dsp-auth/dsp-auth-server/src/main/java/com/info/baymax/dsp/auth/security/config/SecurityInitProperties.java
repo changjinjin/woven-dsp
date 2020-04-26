@@ -8,7 +8,7 @@ import com.info.baymax.dsp.data.sys.initialize.InitConfig;
 
 @Order(0)
 @Configuration
-@ConfigurationProperties(prefix = SecurityInitConfig.PREFIX)
-public class SecurityInitConfig extends InitConfig {
+@ConfigurationProperties(prefix = SecurityInitProperties.PREFIX)
+public class SecurityInitProperties extends InitConfig {
     public static final String PREFIX = "security.init";
 }

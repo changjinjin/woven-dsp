@@ -14,6 +14,7 @@
 package com.info.baymax.dsp.gateway.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -21,23 +22,34 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.server.resource.web.server.ServerBearerTokenAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import com.info.baymax.dsp.gateway.oauth2.introspection.DspOpaqueTokenSpecCustomizer;
+
 @Configuration
 @EnableWebFluxSecurity
 public class WebFluxSecurityConfig {
 
     @Autowired
-    private WhiteListProperties properties;
+    private WhiteListProperties whiteListProperties;
+
+    @Autowired
+    private OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http.csrf().disable();
-        http.httpBasic().disable();
-        http.formLogin().disable();
-        http.logout().disable();
-        http.requestCache().disable();
-        http.authorizeExchange().pathMatchers(properties.getAllWhiteList()).permitAll().anyExchange().authenticated();
-        http.headers().frameOptions().disable();
-        http.oauth2ResourceServer().bearerTokenConverter(new ServerBearerTokenAuthenticationConverter()).jwt();
+        // @formatter:off
+        http
+            .csrf().disable()
+            .httpBasic().disable()
+            .formLogin().disable()
+            .logout().disable()
+            .requestCache().disable()
+            .authorizeExchange().pathMatchers(whiteListProperties.getAllWhiteList()).permitAll().anyExchange().authenticated()
+            .and()
+            .headers().frameOptions().disable()
+            .and()
+            .oauth2ResourceServer().bearerTokenConverter(new ServerBearerTokenAuthenticationConverter()).opaqueToken(new DspOpaqueTokenSpecCustomizer(oAuth2ResourceServerProperties));
+        //.oauth2ResourceServer().bearerTokenConverter(new ServerBearerTokenAuthenticationConverter()).jwt();
+        // @formatter:on
         return http.build();
     }
 }

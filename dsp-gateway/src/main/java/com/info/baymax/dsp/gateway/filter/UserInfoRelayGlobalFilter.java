@@ -8,7 +8,11 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -29,20 +33,33 @@ public class UserInfoRelayGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        return exchange.getPrincipal().cast(JwtAuthenticationToken.class)
+        return exchange.getPrincipal().cast(Authentication.class)
             .flatMap(authentication -> authorizedClient(exchange, authentication))//
             .map(context -> withAuthHeaders(exchange, context))//
             .defaultIfEmpty(exchange).flatMap(chain::filter);
     }
 
-    private Mono<SaasContext> authorizedClient(ServerWebExchange exchange, JwtAuthenticationToken authenticationToken) {
-        Jwt token = authenticationToken.getToken();
-        if (token != null) {
-            String userInfo = token.getClaimAsString("userinfo");
-            if (StringUtils.isNotEmpty(userInfo)) {
-                SaasContext currSaasContext = JSON.parseObject(userInfo, SaasContext.class);
-                SaasContext.setCurrentSaasContext(currSaasContext);
+    private Mono<SaasContext> authorizedClient(ServerWebExchange exchange, Authentication authentication) {
+        String userInfo = null;
+        if (authentication instanceof JwtAuthenticationToken) {
+            JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) authentication;
+            Jwt token = authenticationToken.getToken();
+            if (token != null) {
+                userInfo = token.getClaimAsString("userinfo");
             }
+        } else if (authentication instanceof BearerTokenAuthentication) {
+            BearerTokenAuthentication authenticationToken = (BearerTokenAuthentication) authentication;
+            Object principal = authenticationToken.getPrincipal();
+            if (principal != null && principal instanceof OAuth2AuthenticatedPrincipal) {
+                OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = (DefaultOAuth2AuthenticatedPrincipal) principal;
+                Object userAuthentication = oAuth2AuthenticatedPrincipal.getAttribute("userAuthentication");
+                if (userAuthentication != null) {
+                    userInfo = userAuthentication.toString();
+                }
+            }
+        }
+        if (StringUtils.isNotEmpty(userInfo)) {
+            SaasContext.setCurrentSaasContext(JSON.parseObject(userInfo, SaasContext.class));
         }
         return Mono.just(SaasContext.getCurrentSaasContext());
     }
