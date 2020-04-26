@@ -33,4 +33,9 @@ public interface DataServiceEntityService extends BaseEntityService<DataService>
      * 服务重启时恢复之前正在running的服务
      */
     void recoverDataService();
+
+    /**
+     * 根据dataApplicationId,更新服务状态
+     */
+    void updateStatusByApplicationId(Long applicationId, Integer status);
 }

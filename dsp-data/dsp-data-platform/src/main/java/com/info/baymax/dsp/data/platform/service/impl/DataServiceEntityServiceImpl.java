@@ -56,4 +56,9 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
     public void recoverDataService() {
         dataServiceMapper.recoverDataService();
     }
+
+    @Override
+    public void updateStatusByApplicationId(Long applicationId, Integer status) {
+        dataServiceMapper.updateStatusByApplicationId(applicationId, status);
+    }
 }
