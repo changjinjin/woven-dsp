@@ -13,6 +13,8 @@
 
 package com.info.baymax.dsp.gateway.config;
 
+import com.info.baymax.dsp.gateway.web.oauth2.introspection.DspOpaqueTokenSpecCustomizer;
+import com.info.baymax.dsp.gateway.web.oauth2.mothed.DspReactiveAuthorizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +23,6 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.server.resource.web.server.ServerBearerTokenAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-
-import com.info.baymax.dsp.gateway.oauth2.introspection.DspOpaqueTokenSpecCustomizer;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -34,6 +34,9 @@ public class WebFluxSecurityConfig {
     @Autowired
     private OAuth2ResourceServerProperties oAuth2ResourceServerProperties;
 
+    @Autowired
+    private DspReactiveAuthorizationManager dspReactiveAuthorizationManager;
+
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         // @formatter:off
@@ -43,7 +46,10 @@ public class WebFluxSecurityConfig {
             .formLogin().disable()
             .logout().disable()
             .requestCache().disable()
-            .authorizeExchange().pathMatchers(whiteListProperties.getAllWhiteList()).permitAll().anyExchange().authenticated()
+            .authorizeExchange()
+            .pathMatchers(whiteListProperties.getAllWhiteList()).permitAll()
+            .pathMatchers("/api/**").access(dspReactiveAuthorizationManager)
+            .anyExchange().authenticated()
             .and()
             .headers().frameOptions().disable()
             .and()

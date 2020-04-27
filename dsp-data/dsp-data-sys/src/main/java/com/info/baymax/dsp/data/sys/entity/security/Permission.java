@@ -10,13 +10,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "permission")
@@ -97,6 +97,11 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@ApiModelProperty(value = "是否是半选中状态：false-否（全选中），true-是，默认0")
 	@Transient
 	private Boolean halfSelect;
+
+	@ApiModelProperty(value = "关联的接口信息列表")
+	@XmlTransient
+	@Transient
+	private Set<RestOperation> operations;
 
 	public Permission() {
 	}

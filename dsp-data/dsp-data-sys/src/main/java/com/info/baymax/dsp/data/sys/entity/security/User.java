@@ -154,8 +154,14 @@ public class User extends Maintable implements CryptoBean {
             for (Role role : roles) {
                 Set<Permission> permissions = role.getPermissions();
                 if (role.getEnabled() == 1 && ICollections.hasElements(permissions)) {
-                    authorities.addAll(permissions.stream().filter(t -> t.getEnabled() == 1)
-                        .map(t -> new SimpleGrantedAuthority(t.getUrl())).collect(Collectors.toList()));
+                    for (Permission permission : permissions) {
+                        Set<RestOperation> operations = permission.getOperations();
+                        if (ICollections.hasElements(operations)) {
+                            authorities.addAll(operations.stream().filter(t -> t.getEnabled())
+                                .map(t -> new SimpleGrantedAuthority(t.operationKey()))
+                                .collect(Collectors.toList()));
+                        }
+                    }
                 }
             }
         }

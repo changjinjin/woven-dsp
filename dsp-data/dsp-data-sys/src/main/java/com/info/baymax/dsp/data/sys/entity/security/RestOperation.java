@@ -163,9 +163,13 @@ public class RestOperation implements Idable<String> {
 
     public String getId() {
         if (StringUtils.isEmpty(id)) {
-            this.id = HashUtil.hashKey(trimSlash(getFullPath() + "@" + getMothed()));
+            this.id = HashUtil.hashKey(operationKey());
         }
         return id;
+    }
+
+    public String operationKey() {
+        return trimSlash(getFullPath() + "@" + getMothed());
     }
 
     private String trimSlash(String src) {

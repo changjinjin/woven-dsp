@@ -17,11 +17,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 @PropertySource(value = {"classpath:/dsp-gateway.yml"}, factory = YamlPropertySourceFactory.class)
 public class DspGatewayStarter {
     public static void main(String[] args) {
+        // @formatter:off
         new SpringApplicationBuilder()
-                .bannerMode(Banner.Mode.OFF)
-                .properties()
-                .sources(DspGatewayStarter.class)
-                .web(WebApplicationType.REACTIVE)
-                .run(args);
+            .bannerMode(Banner.Mode.OFF)
+            .properties()
+            .sources(DspGatewayStarter.class)
+            .web(WebApplicationType.REACTIVE)
+            .run(args);
+        // @formatter:on
     }
 }

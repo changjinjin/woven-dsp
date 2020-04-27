@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.data.sys.mybatis.mapper.security;
 
+import com.info.baymax.common.mybatis.cache.RoutingCache;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import org.apache.ibatis.annotations.*;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 @Mapper
+@CacheNamespace(implementation = RoutingCache.class, readWrite = false, flushInterval = 600000, size = 200, properties = {
+		@Property(name = "cacheType", value = "${cacheType}") })
 public interface PermissionMapper extends MyIdableMapper<Permission> {
 
 	/**
@@ -43,6 +46,7 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 			@Result(column="route",jdbcType=JdbcType.VARCHAR,property="route"),
 			@Result(column="ord",jdbcType=JdbcType.VARCHAR,property="order"),
 			@Result(column="client_id",jdbcType=JdbcType.VARCHAR,property="clientId"),
+			@Result(column="id",property="operations",many=@Many(select="com.info.baymax.dsp.data.sys.mybatis.mapper.security.RestOperationMapper.selectByPermId",fetchType= FetchType.EAGER)),
 	    })
 	// @formatter:on
 	Set<Permission> selectByRoleId(@Param("roleId") String roleId);
@@ -78,6 +82,7 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 			@Result(column="route",jdbcType=JdbcType.VARCHAR,property="route"),
 			@Result(column="ord",jdbcType=JdbcType.VARCHAR,property="order"),
 			@Result(column="client_id",jdbcType=JdbcType.VARCHAR,property="clientId"),
+			@Result(column="id",property="operations",many=@Many(select="com.info.baymax.dsp.data.sys.mybatis.mapper.security.RestOperationMapper.selectByPermId",fetchType= FetchType.EAGER)),
 			@Result(column="id",property="children",many=@Many(select="selectByParentId",fetchType= FetchType.EAGER))
 		})
 	// @formatter:on

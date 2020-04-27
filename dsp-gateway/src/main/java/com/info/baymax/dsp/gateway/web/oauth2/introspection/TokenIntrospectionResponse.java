@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package com.info.baymax.dsp.gateway.oauth2.nimbusds;
+package com.info.baymax.dsp.gateway.web.oauth2.introspection;
 
 
 import com.nimbusds.oauth2.sdk.ParseException;

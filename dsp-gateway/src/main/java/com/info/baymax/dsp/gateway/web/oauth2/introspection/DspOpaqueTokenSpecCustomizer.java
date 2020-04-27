@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.gateway.oauth2.introspection;
+package com.info.baymax.dsp.gateway.web.oauth2.introspection;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.security.config.Customizer;

@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.auth.security.authentication.manager;
 
 import com.google.common.collect.Lists;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.auth.security.authentication.GrantedAuthoritiesService;
 import com.info.baymax.dsp.auth.security.config.SecurityInitProperties;
@@ -8,10 +9,12 @@ import com.info.baymax.dsp.auth.security.i18n.SecurityMessageSource;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
 import com.info.baymax.dsp.data.sys.crypto.pwd.PwdInfo;
 import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
+import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.initialize.TenantInitializer;
 import com.info.baymax.dsp.data.sys.service.security.PermissionService;
+import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
 import com.info.baymax.dsp.data.sys.service.security.TenantService;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +63,8 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 
 	@Autowired
 	public PermissionService permissionService;
+	@Autowired
+	public RestOperationService restOperationService;
 
 	protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
@@ -147,19 +152,16 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		// 如果是管理员权限则需要用户拥有所有的权限，这里赋给该账户所有的权限
 
 		if (user.admin()) { // 初始获取如果为空则初始化
-			List<String> list = permissionService.findAuthoritiesByClientId(clientId);
-			/*
-			 * if (ICollections.hasNoElements(list)) { String message =
-			 * this.messages.getMessage("UserErr.noAuthorityGranted", new Object[]{username},
-			 * "Username {0} no authority granted"); log.debug(message); throw new
-			 * NoGrantedAnyAuthorityException(message); }
-			 */
+			// List<String> list = permissionService.findAuthoritiesByClientId(clientId);
+			List<RestOperation> list = restOperationService.selectList(
+					ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("enabled", 1).end());
 			if (ICollections.hasElements(list)) {
-				user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList()));
+				user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t.operationKey()))
+						.collect(Collectors.toList()));
 			} else {
 				user.setAuthorities(Lists.newArrayList(new SimpleGrantedAuthority("Maanger")));
 			}
-		}else {
+		} else {
 			String clientIds = user.getClientIds();
 			if (StringUtils.isEmpty(clientIds) || !clientIds.contains(clientId)) {
 				throw new NoGrantedAnyAuthorityException("当前用户没有授予平台" + clientId + "的访问权限，禁止登陆该平台！");
@@ -173,7 +175,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		 * "Username {0} no authority granted"); log.debug(message); throw new NoGrantedAnyAuthorityException(message);
 		 * }
 		 */
-		
+
 		return new SimpleManagerDetails(clientId, tenant, user);
 	}
 

@@ -6,16 +6,17 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
+import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.service.security.PermissionService;
+import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -37,6 +38,8 @@ public class MenuController implements Serializable {
     private UserService userService;
     @Autowired
     private PermissionService permissionService;
+    @Autowired
+    private RestOperationService restOperationService;
 
     @ApiOperation(value = "加载登录用户的菜单列表")
     @PostMapping("/loadMenus")
@@ -67,6 +70,13 @@ public class MenuController implements Serializable {
             }
         }
         return Response.ok(menus);
+    }
+
+    @ApiOperation(value = "查询所有的系统接口信息", hidden = true)
+    @GetMapping("/fetchRestOperations")
+    @ApiIgnore
+    public List<RestOperation> fetchRestOperations(@RequestBody RestOperation t) {
+        return restOperationService.select(t);
     }
 
 }

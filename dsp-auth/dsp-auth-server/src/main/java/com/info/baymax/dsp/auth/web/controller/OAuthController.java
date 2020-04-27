@@ -2,8 +2,6 @@ package com.info.baymax.dsp.auth.web.controller;
 
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.dsp.auth.security.authentication.CustomTokenServices;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,11 +11,8 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
-import java.security.KeyPair;
 import java.security.Principal;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
 @Api(tags = "认证管理", value = "用户认证相关接口", description = "系统用户认证管理")
@@ -26,8 +21,8 @@ import java.util.Map;
 @SessionAttributes("authorizationRequest")
 public class OAuthController {
 
-//    @Autowired
-//    private KeyPair keyPair;
+    // @Autowired
+    // private KeyPair keyPair;
     @Autowired
     private TokenEndpoint tokenEndpoint;
     @Autowired
@@ -65,13 +60,13 @@ public class OAuthController {
         return Response.ok();
     }
 
-//    @ApiOperation(value = "验证 JSON Web令牌地址", hidden = true)
-//    @ResponseBody
-//    @GetMapping("/.well-known/jwks.json")
-//    @ApiIgnore
-//    public Map<String, Object> getKey() {
-//        RSAPublicKey publicKey = (RSAPublicKey) this.keyPair.getPublic();
-//        RSAKey key = new RSAKey.Builder(publicKey).build();
-//        return new JWKSet(key).toJSONObject();
-//    }
+    // @ApiOperation(value = "验证 JSON Web令牌地址", hidden = true)
+    // @ResponseBody
+    // @GetMapping("/.well-known/jwks.json")
+    // @ApiIgnore
+    // public Map<String, Object> getKey() {
+    // RSAPublicKey publicKey = (RSAPublicKey) this.keyPair.getPublic();
+    // RSAKey key = new RSAKey.Builder(publicKey).build();
+    // return new JWKSet(key).toJSONObject();
+    // }
 }
