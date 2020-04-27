@@ -21,6 +21,6 @@ public interface DataServiceMapper extends MyIdableMapper<DataService> {
     @Update("update dsp_data_service set is_running = 0 where status = 1 and (is_running = 1 or schedule_type = 'cron')")
     void recoverDataService();
 
-    @Update("update dsp_data_service set status = #{status, jdbcType=INTEGER} where applicationId = #{id, jdbcType=BIGINT}")
+    @Update("update dsp_data_service set status = #{status, jdbcType=INTEGER} where application_id = #{id, jdbcType=BIGINT}")
     void updateStatusByApplicationId(@Param("id") Long applicationId, @Param("status") Integer status);
 }
