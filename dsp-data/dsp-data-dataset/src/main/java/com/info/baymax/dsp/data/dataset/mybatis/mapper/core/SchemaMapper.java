@@ -1,15 +1,15 @@
 package com.info.baymax.dsp.data.dataset.mybatis.mapper.core;
 
+import com.info.baymax.common.mybatis.cache.RoutingCache;
+import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.dsp.data.dataset.entity.core.Schema;
+import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-
-import com.info.baymax.dsp.data.dataset.entity.core.Schema;
-
 @Mapper
+@CacheNamespace(implementation = RoutingCache.class, readWrite = false, flushInterval = 600000, size = 1000, properties = {
+		@Property(name = "cacheType", value = "${cacheType}") })
 public interface SchemaMapper extends MyIdableMapper<Schema> {
 
 	@Select("select * from merce_schema d  left join merce_data_resource_ref t on t.instance_id =d.id WHERE t.id is null and d.schema_mode != 'builtin'")
