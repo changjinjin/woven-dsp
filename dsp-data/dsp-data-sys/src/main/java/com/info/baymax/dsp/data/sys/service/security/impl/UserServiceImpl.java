@@ -69,7 +69,8 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Transactional
-    public User save(User t, String initPwd) {
+    @Override
+    public User save(User t) {
         if (existsByTenantIdAndName(SaasContext.getCurrentTenantId(), t.getUsername())) {
             throw new ServiceException(ErrType.ENTITY_EXIST, "同名用户已经存在");
         }
@@ -80,14 +81,16 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
             t.setAdmin(YesNoType.NO.getValue());
         }
         t.setEnabled(YesNoType.YES.getValue());
-        String password = t.getPassword();
-        if (StringUtils.isEmpty(password)) {
-            password = initPwd;
-        }
 
+        // 如果没有设置client，设置默认
         String clientIds = t.getClientIds();
         if (StringUtils.isEmpty(clientIds)) {
             t.setClientIds("dsp");
+        }
+
+        String password = t.getPassword();
+        if (StringUtils.isEmpty(password)) {
+            throw new ServiceException(ErrType.BAD_REQUEST, "user password must be not null");
         }
         t.setPassword(passwordEncoder.encode(password));
 

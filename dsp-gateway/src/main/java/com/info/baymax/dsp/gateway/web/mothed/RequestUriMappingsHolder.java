@@ -50,7 +50,6 @@ public class RequestUriMappingsHolder {
             resolveUriMappings();
             resolveEnabledUriMappings();
             resolveRequestMappingInfos();
-            initialized = true;
         } catch (Exception e) {
             initialized = false;
             log.error("init uri mappings failed.", e);
@@ -64,6 +63,7 @@ public class RequestUriMappingsHolder {
                 list = restOperationClient.fetchRestOperations(new RestOperation());
                 if (ICollections.hasElements(list)) {
                     restOperationBeans = JSON.parseArray(JSON.toJSONString(list), RestOperation.class);
+                    initialized = true;
                 } else {
                     initialized = false;
                     log.warn("fetch rest operations failed, may be other services is disabled yet.");
@@ -77,11 +77,8 @@ public class RequestUriMappingsHolder {
 
     /**
      * 解析文档内容到uriMappings和requestMappingInfos中
-     *
-     * @param resources 资源列表
-     * @throws IOException
      */
-    private void resolveUriMappings() throws IOException {
+    private void resolveUriMappings() {
         if (ICollections.hasElements(restOperationBeans)) {
             for (RestOperation pathPatternBean : restOperationBeans) {
                 uriMappings.put(pathPatternBean.patternKey(), pathPatternBean);
@@ -92,7 +89,7 @@ public class RequestUriMappingsHolder {
     private void resolveEnabledUriMappings() throws IOException {
         if (ICollections.hasElements(restOperationBeans)) {
             for (RestOperation pathPatternBean : restOperationBeans) {
-                if (pathPatternBean.getEnabled()) {
+                if (pathPatternBean.getEnabled() != null && pathPatternBean.getEnabled()) {
                     enabledUriMappings.put(pathPatternBean.patternKey(), pathPatternBean);
                 }
             }
@@ -101,8 +98,6 @@ public class RequestUriMappingsHolder {
 
     /**
      * 将文档解析成RequestMappingInfo映射
-     *
-     * @param uriMappings
      */
     private void resolveRequestMappingInfos() {
         if (uriMappings != null && !uriMappings.isEmpty()) {

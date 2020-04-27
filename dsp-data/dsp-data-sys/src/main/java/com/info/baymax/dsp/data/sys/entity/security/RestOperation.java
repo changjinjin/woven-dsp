@@ -155,14 +155,14 @@ public class RestOperation implements Idable<String> {
     }
 
     public String getFullPath() {
-        if (StringUtils.isEmpty(fullPath)) {
+        if (StringUtils.isEmpty(fullPath) && basePath != null && relativePath != null) {
             this.fullPath = trimSlash(getBasePath() + getRelativePath());
         }
         return fullPath;
     }
 
     public String getId() {
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(id) && basePath != null && relativePath != null && mothed != null) {
             this.id = HashUtil.hashKey(operationKey());
         }
         return id;
@@ -175,13 +175,4 @@ public class RestOperation implements Idable<String> {
     private String trimSlash(String src) {
         return src.replaceAll("//", "/");
     }
-
-    public static void main(String[] args) {
-        RestOperation restOperation = new RestOperation("dsp-access-dataapi", "default",
-            Arrays.asList("数据管理：管理员审批相关接口"), "post", "/", "/api/dsp/platform/application/approval/{status}",
-            "审批消费者申请记录", "", "approvalDataApplicationUsingPOST", Arrays.asList("application/json"),
-            Arrays.asList("*/*"), false);
-        System.out.println(JSON.toJSONString(restOperation));
-    }
-
 }

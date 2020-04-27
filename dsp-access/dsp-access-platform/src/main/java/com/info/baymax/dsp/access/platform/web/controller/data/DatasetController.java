@@ -39,10 +39,11 @@ public class DatasetController {
     @ResponseBody
     public Response<List<ResourceDesc>> resourceDirTree() {
         ExampleQuery query = ExampleQuery.builder(ResourceDesc.class)//
-                .fieldGroup()//
-                .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
-                .andEqualTo("resType", "dataset_dir")//
-                .end();
+            .unpaged()// 不分页，查所有
+            .fieldGroup()//
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
+            .andEqualTo("resType", "dataset_dir")//
+            .end();
         return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
     }
 
@@ -72,7 +73,7 @@ public class DatasetController {
         ResourceDesc root = resourceDescService.selectByPrimaryKey(rootId);
         if (root != null) {
             List<ResourceDesc> list = resourceDescService.selectList(
-                    ExampleQuery.builder(ResourceDesc.class).fieldGroup().andRightLike("path", root.getPath()).end());
+                ExampleQuery.builder(ResourceDesc.class).fieldGroup().andRightLike("path", root.getPath()).end());
             if (ICollections.hasElements(list)) {
                 return list.stream().map(t -> t.getId()).toArray(String[]::new);
             }

@@ -50,6 +50,15 @@ public class UserController implements MainTableController<User> {
         return userService;
     }
 
+    @Cryptoable(enableParam = true)
+    @Override
+    public Response<?> save(@ApiParam(value = "保存用户信息", required = true) @RequestBody User t) {
+        if (StringUtils.isEmpty(t.getPassword())) {
+            t.setPassword(initConfig.getPassword());
+        }
+        return MainTableController.super.save(t);
+    }
+
     @JsonBodys({
         @JsonBody(type = User.class, excludes = {"creator", "createTime", "lastModifier", "lastModifiedTime",
             "hdfsSpaceQuota", "password", "description", "groupCount", "groupFieldValue"}),

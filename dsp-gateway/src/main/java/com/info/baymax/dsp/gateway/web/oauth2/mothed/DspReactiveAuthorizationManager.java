@@ -36,7 +36,7 @@ public class DspReactiveAuthorizationManager implements ReactiveAuthorizationMan
 
 	private boolean decision(Collection<? extends GrantedAuthority> authorities, ServerWebExchange exchange) {
 		RestOperation operation = holder.getOperation(exchange);
-		if (operation == null || !operation.getEnabled()) {
+		if (operation == null || operation.getEnabled() == null || !operation.getEnabled()) {
 			return true;
 		}
 		if (ICollections.hasNoElements(authorities)) {

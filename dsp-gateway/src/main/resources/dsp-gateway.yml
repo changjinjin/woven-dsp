@@ -103,15 +103,62 @@ spring:
 #            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
             user-info-authentication-method: Basic
 management:
+  metrics:
+    binders:
+      hystrix.enabled: false
+    enable:
+      system: 
+        cpu: false
+      process: false
+      logback: false
+      log4j2: false
+      db: false
+      jvm: false
+      cache: false
+      gateway: false
+    export:
+      simple:
+        enabled: false
+      elastic:
+        enabled: false
+        host: http://localhost:9200
+        index: metrics
+        index-date-format: yyyy-MM
+        user-name: elastic
+        password: changeme
+        auto-create-index: true
+        batchSize: 1000
+        connect-timeout: 10s
   endpoint:
     health:
       enabled: true
+      show-details: never
     beans:
       enabled: true
     env:
       enabled: true
     info:
       enabled: true
+    httptrace:
+      enabled: true
+      summarytime: 5
+      timeout: 5000
+    shutdown:
+      enabled: false
+  endpoints:
+    enabled-by-default: true
+    actuator:
+      enabled: true
+    web:
+      exposure:
+        include: '*'
+      cors:
+        max-age: 1800s
+  health:
+   redis:
+    enabled: false
+   elasticsearch:
+    enabled: false
 security:
   token:
     ignored:

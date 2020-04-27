@@ -14,6 +14,8 @@ import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -73,9 +75,9 @@ public class MenuController implements Serializable {
     }
 
     @ApiOperation(value = "查询所有的系统接口信息", hidden = true)
-    @GetMapping("/fetchRestOperations")
+    @PostMapping("/fetchRestOperations")
     @ApiIgnore
-    public List<RestOperation> fetchRestOperations(@RequestBody RestOperation t) {
+    public List<RestOperation> fetchRestOperations(@ApiParam(value = "查询条件") @RequestBody RestOperation t) {
         return restOperationService.select(t);
     }
 

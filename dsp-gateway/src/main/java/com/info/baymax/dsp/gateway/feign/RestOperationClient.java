@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.info.baymax.dsp.gateway.web.mothed.RestOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -18,6 +18,6 @@ public interface RestOperationClient {
      * @param t 查询条件
      * @return 结果集
      */
-    @GetMapping(value = "/api/dsp/platform/menu/fetchRestOperations")
+    @PostMapping(value = "/api/dsp/platform/menu/fetchRestOperations")
     List<JSONObject> fetchRestOperations(@RequestBody RestOperation t);
 }
