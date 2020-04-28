@@ -340,7 +340,9 @@ public class ExecutorDataServiceController {
                                         if (records != null && records.size() > 0) {
                                             String cursorVal = records.get(records.size() - 1).trim();
                                             log.info("cursor value for dataservice {} is {}", dataService.getId(), cursorVal);
-                                            dataService.setCursorVal(cursorVal);
+                                            if(StringUtils.isNotEmpty(cursorVal)) {
+                                                dataService.setCursorVal(cursorVal);
+                                            }
                                         }
                                     }
                                 }catch (Exception e){
