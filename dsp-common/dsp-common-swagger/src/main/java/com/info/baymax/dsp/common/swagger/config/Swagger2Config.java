@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.common.swagger.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -34,7 +33,6 @@ import java.util.List;
 @ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(Swagger2Properties.class)
 // @Import(BeanValidatorPluginsConfiguration.class)
-@Slf4j
 public class Swagger2Config {
     private final Swagger2Properties properties;
 
@@ -42,8 +40,8 @@ public class Swagger2Config {
         this.properties = properties;
     }
 
-    @Value("${server.reactive.context-path:/}")
-    private String contextPath;
+    @Value("${server.reactive.context-path:}")
+    private String reactiveContextPath;
 
     @Bean
     public Docket createRestApi() {
@@ -58,8 +56,11 @@ public class Swagger2Config {
             .globalOperationParameters(globalOperationParameters())//
             .globalResponseMessage(RequestMethod.GET, responseMessages)//
             .globalResponseMessage(RequestMethod.GET, responseMessages);//
-        if (contextPath != null && !contextPath.equals("/") && contextPath.length() > 0) {
-            docket.pathMapping(contextPath);
+
+        if (reactiveContextPath != null && !reactiveContextPath.equals("/") && reactiveContextPath.length() > 0) {
+            docket.pathMapping(reactiveContextPath);
+        } else {
+            docket.pathMapping("/");
         }
         return docket;
     }

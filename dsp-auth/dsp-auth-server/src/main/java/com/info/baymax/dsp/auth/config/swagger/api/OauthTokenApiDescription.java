@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 import com.info.baymax.dsp.data.sys.constant.AuthConstants;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import springfox.documentation.builders.OperationBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.schema.ModelRef;
@@ -23,12 +22,15 @@ import java.util.List;
  * @author yjw
  * @date 2019年1月27日 上午9:57:20
  */
-@Component
-public class OauthTokenApiDescription implements SwaggerAdditionApiDescription {
+public class OauthTokenApiDescription extends AbstractSwaggerAdditionApiDescription {
+
+    public OauthTokenApiDescription(String contextPath) {
+        super(contextPath, AuthConstants.TOKEN_ENTRY_POINT);
+    }
 
     @Override
     public ApiDescription get() {
-        return new ApiDescription("Auth", AuthConstants.TOKEN_ENTRY_POINT, // url
+        return new ApiDescription("Auth", getFullPath(), // url
             "token获取端点", // 描述
             Arrays.asList(new OperationBuilder(new CachingOperationNameGenerator())//
                 .method(HttpMethod.POST)// http请求类型

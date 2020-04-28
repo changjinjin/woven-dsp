@@ -21,11 +21,15 @@ import java.util.List;
  * @author yjw
  * @date 2019年1月27日 上午10:42:51
  */
-public class OauthCheckTokenApiDescription implements SwaggerAdditionApiDescription {
+public class OauthCheckTokenApiDescription extends AbstractSwaggerAdditionApiDescription {
+
+	public OauthCheckTokenApiDescription(String contextPath) {
+		super(contextPath, AuthConstants.TOKEN_CHECK_ENTRY_POINT);
+	}
 
 	@Override
 	public ApiDescription get() {
-		return new ApiDescription("Auth",AuthConstants.TOKEN_CHECK_ENTRY_POINT, // url
+		return new ApiDescription("Auth", getFullPath(), // url
 				"检查token端点", // 描述
 				Arrays.asList(new OperationBuilder(new CachingOperationNameGenerator())//
 						.method(HttpMethod.POST)// http请求类型
