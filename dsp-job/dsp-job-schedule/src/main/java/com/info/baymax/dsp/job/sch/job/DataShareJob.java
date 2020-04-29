@@ -50,7 +50,7 @@ public class DataShareJob implements Job {
         body.putAll(jobDataMap);
 
         try {
-            log.info("jobSchedule send request to executor, dataserviceId :" + serviceId);
+            log.info("jobSchedule start to send request to executor, dataserviceId :" + serviceId);
             //对于周期任务,当前running状态可能是2或3,在执行之前更新为1
             DataService dataService = dataServiceEntityService.selectByPrimaryKey(serviceId);
             //DataService虽然已经停止,但是trigger还没有停止,状态更新会混乱
