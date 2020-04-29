@@ -20,12 +20,12 @@ public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
             if (isArrayType(writer)) {
                 // 给writer注册一个自己的nullSerializer
                 writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullArrayJsonSerializer());
-            } else if (isStringType(writer)) {
-                writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullStringJsonSerializer());
             } /*
-             * else if (isNumberType(writer)) { writer.assignNullSerializer(new
-             * CustomizeNullJsonSerializer.NullNumberJsonSerializer()); } else if (isBooleanType(writer)) {
-             * writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullBooleanJsonSerializer()); }
+             * else if (isStringType(writer)) { writer.assignNullSerializer(new
+             * CustomizeNullJsonSerializer.NullStringJsonSerializer()); } else if (isNumberType(writer)) {
+             * writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullNumberJsonSerializer()); } else if
+             * (isBooleanType(writer)) { writer.assignNullSerializer(new
+             * CustomizeNullJsonSerializer.NullBooleanJsonSerializer()); }
              */ else {
                 writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullStringJsonSerializer());
             }
