@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
@@ -48,7 +48,7 @@ public class FlowExecution extends Maintable {
     @Comment("全局ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("NiL")
+    @ColumnDefault("NiL")
     private String externalId;
 
     @ApiModelProperty("任务ID")
@@ -61,7 +61,7 @@ public class FlowExecution extends Maintable {
     @Comment("排序序号")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer orderNum;
 
     @ApiModelProperty("流程ID")
@@ -74,7 +74,7 @@ public class FlowExecution extends Maintable {
     @Comment("流程版本号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("-1")
+    @ColumnDefault("-1")
     private Integer flowVersion;// -1 mean max version
 
     @ApiModelProperty("流程名称")
@@ -127,25 +127,25 @@ public class FlowExecution extends Maintable {
     @Comment("输入字节数")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long inputBytes;
     @ApiModelProperty("输出字节数")
     @Comment("输出字节数")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long outputBytes;
     @ApiModelProperty("输入数据记录数")
     @Comment("输入数据记录数")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long inputRecords;
     @ApiModelProperty("输出数据记录数")
     @Comment("输出数据记录数")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long outputRecords;
 
     @ApiModelProperty("状态详情")
@@ -164,7 +164,7 @@ public class FlowExecution extends Maintable {
     @Comment("耗时毫秒数")
     @Column(length = 20, nullable = false)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long cost;
 
     @ApiModelProperty("执行步骤信息")

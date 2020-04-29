@@ -4,7 +4,7 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -53,7 +53,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("元数据版本号")
     @Column(length = 10)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("1")
+    @ColumnDefault("1")
     private Integer schemaVersion;
 
     @ApiModelProperty("元数据信息")
@@ -70,14 +70,14 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("数据记录数")
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @Column(length = 20)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long recordNumber;// = 0l;
 
     @ApiModelProperty("数据字节数")
     @Comment("数据字节数")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long byteSize;// = 0l;
 
     @ApiModelProperty("存储格式:HDFS, HIVE, JDBC, KAFKA, HBASE, FTP, ElasticSearch, SearchOne, REDIS")
@@ -90,7 +90,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("分片类型：H, D, F, Q, 1, 5")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("H")
+    @ColumnDefault("H")
     private String sliceType;// = "H";
 
     @ApiModelProperty("分片时间")
@@ -103,7 +103,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("分析时间")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long analysisTime;// = 0l;
 
     @ApiModelProperty("存储配置参数")
@@ -124,7 +124,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("是否关联过：0-未关联，1-已经关联")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer isRelated;
 
     @ApiModelProperty("所属资源目录信息")
@@ -139,7 +139,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("是否隐藏,1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer isHide;
 
     public Dataset() {

@@ -1,15 +1,16 @@
 package com.info.baymax.dsp.data.platform.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
 import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
 import com.info.baymax.dsp.data.platform.bean.JobInfo;
-import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsApplyConfigTypeHandler;
-import com.info.baymax.dsp.data.platform.mybatis.mapper.type.ClobVsJobInfoTypeHandler;
+import com.info.baymax.dsp.data.platform.mybatis.type.ClobVsApplyConfigTypeHandler;
+import com.info.baymax.dsp.data.platform.mybatis.type.ClobVsJobInfoTypeHandler;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -89,21 +90,21 @@ public class DataService extends BaseEntity {
     @Comment("总的执行次数,一个服务可能被重复部署多次")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer totalExecuted;
 
     @ApiModelProperty("该服务总共执行的次数")
     @Comment("该服务总共执行的次数")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer executedTimes;
 
     @ApiModelProperty("该服务执行失败的次数")
     @Comment("该服务执行失败的次数")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer failedTimes;
 
     @ApiModelProperty("最近执行时间")
@@ -116,14 +117,14 @@ public class DataService extends BaseEntity {
     @Comment("该服务审核通过后是否已经部署就位,0 待部署,1 部署成功, 2 停止服务, 3 服务已过期")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer status;
 
     @ApiModelProperty("是否正在运行,由调度程序触发,0 未运行, 1 正在运行, 2 运行失败, 3 运行成功, 4 待停止, 5 已停止")
     @Comment("是否正在运行,由调度程序触发,0 未运行, 1 正在运行, 2 运行失败, 3 运行成功, 4 待停止, 5 已停止")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer isRunning;
 
     @ApiModelProperty("当前服务中的增量值")
@@ -164,7 +165,7 @@ public class DataService extends BaseEntity {
     @Comment("服务过期时间")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long expiredTime;// = 0L;
     // 9999-12-31
     protected static Long MAX_DATE_TIME = 253402214400L;

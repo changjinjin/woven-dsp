@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsConfigObjectTypeHandler;
@@ -94,7 +94,7 @@ public class FlowSchedulerDesc extends Maintable {
     @Comment("总的执行次数")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer totalExecuted;
 
     @ApiModelProperty("最近执行时间")

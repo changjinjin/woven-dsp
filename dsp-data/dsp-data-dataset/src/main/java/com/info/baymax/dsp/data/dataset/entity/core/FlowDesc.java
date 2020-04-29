@@ -5,7 +5,7 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListLinkDescTypeHandler;
@@ -77,7 +77,7 @@ public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
     @Comment("是否隐藏,对于qa flow不需要展示在Flow目录下，1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer isHide;
 
     @ApiModelProperty("参数列表")
@@ -112,7 +112,7 @@ public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
     @Comment("原ID")
     @Column(name = "o_id", length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("$null")
+    @ColumnDefault("$null")
     private String oid;
 
     @ApiModelProperty("所属项目信息")

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,14 +29,14 @@ public class FlowExecutionOutput extends Maintable {
     @Comment("输出字节数")
     @Column(length = 20, nullable = false)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long outputSize;
 
     @ApiModelProperty("输出数据记录数")
     @Comment("输出数据记录数")
     @Column(length = 20, nullable = false)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long outputRecords;
 
     @ApiModelProperty("操作类型")

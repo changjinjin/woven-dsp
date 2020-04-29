@@ -2,7 +2,7 @@ package com.info.baymax.dsp.data.sys.entity.security;
 
 import com.google.common.collect.Lists;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,7 +33,7 @@ public class Role extends Maintable {
     @Comment("客户端ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("baymax")
+    @ColumnDefault("baymax")
     private String clientId;
 
     @ApiModelProperty("角色权限列表")

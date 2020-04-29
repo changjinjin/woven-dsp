@@ -1,15 +1,15 @@
 package com.info.baymax.common.entity.field.resolver;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.entity.field.convertor.UnknownValueConvertor;
 import com.info.baymax.common.entity.field.convertor.ValueConvertor;
 import com.info.baymax.common.entity.field.convertor.ValueConvertorRegistry;
 import com.info.baymax.common.utils.ICollections;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 默认的属性值初始化处理器
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author jingwei.yang
  * @date 2020年3月19日 上午9:58:48
  */
-public class DefaultFieldResolver implements FieldResolver {
+public class FieldDefaultValueEntityResolver implements EntityResolver {
 
     /**
      * 缓存已经解析的实体类信息，减少消耗
@@ -27,16 +27,16 @@ public class DefaultFieldResolver implements FieldResolver {
     /**
      * 单实例的FieldResolver对象
      */
-    private static FieldResolver singleton = null;
+    private static EntityResolver singleton = null;
 
     /**
      * 双检锁实现单利模式，避免频繁创建对象的消耗和线程安全问题
      */
-    public static FieldResolver getInstance() {
+    public static EntityResolver getInstance() {
         if (singleton == null) {
-            synchronized (DefaultFieldResolver.class) {
+            synchronized (FieldDefaultValueEntityResolver.class) {
                 if (singleton == null) {
-                    singleton = new DefaultFieldResolver();
+                    singleton = new FieldDefaultValueEntityResolver();
                 }
             }
         }
@@ -44,7 +44,7 @@ public class DefaultFieldResolver implements FieldResolver {
     }
 
     // 只允许内部调用
-    private DefaultFieldResolver() {
+    private FieldDefaultValueEntityResolver() {
     }
 
     @Override

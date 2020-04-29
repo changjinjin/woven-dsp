@@ -6,7 +6,7 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler;
@@ -96,21 +96,21 @@ public class User extends Maintable implements CryptoBean {
     @Comment("HDFS空间限额")
     @Column(length = 18)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long hdfsSpaceQuota;
 
     @ApiModelProperty(value = "是否是超级管理员:0-否，1-是，默认0")
     @Comment("是否是超级管理员:0-否，1-是，默认0")
     @Column(name = "is_admin", length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer admin;
 
     @ApiModelProperty(value = "用户所属平台，默认baymax")
     @Comment("用户所属平台，默认baymax")
     @Column(name = "client_ids", length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("baymax")
+    @ColumnDefault("baymax")
     private String clientIds;
 
     @ApiModelProperty(value = "用户角色列表")

@@ -58,4 +58,15 @@ public class DataCustAppServiceImpl extends EntityClassServiceImpl<DataCustApp> 
         return DataCustAppService.super.update(t);
     }
 
+    @Override
+    public DataCustApp selectByAccessKeyNotNull(String accessKey) {
+        DataCustApp record = new DataCustApp();
+        record.setAccessKey(accessKey);
+        DataCustApp app = selectOne(record);
+        if (app == null) {
+            throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "App does not exist with accessKey: " + accessKey);
+        }
+        return app;
+    }
+
 }

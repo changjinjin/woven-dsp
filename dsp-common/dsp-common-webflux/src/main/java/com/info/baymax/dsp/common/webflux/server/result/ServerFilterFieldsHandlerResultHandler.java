@@ -71,7 +71,7 @@ public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWrite
 
         try {
             ServerHttpResponse response = exchange.getResponse();
-            response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             // TODO 这里为避免输出的是字符串格式又进行了反序列化，有效率问题，后续处理
             return writeBody(JSON.parse(jsonSerializer.toJson(result.getReturnValue())), methodParameter, exchange);
         } catch (JsonProcessingException e) {

@@ -1,13 +1,14 @@
-package com.info.baymax.dsp.access.dataapi.web;
+package com.info.baymax.dsp.access.dataapi.web.controller;
 
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
-import com.info.baymax.dsp.access.dataapi.request.PullRequest;
-import com.info.baymax.dsp.access.dataapi.request.PullResponse;
+import com.info.baymax.dsp.access.dataapi.config.PullLog;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.access.dataapi.service.RestSignService;
+import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.PullResponse;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -63,6 +64,7 @@ public class DataApiController implements Serializable {
 
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
+    @PullLog
     public PullResponse pullData(@ApiParam(value = "数据拉取是请求信息", required = true) @RequestBody PullRequest request,
                                  @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {
         String dataServiceId = request.getDataServiceId();

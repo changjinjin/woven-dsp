@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsListStringTypeHandler;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -74,14 +74,14 @@ public class Schema extends Maintable implements ResourceId,Cloneable {
     @Comment("是否为最新记录,取值为1或0,默认为1")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("1")
+    @ColumnDefault("1")
     private Integer newest;
 
     @ApiModelProperty("是否隐藏,1 隐藏，0 显示，默认值为0")
     @Comment("是否隐藏,1 隐藏，0 显示，默认值为0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer isHide;
 
     public Schema() {

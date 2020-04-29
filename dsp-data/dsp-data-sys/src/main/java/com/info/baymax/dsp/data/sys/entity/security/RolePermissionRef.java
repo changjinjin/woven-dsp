@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
 
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.mybatis.type.bool.BooleanVsIntegerTypeHandler;
 
 import io.swagger.annotations.ApiModel;
@@ -49,7 +49,7 @@ public class RolePermissionRef implements Serializable {
     @Comment("是否是全选状态：false-否（半选中），true-是，默认0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.BOOLEAN, typeHandler = BooleanVsIntegerTypeHandler.class)
-    @DefaultValue("false")
+    @ColumnDefault("false")
     protected Boolean halfSelect;
 
     public RolePermissionRef() {

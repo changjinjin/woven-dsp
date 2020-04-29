@@ -19,13 +19,13 @@ public class LookupRoutingDataSource extends AbstractRoutingDataSource {
 	protected Object determineCurrentLookupKey() {
 		String lookupKey = DataSourceContextHolder.get();
 		if (DataSourceType.MASTER.name().equalsIgnoreCase(lookupKey)) {
-			log.info("use master datasource");
+			log.debug("use master datasource");
 			return lookupKey;
 		}
 		// 使用随机轮询规则决定使用哪个读库
 		DataSourceContextHolder.slave(dbConfig);
 		lookupKey = DataSourceContextHolder.get();
-		log.info("use slave datasource：{}", lookupKey);
+		log.debug("use slave datasource：{}", lookupKey);
 		return lookupKey;
 	}
 }

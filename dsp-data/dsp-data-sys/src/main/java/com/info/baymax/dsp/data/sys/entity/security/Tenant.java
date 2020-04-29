@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler;
 import io.swagger.annotations.ApiModel;
@@ -38,7 +38,7 @@ public class Tenant extends Maintable {
     @Comment("HDFS空间限额")
     @Column(length = 18)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long hdfsSpaceQuota;
 
     @ApiModelProperty(value = "全局ID")

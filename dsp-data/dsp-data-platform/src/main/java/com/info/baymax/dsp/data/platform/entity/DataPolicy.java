@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.platform.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import io.swagger.annotations.ApiModel;
@@ -36,7 +36,7 @@ public class DataPolicy extends BaseEntity {
     @Comment("服务类型: 0 pull, 1 push")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer serviceType;
 
     @ApiModelProperty(value = "服务方式:file，message，http等")
@@ -63,7 +63,7 @@ public class DataPolicy extends BaseEntity {
     @Comment("此数据服务的有效期")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long serviceExpiredTime;
 
     // 9999-12-31

@@ -5,7 +5,7 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListLinkDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListParameterDescTypeHandler;
@@ -94,7 +94,7 @@ public class FlowHistDesc extends Maintable implements CryptoBean {
     @Comment("原ID")
     @Column(name = "o_id", length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("$null")
+    @ColumnDefault("$null")
     private String oid;
 
     @ApiModelProperty("所属项目信息")

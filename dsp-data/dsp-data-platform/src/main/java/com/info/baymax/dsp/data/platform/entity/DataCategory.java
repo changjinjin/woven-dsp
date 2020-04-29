@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.platform.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.service.tree.id.TreeIdable;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
@@ -37,7 +37,7 @@ public class DataCategory extends BaseEntity implements Comparable<DataCategory>
     @Comment("排序序号")
     @Column(name = "ord", length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("1")
+    @ColumnDefault("1")
     private Integer order;
 
     @ApiModelProperty("数据资源目录路径")
@@ -50,7 +50,7 @@ public class DataCategory extends BaseEntity implements Comparable<DataCategory>
     @Comment("父节点ID")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long parentId;
 
     @ApiModelProperty("子级节点列表")

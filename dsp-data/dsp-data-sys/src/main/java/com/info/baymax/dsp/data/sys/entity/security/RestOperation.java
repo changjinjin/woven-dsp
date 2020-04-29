@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringListTypeHandler;
@@ -19,7 +18,6 @@ import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.List;
 
 @Data

@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.platform.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
@@ -78,7 +78,7 @@ public class DataResource extends BaseEntity {
     @Comment("数据类型: 0 structured, 1 semi-structured, 2 unstructured")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer type;
 
     @ApiModelProperty(value = "关联的baymax系统中数据集ID")
@@ -146,28 +146,28 @@ public class DataResource extends BaseEntity {
     @Comment("开放状态: 0 未开放, 1 已开放,2 已到期")
     @Column(length = 11, nullable = false)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer openStatus;
 
     @ApiModelProperty("此数据资源的有效期,服务期限")
     @Comment("此数据资源的有效期,服务期限")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long expiredTime;
 
     @ApiModelProperty("访问次数")
     @Comment("访问次数")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer accessTimes;
 
     @ApiModelProperty("数据来源")
     @Comment("数据来源")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("Baymax")
+    @ColumnDefault("Baymax")
     private String source;
 
     public DataResource() {

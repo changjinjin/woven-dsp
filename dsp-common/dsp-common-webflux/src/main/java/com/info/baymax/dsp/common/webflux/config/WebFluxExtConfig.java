@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.common.webflux.config;
 
+import com.info.baymax.common.comp.config.JacksonConfig;
 import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorAttributes;
 import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorWebExceptionHandler;
 import com.info.baymax.dsp.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
@@ -71,7 +72,7 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 
     @Override
     public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
-        configurer.customCodecs().encoder(new ServerJackson2JsonEncoder());
+        configurer.customCodecs().registerWithDefaultConfig(new ServerJackson2JsonEncoder(JacksonConfig.config(null)));
     }
 
     @Bean

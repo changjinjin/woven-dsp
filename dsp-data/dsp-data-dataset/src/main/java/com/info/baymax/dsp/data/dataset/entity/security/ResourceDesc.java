@@ -2,7 +2,7 @@ package com.info.baymax.dsp.data.dataset.entity.security;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.service.tree.id.TreeIdable;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
@@ -47,13 +47,13 @@ public class ResourceDesc extends Maintable implements Comparable<ResourceDesc>,
     @Comment("排序序号")
     @Column(name = "ord", length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @DefaultValue("1")
+    @ColumnDefault("1")
     private Integer order;
 
     @ApiModelProperty("是否隐藏，对于qa的目录文件夹不展示，1 隐藏，0 显示，默认值为0")
     @Comment("是否隐藏，对于qa的目录文件夹不展示，1 隐藏，0 显示，默认值为0")
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer isHide;
 
     @ApiModelProperty("资源目录路径")

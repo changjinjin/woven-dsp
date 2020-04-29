@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.mybatis.type.bool.BooleanVsIntegerTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,14 +47,14 @@ public class RoleResourceRef implements Serializable {
     @Comment("是否是全选状态：false-否（半选中），true-是，默认0")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.BOOLEAN, typeHandler = BooleanVsIntegerTypeHandler.class)
-    @DefaultValue("false")
+    @ColumnDefault("false")
     protected Boolean halfSelect;
 
     @ApiModelProperty("计数器")
     @Comment("计数器")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("1")
+    @ColumnDefault("1")
     private Integer counter;
 
     public RoleResourceRef() {

@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
 import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.service.tree.id.TreeIdable;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
@@ -35,7 +35,7 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@Comment("客户端ID")
 	@Column(length = 20)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	@DefaultValue("baymax")
+	@ColumnDefault("baymax")
 	private String clientId;
 
 	@XmlElement(name = "code")
@@ -91,7 +91,7 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@Comment("排序序号")
 	@Column(name = "ord", length = 3)
 	@ColumnType(jdbcType = JdbcType.INTEGER)
-	@DefaultValue("1")
+	@ColumnDefault("1")
 	private Integer order;
 
 	@ApiModelProperty(value = "是否是半选中状态：false-否（全选中），true-是，默认0")

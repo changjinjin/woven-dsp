@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.consumer.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.entity.field.DefaultValue;
+import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -114,14 +114,14 @@ public class DataApplication extends BaseEntity {
     @Comment("过期时间")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Long expiredTime;// = 0L;
 
     @ApiModelProperty("申请状态， 0: 待审批，1: 通过审批， -1:未通过审批")
     @Comment("申请状态， 0: 待审批，1: 通过审批， -1:未通过审批")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
-    @DefaultValue("0")
+    @ColumnDefault("0")
     private Integer status;
     
     @ApiModelProperty("审核意见")

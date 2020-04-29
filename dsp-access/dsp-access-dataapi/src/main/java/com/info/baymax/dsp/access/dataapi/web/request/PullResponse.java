@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.request;
+package com.info.baymax.dsp.access.dataapi.web.request;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
