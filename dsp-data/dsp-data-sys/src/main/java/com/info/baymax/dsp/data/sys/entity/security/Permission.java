@@ -35,7 +35,7 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@Comment("客户端ID")
 	@Column(length = 20)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
-	@ColumnDefault("baymax")
+	@ColumnDefault("'baymax'")
 	private String clientId;
 
 	@XmlElement(name = "code")

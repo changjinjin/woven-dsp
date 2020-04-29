@@ -48,7 +48,7 @@ public class FlowExecution extends Maintable {
     @Comment("全局ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("NiL")
+    @ColumnDefault("'NiL'")
     private String externalId;
 
     @ApiModelProperty("任务ID")

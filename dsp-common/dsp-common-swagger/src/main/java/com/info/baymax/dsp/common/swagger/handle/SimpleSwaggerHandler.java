@@ -22,8 +22,8 @@ public class SimpleSwaggerHandler implements SwaggerHandler {
     @Override
     public void handle(Swagger swagger) {
         if (swagger != null) {
-            if (log.isDebugEnabled()) {
-                log.debug(jsonSerializer.toJson(swagger).value());
+            if (log.isTraceEnabled()) {
+                log.trace(jsonSerializer.toJson(swagger).value());
             }
         }
     }

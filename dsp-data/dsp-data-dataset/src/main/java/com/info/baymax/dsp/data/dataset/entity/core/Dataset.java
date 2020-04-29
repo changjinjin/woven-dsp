@@ -90,7 +90,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("分片类型：H, D, F, Q, 1, 5")
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("H")
+    @ColumnDefault("'H'")
     private String sliceType;// = "H";
 
     @ApiModelProperty("分片时间")

@@ -33,7 +33,7 @@ public class Role extends Maintable {
     @Comment("客户端ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("baymax")
+    @ColumnDefault("'baymax'")
     private String clientId;
 
     @ApiModelProperty("角色权限列表")

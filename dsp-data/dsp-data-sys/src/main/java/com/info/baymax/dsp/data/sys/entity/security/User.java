@@ -110,7 +110,7 @@ public class User extends Maintable implements CryptoBean {
     @Comment("用户所属平台，默认baymax")
     @Column(name = "client_ids", length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("baymax")
+    @ColumnDefault("'baymax'")
     private String clientIds;
 
     @ApiModelProperty(value = "用户角色列表")
