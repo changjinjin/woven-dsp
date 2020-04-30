@@ -1,8 +1,6 @@
 package com.info.baymax.common.entity.base;
 
 import com.info.baymax.common.entity.preprocess.PreEntityService;
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
@@ -32,63 +30,6 @@ public interface CommonEntityService<ID extends Serializable, T extends CommonEn
 	@Override
 	default void preUpdate(T t) {
 		t.preUpdate();
-	}
-
-	default T save(T t) {
-		if (t == null) {
-			throw new ServiceException(ErrType.ENTITY_EMPTY, "保存对象不能为空");
-		}
-		insertSelective(t);
-		return t;
-	}
-
-	default T update(T t) {
-		if (t == null) {
-			throw new ServiceException(ErrType.ENTITY_EMPTY, "修改对象不能为空");
-		}
-		updateByPrimaryKeySelective(t);
-		return t;
-	}
-
-	/**
-	 * 插入或者更新：当ID值为空时插入新的数据，否则更新记录
-	 *
-	 * @param t 操作数据
-	 * @return 结果
-	 */
-	default T saveOrUpdate(T t) {
-		if (t.getId() == null || t.getId().toString().trim().equals("")) {
-			t.setId(null);
-			return save(t);
-		} else {
-			return update(t);
-		}
-	}
-
-	/**
-	 * 根据ID删除单条记录，如果需要做级联删除需重写该方法
-	 *
-	 * @param id 删除的ID
-	 * @return 删除结果
-	 */
-	default int deleteById(ID id) {
-		return this.deleteByPrimaryKey(id);
-	}
-
-	/**
-	 * 根据ID批量删除，调用deleteById循环删除，适用于有附加操作的场景
-	 *
-	 * @param ids 删除的ID集合
-	 * @return 删除结果
-	 */
-	default int deleteByIds(ID[] ids) {
-		if (ids != null && ids.length > 0) {
-			for (ID id : ids) {
-				deleteById(id);
-			}
-			return ids.length;
-		}
-		return 0;
 	}
 
 	default T findOne(String tenantId, ID id) {

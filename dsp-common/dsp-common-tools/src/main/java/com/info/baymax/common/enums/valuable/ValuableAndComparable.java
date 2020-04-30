@@ -20,7 +20,7 @@ public interface ValuableAndComparable<T extends Comparable<T>> extends Valuable
 		if (value != null) {
 			return getValue().compareTo(value);
 		}
-		throw new NullPointerException("对比值为空");
+		throw new NullPointerException("Contrast value is empty.");
 	}
 
 	/**

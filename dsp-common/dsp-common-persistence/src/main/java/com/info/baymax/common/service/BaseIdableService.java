@@ -4,6 +4,8 @@ import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
 import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
 import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
+import com.info.baymax.common.message.exception.ServiceException;
+import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
@@ -22,7 +24,8 @@ import java.util.List;
  * @date 2019-05-29 15:22
  */
 @Transactional
-public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>> extends BaseService<T>, MyIdableMapper<T> {
+public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>>
+    extends BaseService<T>, MyIdableMapper<T> {
 
     MyIdableMapper<T> getMyIdableMapper();
 
@@ -34,6 +37,63 @@ public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>
     @Override
     default MyBaseMapper<T> getMyBaseMapper() {
         return getMyIdableMapper();
+    }
+
+    default T save(T t) {
+        if (t == null) {
+            throw new ServiceException(ErrType.ENTITY_EMPTY, "保存对象不能为空");
+        }
+        insertSelective(t);
+        return t;
+    }
+
+    default T update(T t) {
+        if (t == null) {
+            throw new ServiceException(ErrType.ENTITY_EMPTY, "修改对象不能为空");
+        }
+        updateByPrimaryKeySelective(t);
+        return t;
+    }
+
+    /**
+     * 插入或者更新：当ID值为空时插入新的数据，否则更新记录
+     *
+     * @param t 操作数据
+     * @return 结果
+     */
+    default T saveOrUpdate(T t) {
+        if (t.getId() == null || t.getId().toString().trim().equals("")) {
+            t.setId(null);
+            return save(t);
+        } else {
+            return update(t);
+        }
+    }
+
+    /**
+     * 根据ID删除单条记录，如果需要做级联删除需重写该方法
+     *
+     * @param id 删除的ID
+     * @return 删除结果
+     */
+    default int deleteById(ID id) {
+        return this.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 根据ID批量删除，调用deleteById循环删除，适用于有附加操作的场景
+     *
+     * @param ids 删除的ID集合
+     * @return 删除结果
+     */
+    default int deleteByIds(ID[] ids) {
+        if (ids != null && ids.length > 0) {
+            for (ID id : ids) {
+                deleteById(id);
+            }
+            return ids.length;
+        }
+        return 0;
     }
 
     @Preprocess

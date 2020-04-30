@@ -3,6 +3,8 @@ package com.info.baymax.dsp.auth.config.swagger.handle;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,9 @@ import com.google.common.collect.Lists;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.common.swagger.handle.SwaggerHandler;
+import com.info.baymax.dsp.data.sys.entity.security.PermOperationRef;
 import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
+import com.info.baymax.dsp.data.sys.service.security.PermOperationRefService;
 import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
 
 import io.swagger.models.HttpMethod;
@@ -23,7 +27,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 /**
  * 自定义Swagger文档处理器
- * 
+ *
  * @author jingwei.yang
  * @date 2020年4月24日 上午9:52:34
  */
@@ -33,6 +37,8 @@ public class RestOperationSwggerHanadler implements SwaggerHandler {
 
 	@Autowired
 	private RestOperationService restOperationService;
+	@Autowired
+	private PermOperationRefService permOperationRefService;
 
 	@Value("${spring.application.name}")
 	private String serviceName = "default";
@@ -64,15 +70,27 @@ public class RestOperationSwggerHanadler implements SwaggerHandler {
 		return list;
 	}
 
-	private void clear(String serviceName) {
-		restOperationService.delete(
-				ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("serviceName", serviceName).end());
+	/**
+	 * 清理掉已经删除的接口信息
+	 * 
+	 * @param serviceName 服务名称
+	 * @param reservedIds 需要保留的数据的ID列表（ID对于每一个RestOperation是唯一且不可变的）
+	 */
+	private void clear(String serviceName, Long[] reservedIds) {
+		permOperationRefService.delete(
+				ExampleQuery.builder(PermOperationRef.class).fieldGroup().andNotIn("operationId", reservedIds).end());
+		restOperationService.delete(ExampleQuery.builder(RestOperation.class).fieldGroup()
+				.andEqualTo("serviceName", serviceName).andNotIn("id", reservedIds).end());
 	}
 
+	@Transactional
 	private void persist(String serviceName, List<RestOperation> list) {
-		clear(serviceName);
 		if (ICollections.hasElements(list)) {
-			restOperationService.insertListWithPrimaryKey(list);
+			Long[] reservedIds = list.stream().map(t -> t.getId()).toArray(Long[]::new);
+			clear(serviceName, reservedIds);
+			for (RestOperation t : list) {
+				restOperationService.saveOrUpdate(t);
+			}
 		}
 	}
 }
