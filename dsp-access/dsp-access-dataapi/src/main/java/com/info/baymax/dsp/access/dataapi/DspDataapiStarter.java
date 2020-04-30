@@ -9,8 +9,11 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -20,18 +23,22 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableAutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})
-@ComponentScan(basePackages = {"com.info.baymax"})
+@ComponentScan(basePackages = {
+    "com.info.baymax"}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
+    DocumentationPluginsBootstrapper.class}))
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource(value = { "classpath:dsp-common.properties", "classpath:dsp-access-dataapi.properties" })
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-dataapi.properties"})
 public class DspDataapiStarter {
     public static void main(String[] args) {
+        // @formatter:off
         System.setProperty("es.set.netty.runtime.available.processors", "false");
         new SpringApplicationBuilder()
-                .bannerMode(Banner.Mode.OFF)
-                .properties()
-                .sources(DspDataapiStarter.class)
-                .web(WebApplicationType.REACTIVE)
-                .run(args);
+            .bannerMode(Banner.Mode.OFF)
+            .properties()
+            .sources(DspDataapiStarter.class)
+            .web(WebApplicationType.REACTIVE)
+            .run(args);
+        // @formatter:on
     }
 }

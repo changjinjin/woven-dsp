@@ -12,7 +12,9 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import springfox.documentation.PathProvider;
+import springfox.documentation.schema.AlternateTypeRuleConvention;
 import springfox.documentation.service.Documentation;
+import springfox.documentation.spi.service.RequestHandlerCombiner;
 import springfox.documentation.spi.service.RequestHandlerProvider;
 import springfox.documentation.spi.service.contexts.Defaults;
 import springfox.documentation.spring.web.DocumentationCache;
@@ -56,6 +58,14 @@ public class SwaggerBootstrapper extends DocumentationPluginsBootstrapper implem
     }
 
     @Override
+    public void setApplicationContext(ApplicationContext context) {
+        Map<String, SwaggerHandler> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(context,
+            SwaggerHandler.class, true, false);
+        this.handlers = new ArrayList<SwaggerHandler>(beans.values());
+        AnnotationAwareOrderComparator.sort(this.handlers);
+    }
+
+    @Override
     public void start() {
         super.start();
         if (handlers == null || handlers.isEmpty()) {
@@ -86,15 +96,4 @@ public class SwaggerBootstrapper extends DocumentationPluginsBootstrapper implem
         return swagger;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        initStrategies(applicationContext);
-    }
-
-    private void initStrategies(ApplicationContext context) {
-        Map<String, SwaggerHandler> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(context,
-            SwaggerHandler.class, true, false);
-        this.handlers = new ArrayList<SwaggerHandler>(beans.values());
-        AnnotationAwareOrderComparator.sort(this.handlers);
-    }
 }

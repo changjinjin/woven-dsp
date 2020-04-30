@@ -1,10 +1,8 @@
 package com.info.baymax.dsp.common.webflux.config;
 
-import com.info.baymax.common.comp.config.JacksonConfig;
 import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorAttributes;
 import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorWebExceptionHandler;
 import com.info.baymax.dsp.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
-import com.info.baymax.dsp.common.webflux.server.result.ServerJackson2JsonEncoder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
@@ -68,11 +66,6 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
         AcceptHeaderLocaleContextResolver acceptHeaderLocaleContextResolver = new AcceptHeaderLocaleContextResolver();
         acceptHeaderLocaleContextResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         return acceptHeaderLocaleContextResolver;
-    }
-
-    @Override
-    public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
-        configurer.customCodecs().registerWithDefaultConfig(new ServerJackson2JsonEncoder(JacksonConfig.config(null)));
     }
 
     @Bean

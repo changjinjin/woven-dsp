@@ -9,6 +9,10 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
+    private final CustomizeNullJsonSerializer.NullArrayJsonSerializer nullArrayJsonSerializer = new CustomizeNullJsonSerializer.NullArrayJsonSerializer();
+    private final CustomizeNullJsonSerializer.NullStringJsonSerializer nullStringJsonSerializer = new CustomizeNullJsonSerializer.NullStringJsonSerializer();
+    private final CustomizeNullJsonSerializer.NullNumberJsonSerializer nullNumberJsonSerializer = new CustomizeNullJsonSerializer.NullNumberJsonSerializer();
+    private final CustomizeNullJsonSerializer.NullBooleanJsonSerializer nullBooleanJsonSerializer = new CustomizeNullJsonSerializer.NullBooleanJsonSerializer();
 
     @Override
     public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc,
@@ -19,15 +23,16 @@ public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
             // 判断字段的类型，如果是array，list，set则注册nullSerializer
             if (isArrayType(writer)) {
                 // 给writer注册一个自己的nullSerializer
-                writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullArrayJsonSerializer());
-            } /*
-             * else if (isStringType(writer)) { writer.assignNullSerializer(new
-             * CustomizeNullJsonSerializer.NullStringJsonSerializer()); } else if (isNumberType(writer)) {
-             * writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullNumberJsonSerializer()); } else if
-             * (isBooleanType(writer)) { writer.assignNullSerializer(new
-             * CustomizeNullJsonSerializer.NullBooleanJsonSerializer()); }
-             */ else {
-                writer.assignNullSerializer(new CustomizeNullJsonSerializer.NullStringJsonSerializer());
+                writer.assignNullSerializer(nullArrayJsonSerializer);
+            } else if (isStringType(writer)) {
+                writer.assignNullSerializer(nullStringJsonSerializer);
+            }
+            /*
+             * else if (isNumberType(writer)) { writer.assignNullSerializer(nullNumberJsonSerializer); } else if
+             * (isBooleanType(writer)) { writer.assignNullSerializer(nullBooleanJsonSerializer); }
+             */
+            else {
+                writer.assignNullSerializer(nullStringJsonSerializer);
             }
         }
         return beanProperties;
