@@ -81,7 +81,7 @@ public class RequestUriMappingsHolder {
     private void resolveUriMappings() {
         if (ICollections.hasElements(restOperationBeans)) {
             for (RestOperation pathPatternBean : restOperationBeans) {
-                uriMappings.put(pathPatternBean.patternKey(), pathPatternBean);
+                uriMappings.put(pathPatternBean.operationKey(), pathPatternBean);
             }
         }
     }
@@ -90,7 +90,7 @@ public class RequestUriMappingsHolder {
         if (ICollections.hasElements(restOperationBeans)) {
             for (RestOperation pathPatternBean : restOperationBeans) {
                 if (pathPatternBean.getEnabled() != null && pathPatternBean.getEnabled()) {
-                    enabledUriMappings.put(pathPatternBean.patternKey(), pathPatternBean);
+                    enabledUriMappings.put(pathPatternBean.operationKey(), pathPatternBean);
                 }
             }
         }
@@ -121,7 +121,7 @@ public class RequestUriMappingsHolder {
             .methods(new RequestMethod[]{RequestMethod.valueOf(requestMapping.getMothed().toUpperCase())})
             // .params(requestMapping.params()).headers(requestMapping.headers())
             .consumes(requestMapping.getConsumes()).produces(requestMapping.getProduces())
-            .mappingName(requestMapping.patternKey());
+            .mappingName(requestMapping.operationKey());
         if (customCondition != null) {
             builder.customCondition(customCondition);
         }

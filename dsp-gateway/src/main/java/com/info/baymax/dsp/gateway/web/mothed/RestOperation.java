@@ -128,7 +128,7 @@ public class RestOperation implements Serializable {
 		}
 	}
 
-	public String patternKey() {
+	public String operationKey() {
 		if (relativePath != null && mothed != null) {
 			return getFullPath() + "@" + mothed.toUpperCase();
 		}
