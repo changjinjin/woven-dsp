@@ -30,7 +30,7 @@ public class RestOperationServiceImpl extends EntityClassServiceImpl<RestOperati
     @Override
     public int initRestOperations(String serviceName, List<RestOperation> list) {
         if (ICollections.hasElements(list)) {
-            Long[] reservedIds = list.stream().map(t -> t.getId()).toArray(Long[]::new);
+            String[] reservedIds = list.stream().map(t -> t.getId()).toArray(String[]::new);
             clear(serviceName, reservedIds);
             for (RestOperation t : list) {
                 saveOrUpdate(t);
@@ -46,7 +46,7 @@ public class RestOperationServiceImpl extends EntityClassServiceImpl<RestOperati
      * @param serviceName 服务名称
      * @param reservedIds 需要保留的数据的ID列表（ID对于每一个RestOperation是唯一且不可变的）
      */
-    private void clear(String serviceName, Long[] reservedIds) {
+    private void clear(String serviceName, String[] reservedIds) {
         permOperationRefService.delete(
             ExampleQuery.builder(PermOperationRef.class).fieldGroup().andNotIn("operationId", reservedIds).end());
         delete(ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("serviceName", serviceName)
