@@ -12,7 +12,7 @@ public class PullRequest extends DataRequest {
     private static final long serialVersionUID = 945291461084587382L;
 
     @ApiModelProperty("服务ID")
-    private String dataServiceId;
+    private Long dataServiceId;
     @ApiModelProperty("数据偏移游标")
     private int offset;
     @ApiModelProperty("请求数据量")

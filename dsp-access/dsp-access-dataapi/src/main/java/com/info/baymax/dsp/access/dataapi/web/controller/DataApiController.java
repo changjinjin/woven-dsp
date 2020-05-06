@@ -67,7 +67,7 @@ public class DataApiController implements Serializable {
     @PullLog
     public PullResponse pullData(@ApiParam(value = "数据拉取是请求信息", required = true) @RequestBody PullRequest request,
                                  @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {
-        String dataServiceId = request.getDataServiceId();
+        Long dataServiceId = request.getDataServiceId();
         String requestKey = request.getAccessKey();
         String host = hosts.split(",")[0];
         int offset = request.getOffset();

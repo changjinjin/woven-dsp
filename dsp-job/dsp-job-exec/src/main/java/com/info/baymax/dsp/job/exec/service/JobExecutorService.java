@@ -11,29 +11,23 @@ import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
-import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
+import com.info.baymax.dsp.data.consumer.entity.DataApplication;
+import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.Status;
-import com.info.baymax.dsp.data.dataset.entity.core.ClusterEntity;
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.data.dataset.service.core.ClusterDbService;
-import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
-import com.info.baymax.dsp.data.dataset.service.core.FlowSchedulerDescService;
-import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
+import com.info.baymax.dsp.data.platform.bean.GrowthType;
 import com.info.baymax.dsp.data.platform.bean.JobInfo;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataResourceService;
+import com.info.baymax.dsp.data.platform.entity.DataTransferRecord;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
-import com.info.baymax.dsp.data.sys.service.security.TenantService;
-import com.info.baymax.dsp.data.sys.service.security.UserService;
+import com.info.baymax.dsp.data.platform.service.DataTransferRecordService;
+import com.info.baymax.dsp.data.sys.entity.security.Customer;
+import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
@@ -47,11 +41,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -73,6 +63,13 @@ public class JobExecutorService {
     private FlowExecutionService flowExecutionService;
     @Autowired
     private ClusterDbService clusterDbService;
+    
+    @Autowired
+    private DataApplicationService dataApplicationService;
+    @Autowired
+    private DataTransferRecordService dataTransferRecordService;
+    @Autowired
+    private CustomerService customerService;
 
     //十分钟更新一次cluster信息,保证cluster最新修改生效
     static Cache<String, ClusterEntity> clusterCache = CacheBuilder.newBuilder()
@@ -338,24 +335,28 @@ public class JobExecutorService {
                         } catch (Exception e) {
                         }
                     }
-
-                    if (System.currentTimeMillis() - startTime > execution_timeout*60*1000L) {
+                    
+                    long endTime = System.currentTimeMillis();
+                    if (endTime - startTime > execution_timeout*60*1000L) {
                         //dataService.setFailedTimes(dataService.getFailedTimes()+1);//需要加锁
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         log.error("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
+                        pushRecord(dataService,execution,startTime,endTime,1);
                         break;
                     }else if(statusSuccess){
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
+                        pushRecord(dataService,execution,startTime,endTime,0);
                         break;
                     }else if(statusComplete){
                         //dataService.setFailedTimes(dataService.getFailedTimes()+1);
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
+                        pushRecord(dataService,execution,startTime,endTime,1);
                         break;
                     }
                 }
@@ -369,7 +370,7 @@ public class JobExecutorService {
                 dataService.setStatus(null);//不更新status
                 dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }
-
+            
         } catch (Exception e){
             log.error("execute DataService "+ dataService.getId()+" exception:", e);
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
@@ -421,5 +422,18 @@ public class JobExecutorService {
                 .end();
         return flowExecutionService.selectCount(query);
     }
-
+    
+    public void pushRecord(DataService dataService,FlowExecution execution,long startTime,long endTime,int resultCode) {
+    	try {
+    		DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
+    		Customer customer = customerService.selectByPrimaryKey(dataService.getCustId());
+    		if (execution!=null) {
+    			dataTransferRecordService.insertSelective(DataTransferRecord.push(execution.getName(), dataService.getTenantId(), dataService.getOwner(), dataService.getCustId(),customer.getName(),dataApplication.getCustAppId() ,dataApplication.getCustAppName(), dataService.getId(),dataService.getName(), startTime, endTime, execution.getCost(),GrowthType.valueOf(dataService.getApplyConfiguration().getServiceMode()), dataService.getCursorVal(),0L,execution.getOutputRecords(), resultCode));
+			}else {
+				dataTransferRecordService.insertSelective(DataTransferRecord.push(dataService.getName(), dataService.getTenantId(), dataService.getOwner(), dataService.getCustId(),customer.getName(),dataApplication.getCustAppId() ,dataApplication.getCustAppName(), dataService.getId(),dataService.getName(), startTime, endTime, endTime-startTime,GrowthType.valueOf(dataService.getApplyConfiguration().getServiceMode()), dataService.getCursorVal(),0L,0L, 1));
+			}
+		} catch (Exception e) {
+			log.error("record push service error with dataServiceId:"+dataService.getId()+",executionId:"+execution.getId(), e);
+		}
+    }
 }

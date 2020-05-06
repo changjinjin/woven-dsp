@@ -94,7 +94,6 @@ public class FlowHistDesc extends Maintable implements CryptoBean {
     @Comment("原ID")
     @Column(name = "o_id", length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("'$null'")
     private String oid;
 
     @ApiModelProperty("所属项目信息")

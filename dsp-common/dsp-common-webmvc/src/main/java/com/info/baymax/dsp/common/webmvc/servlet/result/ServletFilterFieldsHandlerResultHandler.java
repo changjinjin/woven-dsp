@@ -54,7 +54,7 @@ public class ServletFilterFieldsHandlerResultHandler implements HandlerMethodRet
         mavContainer.setRequestHandled(true);
         for (ResponseBodyAdvice<Object> ad : advices) {
             if (ad.supports(returnType, null)) {
-                returnValue = ad.beforeBodyWrite(returnValue, returnType, MediaType.APPLICATION_JSON_UTF8, null,
+                returnValue = ad.beforeBodyWrite(returnValue, returnType, MediaType.APPLICATION_JSON, null,
                     new ServletServerHttpRequest(webRequest.getNativeRequest(HttpServletRequest.class)),
                     new ServletServerHttpResponse(webRequest.getNativeResponse(HttpServletResponse.class)));
             }
@@ -74,7 +74,7 @@ public class ServletFilterFieldsHandlerResultHandler implements HandlerMethodRet
             }
         });
 
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         // 转换成json返回
         String json = jsonSerializer.toJson(returnValue);
         response.getWriter().write(json);
