@@ -9,7 +9,7 @@ public class ByteValueConvertor implements ValueConvertor<Byte> {
     @Override
     public Byte convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return (byte) 0;
+            return null;
         }
         return Byte.valueOf(defaultValue);
     }

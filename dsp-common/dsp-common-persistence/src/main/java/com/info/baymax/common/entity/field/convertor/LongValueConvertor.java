@@ -9,7 +9,7 @@ public class LongValueConvertor implements ValueConvertor<Long> {
     @Override
     public Long convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return 0L;
+            return null;
         }
         return Long.valueOf(defaultValue);
     }

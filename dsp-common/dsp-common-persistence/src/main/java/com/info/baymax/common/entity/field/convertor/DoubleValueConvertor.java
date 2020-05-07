@@ -9,7 +9,7 @@ public class DoubleValueConvertor implements ValueConvertor<Double> {
     @Override
     public Double convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return 0D;
+            return null;
         }
         return Double.valueOf(defaultValue);
     }

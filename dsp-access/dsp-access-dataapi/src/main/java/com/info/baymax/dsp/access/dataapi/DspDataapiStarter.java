@@ -14,12 +14,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @EnableCaching
 @SpringCloudApplication
-@EnableSwagger2WebFlux
 @EnableAutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})

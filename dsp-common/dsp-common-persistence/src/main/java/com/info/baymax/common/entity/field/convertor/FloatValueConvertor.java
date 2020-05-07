@@ -9,7 +9,7 @@ public class FloatValueConvertor implements ValueConvertor<Float> {
     @Override
     public Float convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return 0F;
+            return null;
         }
         return Float.valueOf(defaultValue);
     }

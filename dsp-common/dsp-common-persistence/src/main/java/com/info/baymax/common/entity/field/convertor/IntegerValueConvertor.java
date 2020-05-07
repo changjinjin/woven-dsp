@@ -9,7 +9,7 @@ public class IntegerValueConvertor implements ValueConvertor<Integer> {
     @Override
     public Integer convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return 0;
+            return null;
         }
         return Integer.valueOf(defaultValue);
     }

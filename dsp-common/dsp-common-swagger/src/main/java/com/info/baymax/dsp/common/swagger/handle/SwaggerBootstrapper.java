@@ -7,17 +7,20 @@ import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import springfox.documentation.PathProvider;
+import springfox.documentation.schema.AlternateTypeRuleConvention;
 import springfox.documentation.service.Documentation;
+import springfox.documentation.spi.service.RequestHandlerCombiner;
 import springfox.documentation.spi.service.RequestHandlerProvider;
 import springfox.documentation.spi.service.contexts.Defaults;
 import springfox.documentation.spring.web.DocumentationCache;
+import springfox.documentation.spring.web.plugins.AbstractDocumentationPluginsBootstrapper;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
 import springfox.documentation.spring.web.plugins.SpringIntegrationPluginNotPresentInClassPathCondition;
 import springfox.documentation.spring.web.scanners.ApiDocumentationScanner;
@@ -26,6 +29,7 @@ import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 当DocumentationPluginsBootstrapper类完成swagger相关的扫描之后开始初始化Swagger对象
@@ -36,12 +40,16 @@ import java.util.Map;
 @Slf4j
 @Component
 @Conditional(SpringIntegrationPluginNotPresentInClassPathCondition.class)
-public class SwaggerBootstrapper extends DocumentationPluginsBootstrapper implements ApplicationContextAware {
+public class SwaggerBootstrapper extends AbstractDocumentationPluginsBootstrapper
+    implements SmartLifecycle, ApplicationContextAware {
+    private static final String SPRINGFOX_DOCUMENTATION_AUTO_STARTUP = "springfox.documentation.auto-startup";
 
+    private final Environment environment;
     private final DocumentationCache documentationCache;
     private final ServiceModelToSwagger2Mapper mapper;
 
     private List<SwaggerHandler> handlers;
+    private AtomicBoolean initialized = new AtomicBoolean(false);
 
     @Autowired
     public SwaggerBootstrapper(DocumentationPluginsManager documentationPluginsManager,
@@ -49,8 +57,9 @@ public class SwaggerBootstrapper extends DocumentationPluginsBootstrapper implem
                                ApiDocumentationScanner resourceListing, TypeResolver typeResolver, Defaults defaults,
                                PathProvider pathProvider, Environment environment, DocumentationCache documentationCache,
                                ServiceModelToSwagger2Mapper mapper) {
-        super(documentationPluginsManager, handlerProviders, scanned, resourceListing, typeResolver, defaults,
-            pathProvider, environment);
+        super(documentationPluginsManager, handlerProviders, scanned, resourceListing, defaults, typeResolver,
+            pathProvider);
+        this.environment = environment;
         this.documentationCache = documentationCache;
         this.mapper = mapper;
     }
@@ -64,15 +73,59 @@ public class SwaggerBootstrapper extends DocumentationPluginsBootstrapper implem
     }
 
     @Override
+    public boolean isAutoStartup() {
+        String autoStartupConfig = environment.getProperty(SPRINGFOX_DOCUMENTATION_AUTO_STARTUP, "true");
+        return Boolean.valueOf(autoStartupConfig);
+    }
+
+    @Override
+    public void stop(Runnable callback) {
+        callback.run();
+    }
+
+    @Override
+    public void stop() {
+        initialized.getAndSet(false);
+        getScanned().clear();
+    }
+
+    @Override
+    public boolean isRunning() {
+        return initialized.get();
+    }
+
+    @Override
+    public int getPhase() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    @Autowired(required = false)
+    public void setCombiner(RequestHandlerCombiner combiner) {
+        super.setCombiner(combiner);
+    }
+
+    @Override
+    @Autowired(required = false)
+    public void setTypeConventions(List<AlternateTypeRuleConvention> typeConventions) {
+        super.setTypeConventions(typeConventions);
+    }
+
+    @Override
     public void start() {
-        super.start();
-        if (handlers == null || handlers.isEmpty()) {
-            log.debug("no SwaggerHandler to handle swagger.");
-            return;
+        if (initialized.compareAndSet(false, true)) {
+            log.info("Documentation plugins bootstrapped");
+            super.bootstrapDocumentationPlugins();
         }
+
         Swagger swagger = swagger();
         if (swagger == null) {
             log.debug("no swagger to be handle.");
+            return;
+        }
+
+        if (handlers == null || handlers.isEmpty()) {
+            log.debug("no SwaggerHandler to handle swagger.");
             return;
         }
 
@@ -93,5 +146,4 @@ public class SwaggerBootstrapper extends DocumentationPluginsBootstrapper implem
         swagger.basePath("/");
         return swagger;
     }
-
 }

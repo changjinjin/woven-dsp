@@ -9,7 +9,7 @@ public class BooleanValueConvertor implements ValueConvertor<Boolean> {
     @Override
     public Boolean convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return Boolean.FALSE;
+            return null;
         }
         return Boolean.valueOf(defaultValue);
     }

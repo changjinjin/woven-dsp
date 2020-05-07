@@ -2,6 +2,7 @@ package com.info.baymax.dsp.common.swagger.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,6 +25,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,5 +140,17 @@ public class Swagger2Config {
                 }
             };
         }
+    }
+
+    @Configuration
+    @ConditionalOnClass(name = "org.springframework.web.reactive.BindingContext")
+    @EnableSwagger2WebFlux
+    public class EnableSwagger2WebFluxAutoConfiguration {
+    }
+
+    @Configuration
+    @ConditionalOnClass(name = "javax.servlet.http.HttpServletRequest")
+    @EnableSwagger2WebMvc
+    public class EnableSwagger2WebMvcAutoConfiguration {
     }
 }

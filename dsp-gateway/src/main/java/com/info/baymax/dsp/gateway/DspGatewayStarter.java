@@ -10,10 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 
 @SpringCloudApplication
-@EnableSwagger2WebFlux
 @ComponentScan(basePackages = {
     "com.info.baymax"}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
     DocumentationPluginsBootstrapper.class}))
@@ -30,5 +28,4 @@ public class DspGatewayStarter {
             .run(args);
         // @formatter:on
     }
-
 }

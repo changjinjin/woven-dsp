@@ -9,7 +9,7 @@ public class ShortValueConvertor implements ValueConvertor<Short> {
     @Override
     public Short convert(String defaultValue) {
         if (StringUtils.isEmpty(defaultValue)) {
-            return (short) 0;
+            return null;
         }
         return Short.valueOf(defaultValue);
     }
