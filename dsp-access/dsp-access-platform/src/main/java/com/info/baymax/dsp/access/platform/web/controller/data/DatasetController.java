@@ -55,7 +55,7 @@ public class DatasetController {
             throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
         }
         FieldGroup fieldGroup = query.fieldGroup();
-        List<Field> feilds = fieldGroup.getFeilds();
+        List<Field> feilds = fieldGroup.getFields();
         if (ICollections.hasElements(feilds)) {
             for (Field field : feilds) {
                 String name = field.getName();
