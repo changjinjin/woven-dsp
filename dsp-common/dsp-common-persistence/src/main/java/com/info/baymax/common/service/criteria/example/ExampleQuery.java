@@ -29,34 +29,34 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     private static final long serialVersionUID = 4850854513242762929L;
 
     @ApiModelProperty("分页信息，默认不设置分页")
-    protected IPageable pageable = new IPageable(false);
+    private IPageable pageable = new IPageable(false);
 
     @ApiModelProperty(value = "查询数据类型", hidden = true)
-    protected Class<?> entityClass;
+    private Class<?> entityClass;
 
     @ApiModelProperty(value = "是否去重，默认false", hidden = true)
-    protected boolean distinct;
+    private boolean distinct;
 
     @ApiModelProperty(value = "是否锁表，默认false", hidden = true)
-    protected boolean forUpdate;
+    private boolean forUpdate;
 
     @ApiModelProperty(value = "需要统计的字段名，如：count(id)则该属性为'id'，统计时使用，默认为空", hidden = true)
-    protected String countProperty;
+    private String countProperty;
 
     @ApiModelProperty("查询的字段列表")
-    protected Set<String> selectProperties;
+    private Set<String> selectProperties;
 
     @ApiModelProperty("排除的字段列表")
-    protected Set<String> excludeProperties;
+    private Set<String> excludeProperties;
 
     @ApiModelProperty("条件规则，多个组合条件的组合")
-    protected FieldGroup fieldGroup;
+    private FieldGroup fieldGroup;
 
     @ApiModelProperty("排序属性信息")
-    protected List<Sort> ordSort;
+    private List<Sort> ordSort;
 
     @ApiModelProperty(value = "join sql：即子查询语句组合", hidden = true)
-    protected JoinSql joinSql;
+    private JoinSql joinSql;
 
     /*************************************
      * 建造器

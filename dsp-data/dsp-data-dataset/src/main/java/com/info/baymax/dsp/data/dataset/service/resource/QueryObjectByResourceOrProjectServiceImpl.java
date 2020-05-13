@@ -5,6 +5,7 @@ import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper;
 import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.criteria.query.SortObject;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.JoinSql;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -157,7 +158,7 @@ public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends Resour
 		StringBuffer sqlBuf = new StringBuffer();
 		sqlBuf.append("INNER JOIN merce_resource_dir rs ON t.resource_id = rs.id and rs.path like '").append(path)
 				.append("%'");
-		return exampleQuery(queryObject).append(sqlBuf.toString()).tableAlias("t");
+		return exampleQuery(queryObject).joinSql(JoinSql.builder().appendTable(sqlBuf.toString()).tableAlias("t").build());
 	}
 
 	@Override
@@ -222,6 +223,6 @@ public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends Resour
 				" t INNER JOIN merce_data_project_ref r ON t.id = r.instance_id WHERE r.last_modified_time is not null")
 				.append(fieldBuf).append(sortBuf).append(") tt");
 		// 构建query条件
-		return exampleQuery(queryObject).dynamic(sqlBuf.toString());
+		return exampleQuery(queryObject).joinSql(JoinSql.builder().dynamicTable(sqlBuf.toString()).build());
 	}
 }
