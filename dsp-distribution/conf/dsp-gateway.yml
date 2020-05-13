@@ -17,17 +17,16 @@ spring:
     add-mappings: true
     static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   cloud:
-    consul:
-      host: 127.0.0.1
-      port: 8500
+    nacos:
       discovery:
-        register: true
-        preferIpAddress: true
-        serviceName: ${spring.application.name}
-        healthCheckPath: /actuator/health
-        healthCheckInterval: 15s
-        tags: urlprefix-/${spring.application.name}
-        instanceId: ${spring.application.name}:${server.port}
+        enabled: true
+        server-addr: 127.0.0.1:8848
+        service: ${spring.application.name}
+        heartBeatInterval: 15
+        heartBeatTimeout: 30
+        metadata:
+          serviceName: ${spring.application.name}
+          instanceId: ${spring.application.name}:${server.address}:${server.port}
     gateway:
       httpclient:
         pool:
