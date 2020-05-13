@@ -39,7 +39,7 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
     protected AndOr andOr;
 
     @ApiModelProperty("简单条件集合")
-    protected List<Field> feilds;
+    protected List<Field> fields;
 
     @ApiModelProperty("条件分组集合")
     protected List<FieldGroup> fieldGroups;
@@ -70,9 +70,9 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
         this.andOr = andOr;
     }
 
-    private FieldGroup(AndOr andOr, List<Field> feilds, List<FieldGroup> fieldGroups) {
+    private FieldGroup(AndOr andOr, List<Field> fields, List<FieldGroup> fieldGroups) {
         this.andOr = andOr;
-        this.feilds = feilds;
+        this.fields = fields;
         this.fieldGroups = fieldGroups;
     }
 
@@ -123,8 +123,8 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
     /************************* 排序节点 ******************************/
     public List<CriteriaItem> ordItems() {
         List<CriteriaItem> items = new ArrayList<CriteriaItem>();
-        if (feilds != null && !feilds.isEmpty()) {
-            items.addAll(feilds);
+        if (fields != null && !fields.isEmpty()) {
+            items.addAll(fields);
         }
         if (fieldGroups != null && !fieldGroups.isEmpty()) {
             items.addAll(fieldGroups);
@@ -135,7 +135,7 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
 
     /************************* 组装条件 ******************************/
     @Override
-    public FieldGroup feilds(List<Field> fields) {
+    public FieldGroup fields(List<Field> fields) {
         if (fields != null) {
             for (Field field : fields) {
                 field(field);
@@ -145,20 +145,20 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
     }
 
     @Override
-    public FieldGroup feilds(Field... fields) {
-        return feilds(Arrays.asList(fields));
+    public FieldGroup fields(Field... fields) {
+        return fields(Arrays.asList(fields));
     }
 
     @Override
     public FieldGroup field(Field field) {
-        if (feilds == null) {
-            feilds = new ArrayList<>();
+        if (fields == null) {
+            fields = new ArrayList<>();
         }
 
         if (field != null) {
             counter++;
             field.setIndex(counter);
-            this.feilds.add(field);
+            this.fields.add(field);
         }
         return this;
     }

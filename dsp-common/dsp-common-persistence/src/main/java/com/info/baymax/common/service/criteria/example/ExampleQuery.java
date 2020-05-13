@@ -9,6 +9,7 @@ import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ import java.util.*;
  */
 @ApiModel
 @Getter
+@Setter
 @ToString
 public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     private static final long serialVersionUID = 4850854513242762929L;
@@ -53,14 +55,8 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     @ApiModelProperty("排序属性信息")
     protected List<Sort> ordSort;
 
-    @ApiModelProperty(value = "动态表名，可以是一个表名，也可以是一个子查询的结果表，如：(select * from user) u", hidden = true)
-    protected String dynamicTable;
-
-    @ApiModelProperty(value = "追加表名，一个sql拼接片段端，如：t inner join user_role_ref urr on t.id = urr.user_id追加在（select * from t_user）之后用于关联条件用", hidden = true)
-    protected String appendTable;
-
-    @ApiModelProperty(value = "表别名", hidden = true)
-    protected String tableAlias;
+    @ApiModelProperty(value = "join sql：即子查询语句组合", hidden = true)
+    protected JoinSql joinSql;
 
     /*************************************
      * 建造器
@@ -103,58 +99,6 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     public ExampleQuery(Class<?> entityClass) {
         super();
         this.entityClass = entityClass;
-    }
-
-    public ExampleQuery(FieldGroup fieldGroup, List<Sort> ordSort) {
-        super();
-        this.fieldGroup = fieldGroup;
-        this.ordSort = ordSort;
-    }
-
-    public ExampleQuery(String[] selectProperties, String[] excludeProperties, FieldGroup fieldGroup,
-                        String orderByClause) {
-        if (selectProperties != null && selectProperties.length > 0) {
-            this.selectProperties = new HashSet<>(Arrays.asList(selectProperties));
-        }
-        if (excludeProperties != null && excludeProperties.length > 0) {
-            this.excludeProperties = new HashSet<>(Arrays.asList(excludeProperties));
-        }
-        this.fieldGroup = fieldGroup;
-    }
-
-    public ExampleQuery(Set<String> selectProperties, Set<String> excludeProperties, FieldGroup fieldGroup,
-                        List<Sort> ordSort) {
-        super();
-        this.selectProperties = selectProperties;
-        this.excludeProperties = excludeProperties;
-        this.fieldGroup = fieldGroup;
-        this.ordSort = ordSort;
-    }
-
-    public ExampleQuery(boolean distinct, boolean forUpdate, String countProperty, Set<String> selectProperties,
-                        Set<String> excludeProperties, FieldGroup fieldGroup, List<Sort> ordSort) {
-        super();
-        this.distinct = distinct;
-        this.forUpdate = forUpdate;
-        this.countProperty = countProperty;
-        this.selectProperties = selectProperties;
-        this.excludeProperties = excludeProperties;
-        this.fieldGroup = fieldGroup;
-        this.ordSort = ordSort;
-    }
-
-    public ExampleQuery(boolean pageable, int pageNum, int pageSize, Class<?> entityClass, boolean distinct,
-                        boolean forUpdate, String countProperty, Set<String> selectProperties, Set<String> excludeProperties,
-                        FieldGroup fieldGroup, List<Sort> ordSort) {
-        this.pageable = new IPageable(pageable, pageNum, pageSize);
-        this.entityClass = entityClass;
-        this.distinct = distinct;
-        this.forUpdate = forUpdate;
-        this.countProperty = countProperty;
-        this.selectProperties = selectProperties;
-        this.excludeProperties = excludeProperties;
-        this.fieldGroup = fieldGroup;
-        this.ordSort = ordSort;
     }
 
     /*************************************
@@ -212,24 +156,6 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     @Override
     public ExampleQuery forUpdate(boolean forUpdate) {
         this.forUpdate = forUpdate;
-        return this;
-    }
-
-    @Override
-    public ExampleQuery dynamic(String dynamicTable) {
-        this.dynamicTable = dynamicTable;
-        return this;
-    }
-
-    @Override
-    public ExampleQuery append(String appendTable) {
-        this.appendTable = appendTable;
-        return this;
-    }
-
-    @Override
-    public ExampleQuery tableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
         return this;
     }
 
@@ -339,4 +265,96 @@ public class ExampleQuery implements QueryBuilder<ExampleQuery>, Serializable {
     public ExampleQuery sorts(Sort... ordSort) {
         return ordSort(Arrays.asList(ordSort));
     }
+
+    @Override
+    public ExampleQuery joinSql(JoinSql joinSql) {
+        this.joinSql = joinSql;
+        return this;
+    }
+
+    /***** clear logic ****/
+    @Override
+    public ExampleQuery clear() {
+        clearPageable();
+        clearDistinct();
+        clearForUpdate();
+        clearCountProperty();
+        clearSelectProperties();
+        clearExcludeProperties();
+        clearFieldGroup();
+        clearSorts();
+        clearJoinSql();
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearPageable() {
+        if (this.pageable != null && this.pageable.isPageable()) {
+            return unpaged();
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearDistinct() {
+        if (this.distinct) {
+            this.distinct = false;
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearForUpdate() {
+        if (this.forUpdate) {
+            this.forUpdate = false;
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearCountProperty() {
+        if (this.countProperty != null) {
+            this.countProperty = null;
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearSelectProperties() {
+        if (this.selectProperties != null) {
+            this.selectProperties.clear();
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearExcludeProperties() {
+        if (this.excludeProperties != null) {
+            this.excludeProperties.clear();
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearFieldGroup() {
+        if (this.fieldGroup != null) {
+            this.fieldGroup = null;
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearSorts() {
+        if (this.ordSort != null) {
+            this.ordSort.clear();
+        }
+        return this;
+    }
+
+    @Override
+    public ExampleQuery clearJoinSql() {
+        this.joinSql = null;
+        return this;
+    }
+
 }

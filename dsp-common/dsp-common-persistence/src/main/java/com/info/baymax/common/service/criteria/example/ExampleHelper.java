@@ -1,11 +1,11 @@
 package com.info.baymax.common.service.criteria.example;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
-import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
 import com.info.baymax.common.mybatis.mapper.example.Example;
 import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
 import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
+import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
+import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
 import org.apache.commons.lang3.StringUtils;
 import tk.mybatis.mapper.entity.EntityColumn;
@@ -71,19 +71,22 @@ public class ExampleHelper {
             example.excludeProperties(excludeProperties.stream().toArray(String[]::new));
         }
 
-        // 是否动态表名
-        if (StringUtils.isNotEmpty(query.getDynamicTable())) {
-            example.setDynamicTable(query.getDynamicTable());
-        }
+        JoinSql joinSql = query.getJoinSql();
+        if (joinSql != null) {
+            // 是否动态表名
+            if (StringUtils.isNotEmpty(joinSql.getDynamicTable())) {
+                example.setDynamicTable(joinSql.getDynamicTable());
+            }
 
-        // 是否追加表名
-        if (StringUtils.isNotEmpty(query.getAppendTable())) {
-            example.setAppendTable(query.getAppendTable());
-        }
+            // 是否追加表名
+            if (StringUtils.isNotEmpty(joinSql.getAppendTable())) {
+                example.setAppendTable(joinSql.getAppendTable());
+            }
 
-        // 是否追加表名
-        if (StringUtils.isNotEmpty(query.getTableAlias())) {
-            example.setTableAlias(query.getTableAlias());
+            // 是否追加表名
+            if (StringUtils.isNotEmpty(joinSql.getTableAlias())) {
+                example.setTableAlias(joinSql.getTableAlias());
+            }
         }
 
         // 条件组合

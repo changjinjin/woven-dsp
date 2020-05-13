@@ -2,6 +2,7 @@ package com.info.baymax.common.service.criteria;
 
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.example.FieldGroup;
+import com.info.baymax.common.service.criteria.example.JoinSql;
 import com.info.baymax.common.service.criteria.example.Sort;
 
 /**
@@ -85,27 +86,6 @@ public interface QueryBuilder<B extends QueryBuilder<B>> {
     B forUpdate(boolean forUpdate);
 
     /**
-     * 开启动态sql查询
-     *
-     * @return 开启动态sql查询
-     */
-    B dynamic(String dynamicTable);
-
-    /**
-     * 添加追加sql
-     *
-     * @return 添加追加sql
-     */
-    B append(String appendTable);
-
-    /**
-     * 表别名
-     *
-     * @return 添加表别名
-     */
-    B tableAlias(String tableAlias);
-
-    /**
      * 指定计数字段，是有统计技术的查询才有用，默认不需指定
      *
      * @param countProperty 计数字段
@@ -183,4 +163,82 @@ public interface QueryBuilder<B extends QueryBuilder<B>> {
      * @return this builder
      */
     B orderByDesc(String fieldName);
+
+    /**
+     * 设置join sql
+     *
+     * @param joinSql join sql
+     * @return this builder
+     */
+    B joinSql(JoinSql joinSql);
+
+    /**
+     * 清空条件属性
+     *
+     * @return this builder
+     */
+    B clear();
+
+    /**
+     * 清空Pageable条件
+     *
+     * @return this builder
+     */
+    B clearPageable();
+
+    /**
+     * 清空Distinct条件
+     *
+     * @return this builder
+     */
+    B clearDistinct();
+
+    /**
+     * 清空forUpdate条件
+     *
+     * @return this builder
+     */
+    B clearForUpdate();
+
+    /**
+     * 清空CountProperty条件
+     *
+     * @return this builder
+     */
+    B clearCountProperty();
+
+    /**
+     * 清空SelectProperties条件
+     *
+     * @return this builder
+     */
+    B clearSelectProperties();
+
+    /**
+     * 清空ExcludeProperties条件
+     *
+     * @return this builder
+     */
+    B clearExcludeProperties();
+
+    /**
+     * 清空FieldGroup条件
+     *
+     * @return this builder
+     */
+    B clearFieldGroup();
+
+    /**
+     * 清空Sorts条件
+     *
+     * @return this builder
+     */
+    B clearSorts();
+
+    /**
+     * 清空JoinSql条件
+     *
+     * @return this builder
+     */
+    B clearJoinSql();
 }

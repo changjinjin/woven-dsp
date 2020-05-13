@@ -29,7 +29,7 @@ public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends Field
      * @param fields
      * @return this builder
      */
-    FieldGroup feilds(List<Field> fields);
+    FieldGroup fields(List<Field> fields);
 
     /**
      * 添加一组条件
@@ -37,7 +37,7 @@ public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends Field
      * @param fields
      * @return
      */
-    FieldGroup feilds(Field... fields);
+    FieldGroup fields(Field... fields);
 
     /**
      * 添加一个条件

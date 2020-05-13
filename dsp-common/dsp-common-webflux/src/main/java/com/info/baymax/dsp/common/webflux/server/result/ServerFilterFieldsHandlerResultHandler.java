@@ -8,6 +8,7 @@ import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
 import com.info.baymax.common.message.exception.BizException;
 import com.info.baymax.common.message.result.ErrType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -25,6 +26,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+@Slf4j
 public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWriterResultHandler
     implements HandlerResultHandler {
 
@@ -75,8 +77,8 @@ public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWrite
             // TODO 这里为避免输出的是字符串格式又进行了反序列化，有效率问题，后续处理
             return writeBody(JSON.parse(jsonSerializer.toJson(result.getReturnValue())), methodParameter, exchange);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new BizException(ErrType.INTERNAL_SERVER_ERROR.getStatus(), "报文序列化失败", e);
+            log.error("Message serialization failed", e);
+            throw new BizException(ErrType.INTERNAL_SERVER_ERROR.getStatus(), "Message serialization failed", e);
         }
     }
 
