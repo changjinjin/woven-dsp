@@ -23,7 +23,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -36,7 +35,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Configuration
-public class WebFluxExtConfig implements WebFluxConfigurer {
+public class WebFluxExtConfig {
 
     @Autowired
     private ServerProperties serverProperties;
