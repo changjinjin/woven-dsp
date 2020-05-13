@@ -201,8 +201,7 @@ public class JobExecutorService {
                 //schedule触发成功,更新Dataservice的schedulerId
                 dataService.getJobInfo().setScheduleId(scheduler.getId());
                 dataService.setLastModifiedTime(new Date());
-                //dataService.setExecutedTimes(dataService.getExecutedTimes()+1);//这里应该加锁
-                dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
+//                dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                 dataService.setLastExecutedTime(new Date());
                 dataService.setStatus(null);//不更新status
                 dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
@@ -339,6 +338,7 @@ public class JobExecutorService {
                     long endTime = System.currentTimeMillis();
                     if (endTime - startTime > execution_timeout*60*1000L) {
                         //dataService.setFailedTimes(dataService.getFailedTimes()+1);//需要加锁
+                        dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                         dataService.setStatus(null);//不更新status
@@ -347,12 +347,13 @@ public class JobExecutorService {
                         pushRecord(dataService,execution,startTime,endTime,1);
                         break;
                     }else if(statusSuccess){
+                        dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         pushRecord(dataService,execution,startTime,endTime,0);
                         break;
                     }else if(statusComplete){
-                        //dataService.setFailedTimes(dataService.getFailedTimes()+1);
+                        dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
@@ -364,6 +365,7 @@ public class JobExecutorService {
 
             } catch (Exception e) {
                 log.error("dataservice " + dataService.getId()+" execute has exception", e);
+                dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                 dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
                 dataService.setLastModifiedTime(new Date());
