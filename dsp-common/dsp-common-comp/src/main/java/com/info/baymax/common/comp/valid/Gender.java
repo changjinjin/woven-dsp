@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = SexConstraintValidator.class)
-public @interface Sex {
+@Constraint(validatedBy = GenderConstraintValidator.class)
+public @interface Gender {
 
-    String message() default "性别有误";
+    String message() default "Gender is Wrong!";
 
     Class<?>[] groups() default {};
 
