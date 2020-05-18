@@ -82,6 +82,7 @@
 		<orc.mapreduce.version>1.4.2</orc.mapreduce.version>
 		<orc.hive-exec.verion>1.2.1.spark2</orc.hive-exec.verion>
 		<spark-redis.version>2.3.0</spark-redis.version>
+		<rocketmq-spring-boot.version>2.1.0</rocketmq-spring-boot.version>
 
 		<thirdparty.repository.url>http://192.168.1.171:8081/nexus/content/repositories/thirdparty</thirdparty.repository.url>
 		<fast-classpath-scanner.version>3.1.13</fast-classpath-scanner.version>
