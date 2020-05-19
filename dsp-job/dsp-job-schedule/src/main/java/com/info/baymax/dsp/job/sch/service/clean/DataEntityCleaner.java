@@ -3,6 +3,7 @@ package com.info.baymax.dsp.job.sch.service.clean;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
@@ -64,6 +65,7 @@ public class DataEntityCleaner {
                 dataService.setLastModifier(SaasContext.getCurrentUsername());
                 //删除已经启动的job
                 dataShareScheduler.cancel(dataService);
+                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_STOPPED);
             }
 
             //更新DB
