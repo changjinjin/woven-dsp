@@ -86,9 +86,9 @@ public class DataServiceScheduler {
     public void sendReadyService(){
         List<DataService> list =
             dataServiceEntityService.querySpecialDataService (
-                        DataServiceType.SERVICE_TYPE_PUSH,
-                        DataServiceStatus.SERVICE_STATUS_DEPLOYED,
-                        ScheduleJobStatus.JOB_STATUS_READY
+                        new Integer[]{DataServiceType.SERVICE_TYPE_PUSH},
+                        new Integer[]{DataServiceStatus.SERVICE_STATUS_DEPLOYED},
+                        new Integer[]{ScheduleJobStatus.JOB_STATUS_READY}
                 );
         log.debug("select ready dataservice size is " + list.size());
 
@@ -110,10 +110,11 @@ public class DataServiceScheduler {
     public void cancelDataServiceScheduler(){
         List<DataService> list =
                 dataServiceEntityService.querySpecialDataService (
-                        DataServiceType.SERVICE_TYPE_PUSH,
-                        DataServiceStatus.SERVICE_STATUS_STOPPED,
-                        ScheduleJobStatus.JOB_STATUS_TO_STOP
+                        new Integer[]{DataServiceType.SERVICE_TYPE_PUSH},
+                        new Integer[]{DataServiceStatus.SERVICE_STATUS_STOPPED, DataServiceStatus.SERVICE_STATUS_EXPIRED},
+                        new Integer[]{ScheduleJobStatus.JOB_STATUS_TO_STOP}
                 );
+
         log.debug("stop dataservice schedule size is " + list.size());
 
         if (list != null && list.size() > 0) {

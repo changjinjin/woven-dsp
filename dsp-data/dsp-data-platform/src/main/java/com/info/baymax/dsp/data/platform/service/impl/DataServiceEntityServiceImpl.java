@@ -30,17 +30,17 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
     }
 
     @Override
-    public List<DataService> querySpecialDataService(Integer type, Integer status, Integer isRunning) {
+    public List<DataService> querySpecialDataService(Integer[] type, Integer[] status, Integer[] isRunning) {
         // @formatter:off
         //select * from dsp_data_service where (schedule_type = 'once' or schedule_type='cron') and type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
         ExampleQuery query = ExampleQuery
             .builder(DataService.class)
             .forUpdate(true)
             .fieldGroup()
-            .andIn("scheduleType", new String[]{"cron", "once"})
-            .andEqualToIfNotNull("type", type)
-            .andEqualToIfNotNull("status", status)
-            .andEqualToIfNotNull("isRunning", isRunning)
+//            .andIn("scheduleType", new String[]{"cron", "once"})
+            .andIn("type", type)
+            .andIn("status", status)
+            .andIn("isRunning", isRunning)
             .end();
         // @formatter:on
         List<DataService> list = selectByExample(ExampleHelper.createExample(query, getEntityClass()));

@@ -19,7 +19,7 @@ public interface DataServiceEntityService extends BaseEntityService<DataService>
      * @param isRunning
      * @return
      */
-    List<DataService> querySpecialDataService(Integer type, Integer status, Integer isRunning);
+    List<DataService> querySpecialDataService(Integer[] type, Integer[] status, Integer[] isRunning);
 
     /**
      * 根据id更新dataService的isRunning值
