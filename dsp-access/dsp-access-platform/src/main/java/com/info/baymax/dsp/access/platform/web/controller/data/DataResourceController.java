@@ -4,6 +4,8 @@ import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
@@ -78,7 +80,8 @@ public class DataResourceController implements BaseEntityController<DataResource
                     dataApplicationService.updateDataApplicationStatus(dataApplication.getId(), -1);
                 }
                 //更新服务状态: 数据资源相关联的数据服务状态置为停止
-                dataServiceEntityService.updateStatusByApplicationId(dataApplication.getId(), 2);
+                dataServiceEntityService.updateStatusByApplicationId(dataApplication.getId(),
+                        DataServiceStatus.SERVICE_STATUS_STOPPED, ScheduleJobStatus.JOB_STATUS_TO_STOP);
             }
         }
         return Response.ok();

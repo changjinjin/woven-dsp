@@ -37,7 +37,7 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
             .builder(DataService.class)
             .forUpdate(true)
             .fieldGroup()
-            .andIn("scheduleType", new String[]{"cron", "once"})
+            .andIn("scheduleType", new String[]{"cron", "once", "event"})
             .andEqualToIfNotNull("type", type)
             .andEqualToIfNotNull("status", status)
             .andEqualToIfNotNull("isRunning", isRunning)
@@ -58,7 +58,7 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
     }
 
     @Override
-    public void updateStatusByApplicationId(Long applicationId, Integer status) {
-        dataServiceMapper.updateStatusByApplicationId(applicationId, status);
+    public void updateStatusByApplicationId(Long applicationId, Integer status, Integer isRunning) {
+        dataServiceMapper.updateStatusByApplicationId(applicationId, status, isRunning);
     }
 }

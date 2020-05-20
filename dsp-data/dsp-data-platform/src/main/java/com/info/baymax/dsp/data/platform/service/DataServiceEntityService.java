@@ -37,5 +37,5 @@ public interface DataServiceEntityService extends BaseEntityService<DataService>
     /**
      * 根据dataApplicationId,更新服务状态
      */
-    void updateStatusByApplicationId(Long applicationId, Integer status);
+    void updateStatusByApplicationId(Long applicationId, Integer status, Integer isRunning);
 }
