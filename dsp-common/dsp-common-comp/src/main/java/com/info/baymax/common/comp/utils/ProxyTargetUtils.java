@@ -36,7 +36,7 @@ public class ProxyTargetUtils {
      * @param proxy 代理对象
      * @return
      * @throws Exception
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2017年12月8日 上午10:32:41
      */
     public static Object getTarget(Object proxy) throws Exception {
@@ -56,7 +56,7 @@ public class ProxyTargetUtils {
      * @param proxy 代理对象
      * @return 真实类型对象
      * @throws Exception
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2017年12月8日 上午10:33:37
      */
     private static Object getCglibProxyTargetObject(Object proxy) throws Exception {
@@ -78,7 +78,7 @@ public class ProxyTargetUtils {
      * @param proxy 代理对象
      * @return 真实对象
      * @throws Exception
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2017年12月8日 上午10:34:38
      */
     private static Object getJdkDynamicProxyTargetObject(Object proxy) throws Exception {

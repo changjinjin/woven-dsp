@@ -3,7 +3,7 @@ package com.info.baymax.common.comp.cache;
 /**
  * 说明： 缓存常量. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年10月13日 下午2:20:20
  */
 public class CacheConsts {

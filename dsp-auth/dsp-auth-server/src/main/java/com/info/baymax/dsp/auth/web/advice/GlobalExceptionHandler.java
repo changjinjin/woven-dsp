@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 说明： 系统异常统一处理. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年9月9日 下午2:10:32
  */
 @Slf4j

@@ -18,7 +18,7 @@ public interface DeleteByPrimaryKeysMapper<T> {
 	/**
 	 * 说明： 根据主键集合进行批量删除，参数是主键的集合数据. <br>
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2018年1月4日 下午5:47:01
 	 * @param keys
 	 *            要删除的主键集合

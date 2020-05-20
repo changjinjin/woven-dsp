@@ -28,7 +28,7 @@ public class DeleteByPrimaryKeysProvider extends MapperTemplate {
      *
      * @param ms 映射语句
      * @return 根据主键集合批量删除动态sql
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2017年12月23日 上午11:56:32
      */
     public String deleteByPrimaryKeys(MappedStatement ms) {

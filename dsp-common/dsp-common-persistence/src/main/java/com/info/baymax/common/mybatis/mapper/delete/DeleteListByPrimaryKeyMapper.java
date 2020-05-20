@@ -17,7 +17,7 @@ public interface DeleteListByPrimaryKeyMapper<T> {
 	/**
 	 * 说明：根据主键字段进行批量删除，方法参数每个实体必须包含完整的主键属性. <br>
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2018年1月4日 下午5:47:56
 	 * @param recordList
 	 *            要删除的集合

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * 说明：json返回结果处理器. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年11月25日 上午10:26:19
  */
 public class ServletFilterFieldsHandlerResultHandler implements HandlerMethodReturnValueHandler, BeanPostProcessor {

@@ -5,7 +5,7 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * 说明： client异常. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年11月14日 下午1:45:42
  */
 public class TenantException extends AuthenticationException {

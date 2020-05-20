@@ -16,7 +16,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 /**
  * 说明：自定义cache key生成策略. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年10月13日 下午2:19:43
  */
 public class CustomKeyGenerator implements KeyGenerator {

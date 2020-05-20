@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * 说明：集合工具类. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年9月16日 上午11:32:23
  */
 public class ICollections {
@@ -19,7 +19,7 @@ public class ICollections {
      *
      * @param collection 需要判断的集合
      * @return 集合不为空返回true，否则返回false
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2017年9月16日 上午11:32:37
      */
     public static boolean hasElements(Collection<?> collection) {
@@ -31,7 +31,7 @@ public class ICollections {
      *
      * @param collection 需要判断的集合
      * @return 集合为空返回true，否则返回false
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月30日 下午2:24:03
      */
     public static boolean hasNoElements(Collection<?> collection) {
@@ -43,7 +43,7 @@ public class ICollections {
      *
      * @param collection 集合数据
      * @return 数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年8月29日 下午4:02:16
      */
     @SuppressWarnings("unchecked")
@@ -57,7 +57,7 @@ public class ICollections {
      * @param collection 源集合
      * @param convertor  转化器
      * @return 转化结果集
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年8月29日 下午5:11:43
      */
     public static <T, R> List<R> convertToList(Collection<T> collection, Function<T, R> convertor) {
@@ -76,7 +76,7 @@ public class ICollections {
      * @param collection 源集合
      * @param convertor  转化器
      * @return 转化结果集
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年8月29日 下午5:11:43
      */
     public static <T, R> Set<R> convertToSet(Collection<T> collection, Function<T, R> convertor) {
@@ -96,7 +96,7 @@ public class ICollections {
      * @param separator 分隔符
      * @param function  转化函数
      * @return 转化结果
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年8月16日 下午5:52:45
      */
     public static <T> List<T> strToList(String str, String separator, Function<String, T> convertor) {
@@ -115,7 +115,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return Byte数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<Byte> strToByteList(String str, String separator) {
@@ -128,7 +128,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return Short数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<Short> strToShortList(String str, String separator) {
@@ -141,7 +141,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return Integer数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<Integer> strToIntegerList(String str, String separator) {
@@ -154,7 +154,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return Long数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<Long> strToLongList(String str, String separator) {
@@ -167,7 +167,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return Float数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<Float> strToFloatList(String str, String separator) {
@@ -180,7 +180,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return Double数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<Double> strToDoubleList(String str, String separator) {
@@ -193,7 +193,7 @@ public class ICollections {
      * @param str       字符串
      * @param separator 分隔符
      * @return String数组
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年9月5日 上午9:43:44
      */
     public static List<String> strToStringList(String str, String separator) {

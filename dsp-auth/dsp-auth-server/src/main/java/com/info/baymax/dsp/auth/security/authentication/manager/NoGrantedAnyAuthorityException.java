@@ -5,7 +5,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 /**
  * 说明：没有授予任何权限. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年11月14日 下午2:31:26
  */
 public class NoGrantedAnyAuthorityException extends AuthenticationServiceException {

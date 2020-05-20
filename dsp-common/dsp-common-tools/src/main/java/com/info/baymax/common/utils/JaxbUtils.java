@@ -666,7 +666,7 @@ public class JaxbUtils {
 	 * xml数据转化为java对象
 	 *
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2016年1月7日 下午7:26:57
 	 * @param in
 	 *            xml数据输入流
@@ -685,7 +685,7 @@ public class JaxbUtils {
 	/**
 	 * xml数据转化为java对象
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2016年1月7日 下午7:26:57
 	 * @param file
 	 *            xml数据文件

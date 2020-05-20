@@ -21,7 +21,7 @@
 ///**
 // * 说明： 实现树结构数据查询Controller基类. <br>
 // *
-// * @author yjw@jusfoun.com
+// * @author jingwei.yang
 // * @date 2018年7月12日 下午2:08:27
 // */
 //@RestController
@@ -32,7 +32,7 @@
 //	/**
 //	 * 说明： 获取树图操作业务实例. <br>
 //	 *
-//	 * @author yjw@jusfoun.com
+//	 * @author jingwei.yang
 //	 * @date 2018年7月26日 下午2:11:41
 //	 * @return 树图操作业务实例
 //	 */
@@ -41,7 +41,7 @@
 //	/**
 //	 * 说明：根据父节点ID查询列表. <br>
 //	 *
-//	 * @author yjw@jusfoun.com
+//	 * @author jingwei.yang
 //	 * @date 2018年7月24日 上午10:58:38
 //	 * @param parentId
 //	 *            父节点ID
@@ -65,7 +65,7 @@
 //	/**
 //	 * 说明： 获取树数据. <br>
 //	 *
-//	 * @author yjw@jusfoun.com
+//	 * @author jingwei.yang
 //	 * @date 2018年7月24日 上午10:58:38
 //	 * @param rootId
 //	 *            根节点主键

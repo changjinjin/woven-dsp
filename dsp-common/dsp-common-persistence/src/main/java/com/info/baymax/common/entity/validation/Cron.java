@@ -6,10 +6,10 @@ import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -21,6 +21,14 @@ public @interface Cron {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+    
+	@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
+	@Retention(RUNTIME)
+	@Documented
+	@interface List {
+
+		Cron[] value();
+	}
 
     class Validator implements ConstraintValidator<Cron, String> {
         @Override
@@ -28,4 +36,5 @@ public @interface Cron {
             return cron != null && CronExpression.isValidExpression(cron);
         }
     }
+    
 }

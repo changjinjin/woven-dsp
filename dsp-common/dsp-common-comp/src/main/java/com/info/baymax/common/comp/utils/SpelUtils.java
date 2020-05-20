@@ -23,7 +23,7 @@ public class SpelUtils {
      * @param method 方法
      * @param args   参数列表
      * @return 解析后的结果
-     * @author yjw@jusfoun.com
+     * @author jingwei.yang
      * @date 2018年7月31日 上午9:00:11
      */
     public static String parse(String key, Method method, Object[] args) {

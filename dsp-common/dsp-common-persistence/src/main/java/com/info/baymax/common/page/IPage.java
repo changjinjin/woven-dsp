@@ -254,7 +254,7 @@ public class IPage<T> extends IPageable {
 	/**
 	 * 是否有下一页，是否当前页码小于总的页码数. <br>
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2018年1月17日 上午10:15:51
 	 * @param pageNum   页码
 	 * @param totalPage 总页码
@@ -267,7 +267,7 @@ public class IPage<T> extends IPageable {
 	/**
 	 * 是否有上一页，是否当前页码大于1. <br>
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2018年1月17日 上午10:16:27
 	 * @param pageNum   页码
 	 * @param totalPage 总页码
@@ -280,7 +280,7 @@ public class IPage<T> extends IPageable {
 	/**
 	 * 根据总数据量和每页数据条数计算总的页数. <br>
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2018年1月17日 上午10:16:58
 	 * @param pageSize   页长
 	 * @param totalCount 总条数

@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 说明： Blob VS Double Array TypeHandler. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年11月10日 下午12:44:32
  */
 public class BlobVsDoubleArrayTypeHandler extends AbstractBlobTypeHandler<Double[]> {

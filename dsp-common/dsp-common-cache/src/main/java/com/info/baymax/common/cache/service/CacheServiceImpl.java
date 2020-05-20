@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * 说明： 缓存管理. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年9月22日 上午9:53:00
  */
 @Service

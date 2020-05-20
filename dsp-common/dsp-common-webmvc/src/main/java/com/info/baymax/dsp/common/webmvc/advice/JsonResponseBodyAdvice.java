@@ -26,7 +26,7 @@ import java.util.Arrays;
 /**
  * 说明：处理包装同时使用@ResponseBody和@JsonBody注解的方法以满足json字段过滤等需求. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年12月18日 下午6:12:38
  */
 @ControllerAdvice

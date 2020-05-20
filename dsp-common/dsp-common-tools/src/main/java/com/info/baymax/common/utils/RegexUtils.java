@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * 说明：常用正则验证. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年9月16日 上午11:36:43
  */
 public class RegexUtils {
@@ -30,7 +30,7 @@ public class RegexUtils {
 	/**
 	 * 说明： 正则验证. <br>
 	 *
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2017年9月16日 上午11:37:19
 	 * @param regix
 	 *            正则表达式
@@ -133,7 +133,7 @@ public class RegexUtils {
 	/**
 	 * 说明： 校验日期格式：YYYY-MM-DD. <br>
 	 * 
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2017年11月17日 下午7:11:28
 	 * @param text
 	 * @return
@@ -145,7 +145,7 @@ public class RegexUtils {
 	/**
 	 * 说明： 校验日期时间格式:YYYY-MM-DD HH:mm:ss. <br>
 	 * 
-	 * @author yjw@jusfoun.com
+	 * @author jingwei.yang
 	 * @date 2017年11月17日 下午7:11:10
 	 * @param text
 	 * @return

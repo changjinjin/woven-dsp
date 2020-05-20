@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 说明：模板配置信息. <br>
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2018年6月15日 上午9:22:09
  */
 @Data

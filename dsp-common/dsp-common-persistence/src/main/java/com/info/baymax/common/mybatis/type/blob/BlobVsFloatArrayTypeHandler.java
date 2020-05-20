@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Blob VS Float Array TypeHandler
  *
- * @author yjw@jusfoun.com
+ * @author jingwei.yang
  * @date 2017年11月10日 下午12:44:32
  */
 public class BlobVsFloatArrayTypeHandler extends AbstractBlobTypeHandler<Float[]> {
