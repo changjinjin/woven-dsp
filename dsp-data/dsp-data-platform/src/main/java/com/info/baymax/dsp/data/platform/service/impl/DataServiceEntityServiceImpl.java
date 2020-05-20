@@ -37,17 +37,9 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
             .builder(DataService.class)
             .forUpdate(true)
             .fieldGroup()
-//<<<<<<< HEAD
-            .andIn("scheduleType", new String[]{"cron", "once", "event"})
-            .andEqualToIfNotNull("type", type)
-            .andEqualToIfNotNull("status", status)
-            .andEqualToIfNotNull("isRunning", isRunning)
-//=======
-////            .andIn("scheduleType", new String[]{"cron", "once"})
-//            .andIn("type", type)
-//            .andIn("status", status)
-//            .andIn("isRunning", isRunning)
-//>>>>>>> 46366c7482d851dd728d85383bd3b52d1275e851
+            .andIn("type", type)
+            .andIn("status", status)
+            .andIn("isRunning", isRunning)
             .end();
         // @formatter:on
         List<DataService> list = selectByExample(ExampleHelper.createExample(query, getEntityClass()));
