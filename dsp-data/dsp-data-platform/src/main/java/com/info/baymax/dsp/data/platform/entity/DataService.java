@@ -36,8 +36,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_service", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
-    @Index(columnList = "lastModifiedTime DESC")})
+        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
+        @Index(columnList = "lastModifiedTime DESC")})
 @Comment("数据服务服务信息表")
 public class DataService extends BaseEntity {
     private static final long serialVersionUID = -6235196279782590695L;
@@ -47,6 +47,12 @@ public class DataService extends BaseEntity {
     @Column(length = 20, nullable = false)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     private Long applicationId;
+
+    @ApiModelProperty(value = "数据资源ID,与DataResource id关联")
+    @Comment("数据资源ID,与DataResource id关联")
+    @Column(length = 20, nullable = false)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    private Long dataResId;
 
     @ApiModelProperty(value = "服务启动类型: 0 pull, 1 push")
     @Comment("服务启动类型: 0 pull, 1 push")
@@ -149,7 +155,7 @@ public class DataService extends BaseEntity {
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String custId;
-    
+
     @ApiModelProperty("从Application同步过来的一些配置")
     @Comment("从Application同步过来的一些配置")
     @Lob
