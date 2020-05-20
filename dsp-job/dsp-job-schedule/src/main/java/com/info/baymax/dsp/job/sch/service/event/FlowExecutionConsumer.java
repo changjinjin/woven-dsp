@@ -1,8 +1,13 @@
 package com.info.baymax.dsp.job.sch.service.event;
 
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.JsonBuilder;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
+import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.dsp.data.platform.entity.DataResource;
+import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import org.apache.rocketmq.common.message.MessageExt;
@@ -14,12 +19,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * monitor flow execution status change, and notify DataService.
  */
 @Component
 @RocketMQMessageListener(
-        topic = "${rocketmq.flowexecution.topic:flow_execution}",
+        topic = "${rocketmq.dsp-dataset.topic:dsp_dataset}",
         consumerGroup = "${woven.dsp.group:woven_dsp_group}",
         consumeMode = ConsumeMode.ORDERLY,
         selectorExpression = "*"
@@ -34,15 +42,34 @@ public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
     @Autowired
     DataResourceService dataResourceService;
 
-    @Autowired
-    DataApplicationService dataApplicationService;
-
     @Override
     public void onMessage(MessageExt msg) {
         String messageBody = new String(msg.getBody());
         try {
-            FlowExecution fe = JsonBuilder.getInstance().fromJson(messageBody, FlowExecution.class);
-            logger.info("get flow id:" + fe.getFlowId() + " fid: " + fe.getFid());
+            Dataset dataset = JsonBuilder.getInstance().fromJson(messageBody, Dataset.class);
+            String datasetId = dataset.getId();
+            List<DataResource> dataResourceList = dataResourceService.selectList(
+                    ExampleQuery.builder().fieldGroup().andEqualTo("datasetId", datasetId).end());
+
+            List<Long> dataResIdList = new ArrayList<>();
+            for (DataResource dataResource : dataResourceList) {
+                Long dataResId = dataResource.getId();
+                dataResIdList.add(dataResId);
+            }
+
+            ExampleQuery dataServiceQuery = ExampleQuery.builder().fieldGroup()
+                    .andIn("dataResId", dataResIdList.toArray())
+                    .andEqualToIfNotNull("scheduleType", ScheduleType.SCHEDULER_TYPE_EVENT)
+                    .andEqualToIfNotNull("status", DataServiceStatus.SERVICE_STATUS_DEPLOYED)
+                    .andNotEqualToIfNotNull("isRunning", ScheduleJobStatus.JOB_STATUS_RUNNING)
+                    .end();
+
+            List<DataService> dataServiceList = dataServiceEntityService.selectList(dataServiceQuery);
+
+            for (DataService dataService : dataServiceList) {
+                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
+                dataServiceEntityService.saveOrUpdate(dataService);
+            }
         } catch (Exception e) {
             logger.error("handle the message error,message:{} , bodyStr:{}", msg, messageBody);
             logger.error("handle the message Exception: ", e);

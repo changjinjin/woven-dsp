@@ -58,6 +58,7 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
         resourceMapper.closeDataResourceByIds(ids);
     }
 
+    @Override
     public IPage<Dataset> queryDatasets(ExampleQuery exampleQuery) {
         return datasetService.selectPage(exampleQuery);
     }
