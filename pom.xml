@@ -55,6 +55,7 @@
 		<!-- other dependencies -->
 		<fastjson.version>1.2.57</fastjson.version>
 		<jjwt.version>0.9.1</jjwt.version>
+		<sensitive.version>0.0.9</sensitive.version>
 		<guava.version>22.0</guava.version>
 
 		<elasticsearch.version>5.5.3</elasticsearch.version>
@@ -220,7 +221,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
@@ -253,6 +254,11 @@
 				<groupId>io.jsonwebtoken</groupId>
 				<artifactId>jjwt</artifactId>
 				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.houbb</groupId>
+				<artifactId>sensitive-core</artifactId>
+				<version>${sensitive.version}</version>
 			</dependency>
 			<dependency>
 				<artifactId>guava</artifactId>

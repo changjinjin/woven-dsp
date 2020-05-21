@@ -22,6 +22,13 @@ public @interface ReturnOperation {
     CryptoOperation cryptoOperation() default CryptoOperation.None;
 
     /**
+     * 是否有加密算法标志包裹，如：使用AES加密后 密文通过 “AES()”包裹了，则该属性应为true，否则为false，默认true
+     *
+     * @return 密文是否被包裹
+     */
+    boolean wrapped() default true;
+
+    /**
      * 加解密方式
      *
      * @return 加解密方式

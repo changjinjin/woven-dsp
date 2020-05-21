@@ -47,19 +47,22 @@ public interface CryptorDelegater {
     /**
      * 加密
      *
-     * @param cryptoType 加密类型
      * @param plaintext  明文
      * @param secretKey  秘钥
+     * @param wrapped    密文是否包裹
+     * @param cryptoType 加密类型
      * @return 密文
      */
-    String encrypt(String plaintext, String secretKey, CryptoType cryptoType);
+    String encrypt(String plaintext, String secretKey, boolean wrapped, CryptoType cryptoType);
 
     /**
      * 解密
      *
      * @param ciphertext 密文
      * @param secretKey  秘钥
+     * @param wrapped    密文是否包裹
+     * @param cryptoType 加密类型
      * @return 明文
      */
-    String decrypt(String ciphertext, String secretKey);
+    String decrypt(String ciphertext, String secretKey, boolean wrapped, CryptoType cryptoType);
 }

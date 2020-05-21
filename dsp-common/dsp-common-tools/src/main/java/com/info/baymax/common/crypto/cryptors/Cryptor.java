@@ -37,17 +37,19 @@ public interface Cryptor {
      *
      * @param plaintext 明文
      * @param secretKey 秘钥
+     * @param wrapped   是否需要包裹密文
      * @return 密文
      */
-    String encrypt(String plaintext, String secretKey);
+    String encrypt(String plaintext, String secretKey, boolean wrapped);
 
     /**
      * 解密
      *
      * @param ciphertext 密文
      * @param secretKey  秘钥
+     * @param wrapped    密文是否是包裹的
      * @return 明文
      */
-    String decrypt(String ciphertext, String secretKey);
+    String decrypt(String ciphertext, String secretKey, boolean wrapped);
 
 }

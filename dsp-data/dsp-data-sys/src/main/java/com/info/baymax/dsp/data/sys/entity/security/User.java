@@ -206,17 +206,17 @@ public class User extends Maintable implements CryptoBean {
     }
 
     @Override
-    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         // do nothing
         if (StringUtils.isNotEmpty(password)) {
-            password = cryptorDelegater.encrypt(password, secretKey, cryptoType);
+            password = cryptorDelegater.encrypt(password, secretKey, wrapped, cryptoType);
         }
     }
 
     @Override
-    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(password)) {
-            password = cryptorDelegater.decrypt(password, secretKey);
+            password = cryptorDelegater.decrypt(password, secretKey, wrapped, cryptoType);
         }
     }
 }

@@ -159,19 +159,19 @@ public class FlowDesc extends Maintable implements ResourceId, CryptoBean {
     }
 
     @Override
-    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (steps != null && !steps.isEmpty()) {
             for (StepDesc step : steps) {
-                step.encrypt(secretKey, cryptoType, cryptorDelegater);
+                step.encrypt(secretKey, wrapped, cryptoType, cryptorDelegater);
             }
         }
     }
 
     @Override
-    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (steps != null && !steps.isEmpty()) {
             for (StepDesc step : steps) {
-                step.decrypt(secretKey, cryptorDelegater);
+                step.decrypt(secretKey, wrapped, cryptoType, cryptorDelegater);
             }
         }
     }

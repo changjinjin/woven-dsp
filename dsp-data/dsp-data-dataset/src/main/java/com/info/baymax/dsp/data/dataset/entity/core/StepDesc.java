@@ -84,7 +84,7 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
     }
 
     @Override
-    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (otherConfigurations != null && !otherConfigurations.isEmpty()) {
             switch (cryptoType) {
                 case BASE64:
@@ -93,7 +93,7 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
                     Object password = otherConfigurations.get("password");
                     if (password != null) {
                         otherConfigurations.replace("password",
-                            ciphertext(password.toString(), secretKey, cryptoType, cryptorDelegater));
+                            ciphertext(password.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                     }
                     break;
                 default:
@@ -104,14 +104,15 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (otherConfigurations != null && !otherConfigurations.isEmpty()) {
             switch (type) {
                 case "sql":
                 case "sqlsource":
                     Object sql = otherConfigurations.get("sql");
                     if (sql != null) {
-                        otherConfigurations.replace("sql", plaintext(sql.toString(), secretKey, cryptorDelegater));
+                        otherConfigurations.replace("sql",
+                            plaintext(sql.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                     }
                     break;
                 case "filter":
@@ -119,7 +120,7 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
                     Object condition = otherConfigurations.get("condition");
                     if (condition != null) {
                         otherConfigurations.replace("condition",
-                            plaintext(condition.toString(), secretKey, cryptorDelegater));
+                            plaintext(condition.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                     }
                     break;
                 case "transform":
@@ -130,12 +131,13 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
                         if (Iterable.class.isAssignableFrom(clazz)) {
                             Iterator<?> iterator = ((Iterable<?>) expressionsObj).iterator();
                             iterator.forEachRemaining(exp -> {
-                                newExpressions.add(plaintext(exp.toString(), secretKey, cryptorDelegater));
+                                newExpressions
+                                    .add(plaintext(exp.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                             });
                         } else if (clazz.isArray()) {
                             for (int i = 0; i < Array.getLength(expressionsObj); i++) {
-                                newExpressions.add(
-                                    plaintext(Array.get(expressionsObj, i).toString(), secretKey, cryptorDelegater));
+                                newExpressions.add(plaintext(Array.get(expressionsObj, i).toString(), secretKey, wrapped,
+                                    cryptoType, cryptorDelegater));
                             }
                         }
                         otherConfigurations.replace("expressions", newExpressions);
@@ -151,14 +153,14 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
                             iterator.forEachRemaining(exp -> {
                                 Map<String, Object> map = (Map<String, Object>) exp;
                                 map.replace("expression", plaintext(map.getOrDefault("expression", "").toString(),
-                                    secretKey, cryptorDelegater));
+                                    secretKey, wrapped, cryptoType, cryptorDelegater));
                                 newValidationRules.add(map);
                             });
                         } else if (clazz.isArray()) {
                             for (int i = 0; i < Array.getLength(validationRulesObj); i++) {
                                 Map<String, Object> map = (Map<String, Object>) Array.get(validationRulesObj, i);
                                 map.replace("expression", plaintext(map.getOrDefault("expression", "").toString(),
-                                    secretKey, cryptorDelegater));
+                                    secretKey, wrapped, cryptoType, cryptorDelegater));
                                 newValidationRules.add(map);
                             }
                         }
@@ -172,7 +174,8 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
             // 密码都需要解密
             Object password = otherConfigurations.get("password");
             if (password != null) {
-                otherConfigurations.replace("password", plaintext(password.toString(), secretKey, cryptorDelegater));
+                otherConfigurations.replace("password",
+                    plaintext(password.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
             }
         }
     }

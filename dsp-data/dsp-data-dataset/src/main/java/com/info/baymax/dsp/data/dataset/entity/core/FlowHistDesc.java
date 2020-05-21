@@ -5,7 +5,6 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListLinkDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListParameterDescTypeHandler;
@@ -134,19 +133,19 @@ public class FlowHistDesc extends Maintable implements CryptoBean {
     }
 
     @Override
-    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (steps != null && !steps.isEmpty()) {
             for (StepDesc step : steps) {
-                step.encrypt(secretKey, cryptoType, cryptorDelegater);
+                step.encrypt(secretKey, wrapped, cryptoType, cryptorDelegater);
             }
         }
     }
 
     @Override
-    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (steps != null && !steps.isEmpty()) {
             for (StepDesc step : steps) {
-                step.decrypt(secretKey, cryptorDelegater);
+                step.decrypt(secretKey, wrapped, cryptoType, cryptorDelegater);
             }
         }
     }

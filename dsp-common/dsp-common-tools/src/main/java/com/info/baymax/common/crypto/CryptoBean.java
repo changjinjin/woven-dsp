@@ -13,27 +13,38 @@ public interface CryptoBean {
 
     /**
      * 加密处理
+     *
+     * @param secretKey        秘钥
+     * @param wrapped          密文是否需要包裹
+     * @param cryptoType       加密类型
+     * @param cryptorDelegater 加密解密器
      */
-    void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater);
+    void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater);
 
     /**
      * 解密处理
+     *
+     * @param secretKey        秘钥
+     * @param wrapped          密文是否包裹了
+     * @param cryptoType       加密类型
+     * @param cryptorDelegater 加密解密器
      */
-    void decrypt(String secretKey, CryptorDelegater cryptorDelegater);
+    void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater);
 
     /**
      * 获取密文
      *
      * @param plaintext        明文信息
      * @param secretKey        秘钥
+     * @param wrapped          密文是否需要包裹
      * @param cryptoType       加密类型
      * @param cryptorDelegater 加密解密器
      * @return 密文信息
      */
-    default String ciphertext(String plaintext, String secretKey, CryptoType cryptoType,
+    default String ciphertext(String plaintext, String secretKey, boolean wrapped, CryptoType cryptoType,
                               CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(plaintext)) {
-            return cryptorDelegater.encrypt(plaintext, secretKey, cryptoType);
+            return cryptorDelegater.encrypt(plaintext, secretKey, wrapped, cryptoType);
         }
         return plaintext;
     }
@@ -43,12 +54,15 @@ public interface CryptoBean {
      *
      * @param ciphertext       密文信息
      * @param secretKey        秘钥
+     * @param wrapped          密文是否包裹了
+     * @param cryptoType       加密类型
      * @param cryptorDelegater 加密解密器
      * @return 明文信息
      */
-    default String plaintext(String ciphertext, String secretKey, CryptorDelegater cryptorDelegater) {
+    default String plaintext(String ciphertext, String secretKey, boolean wrapped, CryptoType cryptoType,
+                             CryptorDelegater cryptorDelegater) {
         if (StringUtils.isNotEmpty(ciphertext)) {
-            return cryptorDelegater.decrypt(ciphertext, secretKey);
+            return cryptorDelegater.decrypt(ciphertext, secretKey, wrapped, cryptoType);
         }
         return ciphertext;
     }

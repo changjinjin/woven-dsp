@@ -202,26 +202,27 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     }
 
     @Override
-    public void encrypt(String secretKey, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+    public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (storageConfigurations != null && !storageConfigurations.isEmpty()) {
             String password = storageConfigurations.get("password");
             if (password != null) {
                 storageConfigurations.replace("password",
-                    ciphertext(password, secretKey, cryptoType, cryptorDelegater));
+                    ciphertext(password, secretKey, wrapped, cryptoType, cryptorDelegater));
             }
         }
     }
 
     @Override
-    public void decrypt(String secretKey, CryptorDelegater cryptorDelegater) {
+    public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (storageConfigurations != null && !storageConfigurations.isEmpty()) {
             String password = storageConfigurations.get("password");
             if (password != null) {
-                storageConfigurations.replace("password", plaintext(password, secretKey, cryptorDelegater));
+                storageConfigurations.replace("password",
+                    plaintext(password, secretKey, wrapped, cryptoType, cryptorDelegater));
             }
             String sql = storageConfigurations.get("sql");
             if (sql != null) {
-                storageConfigurations.replace("sql", plaintext(sql, secretKey, cryptorDelegater));
+                storageConfigurations.replace("sql", plaintext(sql, secretKey, wrapped, cryptoType, cryptorDelegater));
             }
         }
     }

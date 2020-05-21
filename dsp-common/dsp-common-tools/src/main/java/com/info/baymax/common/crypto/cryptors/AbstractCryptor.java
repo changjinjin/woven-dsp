@@ -43,19 +43,32 @@ public abstract class AbstractCryptor implements Cryptor {
     }
 
     @Override
-    public String decrypt(String ciphertext, String secretKey) {
-        if (ciphertext != null && isEncrypted(ciphertext)) {
+    public String decrypt(String ciphertext, String secretKey, boolean wrapped) {
+        // 如果密文没有被包裹，直接解密
+        if (!wrapped) {
+            return decryptCiphertext(ciphertext, secretKey);
+        }
+        // 如果密文加密并且被包裹，需要拆包并且解密
+        else if (ciphertext != null && isEncrypted(ciphertext)) {
             return decryptCiphertext(unwrapEncryptedValue(ciphertext), secretKey);
         }
+        // 未加密，直接返回
         return ciphertext;
     }
 
     @Override
-    public String encrypt(String plaintext, String secretKey) {
+    public String encrypt(String plaintext, String secretKey, boolean wrapped) {
         StringBuffer buff = new StringBuffer();
-        if (plaintext != null && !isEncrypted(plaintext)) {
+
+        // 如果密码无需包裹则直接加密并返回
+        if (!wrapped) {
+            return encryptPlaintext(plaintext, secretKey);
+        }
+        // 明文没有加密并且需要包裹，这先加密并包裹返回
+        else if (plaintext != null && !isEncrypted(plaintext)) {
             return buff.append(prefix).append(encryptPlaintext(plaintext, secretKey)).append(suffix).toString();
         }
+        // 已经加密，直接返回
         return plaintext;
     }
 
