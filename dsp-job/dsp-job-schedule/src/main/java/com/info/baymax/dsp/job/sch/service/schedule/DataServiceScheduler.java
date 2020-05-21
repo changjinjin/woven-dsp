@@ -37,55 +37,54 @@ public class DataServiceScheduler {
     DataServiceEntityService dataServiceEntityService;
 
     @PostConstruct
-    public void updateServiceStatus(){
+    public void updateServiceStatus() {
         try {
             log.info("start to recover running service.");
             dataServiceEntityService.recoverDataService();
             log.info("end recover running service.");
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
     @PostConstruct
-    public void stopDataServiceScheduler(){
+    public void stopDataServiceScheduler() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
                     cancelDataServiceScheduler();
-                }catch (Exception e){
+                } catch (Exception e) {
                     log.error("schedule data service exception: ", e);
                 }
 
             }
-        }, 1000*60, scheduler_scan_rate*1000*3);
+        }, 1000 * 60, scheduler_scan_rate * 1000 * 3);
     }
 
 
     @PostConstruct
-    public void runScheduler_push(){
+    public void runScheduler_push() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
                     sendReadyService();
-                }catch (Exception e){
+                } catch (Exception e) {
                     log.error("schedule data service exception: ", e);
                 }
 
             }
-        }, 1000*60, scheduler_scan_rate*1000);
+        }, 1000 * 60, scheduler_scan_rate * 1000);
     }
 
 
-
     @Transactional(rollbackFor = Exception.class)
-    public void sendReadyService(){
+    public void sendReadyService() {
         List<DataService> list =
-            dataServiceEntityService.querySpecialDataService (
+                dataServiceEntityService.querySpecialDataService(
                         new Integer[]{DataServiceType.SERVICE_TYPE_PUSH},
                         new Integer[]{DataServiceStatus.SERVICE_STATUS_DEPLOYED},
                         new Integer[]{ScheduleJobStatus.JOB_STATUS_READY}
@@ -107,9 +106,9 @@ public class DataServiceScheduler {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void cancelDataServiceScheduler(){
+    public void cancelDataServiceScheduler() {
         List<DataService> list =
-                dataServiceEntityService.querySpecialDataService (
+                dataServiceEntityService.querySpecialDataService(
                         new Integer[]{DataServiceType.SERVICE_TYPE_PUSH},
                         new Integer[]{DataServiceStatus.SERVICE_STATUS_STOPPED, DataServiceStatus.SERVICE_STATUS_EXPIRED},
                         new Integer[]{ScheduleJobStatus.JOB_STATUS_TO_STOP}
@@ -126,7 +125,7 @@ public class DataServiceScheduler {
 
             //更新DB isRunning=5
             for (DataService dataService : list) {
-                dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(),ScheduleJobStatus.JOB_STATUS_STOPPED);//防止被其他timer重复调用
+                dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_STOPPED);//防止被其他timer重复调用
             }
             log.info("stop push dataservice, count : {}", list.size());
         }

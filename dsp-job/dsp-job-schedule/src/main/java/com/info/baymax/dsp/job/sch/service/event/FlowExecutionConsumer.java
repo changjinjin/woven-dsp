@@ -29,7 +29,7 @@ import java.util.List;
 @RocketMQMessageListener(
         topic = "${rocketmq.dsp-dataset.topic:dsp_dataset}",
         consumerGroup = "${woven.dsp.group:woven_dsp_group}",
-        consumeMode = ConsumeMode.ORDERLY,
+        consumeMode = ConsumeMode.CONCURRENTLY,
         selectorExpression = "*"
 )
 public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
@@ -45,6 +45,7 @@ public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
     @Override
     public void onMessage(MessageExt msg) {
         String messageBody = new String(msg.getBody());
+        logger.debug("get msg:" + messageBody);
         try {
             Dataset dataset = JsonBuilder.getInstance().fromJson(messageBody, Dataset.class);
             String datasetId = dataset.getId();
@@ -56,19 +57,23 @@ public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
                 Long dataResId = dataResource.getId();
                 dataResIdList.add(dataResId);
             }
+            logger.debug("dataResIdList size: " + dataResIdList.size());
 
-            ExampleQuery dataServiceQuery = ExampleQuery.builder().fieldGroup()
-                    .andIn("dataResId", dataResIdList.toArray())
-                    .andEqualToIfNotNull("scheduleType", ScheduleType.SCHEDULER_TYPE_EVENT)
-                    .andEqualToIfNotNull("status", DataServiceStatus.SERVICE_STATUS_DEPLOYED)
-                    .andNotEqualToIfNotNull("isRunning", ScheduleJobStatus.JOB_STATUS_RUNNING)
-                    .end();
+            if (dataResIdList.size() > 0) {
+                ExampleQuery dataServiceQuery = ExampleQuery.builder().fieldGroup()
+                        .andIn("dataResId", dataResIdList.toArray())
+                        .andEqualToIfNotNull("scheduleType", ScheduleType.SCHEDULER_TYPE_EVENT)
+                        .andEqualToIfNotNull("status", DataServiceStatus.SERVICE_STATUS_DEPLOYED)
+                        .andNotEqualToIfNotNull("isRunning", ScheduleJobStatus.JOB_STATUS_RUNNING)
+                        .end();
 
-            List<DataService> dataServiceList = dataServiceEntityService.selectList(dataServiceQuery);
+                List<DataService> dataServiceList = dataServiceEntityService.selectList(dataServiceQuery);
 
-            for (DataService dataService : dataServiceList) {
-                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
-                dataServiceEntityService.saveOrUpdate(dataService);
+                for (DataService dataService : dataServiceList) {
+                    dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
+                    dataServiceEntityService.saveOrUpdate(dataService);
+                }
+                logger.info("send ready dataService size: " + dataServiceList.size());
             }
         } catch (Exception e) {
             logger.error("handle the message error,message:{} , bodyStr:{}", msg, messageBody);

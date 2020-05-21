@@ -63,7 +63,7 @@ public class JobExecutorService {
     private FlowExecutionService flowExecutionService;
     @Autowired
     private ClusterDbService clusterDbService;
-    
+
     @Autowired
     private DataApplicationService dataApplicationService;
     @Autowired
@@ -77,7 +77,7 @@ public class JobExecutorService {
             .expireAfterWrite(10, TimeUnit.MINUTES)
             .build();
     //存放最近使用的cluster修改时间
-    static Map<String,Date> clusterRecords = new HashMap<String,Date>();
+    static Map<String, Date> clusterRecords = new HashMap<String, Date>();
 
     @Value(value = "${execution.checkout.timeout:30}")
     private Long execution_timeout = 30L; //单位：分钟
@@ -111,10 +111,10 @@ public class JobExecutorService {
 
             FlowDesc flowDesc = null;
             String clusterId = dataset.getStorageConfigurations().get("clusterId");
-            if(dataService.getJobInfo() != null && StringUtils.isNotEmpty(dataService.getJobInfo().getFlowId())){
+            if (dataService.getJobInfo() != null && StringUtils.isNotEmpty(dataService.getJobInfo().getFlowId())) {
                 String flowId = dataService.getJobInfo().getFlowId();
                 flowDesc = flowDescService.selectByPrimaryKey(flowId);
-                if(flowDesc != null) {
+                if (flowDesc != null) {
                     List<FlowField> filterInputs = new ArrayList<>();
                     for (StepDesc step : flowDesc.getSteps()) {
                         if (step.getType().equals("filter")) {
@@ -132,14 +132,14 @@ public class JobExecutorService {
                             break;
                         }
                     }
-                }else{
+                } else {
                     flowDesc = flowGenUtil.generateDataServiceFlow(dataService, dataResource, custDataSource);
                     dataService.getJobInfo().setFlowId(flowDesc.getId());
                     dataService.setLastModifiedTime(new Date());
                     dataService.setStatus(null);//不更新status
                     dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                 }
-            }else{
+            } else {
                 flowDesc = flowGenUtil.generateDataServiceFlow(dataService, dataResource, custDataSource);
                 JobInfo jobInfo = new JobInfo();
                 jobInfo.setFlowId(flowDesc.getId());
@@ -155,14 +155,14 @@ public class JobExecutorService {
             List<ConfigItem> runtimePros = null;
             try {
                 runtimePros = platformServerRestClient.getRuntimeProperties(flowDesc.getId());
-                log.info("runtimePros is null : " + String.valueOf(runtimePros==null));
-            }catch (Exception e){
-                log.error("connect platform to query runtime properties exception: " , e);
+                log.info("runtimePros is null : " + String.valueOf(runtimePros == null));
+            } catch (Exception e) {
+                log.error("connect platform to query runtime properties exception: ", e);
 //                throw new RuntimeException("connect platform to query runtime properties exception: " , e);
             }
 
             //给个默认值
-            if(runtimePros == null) {
+            if (runtimePros == null) {
                 String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
                 List<Map<String, Object>> list = (List<Map<String, Object>>) JsonBuilder.getInstance().fromJson(runtimeStr, List.class);
                 runtimePros = new ArrayList<ConfigItem>();
@@ -172,18 +172,18 @@ public class JobExecutorService {
                 }
             }
             //Format runtime properties
-            for(ConfigItem item : runtimePros){
-                if(item.getValue() instanceof List || item.getValue() instanceof Object[]){
-                    if(item.getName().equals("all.runtime.cluster-id")){
-                        if(StringUtils.isNotEmpty(clusterId)){
+            for (ConfigItem item : runtimePros) {
+                if (item.getValue() instanceof List || item.getValue() instanceof Object[]) {
+                    if (item.getName().equals("all.runtime.cluster-id")) {
+                        if (StringUtils.isNotEmpty(clusterId)) {
                             item.setValue(clusterId.toString());
-                        }else{
+                        } else {
                             String value = item.getValue().toString();
                             String[] vals = value.substring(1, value.length() - 1).split(",");
                             clusterId = vals[0].trim();
                             item.setValue(clusterId);
                         }
-                    }else {
+                    } else {
                         String value = item.getValue().toString();
                         String[] vals = value.substring(1, value.length() - 1).split(",");
                         item.setValue(vals[0].trim());
@@ -205,7 +205,7 @@ public class JobExecutorService {
                 dataService.setLastExecutedTime(new Date());
                 dataService.setStatus(null);//不更新status
                 dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 log.error("send scheduler request to platform exception and recover dataService [" + dataService.getId() + "] status :", ex);
                 //更新dataservice的isRunning为失败状态
                 dataServiceEntityService.updateDataServiceRunningStatus(dataService.getId(), ScheduleJobStatus.JOB_STATUS_FAILED);
@@ -228,7 +228,7 @@ public class JobExecutorService {
                     FlowExecution execution = null;
                     if (flowExecutions != null && flowExecutions.size() > 0) {
                         execution = flowExecutions.get(0);
-                        if(!dataService.getJobInfo().equals(execution.getId())){
+                        if (!dataService.getJobInfo().equals(execution.getId())) {
                             dataService.getJobInfo().setExecutionId(execution.getId());
                             dataService.setLastModifiedTime(new Date());
                             dataService.setStatus(null);//不更新status
@@ -238,71 +238,71 @@ public class JobExecutorService {
                         if (execution.getStatus().getType().equals(Status.StatusType.SUCCEEDED.toString())) {
                             if (dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode
                                     && StringUtils.isNotEmpty(dataResource.getIncrementField())
-                                    && isCursorFlow(flowDesc))
-                            {
+                                    && isCursorFlow(flowDesc)) {
                                 HdfsUtil hdfsUtil = null;
-                                if(StringUtils.isEmpty(clusterId)){
-                                    if(HdfsUtil.hdfsMap.containsKey("empty")){
+                                if (StringUtils.isEmpty(clusterId)) {
+                                    if (HdfsUtil.hdfsMap.containsKey("empty")) {
                                         hdfsUtil = HdfsUtil.hdfsMap.get("empty");
-                                    }else{
+                                    } else {
                                         hdfsUtil = new HdfsUtil();
                                         HdfsUtil.hdfsMap.put("empty", hdfsUtil);
                                     }
-                                }else{
+                                } else {
                                     ClusterEntity clusterEntity = clusterCache.getIfPresent(clusterId);
-                                    if(clusterEntity == null){
+                                    if (clusterEntity == null) {
                                         clusterEntity = clusterDbService.findOneByName(dataService.getTenantId(), clusterId, true);
-                                        if(clusterEntity != null){
+                                        if (clusterEntity != null) {
                                             clusterCache.put(clusterId, clusterEntity);
                                         }
                                     }
                                     boolean toUpdate = false;
-                                    if(clusterRecords.containsKey(clusterId)){
-                                        if(clusterEntity.getLastModifiedTime() != clusterRecords.get(clusterId)){
+                                    if (clusterRecords.containsKey(clusterId)) {
+                                        if (clusterEntity.getLastModifiedTime() != clusterRecords.get(clusterId)) {
                                             toUpdate = true;
                                         }
-                                    }else{
+                                    } else {
                                         clusterRecords.put(clusterId, clusterEntity.getLastModifiedTime());
                                         toUpdate = true;
                                     }
 
-                                    if(toUpdate || !HdfsUtil.hdfsMap.containsKey(clusterId)){
-                                        log.info("toUpdate {}, hdfsMap contains {} {}",String.valueOf(toUpdate), clusterId, String.valueOf(HdfsUtil.hdfsMap.containsKey(clusterId)));
+                                    if (toUpdate || !HdfsUtil.hdfsMap.containsKey(clusterId)) {
+                                        log.info("toUpdate {}, hdfsMap contains {} {}", String.valueOf(toUpdate), clusterId, String.valueOf(HdfsUtil.hdfsMap.containsKey(clusterId)));
                                         hdfsUtil = new HdfsUtil(clusterEntity.getConfigFile());
                                         HdfsUtil.hdfsMap.put(clusterId, hdfsUtil);
-                                    }else{
+                                    } else {
                                         hdfsUtil = HdfsUtil.hdfsMap.get(clusterId);
                                     }
                                 }
 
                                 try {
-                                    String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
+                                    String path = ExecutorFlowConf.dataset_cursor_tmp_dir + "/" + dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir;
                                     String[] files = hdfsUtil.files(path, new PathFilter() {
                                         @Override
                                         public boolean accept(Path path) {
                                             return path.getName().endsWith(".csv");
                                         }
                                     });
-                                    if (files!=null && files.length>0 && hdfsUtil.exist(path + "/" + files[0])) {
+                                    if (files != null && files.length > 0 && hdfsUtil.exist(path + "/" + files[0])) {
                                         List<String> records = hdfsUtil.read(path + "/" + files[0]);
                                         if (records != null && records.size() > 0) {
                                             String cursorVal = records.get(records.size() - 1).trim();
                                             log.info("cursor value for dataservice {} is {}", dataService.getId(), cursorVal);
-                                            if(StringUtils.isNotEmpty(cursorVal)) {
+                                            if (StringUtils.isNotEmpty(cursorVal)) {
                                                 dataService.setCursorVal(cursorVal);
                                             }
                                         }
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     log.error("update cursor value for dataservice {} failed", dataService.getId());
                                 }
 
                             }
 
                             //更新isRunning状态
-                            if(ScheduleType.SCHEDULER_TYPE_ONCE.equals(dataService.getScheduleType())) {
+                            if (ScheduleType.SCHEDULER_TYPE_ONCE.equals(dataService.getScheduleType())
+                                    || ScheduleType.SCHEDULER_TYPE_EVENT.equals(dataService.getScheduleType())) {
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_SUCCEED);
-                            }else if(ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())){
+                            } else if (ScheduleType.SCHEDULER_TYPE_CRON.equals(dataService.getScheduleType())) {
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_RUNNING);
                             }
 
@@ -311,7 +311,7 @@ public class JobExecutorService {
 
                             //执行成功后判断当前dataService的状态，否则要等到下一个周期执行时才能停止dataService trigger
                             DataService service = dataServiceEntityService.selectByPrimaryKey(dataService.getId());
-                            if(service != null && service.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED){
+                            if (service != null && service.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED) {
                                 log.info("dataService [{}] has stopped,so update job status to_stop", dataService.getId());
                                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
                             }
@@ -334,9 +334,9 @@ public class JobExecutorService {
                         } catch (Exception e) {
                         }
                     }
-                    
+
                     long endTime = System.currentTimeMillis();
-                    if (endTime - startTime > execution_timeout*60*1000L) {
+                    if (endTime - startTime > execution_timeout * 60 * 1000L) {
                         //dataService.setFailedTimes(dataService.getFailedTimes()+1);//需要加锁
                         dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
@@ -344,27 +344,27 @@ public class JobExecutorService {
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
                         log.error("dataservice has timeout, id = {}, scheduler = {}", dataService.getId(), scheduler.getId());
-                        pushRecord(dataService,execution,startTime,endTime,1);
+                        pushRecord(dataService, execution, startTime, endTime, 1);
                         break;
-                    }else if(statusSuccess){
+                    } else if (statusSuccess) {
                         dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
-                        pushRecord(dataService,execution,startTime,endTime,0);
+                        pushRecord(dataService, execution, startTime, endTime, 0);
                         break;
-                    }else if(statusComplete){
+                    } else if (statusComplete) {
                         dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                         dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                         dataService.setStatus(null);//不更新status
                         dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
-                        pushRecord(dataService,execution,startTime,endTime,1);
+                        pushRecord(dataService, execution, startTime, endTime, 1);
                         break;
                     }
                 }
                 log.info("dataService {} finished for scheduler {}", dataService.getId(), scheduler.getId());
 
             } catch (Exception e) {
-                log.error("dataservice " + dataService.getId()+" execute has exception", e);
+                log.error("dataservice " + dataService.getId() + " execute has exception", e);
                 dataService.setExecutedTimes(countAllExecutions(flowDesc.getId()));
                 dataService.setFailedTimes(countFailedExecutions(flowDesc.getId()));
                 dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
@@ -372,9 +372,9 @@ public class JobExecutorService {
                 dataService.setStatus(null);//不更新status
                 dataServiceEntityService.updateByExampleSelective(dataService, exampleQuery);
             }
-            
-        } catch (Exception e){
-            log.error("execute DataService "+ dataService.getId()+" exception:", e);
+
+        } catch (Exception e) {
+            log.error("execute DataService " + dataService.getId() + " exception:", e);
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_FAILED);
             dataService.setLastModifiedTime(new Date());
             dataService.setStatus(null);//不更新status
@@ -395,16 +395,16 @@ public class JobExecutorService {
     }
 
 
-    private boolean isCursorFlow(FlowDesc flowDesc){
-        for(StepDesc step : flowDesc.getSteps()){
-            if(step.getType().equals("sink") && step.getId().equals("sink_6")){
+    private boolean isCursorFlow(FlowDesc flowDesc) {
+        for (StepDesc step : flowDesc.getSteps()) {
+            if (step.getType().equals("sink") && step.getId().equals("sink_6")) {
                 return true;
             }
         }
         return false;
     }
 
-    private Integer countAllExecutions(String flowId){
+    private Integer countAllExecutions(String flowId) {
         ExampleQuery query = ExampleQuery
                 .builder(FlowExecution.class)
                 .fieldGroup()
@@ -414,7 +414,7 @@ public class JobExecutorService {
         return flowExecutionService.selectCount(query);
     }
 
-    private Integer countFailedExecutions(String flowId){
+    private Integer countFailedExecutions(String flowId) {
         ExampleQuery query = ExampleQuery
                 .builder(FlowExecution.class)
                 .fieldGroup()
@@ -424,18 +424,18 @@ public class JobExecutorService {
                 .end();
         return flowExecutionService.selectCount(query);
     }
-    
-    public void pushRecord(DataService dataService,FlowExecution execution,long startTime,long endTime,int resultCode) {
-    	try {
-    		DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
-    		Customer customer = customerService.selectByPrimaryKey(dataService.getCustId());
-    		if (execution!=null) {
-    			dataTransferRecordService.insertSelective(DataTransferRecord.push(execution.getName(), dataService.getTenantId(), dataService.getOwner(), dataService.getCustId(),customer.getName(),dataApplication.getCustAppId() ,dataApplication.getCustAppName(), dataService.getId(),dataService.getName(), startTime, endTime, execution.getCost(),GrowthType.valueOf(dataService.getApplyConfiguration().getServiceMode()), dataService.getCursorVal(),0L,execution.getOutputRecords(), resultCode));
-			}else {
-				dataTransferRecordService.insertSelective(DataTransferRecord.push(dataService.getName(), dataService.getTenantId(), dataService.getOwner(), dataService.getCustId(),customer.getName(),dataApplication.getCustAppId() ,dataApplication.getCustAppName(), dataService.getId(),dataService.getName(), startTime, endTime, endTime-startTime,GrowthType.valueOf(dataService.getApplyConfiguration().getServiceMode()), dataService.getCursorVal(),0L,0L, 1));
-			}
-		} catch (Exception e) {
-			log.error("record push service error with dataServiceId:"+dataService.getId()+",executionId:"+execution.getId(), e);
-		}
+
+    public void pushRecord(DataService dataService, FlowExecution execution, long startTime, long endTime, int resultCode) {
+        try {
+            DataApplication dataApplication = dataApplicationService.selectByPrimaryKey(dataService.getApplicationId());
+            Customer customer = customerService.selectByPrimaryKey(dataService.getCustId());
+            if (execution != null) {
+                dataTransferRecordService.insertSelective(DataTransferRecord.push(execution.getName(), dataService.getTenantId(), dataService.getOwner(), dataService.getCustId(), customer.getName(), dataApplication.getCustAppId(), dataApplication.getCustAppName(), dataService.getId(), dataService.getName(), startTime, endTime, execution.getCost(), GrowthType.valueOf(dataService.getApplyConfiguration().getServiceMode()), dataService.getCursorVal(), 0L, execution.getOutputRecords(), resultCode));
+            } else {
+                dataTransferRecordService.insertSelective(DataTransferRecord.push(dataService.getName(), dataService.getTenantId(), dataService.getOwner(), dataService.getCustId(), customer.getName(), dataApplication.getCustAppId(), dataApplication.getCustAppName(), dataService.getId(), dataService.getName(), startTime, endTime, endTime - startTime, GrowthType.valueOf(dataService.getApplyConfiguration().getServiceMode()), dataService.getCursorVal(), 0L, 0L, 1));
+            }
+        } catch (Exception e) {
+            log.error("record push service error with dataServiceId:" + dataService.getId() + ",executionId:" + execution.getId(), e);
+        }
     }
 }
