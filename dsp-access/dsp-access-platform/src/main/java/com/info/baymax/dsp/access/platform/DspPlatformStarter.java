@@ -23,7 +23,7 @@ import tk.mybatis.spring.annotation.MapperScan;
     DocumentationPluginsBootstrapper.class}))
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-platform.properties"})
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-platform.properties"}, encoding = "utf-8")
 public class DspPlatformStarter {
 
     public static void main(String[] args) {
