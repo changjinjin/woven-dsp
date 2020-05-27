@@ -40,9 +40,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 @Component
 @Conditional(SpringIntegrationPluginNotPresentInClassPathCondition.class)
-public class SwaggerBootstrapper extends AbstractDocumentationPluginsBootstrapper
+public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBootstrapper
     implements SmartLifecycle, ApplicationContextAware {
-    private static final String SPRINGFOX_DOCUMENTATION_AUTO_STARTUP = "springfox.documentation.auto-startup";
+    private static final String SPRINGFOX_DOCUMENTATION_AUTO_STARTUP = "swagger2.handler.auto-startup";
 
     private final Environment environment;
     private final DocumentationCache documentationCache;
@@ -52,7 +52,7 @@ public class SwaggerBootstrapper extends AbstractDocumentationPluginsBootstrappe
     private AtomicBoolean initialized = new AtomicBoolean(false);
 
     @Autowired
-    public SwaggerBootstrapper(DocumentationPluginsManager documentationPluginsManager,
+    public Swagger2HandlerBootstrapper(DocumentationPluginsManager documentationPluginsManager,
                                List<RequestHandlerProvider> handlerProviders, DocumentationCache scanned,
                                ApiDocumentationScanner resourceListing, TypeResolver typeResolver, Defaults defaults,
                                PathProvider pathProvider, Environment environment, DocumentationCache documentationCache,
