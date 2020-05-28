@@ -1,5 +1,7 @@
 package com.info.baymax.common.entity.validation;
 
+import com.info.baymax.common.entity.validation.EnumValue.List;
+
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -12,12 +14,14 @@ import java.lang.reflect.Modifier;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(List.class)
 @Constraint(validatedBy = EnumValue.Validator.class)
 public @interface EnumValue {
 
-    String message() default "{custom.value.invalid}";
+    String message() default "{javax.validation.constraints.EnumValue.message}";
 
     Class<?>[] groups() default {};
 
@@ -26,14 +30,14 @@ public @interface EnumValue {
     Class<? extends Enum<?>> enumClass();
 
     String enumMethod();
-    
-    @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-	@Retention(RUNTIME)
-	@Documented
-	@interface List {
 
-    	EnumValue[] value();
-	}
+    @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+    @Retention(RUNTIME)
+    @Documented
+    public @interface List {
+
+        EnumValue[] value();
+    }
 
     class Validator implements ConstraintValidator<EnumValue, Object> {
         private Class<? extends Enum<?>> enumClass;

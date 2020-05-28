@@ -75,7 +75,7 @@ public class TenantController {
     @PostMapping("page")
     @ApiOperation("条件查询租户(分页/排序)")
     public Response<IPage<Tenant>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        query = ExampleQuery.builder(query).fieldGroup().andNotEqualTo("name", "root").end();
+        query = query.fieldGroup().andNotEqualTo("name", "root").end();
         return Response.ok(tenantService.selectPage(query));
     }
 

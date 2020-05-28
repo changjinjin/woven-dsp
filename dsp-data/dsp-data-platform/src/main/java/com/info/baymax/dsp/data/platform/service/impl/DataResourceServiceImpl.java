@@ -38,10 +38,6 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
 
     @Override
     public DataResource save(DataResource t) {
-        if (t == null) {
-            throw new ServiceException(ErrType.BAD_REQUEST, "请求数据不能为空。");
-        }
-
         // 检查数据集数据是否存在并修改数据集的关联状态
         Dataset dataset = datasetService.selectByPrimaryKey(t.getDatasetId());
         if (dataset == null) {

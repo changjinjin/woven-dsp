@@ -24,7 +24,8 @@ public class FeignClientConfiguration {
 
     private ObjectFactory<HttpMessageConverters> messageConverters = HttpMessageConverters::new;
 
-    @Bean
+    @SuppressWarnings("deprecation")
+	@Bean
     public Request.Options options() {
         return new Request.Options(connectTimeout, readTimeout);
     }

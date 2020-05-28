@@ -70,22 +70,15 @@ public class ServerGlobalExceptionHandler {
         return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
-    /**
-     * 数据库异常
-     *
-     * @param e 业务异常对象
-     * @return 业务异常消息报文
-     */
     @ResponseBody
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Order(-4)
-    public Response<?> dataAccessException(ServerWebExchange swe, DataAccessException e) {
+    public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
-        ServerHttpResponse response = swe.getResponse();
-        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         if (e instanceof DuplicateKeyException) {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Duplicate key error!");
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR,
+                StringUtils.defaultString(e.getMessage(), "Duplicate key error!"));
         } else {
             return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
         }
@@ -98,7 +91,18 @@ public class ServerGlobalExceptionHandler {
     public Response<?> webExchangeBindException(WebExchangeBindException exception) {
         BindingResult bindingResult = exception.getBindingResult();
         FieldError fieldError = bindingResult.getFieldError();
-        return Response.error(ErrType.BAD_REQUEST, fieldError.getDefaultMessage());
+        String objectName = fieldError.getObjectName();
+        StringBuffer buff = new StringBuffer();
+        buff.append("[");
+        if (StringUtils.isNotEmpty(objectName)) {
+            buff.append(objectName).append(".");
+        }
+        String field = fieldError.getField();
+        if (StringUtils.isNotEmpty(objectName)) {
+            buff.append(field);
+        }
+        buff.append("] ").append(fieldError.getDefaultMessage());
+        return Response.error(ErrType.BAD_REQUEST, buff.toString());
     }
 
     @ResponseBody

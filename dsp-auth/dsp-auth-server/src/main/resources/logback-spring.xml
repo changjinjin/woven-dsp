@@ -87,8 +87,8 @@
 	<logger name="sun" level="ERROR" />
 	<logger name="org.apache.tomcat" level="ERROR" />
 
-	<logger name="org.springframework" level="ERROR" />
-	<logger name="com.info.baymax" level="DEBUG" />
+	<logger name="org.springframework" level="INFO" />
+	<logger name="com.info.baymax" level="INFO" />
 	<logger name="java.sql" level="DEBUG" />
 
 	<root level="INFO">

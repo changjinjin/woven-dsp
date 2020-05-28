@@ -1,7 +1,5 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
-import com.info.baymax.common.message.exception.ControllerException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
@@ -32,9 +30,6 @@ public class CustDataResourceController {
     @GetMapping("/infoById")
     @ResponseBody
     public Response<DataResource> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
-        if (id == null) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
-        }
         return Response.ok(dataResourceService.selectByPrimaryKey(id));
     }
 }

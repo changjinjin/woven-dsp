@@ -29,6 +29,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class UserController implements MainTableController<User> {
 
     @Cryptoable(enableParam = true)
     @Override
-    public Response<?> save(@ApiParam(value = "保存用户信息", required = true) @RequestBody User t) {
+    public Response<?> save(User t) {
         if (StringUtils.isEmpty(t.getPassword())) {
             t.setPassword(initConfig.getPassword());
         }
@@ -67,7 +69,7 @@ public class UserController implements MainTableController<User> {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
     @Override
     public Response<IPage<User>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        query = ExampleQuery.builder(query).fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+        query = query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
             .andFullLike("clientIds", "dsp").end();
         IPage<User> page = userService.selectPage(query);
         return Response.ok(page);
@@ -91,21 +93,14 @@ public class UserController implements MainTableController<User> {
     @ApiOperation(value = "修改密码")
     @PostMapping("/changePwd")
     @Cryptoable(enableParam = true)
-    public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt ChangePwd changePwd) {
-        if (changePwd == null || StringUtils.isEmpty(changePwd.getNewPass())
-            || StringUtils.isEmpty(changePwd.getOldPass())) {
-            return Response.error(ErrType.BAD_REQUEST);
-        }
+    public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
         userService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), initConfig.isPwdStrict());
         return Response.ok();
     }
 
     @ApiOperation(value = "重置用户密码")
     @PostMapping("/resetPwd")
-    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam String[] ids) {
-        if (ids == null || ids.length == 0) {
-            return Response.error(ErrType.BAD_REQUEST, "请选择需要重置密码的用户！");
-        }
+    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam @NotEmpty String[] ids) {
         userService.resetPwd(ids, initConfig.getPassword());
         return Response.ok();
     }

@@ -21,7 +21,6 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/data")
 @Api(tags = "数据服务接口", value = "数据拉取接口")
-@Slf4j
 public class DataApiController implements Serializable {
 
     private static final long serialVersionUID = -5006451148239176107L;

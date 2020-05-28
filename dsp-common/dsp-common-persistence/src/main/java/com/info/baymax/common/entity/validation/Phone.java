@@ -1,7 +1,6 @@
 package com.info.baymax.common.entity.validation;
 
-import com.info.baymax.common.entity.validation.Cron.List;
-import com.info.baymax.common.utils.CronExpression;
+import com.info.baymax.common.entity.validation.Phone.List;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 import javax.validation.Constraint;
@@ -9,6 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import java.lang.annotation.*;
+import java.util.regex.Pattern;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -16,10 +16,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 @Repeatable(List.class)
-@Constraint(validatedBy = Cron.Validator.class)
-public @interface Cron {
+@Constraint(validatedBy = Phone.Validator.class)
+public @interface Phone {
 
-    String message() default "{javax.validation.constraints.Cron.message}";
+    String message() default "{javax.validation.constraints.Phone.message}";
 
     Class<?>[] groups() default {};
 
@@ -30,17 +30,19 @@ public @interface Cron {
     @Documented
     public @interface List {
 
-        Cron[] value();
+        Phone[] value();
     }
 
-    class Validator implements ConstraintValidator<Cron, String> {
+    class Validator implements ConstraintValidator<Phone, String> {
+        private final String regex = "^1[3456789]\\d{9}$";
+
         @Override
-        public boolean isValid(String cron, ConstraintValidatorContext constraintValidatorContext) {
+        public boolean isValid(String phone, ConstraintValidatorContext constraintValidatorContext) {
             if (constraintValidatorContext instanceof HibernateConstraintValidatorContext) {
-                constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class).addMessageParameter("cron",
-                    cron);
+                constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class)
+                    .addMessageParameter("phone", phone);
             }
-            return cron != null && CronExpression.isValidExpression(cron);
+            return phone != null && Pattern.matches(regex, phone);
         }
     }
 

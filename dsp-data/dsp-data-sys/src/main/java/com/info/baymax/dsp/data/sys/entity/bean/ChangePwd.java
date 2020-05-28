@@ -8,13 +8,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @ApiModel
 public class ChangePwd implements CryptoBean {
 
     @ApiModelProperty(value = "新密码", required = true)
+    @NotBlank
     private String newPass;
+    
     @ApiModelProperty(value = "老密码", required = true)
+    @NotBlank
     private String oldPass;
 
     @Override

@@ -5,12 +5,12 @@ import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import springfox.documentation.PathProvider;
 import springfox.documentation.schema.AlternateTypeRuleConvention;
@@ -42,9 +42,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Conditional(SpringIntegrationPluginNotPresentInClassPathCondition.class)
 public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBootstrapper
     implements SmartLifecycle, ApplicationContextAware {
-    private static final String SPRINGFOX_DOCUMENTATION_AUTO_STARTUP = "swagger2.handler.auto-startup";
 
-    private final Environment environment;
+    @Value("${swagger2.handler.auto-startup:true}")
+    private boolean autoStartup;
+    @Value("${swagger2.handler.auto-execute:false}")
+    private boolean autoExecute;
+
     private final DocumentationCache documentationCache;
     private final ServiceModelToSwagger2Mapper mapper;
 
@@ -53,13 +56,11 @@ public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBoo
 
     @Autowired
     public Swagger2HandlerBootstrapper(DocumentationPluginsManager documentationPluginsManager,
-                               List<RequestHandlerProvider> handlerProviders, DocumentationCache scanned,
-                               ApiDocumentationScanner resourceListing, TypeResolver typeResolver, Defaults defaults,
-                               PathProvider pathProvider, Environment environment, DocumentationCache documentationCache,
-                               ServiceModelToSwagger2Mapper mapper) {
+                                       List<RequestHandlerProvider> handlerProviders, DocumentationCache scanned,
+                                       ApiDocumentationScanner resourceListing, TypeResolver typeResolver, Defaults defaults,
+                                       PathProvider pathProvider, DocumentationCache documentationCache, ServiceModelToSwagger2Mapper mapper) {
         super(documentationPluginsManager, handlerProviders, scanned, resourceListing, defaults, typeResolver,
             pathProvider);
-        this.environment = environment;
         this.documentationCache = documentationCache;
         this.mapper = mapper;
     }
@@ -74,8 +75,7 @@ public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBoo
 
     @Override
     public boolean isAutoStartup() {
-        String autoStartupConfig = environment.getProperty(SPRINGFOX_DOCUMENTATION_AUTO_STARTUP, "true");
-        return Boolean.valueOf(autoStartupConfig);
+        return autoStartup;
     }
 
     @Override
@@ -116,6 +116,11 @@ public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBoo
         if (initialized.compareAndSet(false, true)) {
             log.info("Documentation plugins bootstrapped");
             super.bootstrapDocumentationPlugins();
+        }
+
+        if (!autoExecute) {
+            log.debug("skip swagger handlers auto execute.");
+            return;
         }
 
         Swagger swagger = swagger();

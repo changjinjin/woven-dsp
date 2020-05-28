@@ -33,11 +33,11 @@ public class TestEsIndex {
         // deleteIndex(client);
     }
 
-    private static void deleteIndex(Client client) {
+    public static void deleteIndex(Client client) {
         client.admin().indices().prepareDelete(indexNames).execute().actionGet();
     }
 
-    private static void search(Client client) {
+    public static void search(Client client) {
         // BoolQueryBuilder queryBuilder = boolQuery();
         QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
         // queryBuilder.must(QueryBuilders.rangeQuery("@timestamp").gt("").lt(endDate).includeLower(true).includeUpper(false));
@@ -72,7 +72,6 @@ public class TestEsIndex {
             String index = hit.getIndex();
             String type = hit.getType();
             String id = hit.getId();
-            float score = hit.getScore();
 
             // 取_source字段值
             String sourceAsString = hit.getSourceAsString(); // 取成json串

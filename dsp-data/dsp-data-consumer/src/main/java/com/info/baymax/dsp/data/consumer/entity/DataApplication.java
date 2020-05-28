@@ -115,7 +115,7 @@ public class DataApplication extends BaseEntity {
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @ColumnDefault("0")
-    private Long expiredTime;// = 0L;
+    private Long expiredTime;
 
     @ApiModelProperty("申请状态， 0: 待审批，1: 通过审批， -1:未通过审批")
     @Comment("申请状态， 0: 待审批，1: 通过审批， -1:未通过审批")

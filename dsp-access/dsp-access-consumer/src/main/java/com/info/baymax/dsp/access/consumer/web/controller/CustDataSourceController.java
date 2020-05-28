@@ -2,8 +2,6 @@ package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.message.exception.ControllerException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
@@ -68,9 +66,6 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     @PostMapping("/dbDrivers")
     public Response<IPage<ProcessConfig>> dbDrivers(
         @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        if (query == null) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
-        }
         query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())//
             .andEqualTo("processConfigType", "jdbc driver");
         return Response.ok(processConfigService.selectPage(query));

@@ -12,6 +12,7 @@ import com.info.baymax.common.page.IPage;
  * @author jingwei.yang
  * @date 2019年12月6日 下午3:44:21
  */
+@SuppressWarnings("deprecation")
 public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
 
     public CustomCryptoMethodInvoker(String secretKey) {

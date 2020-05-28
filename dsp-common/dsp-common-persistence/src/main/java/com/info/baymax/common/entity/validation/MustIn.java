@@ -1,5 +1,8 @@
 package com.info.baymax.common.entity.validation;
 
+import com.info.baymax.common.entity.validation.MustIn.List;
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
+
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -11,26 +14,27 @@ import java.util.Set;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(List.class)
 @Constraint(validatedBy = {})
 public @interface MustIn {
 
-    String message() default "{custom.value.invalid}";
+    String message() default "{javax.validation.constraints.MustIn.message}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
     String[] value() default {};
-    
-    @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-	@Retention(RUNTIME)
-	@Documented
-	@interface List {
 
-    	MustIn[] value();
-	}
+    @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+    @Retention(RUNTIME)
+    @Documented
+    public @interface List {
+
+        MustIn[] value();
+    }
 
     abstract class AbstractMustInValidator<T> implements ConstraintValidator<MustIn, T> {
         private Set<T> values;
@@ -47,6 +51,14 @@ public @interface MustIn {
 
         @Override
         public boolean isValid(T value, ConstraintValidatorContext constraintValidatorContext) {
+            // 不验空
+            if (value == null) {
+                return true;
+            }
+            if (constraintValidatorContext instanceof HibernateConstraintValidatorContext) {
+                constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class)
+                    .addMessageParameter("values", values.toString());
+            }
             return this.values.contains(value);
         }
     }

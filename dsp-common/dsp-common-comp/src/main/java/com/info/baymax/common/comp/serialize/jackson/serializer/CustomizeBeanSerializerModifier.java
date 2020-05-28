@@ -11,8 +11,10 @@ import java.util.List;
 public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
     private final CustomizeNullJsonSerializer.NullArrayJsonSerializer nullArrayJsonSerializer = new CustomizeNullJsonSerializer.NullArrayJsonSerializer();
     private final CustomizeNullJsonSerializer.NullStringJsonSerializer nullStringJsonSerializer = new CustomizeNullJsonSerializer.NullStringJsonSerializer();
-    private final CustomizeNullJsonSerializer.NullNumberJsonSerializer nullNumberJsonSerializer = new CustomizeNullJsonSerializer.NullNumberJsonSerializer();
-    private final CustomizeNullJsonSerializer.NullBooleanJsonSerializer nullBooleanJsonSerializer = new CustomizeNullJsonSerializer.NullBooleanJsonSerializer();
+    @SuppressWarnings("unused")
+	private final CustomizeNullJsonSerializer.NullNumberJsonSerializer nullNumberJsonSerializer = new CustomizeNullJsonSerializer.NullNumberJsonSerializer();
+    @SuppressWarnings("unused")
+	private final CustomizeNullJsonSerializer.NullBooleanJsonSerializer nullBooleanJsonSerializer = new CustomizeNullJsonSerializer.NullBooleanJsonSerializer();
 
     @Override
     public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc,

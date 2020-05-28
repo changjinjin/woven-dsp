@@ -1,9 +1,11 @@
 package com.info.baymax.dsp.common.webmvc.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.info.baymax.dsp.common.webmvc.servlet.result.PathTweakingRequestMappingHandlerMapping;
 import com.info.baymax.dsp.common.webmvc.servlet.result.ServletFilterFieldsHandlerResultHandler;
 import com.info.baymax.dsp.common.webmvc.servlet.result.ServletMappingJackson2HttpMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.List;
 
@@ -53,5 +56,13 @@ public class WebMvcExtConfig implements WebMvcConfigurer {
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
+    }
+
+    @Configuration
+    class WebMvcRegistrationsConfig implements WebMvcRegistrations {
+        @Override
+        public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
+            return new PathTweakingRequestMappingHandlerMapping();
+        }
     }
 }

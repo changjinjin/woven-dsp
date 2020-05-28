@@ -2,13 +2,10 @@ package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.message.exception.ControllerException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
@@ -19,7 +16,6 @@ import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,11 +39,7 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
 
     @ApiOperation(value = "启用停用", notes = "服务启用停用接口")
     @PostMapping("/updateStatus")
-    @ResponseBody
     public Response<?> updateStatus(@ApiParam(value = "启用停用对象，传ID和状态值", required = true) @RequestBody DataService t) {
-        if (t == null) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
-        }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(t.getId());
         dataService.setStatus(t.getStatus());
         if (t.getExpiredTime() != null && t.getExpiredTime() > 0) {
@@ -70,10 +62,6 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
 
     @Override
     public Response<DataService> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
-        if (id == null) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "查询记录ID不能为空");
-        }
-
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(id);
         if (dataService.getType() == DataServiceType.SERVICE_TYPE_PULL) {
             dataService.setExecutedTimes(null);
@@ -92,12 +80,8 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
     }
 
     @ApiOperation(value = "查找Execution", notes = "多条件查询Execution")
-    @ResponseBody
     @PostMapping("/tasklist/{flowId}")
     public Response<IPage<FlowExecution>> query(@PathVariable String flowId, @RequestBody ExampleQuery query) {
-        if (StringUtils.isEmpty(flowId)) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "查询条件不能为空");
-        }
         // @formatter:off
         query = ExampleQuery
             .builder(query)

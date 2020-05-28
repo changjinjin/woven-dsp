@@ -6,7 +6,7 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import org.hibernate.annotations.ColumnDefault;
+import com.info.baymax.common.entity.validation.Phone;
 import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler;
@@ -20,6 +20,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -48,6 +52,7 @@ public class User extends Maintable implements CryptoBean {
     @Comment("登录账号")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @NotBlank
     private String loginId;
 
     @ApiModelProperty(value = "用户密码")
@@ -60,12 +65,14 @@ public class User extends Maintable implements CryptoBean {
     @Comment("用户手机号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Phone(message = "Wrong phone number {phone}!")
     private String phone;
 
     @ApiModelProperty(value = "用户邮箱")
     @Comment("用户邮箱")
     @Column(length = 30)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Email(message = "Wrong email {email}!")
     private String email;
 
     @ApiModelProperty("密码过期时间")
@@ -74,6 +81,7 @@ public class User extends Maintable implements CryptoBean {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
+    @Future
     private Date pwdExpiredTime;
 
     @ApiModelProperty("账号过期时间")
@@ -82,6 +90,7 @@ public class User extends Maintable implements CryptoBean {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Temporal(TemporalType.TIMESTAMP)
     @ColumnType(jdbcType = JdbcType.TIMESTAMP)
+    @Future
     private Date accountExpiredTime;
 
     @ApiModelProperty(value = "资源队列")

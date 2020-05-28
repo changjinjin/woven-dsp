@@ -9,17 +9,12 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.server.ServerWebExchange;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -41,10 +36,10 @@ public class ServletGlobalExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Order(-2)
-    public Response<?> uncaughtExceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
+    public Response<?> uncaughtExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
@@ -57,7 +52,7 @@ public class ServletGlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(BizException.class)
     @Order(-3)
-    public Response<?> bizExceptionHandler(HttpServletRequest request, HttpServletResponse response, BizException e) {
+    public Response<?> bizExceptionHandler(HttpServletResponse response, BizException e) {
         log.error(e.getMessage(), e);
         Response<?> result = Response.error(e.getStatus(),
             StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()));
@@ -79,10 +74,8 @@ public class ServletGlobalExceptionHandler {
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Order(-4)
-    public Response<?> dataAccessException(ServerWebExchange swe, DataAccessException e) {
+    public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
-        ServerHttpResponse response = swe.getResponse();
-        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         if (e instanceof DuplicateKeyException) {
             return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Duplicate key error!");
         } else {
@@ -91,13 +84,11 @@ public class ServletGlobalExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(WebExchangeBindException.class)
+    @ExceptionHandler(ServletRequestBindingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(-5)
-    public Response<?> webExchangeBindException(WebExchangeBindException exception) {
-        BindingResult bindingResult = exception.getBindingResult();
-        FieldError fieldError = bindingResult.getFieldError();
-        return Response.error(ErrType.BAD_REQUEST, fieldError.getDefaultMessage());
+    public Response<?> webExchangeBindException(ServletRequestBindingException exception) {
+        return Response.error(ErrType.BAD_REQUEST, exception.getMessage());
     }
 
     @ResponseBody

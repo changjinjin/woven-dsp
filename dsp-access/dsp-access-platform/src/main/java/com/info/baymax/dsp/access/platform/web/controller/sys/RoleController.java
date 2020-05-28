@@ -4,12 +4,10 @@ import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.entity.base.BaseMaintableService;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.service.security.RoleService;
@@ -20,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import javax.validation.constraints.NotEmpty;
 
 @RestController
 @RequestMapping("/role")
@@ -71,10 +71,7 @@ public class RoleController implements MainTableController<Role> {
     @ApiOperation(value = "修改角色启用状态")
     @PostMapping("/resetStatus")
     public Response<?> resetStatus(
-        @ApiParam(value = "修改状态的角色列表，包含角色ID和修改后状态属性值", required = true) @RequestBody List<Role> list) {
-        if (ICollections.hasNoElements(list)) {
-            return Response.error(ErrType.BAD_REQUEST, "请选择启用/停用的角色！");
-        }
+        @ApiParam(value = "修改状态的角色列表，包含角色ID和修改后状态属性值", required = true) @RequestBody @NotEmpty List<Role> list) {
         roleService.resetStatus(list);
         return Response.ok();
     }

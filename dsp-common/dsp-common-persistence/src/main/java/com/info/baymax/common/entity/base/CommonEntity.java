@@ -9,6 +9,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.entity.preprocess.PreEntity;
+import com.info.baymax.common.entity.validation.MustIn;
 import com.info.baymax.common.saas.SaasContext;
 
 import io.swagger.annotations.ApiModel;
@@ -42,6 +44,7 @@ public abstract class CommonEntity<ID extends Serializable> implements Idable<ID
 	@Comment("名称")
 	@Column(length = 255)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
+	@NotBlank
 	protected String name;
 
 	@ApiModelProperty(value = "是否启用：0-未启用，1-启用，默认0", allowableValues = "0,1")
@@ -49,6 +52,7 @@ public abstract class CommonEntity<ID extends Serializable> implements Idable<ID
 	@Column(length = 1)
 	@ColumnType(jdbcType = JdbcType.INTEGER)
 	@ColumnDefault("1")
+	@MustIn(value = { "0", "1" }, message = "Field [enabled] value must be in {values}")
 	protected Integer enabled;
 
 	@ApiModelProperty("租户ID")
