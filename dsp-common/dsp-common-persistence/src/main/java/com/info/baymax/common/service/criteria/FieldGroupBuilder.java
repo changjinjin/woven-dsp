@@ -26,26 +26,66 @@ public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends Field
     /**
      * 添加一组条件
      *
-     * @param fields
+     * @param fields 条件集合
      * @return this builder
      */
-    FieldGroup fields(List<Field> fields);
+    B fields(List<Field> fields);
+
+    /**
+     * 删除一组条件
+     *
+     * @param fields 条件集合
+     * @return this builder
+     */
+    B removeFields(List<Field> fields);
 
     /**
      * 添加一组条件
      *
-     * @param fields
-     * @return
+     * @param fields 条件集合
+     * @return this builder
      */
-    FieldGroup fields(Field... fields);
+    B fields(Field... fields);
+
+    /**
+     * 删除一组条件
+     *
+     * @param fields 条件集合
+     * @return this builder
+     */
+    B removeFields(Field... fields);
+
+    /**
+     * 删除一组条件
+     *
+     * @param fieldNames 删除条件名称
+     * @return this builder
+     */
+    B removeFields(String... fieldNames);
 
     /**
      * 添加一个条件
      *
-     * @param field
+     * @param field 条件
      * @return this builder
      */
-    FieldGroup field(Field field);
+    B field(Field field);
+
+    /**
+     * 删除一个条件
+     *
+     * @param field 条件
+     * @return this builder
+     */
+    B removeField(Field field);
+
+    /**
+     * 根据条件名称删除一个条件
+     *
+     * @param fieldName 删除属性名称
+     * @return this builder
+     */
+    B removeField(String fieldName);
 
     /**
      * 添加一个group
@@ -70,5 +110,29 @@ public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends Field
      * @return this builder
      */
     B orGroup(FieldGroup group);
+
+    /**
+     * 添加一个or group
+     *
+     * @param group group对象
+     * @return this builder
+     */
+    B removeGroup(FieldGroup group);
+
+    /**
+     * 批量删除 group
+     *
+     * @param groups groups集合
+     * @return this builder
+     */
+    B removeGroups(FieldGroup... groups);
+
+    /**
+     * 批量删除 group
+     *
+     * @param groups groups集合
+     * @return this builder
+     */
+    B removeGroups(List<FieldGroup> groups);
 
 }

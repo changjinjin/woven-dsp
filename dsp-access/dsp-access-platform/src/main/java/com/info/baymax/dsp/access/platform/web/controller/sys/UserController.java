@@ -108,10 +108,7 @@ public class UserController implements MainTableController<User> {
     @ApiOperation(value = "修改用户启用状态")
     @PostMapping("/resetStatus")
     public Response<?> resetStatus(
-        @ApiParam(value = "修改状态的用户列表，包含用户ID和修改后状态属性值", required = true) @RequestBody List<User> list) {
-        if (ICollections.hasNoElements(list)) {
-            return Response.error(ErrType.BAD_REQUEST, "请选择启用/停用的用户！");
-        }
+        @ApiParam(value = "修改状态的用户列表，包含用户ID和修改后状态属性值", required = true) @RequestBody @NotEmpty List<User> list) {
         userService.resetStatus(list);
         return Response.ok();
     }

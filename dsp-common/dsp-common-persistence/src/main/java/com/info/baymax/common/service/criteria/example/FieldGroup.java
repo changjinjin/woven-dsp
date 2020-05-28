@@ -1,6 +1,8 @@
 package com.info.baymax.common.service.criteria.example;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.service.criteria.FieldGroupBuilder;
 import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
@@ -16,6 +18,8 @@ import tk.mybatis.mapper.util.MetaObjectUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -116,6 +120,62 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
         return group(group);
     }
 
+    @Override
+    public FieldGroup removeFields(List<Field> fields) {
+        if (this.fields != null && !this.fields.isEmpty()) {
+            this.fields.removeAll(fields);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup removeFields(Field... fields) {
+        return removeFields(Lists.newArrayList(fields));
+    }
+
+    @Override
+    public FieldGroup removeFields(String... fieldNames) {
+        if (fieldNames != null && fieldNames.length > 0) {
+            HashSet<String> newHashSet = Sets.newHashSet(fieldNames);
+            Iterator<Field> iterator = this.fields.iterator();
+            if (iterator.hasNext()) {
+                Field next = iterator.next();
+                if (newHashSet.contains(next.getName())) {
+                    iterator.remove();
+                }
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup removeField(Field field) {
+        return removeFields(field);
+    }
+
+    @Override
+    public FieldGroup removeField(String fieldName) {
+        return removeFields(fieldName);
+    }
+
+    @Override
+    public FieldGroup removeGroup(FieldGroup group) {
+        return removeGroups(group);
+    }
+
+    @Override
+    public FieldGroup removeGroups(FieldGroup... groups) {
+        return removeGroups(Lists.newArrayList(groups));
+    }
+
+    @Override
+    public FieldGroup removeGroups(List<FieldGroup> groups) {
+        if (this.fieldGroups != null && !this.fieldGroups.isEmpty()) {
+            this.fieldGroups.removeAll(groups);
+        }
+        return this;
+    }
+
     public ExampleQuery end() {
         return this.query;
     }
@@ -146,7 +206,7 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
 
     @Override
     public FieldGroup fields(Field... fields) {
-        return fields(Arrays.asList(fields));
+        return fields(Lists.newArrayList(fields));
     }
 
     @Override
