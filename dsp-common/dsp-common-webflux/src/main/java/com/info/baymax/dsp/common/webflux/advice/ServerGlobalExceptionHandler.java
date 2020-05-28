@@ -55,18 +55,15 @@ public class ServerGlobalExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(BizException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Order(-3)
-    public Response<?> bizExceptionHandler(ServerWebExchange swe, BizException e) {
+    public Response<?> bizExceptionHandler(BizException e) {
         log.error(e.getMessage(), e);
-
-        ServerHttpResponse response = swe.getResponse();
         Response<?> result = Response.error(e.getStatus(),
             StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()));
         if (result != null) {
-            response.setStatusCode(HttpStatus.OK);
             return result;
         }
-        response.setStatusCode(HttpStatus.OK);
         return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 

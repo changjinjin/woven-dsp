@@ -1,7 +1,5 @@
 package com.info.baymax.common.entity.validation;
 
-import com.info.baymax.common.entity.validation.EnumValue.List;
-
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -14,10 +12,9 @@ import java.lang.reflect.Modifier;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(List.class)
+@Repeatable(EnumValue.List.class)
 @Constraint(validatedBy = EnumValue.Validator.class)
 public @interface EnumValue {
 
@@ -34,7 +31,7 @@ public @interface EnumValue {
     @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
     @Retention(RUNTIME)
     @Documented
-    public @interface List {
+    @interface List {
 
         EnumValue[] value();
     }

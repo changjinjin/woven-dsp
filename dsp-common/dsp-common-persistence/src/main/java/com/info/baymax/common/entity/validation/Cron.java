@@ -1,6 +1,5 @@
 package com.info.baymax.common.entity.validation;
 
-import com.info.baymax.common.entity.validation.Cron.List;
 import com.info.baymax.common.utils.CronExpression;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
@@ -15,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(List.class)
+@Repeatable(Cron.List.class)
 @Constraint(validatedBy = Cron.Validator.class)
 public @interface Cron {
 
@@ -28,7 +27,7 @@ public @interface Cron {
     @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
     @Retention(RUNTIME)
     @Documented
-    public @interface List {
+    @interface List {
 
         Cron[] value();
     }

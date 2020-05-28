@@ -1,6 +1,5 @@
 package com.info.baymax.common.entity.validation;
 
-import com.info.baymax.common.entity.validation.Phone.List;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 import javax.validation.Constraint;
@@ -15,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(List.class)
+@Repeatable(Phone.List.class)
 @Constraint(validatedBy = Phone.Validator.class)
 public @interface Phone {
 
@@ -28,7 +27,7 @@ public @interface Phone {
     @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
     @Retention(RUNTIME)
     @Documented
-    public @interface List {
+    @interface List {
 
         Phone[] value();
     }

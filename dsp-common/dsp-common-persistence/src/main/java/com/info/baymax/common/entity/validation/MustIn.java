@@ -1,6 +1,5 @@
 package com.info.baymax.common.entity.validation;
 
-import com.info.baymax.common.entity.validation.MustIn.List;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 import javax.validation.Constraint;
@@ -16,8 +15,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(List.class)
-@Constraint(validatedBy = {})
+@Repeatable(MustIn.List.class)
+@Constraint(validatedBy = {MustIn.MustInValidatorForBoolean.class, MustIn.MustInValidatorForByte.class,
+    MustIn.MustInValidatorForDouble.class, MustIn.MustInValidatorForFloat.class,
+    MustIn.MustInValidatorForInteger.class, MustIn.MustInValidatorForLong.class,
+    MustIn.MustInValidatorForShort.class, MustIn.MustInValidatorForString.class})
 public @interface MustIn {
 
     String message() default "{javax.validation.constraints.MustIn.message}";
@@ -31,7 +33,7 @@ public @interface MustIn {
     @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
     @Retention(RUNTIME)
     @Documented
-    public @interface List {
+    @interface List {
 
         MustIn[] value();
     }

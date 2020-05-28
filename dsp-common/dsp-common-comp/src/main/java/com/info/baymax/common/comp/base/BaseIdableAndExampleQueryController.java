@@ -35,14 +35,14 @@ public interface BaseIdableAndExampleQueryController<ID extends Serializable, T 
     @ApiOperation(value = "单个删除", notes = "根据ID每次删除一条数据，ID不能为空")
     @GetMapping("/deleteById")
     default Response<?> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam ID id) {
-        getBaseIdableAndExampleQueryService().deleteByPrimaryKey(id);
+        getBaseIdableAndExampleQueryService().deleteById(id);
         return Response.ok();
     }
 
     @ApiOperation(value = "批量删除", notes = "根据ID批量删除数据，数据集不能为空")
-    @PostMapping("/deleteByIds")
+    @GetMapping("/deleteByIds")
     default Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam @NotEmpty ID[] ids) {
-        getBaseIdableAndExampleQueryService().deleteByPrimaryKeys(ids);
+        getBaseIdableAndExampleQueryService().deleteByIds(ids);
         return Response.ok();
     }
 

@@ -65,6 +65,7 @@ public class User extends Maintable implements CryptoBean {
     @Comment("用户手机号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @NotBlank
     @Phone(message = "Wrong phone number {phone}!")
     private String phone;
 
@@ -72,6 +73,7 @@ public class User extends Maintable implements CryptoBean {
     @Comment("用户邮箱")
     @Column(length = 30)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @NotBlank
     @Email(message = "Wrong email {email}!")
     private String email;
 
