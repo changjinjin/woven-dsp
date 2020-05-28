@@ -16,7 +16,8 @@ import lombok.*;
 @ApiModel
 @Setter
 @Getter
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(doNotUseGetters = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Field extends CriteriaItem {

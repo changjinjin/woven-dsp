@@ -16,7 +16,8 @@ import java.io.Serializable;
 @ApiModel
 @Setter
 @Getter
-@ToString
+@EqualsAndHashCode
+@ToString(doNotUseGetters = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sort implements Serializable {

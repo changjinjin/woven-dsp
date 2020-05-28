@@ -9,6 +9,7 @@ import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
 import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,7 +17,6 @@ import org.apache.ibatis.reflection.MetaObject;
 import tk.mybatis.mapper.util.MetaObjectUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,7 +31,8 @@ import java.util.List;
 @ApiModel
 @Setter
 @Getter
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(doNotUseGetters = true)
 public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldGroup> {
     private static final long serialVersionUID = 2462883877776169902L;
 
