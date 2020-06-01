@@ -3,6 +3,7 @@ package com.info.baymax.dsp.data.sys.service.security;
 import java.util.List;
 
 import com.info.baymax.common.entity.base.BaseMaintableService;
+import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 
 public interface UserService extends BaseMaintableService<User> {
@@ -38,10 +39,10 @@ public interface UserService extends BaseMaintableService<User> {
      *
      * @param oldPass   旧的密码
      * @param newPass   新的密码
-     * @param pwdStrict 密码是否使用严格模式
+     * @param pwdMode   密码校验模式
      * @return 修改状态
      */
-    int changePwd(String oldPass, String newPass, boolean pwdStrict);
+    int changePwd(String oldPass, String newPass, PwdMode pwdMode);
 
     /**
      * 根据ID批量删除

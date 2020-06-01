@@ -3,6 +3,7 @@ package com.info.baymax.dsp.access.consumer.web.controller;
 import com.info.baymax.common.crypto.annotation.Cryptoable;
 import com.info.baymax.common.crypto.annotation.Decrypt;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
 import com.info.baymax.dsp.data.sys.entity.bean.ChangePwd;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import io.swagger.annotations.Api;
@@ -28,7 +29,7 @@ public class CustCustomerController {
     @PostMapping("/changePwd")
     @Cryptoable(enableParam = true)
     public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
-        consumerService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), false);
+        consumerService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), PwdMode.SIMPLE);
         return Response.ok();
     }
 

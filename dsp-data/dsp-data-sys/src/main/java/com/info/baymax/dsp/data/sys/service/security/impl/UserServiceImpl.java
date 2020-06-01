@@ -29,8 +29,9 @@ import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
+import com.info.baymax.dsp.data.sys.crypto.check.CompositePasswordChecker;
 import com.info.baymax.dsp.data.sys.crypto.check.PasswordChecker;
-import com.info.baymax.dsp.data.sys.crypto.check.StrictModePasswordChecker;
+import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.entity.security.UserRoleRef;
@@ -155,7 +156,7 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Override
-    public int changePwd(String oldPass, String newPass, boolean pwdStrict) {
+    public int changePwd(String oldPass, String newPass, PwdMode pwdMode) {
         User merceUser = selectByPrimaryKey(SaasContext.getCurrentUserId());
         if (merceUser == null) {
             throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "密码修改失败，用户不存在！");
@@ -167,12 +168,10 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
         }
 
         // 密码格式检查
-        if (pwdStrict) {
-            PasswordData passwordData = new PasswordData(SaasContext.getCurrentUsername(), newPass);
-            passwordData.setPasswordReferences(new SourceReference(oldPass));
-            PasswordChecker passwordChecker = new StrictModePasswordChecker();
-            passwordChecker.check(passwordData);
-        }
+        PasswordData passwordData = new PasswordData(SaasContext.getCurrentUsername(), newPass);
+        passwordData.setPasswordReferences(new SourceReference(oldPass));
+        PasswordChecker passwordChecker = new CompositePasswordChecker();
+        passwordChecker.check(pwdMode, passwordData);
 
         merceUser.setPassword(passwordEncoder.encode(newPass));
         merceUser.setPwdExpiredTime(

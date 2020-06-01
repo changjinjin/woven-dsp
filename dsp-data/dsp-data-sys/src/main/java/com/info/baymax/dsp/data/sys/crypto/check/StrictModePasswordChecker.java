@@ -21,6 +21,8 @@ import org.passay.WhitespaceRule;
 import org.passay.dictionary.ArrayWordList;
 import org.passay.dictionary.WordListDictionary;
 
+import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
+
 /**
  * 严格模式密码检查器
  *
@@ -28,6 +30,11 @@ import org.passay.dictionary.WordListDictionary;
  * @date 2019年9月23日 下午12:05:19
  */
 public class StrictModePasswordChecker implements PasswordChecker {
+
+	@Override
+	public boolean supports(PwdMode pwdMode) {
+		return PwdMode.STRICT.equals(pwdMode);
+	}
 
 	/**
 	 * <pre>
@@ -42,7 +49,7 @@ public class StrictModePasswordChecker implements PasswordChecker {
 	 * @throws FileNotFoundException
 	 */
 	@Override
-	public boolean check(PasswordData passwordData) throws PasswordCheckException {
+	public boolean check(PwdMode pwdMode, PasswordData passwordData) throws PasswordCheckException {
 		// 1.密码不能有空格
 		WhitespaceRule r1 = new WhitespaceRule();
 		// 2.密码长度8~30位

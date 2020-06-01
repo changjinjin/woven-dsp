@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.data.sys.crypto.check;
 
+import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
 import org.apache.commons.lang3.StringUtils;
 import org.passay.PasswordData;
 
@@ -12,7 +13,12 @@ import org.passay.PasswordData;
 public class SimpleModePasswordChecker implements PasswordChecker {
 
 	@Override
-	public boolean check(PasswordData passwordData) throws PasswordCheckException {
+	public boolean supports(PwdMode pwdMode) {
+		return PwdMode.SIMPLE.equals(pwdMode);
+	}
+
+	@Override
+	public boolean check(PwdMode pwdMode, PasswordData passwordData) throws PasswordCheckException {
 		String password = passwordData.getPassword();
 		if (StringUtils.isEmpty(password)) {
 			throw new PasswordCheckException("密码不能为空");

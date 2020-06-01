@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:com.info.baymax.dsp.access.platform.Starter</config>
+		<config>java:com.info.baymax.dsp.access.platform.DspPlatformStarter</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

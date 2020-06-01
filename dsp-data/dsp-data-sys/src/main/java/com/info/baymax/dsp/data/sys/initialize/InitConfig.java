@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.data.sys.initialize;
 
+import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
 import lombok.Data;
 
 /**
@@ -32,8 +33,17 @@ public class InitConfig {
     private boolean pwdStrict = false;
 
     /**
+     * 密码格式检查是否使用严格模式
+     */
+    private PwdMode pwdMode;
+
+    /**
      * 系统权限初始化文件
      */
     private String permsFile = "classpath:init/perms/roots.xml";
+
+    public PwdMode getPwdMode() {
+        return pwdMode != null ? pwdMode : (pwdStrict ? PwdMode.STRICT : PwdMode.SIMPLE);
+    }
 
 }

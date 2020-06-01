@@ -93,7 +93,7 @@ public class UserController implements MainTableController<User> {
     @PostMapping("/changePwd")
     @Cryptoable(enableParam = true)
     public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
-        userService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), initConfig.isPwdStrict());
+        userService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), initConfig.getPwdMode());
         return Response.ok();
     }
 
