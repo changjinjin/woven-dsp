@@ -159,13 +159,17 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 				user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t.operationKey()))
 						.collect(Collectors.toList()));
 			} else {
-				user.setAuthorities(Lists.newArrayList(new SimpleGrantedAuthority("Maanger")));
+				user.setAuthorities(Lists.newArrayList(new SimpleGrantedAuthority("Manager")));
 			}
 		} else {
 			String clientIds = user.getClientIds();
 			if (StringUtils.isEmpty(clientIds) || !clientIds.contains(clientId)) {
 				throw new NoGrantedAnyAuthorityException("当前用户没有授予平台" + clientId + "的访问权限，禁止登陆该平台！");
 			}
+			
+			if (ICollections.hasNoElements(user.getAuthorities())) {
+				user.setAuthorities(Lists.newArrayList(new SimpleGrantedAuthority("Manager")));
+			}  
 		}
 
 		// 用户没有赋权，用户需要有权限才能登陆服务
