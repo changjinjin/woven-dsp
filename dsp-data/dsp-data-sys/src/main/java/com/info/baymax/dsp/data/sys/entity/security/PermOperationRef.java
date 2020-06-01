@@ -28,14 +28,14 @@ public class PermOperationRef implements Serializable {
     private static final long serialVersionUID = -4066909154102918575L;
 
     @Id
-    @ApiModelProperty(value = "权限ID")
+    @ApiModelProperty(value = "权限ID", required = true)
     @Comment("权限ID")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String permId;
 
     @Id
-    @ApiModelProperty(value = "接口信息ID")
+    @ApiModelProperty(value = "接口信息ID", required = true)
     @Comment("接口信息ID")
     @Column(length = 50, nullable = false)
     @ColumnType(jdbcType = JdbcType.VARCHAR)

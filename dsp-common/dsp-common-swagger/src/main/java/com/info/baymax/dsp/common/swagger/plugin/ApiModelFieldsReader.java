@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.common.swagger.plugin;
 
 import com.fasterxml.classmate.TypeResolver;
+import com.google.common.collect.Sets;
 import com.info.baymax.dsp.common.swagger.annotation.ApiModelFields;
 import com.info.baymax.dsp.common.swagger.utils.ClassUtils;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,7 +11,9 @@ import javassist.bytecode.ConstPool;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.BooleanMemberValue;
 import javassist.bytecode.annotation.StringMemberValue;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import springfox.documentation.schema.ModelRef;
@@ -21,13 +24,17 @@ import springfox.documentation.spi.service.contexts.ParameterContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
-@Order
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
 public class ApiModelFieldsReader implements ParameterBuilderPlugin {
-    public static int CLASS_INDEX = 1;
+    public static AtomicInteger CLASS_INDEX = new AtomicInteger(0);
 
     @Override
     public void apply(ParameterContext parameterContext) {
@@ -35,15 +42,13 @@ public class ApiModelFieldsReader implements ParameterBuilderPlugin {
         Optional<ApiModelFields> apiModelFields = methodParameter.findAnnotation(ApiModelFields.class);
         if (apiModelFields.isPresent()) {
             Class<?> originClass = parameterContext.resolvedMethodParameter().getParameterType().getErasedType();
-            String name = originClass.getSimpleName() + "LessModel_" + System.currentTimeMillis() + "_"
-                + (CLASS_INDEX++); // model 名称
+            String name = originClass.getSimpleName() + "Less" + CLASS_INDEX.incrementAndGet(); // model 名称
             try {
                 parameterContext.getDocumentationContext().getAdditionalModels()
-                    .add(new TypeResolver().resolve(createRefModelIgp(apiModelFields.get(), name, originClass))); // 像documentContext的Models中添加我们新生成的Class
+                    .add(new TypeResolver().resolve(createRefModelIgp(apiModelFields.get(), name, originClass))); // 向documentContext的Models中添加我们新生成的Class
             } catch (NotFoundException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
-
             parameterContext.parameterBuilder() // 修改model参数的ModelRef为我们动态生成的class
                 .parameterType("body").modelRef(new ModelRef(name)).name(name);
         }
@@ -58,28 +63,13 @@ public class ApiModelFieldsReader implements ParameterBuilderPlugin {
         try {
             List<Field> fields = ClassUtils.getFields(origin, null, null);
             if (fields != null && !fields.isEmpty()) {
-                Set<String> requiredFields = new HashSet<String>(Arrays.asList(ann.requiredFields()));
-                Set<String> filterFields = new HashSet<String>(Arrays.asList(ann.filterFields()));
-                boolean includeMode = ann.includeMode();
-
-                List<Field> dealFileds = fields.stream()
-                    .filter(f -> includeFields(requiredFields, filterFields, includeMode, f.getName()))//
-                    .collect(Collectors.toList());
-                createCtFileds(dealFileds, requiredFields, ctClass);
+                createCtFileds(fields.stream().filter(f -> !Sets.newHashSet(ann.hiddenFields()).contains(f.getName()))//
+                    .collect(Collectors.toList()), Sets.newHashSet(ann.requiredFields()), ctClass);
             }
             return ctClass.toClass();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public boolean includeFields(Set<String> requiredFields, Set<String> filterFields, boolean includeMode,
-                                 String fieldName) {
-        if (includeMode) {
-            return requiredFields.contains(fieldName) || filterFields.contains(fieldName);
-        } else {
-            return requiredFields.contains(fieldName) || !filterFields.contains(fieldName);
         }
     }
 

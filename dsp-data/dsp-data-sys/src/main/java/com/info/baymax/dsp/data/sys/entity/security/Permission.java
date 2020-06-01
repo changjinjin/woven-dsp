@@ -30,7 +30,7 @@ import java.util.Set;
 public class Permission extends Maintable implements Comparable<Permission>, TreeIdable<String, Permission> {
 	private static final long serialVersionUID = 4953480541587178592L;
 
-	@XmlElement(name = "clientId")
+	@XmlElement(name = "clientId", required = false)
 	@ApiModelProperty(value = "客户端ID")
 	@Comment("客户端ID")
 	@Column(length = 20)
@@ -38,7 +38,7 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@ColumnDefault("'baymax'")
 	private String clientId;
 
-	@XmlElement(name = "code")
+	@XmlElement(name = "code", required = true)
 	@ApiModelProperty(value = "权限编码，每一个编码唯一")
 	@Comment("权限编码，每一个编码唯一")
 	@Column(length = 20)
@@ -46,47 +46,47 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	private String code;
 
 	@XmlTransient
-	@ApiModelProperty("父节点ID")
+	@ApiModelProperty(value = "父节点ID", required = false)
 	@Comment("父节点ID")
 	@Column(length = 50)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String parentId;
 
-	@XmlElement(name = "url")
+	@XmlElement(name = "url", required = true)
 	@ApiModelProperty(value = "权限路径")
 	@Comment("权限路径")
 	@Column(length = 150)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String url;
 
-	@XmlElement(name = "type")
+	@XmlElement(name = "type", required = true)
 	@ApiModelProperty(value = "权限类型：1-模块，2-菜单，3-按钮，4-文件，5-资源")
 	@Comment("权限类型：1-模块，2-菜单，3-按钮，4-文件，5-资源")
 	@Column(length = 2)
 	@ColumnType(jdbcType = JdbcType.INTEGER)
 	private Integer type;
 
-	@XmlElementWrapper(name = "children")
+	@XmlElementWrapper(name = "children", required = false)
 	@XmlElement(name = "permission")
 	@ApiModelProperty(value = "子级权限列表")
 	@Transient
 	private List<Permission> children;
 
-	@XmlElement(name = "icon")
+	@XmlElement(name = "icon", required = true)
 	@ApiModelProperty(value = "图标样式")
 	@Comment("图标样式")
 	@Column(length = 150)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String icon;
 
-	@XmlElement(name = "route")
+	@XmlElement(name = "route", required = true)
 	@ApiModelProperty(value = "前端路由")
 	@Comment("前端路由")
 	@Column(length = 150)
 	@ColumnType(jdbcType = JdbcType.VARCHAR)
 	private String route;
 
-	@XmlElement(name = "order")
+	@XmlElement(name = "order", required = false)
 	@ApiModelProperty(value = "排序序号")
 	@Comment("排序序号")
 	@Column(name = "ord", length = 3)
@@ -94,11 +94,11 @@ public class Permission extends Maintable implements Comparable<Permission>, Tre
 	@ColumnDefault("1")
 	private Integer order;
 
-	@ApiModelProperty(value = "是否是半选中状态：false-否（全选中），true-是，默认0")
+	@ApiModelProperty(value = "是否是半选中状态：false-否（全选中），true-是，默认0", required = false)
 	@Transient
 	private Boolean halfSelect;
 
-	@ApiModelProperty(value = "关联的接口信息列表")
+	@ApiModelProperty(value = "关联的接口信息列表", required = false)
 	@XmlTransient
 	@Transient
 	private Set<RestOperation> operations;

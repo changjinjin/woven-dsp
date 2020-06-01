@@ -35,9 +35,9 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     }
 
     @Override
-    public Response<?> save(@ApiModelFields(requiredFields = {"name", "type", "attributes"}, filterFields = {"id",
+    public Response<?> save(@ApiModelFields(requiredFields = {"name", "type", "attributes"}, hiddenFields = {"id",
         "enabled", "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
-        "lastModifier"}, includeMode = false) CustDataSource t) {
+        "lastModifier"}) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);
         if (!response.success()) {
             return response;
@@ -46,9 +46,8 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     }
 
     @Override
-    public Response<?> update(@ApiModelFields(requiredFields = {"name", "type", "attributes"}, filterFields = {
-        "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
-        "lastModifier"}, includeMode = false) CustDataSource t) {
+    public Response<?> update(@ApiModelFields(requiredFields = {"id", "name", "type", "attributes"}, hiddenFields = {
+        "tenantId", "owner", "createTime", "creator", "lastModifiedTime", "lastModifier"}) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);
         if (!response.success()) {
             return response;

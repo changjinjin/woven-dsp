@@ -48,20 +48,20 @@ import java.util.stream.Collectors;
 public class User extends Maintable implements CryptoBean {
     private static final long serialVersionUID = -4066909154102918575L;
 
-    @ApiModelProperty(value = "登录账号")
+    @ApiModelProperty(value = "登录账号", required = true)
     @Comment("登录账号")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @NotBlank
     private String loginId;
 
-    @ApiModelProperty(value = "用户密码")
+    @ApiModelProperty(value = "用户密码", required = false)
     @Comment("用户密码")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String password;
 
-    @ApiModelProperty(value = "用户手机号")
+    @ApiModelProperty(value = "用户手机号", required = true)
     @Comment("用户手机号")
     @Column(length = 11)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
@@ -69,7 +69,7 @@ public class User extends Maintable implements CryptoBean {
     @Phone(message = "Wrong phone number {phone}!")
     private String phone;
 
-    @ApiModelProperty(value = "用户邮箱")
+    @ApiModelProperty(value = "用户邮箱", required = true)
     @Comment("用户邮箱")
     @Column(length = 30)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
@@ -77,7 +77,7 @@ public class User extends Maintable implements CryptoBean {
     @Email(message = "Wrong email {email}!")
     private String email;
 
-    @ApiModelProperty("密码过期时间")
+    @ApiModelProperty(value = "密码过期时间", required = false)
     @Comment("密码过期时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -86,7 +86,7 @@ public class User extends Maintable implements CryptoBean {
     @Future
     private Date pwdExpiredTime;
 
-    @ApiModelProperty("账号过期时间")
+    @ApiModelProperty(value = "账号过期时间", required = false)
     @Comment("账号过期时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -95,7 +95,7 @@ public class User extends Maintable implements CryptoBean {
     @Future
     private Date accountExpiredTime;
 
-    @ApiModelProperty(value = "资源队列")
+    @ApiModelProperty(value = "资源队列", required = true)
     @Comment("资源队列")
     @Lob
     @Column(length = 255)
@@ -103,31 +103,32 @@ public class User extends Maintable implements CryptoBean {
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = GZBase64VarcharVsListStringTypeHandler.class)
     private List<String> resourceQueues = new ArrayList<>();
 
-    @ApiModelProperty(value = "HDFS空间限额")
+    @ApiModelProperty(value = "HDFS空间限额", required = false)
     @Comment("HDFS空间限额")
     @Column(length = 18)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @ColumnDefault("0")
     private Long hdfsSpaceQuota;
 
-    @ApiModelProperty(value = "是否是超级管理员:0-否，1-是，默认0")
+    @ApiModelProperty(value = "是否是超级管理员:0-否，1-是，默认0", required = false)
     @Comment("是否是超级管理员:0-否，1-是，默认0")
     @Column(name = "is_admin", length = 2)
     @ColumnType(jdbcType = JdbcType.INTEGER)
     @ColumnDefault("0")
     private Integer admin;
 
-    @ApiModelProperty(value = "用户所属平台，默认baymax")
+    @ApiModelProperty(value = "用户所属平台，默认baymax", required = false)
     @Comment("用户所属平台，默认baymax")
     @Column(name = "client_ids", length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @ColumnDefault("'baymax'")
     private String clientIds;
 
-    @ApiModelProperty(value = "用户角色列表")
+    @ApiModelProperty(value = "用户角色列表", required = false)
     @Transient
     private List<Role> roles;
 
+    @ApiModelProperty(value = "权限列表", required = false, hidden = true)
     @JsonIgnore
     @Transient
     private List<SimpleGrantedAuthority> authorities;

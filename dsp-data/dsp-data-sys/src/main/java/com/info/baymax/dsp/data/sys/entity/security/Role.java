@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class Role extends Maintable {
     private static final long serialVersionUID = -4302027743711660884L;
 
-    @XmlElement(name = "客户端ID")
+    @XmlElement(name = "客户端ID", required = false)
     @ApiModelProperty(value = "客户端ID")
     @Comment("客户端ID")
     @Column(length = 50)
@@ -36,15 +36,15 @@ public class Role extends Maintable {
     @ColumnDefault("'baymax'")
     private String clientId;
 
-    @ApiModelProperty("角色权限列表")
+    @ApiModelProperty(value = "角色权限列表", required = false)
     @Transient
     private Set<Permission> permissions;
 
-    @ApiModelProperty(value = "权限ID列表")
+    @ApiModelProperty(value = "权限ID列表", required = false)
     @Transient
     private Set<String> permIds;
 
-    @ApiModelProperty(value = "角色资源关系组")
+    @ApiModelProperty(value = "角色资源关系组", required = false)
     @Transient
     private List<RoleResourceRefGroup> rrrfGroups = Lists.newArrayList();
 

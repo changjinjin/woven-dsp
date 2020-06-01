@@ -26,7 +26,7 @@ import java.util.List;
 public class Tenant extends Maintable {
     private static final long serialVersionUID = -7861087791631568673L;
 
-    @ApiModelProperty(value = "资源队列")
+    @ApiModelProperty(value = "资源队列", required = true)
     @Comment("资源队列")
     @Lob
     @Column(length = 255)
@@ -34,14 +34,14 @@ public class Tenant extends Maintable {
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = GZBase64VarcharVsListStringTypeHandler.class)
     protected List<String> resourceQueues;
 
-    @ApiModelProperty(value = "HDFS空间限额")
+    @ApiModelProperty(value = "HDFS空间限额", required = false)
     @Comment("HDFS空间限额")
     @Column(length = 18)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @ColumnDefault("0")
     private Long hdfsSpaceQuota;
 
-    @ApiModelProperty(value = "全局ID")
+    @ApiModelProperty(value = "全局ID", required = false)
     @Comment("全局ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)

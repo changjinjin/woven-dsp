@@ -31,7 +31,7 @@ import java.util.List;
 public class RestOperation implements Idable<String> {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("主键")
+    @ApiModelProperty(value = "主键")
     @Comment("主键")
     @Id
     @Column(length = 50)
@@ -44,83 +44,83 @@ public class RestOperation implements Idable<String> {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String serviceName;
 
-    @ApiModelProperty("接口所属分组")
+    @ApiModelProperty(value = "接口所属分组")
     @Comment("接口所属分组")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String groupName;
 
-    @ApiModelProperty("接口所属标签")
+    @ApiModelProperty(value = "接口所属标签")
     @Comment("接口所属标签")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringListTypeHandler.class)
     @Convert(converter = ObjectToStringConverter.class)
     private List<String> tags;
 
-    @ApiModelProperty("接口请求方法")
+    @ApiModelProperty(value = "接口请求方法")
     @Comment("接口请求方法")
     @Column(length = 10)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String mothed;
 
-    @ApiModelProperty("接口基本路径")
+    @ApiModelProperty(value = "接口基本路径")
     @Comment("接口基本路径")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String basePath;
 
-    @ApiModelProperty("接口相对路径")
+    @ApiModelProperty(value = "接口相对路径")
     @Comment("接口相对路径")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String relativePath;
 
-    @ApiModelProperty("接口全路径")
+    @ApiModelProperty(value = "接口全路径")
     @Comment("接口全路径")
     @Column(length = 100)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String fullPath;
 
-    @ApiModelProperty("接口概要")
+    @ApiModelProperty(value = "接口概要")
     @Comment("接口概要")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String summary;
 
-    @ApiModelProperty("接口描述")
+    @ApiModelProperty(value = "接口描述")
     @Comment("接口描述")
     @Column(length = 1000)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String description;
 
-    @ApiModelProperty("接口操作ID")
+    @ApiModelProperty(value = "接口操作ID")
     @Comment("接口操作ID")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String operationId;
 
-    @ApiModelProperty("接口消费信息")
+    @ApiModelProperty(value = "接口消费信息")
     @Comment("接口消费信息")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringListTypeHandler.class)
     @Convert(converter = ObjectToStringConverter.class)
     private List<String> consumes;
 
-    @ApiModelProperty("接口生产信息")
+    @ApiModelProperty(value = "接口生产信息")
     @Comment("接口生产信息")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsStringListTypeHandler.class)
     @Convert(converter = ObjectToStringConverter.class)
     private List<String> produces;
 
-    @ApiModelProperty("接口是否弃用：true-是，false-否")
+    @ApiModelProperty(value = "接口是否弃用：true-是，false-否")
     @Comment("接口是否弃用：true-是，false-否")
     @Column(length = 1)
     @ColumnType(jdbcType = JdbcType.BIT, typeHandler = BooleanTypeHandler.class)
     @ColumnDefault("0")
     private Boolean deprecated;
 
-    @ApiModelProperty("是否启用权限控制：true-是，false-否，默认false")
+    @ApiModelProperty(value = "是否启用权限控制：true-是，false-否，默认false")
     @Comment("是否启用权限控制：true-是，false-否，默认false")
     @Column(length = 1)
     @ColumnType(jdbcType = JdbcType.BIT, typeHandler = BooleanTypeHandler.class)

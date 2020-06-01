@@ -20,16 +20,9 @@ public @interface ApiModelFields {
     String[] requiredFields() default {};
 
     /**
-     * 选填字段数组
+     * 隐藏字段数组
      *
-     * @return 选填字段数组
+     * @return 隐藏字段数组
      */
-    String[] filterFields() default {};
-
-    /**
-     * 是否是包含模式，如果是则filterFields里的字段需要包含进来，否则filterFields的字段需要排除
-     *
-     * @return 包含模式-true，排除模式-false
-     */
-    boolean includeMode() default true;
+    String[] hiddenFields() default {};
 }

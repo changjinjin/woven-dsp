@@ -31,13 +31,13 @@ import javax.persistence.UniqueConstraint;
 public class Customer extends Maintable implements CryptoBean {
     private static final long serialVersionUID = -3170541763416732171L;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", required = true)
     @Comment("用户名")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String username;
 
-    @ApiModelProperty(value = "用户密码")
+    @ApiModelProperty(value = "用户密码", required = false)
     @Comment("用户密码")
     @Column(length = 150)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
