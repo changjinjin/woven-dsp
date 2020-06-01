@@ -3,12 +3,11 @@ package com.info.baymax.dsp.data.platform.entity;
 import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.dsp.data.platform.bean.GrowthType;
 import com.info.baymax.dsp.data.platform.bean.TransferType;
-import com.info.baymax.dsp.data.platform.mybatis.type.GrowthTypeEnumTypeHandler;
-import com.info.baymax.dsp.data.platform.mybatis.type.TransferTypeEnumTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
@@ -90,15 +89,17 @@ public class DataTransferRecord extends BaseEntity {
     @ApiModelProperty(value = "服务启动类型: 0 pull, 1 push")
     @Comment("服务启动类型: 0 pull, 1 push")
     @Column(length = 2)
-    @ColumnType(jdbcType = JdbcType.INTEGER, typeHandler = TransferTypeEnumTypeHandler.class)
-    @ColumnDefault("0")
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("PULL")
     private TransferType transferType;
 
     @ApiModelProperty(value = "数据传输增长方式: 0 全量, 1 增量")
     @Comment("数据传输增长方式: 0 全量, 1 增量")
     @Column(length = 2)
-    @ColumnType(jdbcType = JdbcType.INTEGER, typeHandler = GrowthTypeEnumTypeHandler.class)
-    @ColumnDefault("0")
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("TOTAL")
     private GrowthType growthType;
 
     @ApiModelProperty("当前服务中的增量值")
