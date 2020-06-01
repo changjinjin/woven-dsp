@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.job.sch.service.schedule;
 
-import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;

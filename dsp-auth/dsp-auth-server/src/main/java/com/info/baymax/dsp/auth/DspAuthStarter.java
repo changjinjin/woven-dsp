@@ -6,17 +6,13 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
-import springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper;
 import tk.mybatis.spring.annotation.MapperScan;
 
 // @EnableCaching
 @SpringCloudApplication
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
-@ComponentScan(basePackages = {
-    "com.info.baymax"}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
-    DocumentationPluginsBootstrapper.class}))
+@ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @PropertySource(value = {"classpath:/dsp-common.properties", "classpath:/dsp-auth-server.properties"})
