@@ -13,8 +13,9 @@ package com.info.baymax.dsp.gateway.metrics;
  */
 
 import com.alibaba.fastjson.JSON;
-import com.info.baymax.dsp.gateway.web.mothed.RequestUriMappingsHolder;
-import com.info.baymax.dsp.gateway.web.mothed.RestOperation;
+import com.info.baymax.dsp.gateway.web.method.RequestUriMappingsHolder;
+import com.info.baymax.dsp.gateway.web.method.RestOperation;
+
 import io.micrometer.core.instrument.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

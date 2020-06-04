@@ -1,7 +1,8 @@
 package com.info.baymax.dsp.gateway.metrics;
 
 import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.dsp.gateway.web.mothed.RequestUriMappingsHolder;
+import com.info.baymax.dsp.gateway.web.method.RequestUriMappingsHolder;
+
 import io.micrometer.core.instrument.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.actuate.metrics.web.reactive.server.WebFluxTagsProvider;

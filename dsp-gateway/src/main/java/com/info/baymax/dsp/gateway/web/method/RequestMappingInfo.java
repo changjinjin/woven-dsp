@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.gateway.web.mothed;
+package com.info.baymax.dsp.gateway.web.method;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;

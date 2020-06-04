@@ -1,8 +1,9 @@
-package com.info.baymax.dsp.gateway.web.oauth2.mothed;
+package com.info.baymax.dsp.gateway.web.oauth2.method;
 
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.gateway.web.mothed.RequestUriMappingsHolder;
-import com.info.baymax.dsp.gateway.web.mothed.RestOperation;
+import com.info.baymax.dsp.gateway.web.method.RequestUriMappingsHolder;
+import com.info.baymax.dsp.gateway.web.method.RestOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;

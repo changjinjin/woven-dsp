@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.gateway.metrics;
 
-import com.info.baymax.dsp.gateway.web.mothed.RequestUriMappingsHolder;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.config.MeterFilterReply;
@@ -13,6 +12,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.info.baymax.dsp.gateway.web.method.RequestUriMappingsHolder;
 
 @Configuration
 @ConditionalOnWebApplication

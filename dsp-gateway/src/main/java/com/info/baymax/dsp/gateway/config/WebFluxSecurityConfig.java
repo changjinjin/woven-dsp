@@ -1,7 +1,8 @@
 package com.info.baymax.dsp.gateway.config;
 
 import com.info.baymax.dsp.gateway.web.oauth2.introspection.DspOpaqueTokenSpecCustomizer;
-import com.info.baymax.dsp.gateway.web.oauth2.mothed.DspReactiveAuthorizationManager;
+import com.info.baymax.dsp.gateway.web.oauth2.method.DspReactiveAuthorizationManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;

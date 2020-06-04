@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.gateway.web.mothed;
+package com.info.baymax.dsp.gateway.web.method;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -154,8 +154,8 @@ public class RequestUriMappingsHolder {
         return getOperationByPathPatterns(exchange);
     }
 
-    private RestOperation getOperation(String path, String mothed) {
-        return uriMappings.get(operationKey(path, mothed));
+    private RestOperation getOperation(String path, String method) {
+        return uriMappings.get(operationKey(path, method));
     }
 
     private RestOperation getOperationByPathPatterns(ServerWebExchange exchange) {
@@ -172,11 +172,11 @@ public class RequestUriMappingsHolder {
         return null;
     }
 
-    public static String operationKey(String path, String mothed) {
-        return path + "@" + mothed.toUpperCase();
+    public static String operationKey(String path, String method) {
+        return path + "@" + method.toUpperCase();
     }
 
-    public boolean contains(String path, String mothed) {
-        return enabledUriMappings.containsKey(operationKey(path, mothed));
+    public boolean contains(String path, String method) {
+        return enabledUriMappings.containsKey(operationKey(path, method));
     }
 }

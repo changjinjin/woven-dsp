@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.gateway.web.mothed;
+package com.info.baymax.dsp.gateway.web.method;
 
 import com.info.baymax.common.utils.HashUtil;
 import io.swagger.annotations.ApiModel;
@@ -89,8 +89,8 @@ public class RestOperation implements Serializable {
 		this.deprecated = deprecated;
 	}
 
-	public static RestOperation unkown(String mothed, String requestPath) {
-		return new RestOperation(mothed, "/", requestPath);
+	public static RestOperation unkown(String method, String requestPath) {
+		return new RestOperation(method, "/", requestPath);
 	}
 
 	public String getDescription() {
