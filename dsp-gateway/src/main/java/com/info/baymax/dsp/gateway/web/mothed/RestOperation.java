@@ -32,7 +32,7 @@ public class RestOperation implements Serializable {
 	private String[] tags;
 
 	@ApiModelProperty("接口请求方法")
-	private String mothed;
+	private String method;
 
 	@ApiModelProperty("接口基本路径")
 	private String basePath;
@@ -64,21 +64,21 @@ public class RestOperation implements Serializable {
 	@ApiModelProperty("是否启用权限控制：true-是，false-否，默认false")
 	private Boolean enabled;
 
-	public RestOperation(String mothed, String basePath, String relativePath) {
-		this.mothed = mothed;
+	public RestOperation(String method, String basePath, String relativePath) {
+		this.method = method;
 		this.basePath = basePath;
 		this.relativePath = relativePath;
 		this.summary = relativePath;
 		this.description = relativePath;
 	}
 
-	public RestOperation(String serviceName, String groupName, String[] tags, String mothed, String basePath,
+	public RestOperation(String serviceName, String groupName, String[] tags, String method, String basePath,
 			String relativePath, String summary, String description, String operationId, String[] consumes,
 			String[] produces, Boolean deprecated) {
 		this.serviceName = serviceName;
 		this.groupName = groupName;
 		this.tags = tags;
-		this.mothed = mothed;
+		this.method = method;
 		this.basePath = basePath;
 		this.relativePath = relativePath;
 		this.summary = summary;
@@ -108,8 +108,8 @@ public class RestOperation implements Serializable {
 	}
 
 	public String getId() {
-		if (StringUtils.isEmpty(id) && mothed != null && relativePath != null) {
-			this.id = HashUtil.hashKey(trimSlash(getFullPath() + "@" + getMothed()));
+		if (StringUtils.isEmpty(id) && StringUtils.isNotEmpty(getFullPath())) {
+			this.id = HashUtil.hashKey(operationKey());
 		}
 		return id;
 	}
@@ -129,8 +129,8 @@ public class RestOperation implements Serializable {
 	}
 
 	public String operationKey() {
-		if (relativePath != null && mothed != null) {
-			return getFullPath() + "@" + mothed.toUpperCase();
+		if (relativePath != null && method != null) {
+			return getFullPath() + "@" + method.toUpperCase();
 		}
 		return null;
 	}

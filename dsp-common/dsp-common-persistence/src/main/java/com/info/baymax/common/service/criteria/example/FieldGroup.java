@@ -16,11 +16,7 @@ import lombok.ToString;
 import org.apache.ibatis.reflection.MetaObject;
 import tk.mybatis.mapper.util.MetaObjectUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 条件分组包装对象，多条件或多层条件时需要通过组合模式进行包装处理
@@ -776,4 +772,356 @@ public class FieldGroup extends CriteriaItem implements FieldGroupBuilder<FieldG
         return this;
     }
 
+    @Override
+    public FieldGroup andIsNull(String property, boolean requirement) {
+        if (requirement) {
+            return andIsNull(property);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andIsNotNull(String property, boolean requirement) {
+        if (requirement) {
+            return andIsNotNull(property);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return andEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return andNotEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andGreaterThan(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return andGreaterThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andGreaterThanOrEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return andGreaterThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLessThan(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return andLessThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLessThanOrEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return andLessThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andIn(String property, Object[] values, boolean requirement) {
+        if (requirement) {
+            return andIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotIn(String property, Object[] values, boolean requirement) {
+        if (requirement) {
+            return andNotIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andBetween(String property, Object value1, Object value2, boolean requirement) {
+        if (requirement) {
+            return andBetween(property, value1, value2);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotBetween(String property, Object value1, Object value2, boolean requirement) {
+        if (requirement) {
+            return andNotBetween(property, value1, value2);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andLeftLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andRightLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andFullLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andFullLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andNotLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotLeftLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andNotLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotRightLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andNotRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andNotFullLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return andNotFullLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andEqualTo(Object param, boolean requirement) {
+        if (requirement) {
+            return andEqualTo(param);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup andAllEqualTo(Object param, boolean requirement) {
+        if (requirement) {
+            return andAllEqualTo(param);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orIsNull(String property, boolean requirement) {
+        if (requirement) {
+            return orIsNull(property);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orIsNotNull(String property, boolean requirement) {
+        if (requirement) {
+            return orIsNotNull(property);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return orEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return orNotEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orGreaterThan(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return orGreaterThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orGreaterThanOrEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return orGreaterThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLessThan(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return orLessThan(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLessThanOrEqualTo(String property, Object value, boolean requirement) {
+        if (requirement) {
+            return orLessThanOrEqualTo(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orIn(String property, Object[] values, boolean requirement) {
+        if (requirement) {
+            return orIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotIn(String property, Object[] values, boolean requirement) {
+        if (requirement) {
+            return orNotIn(property, values);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orBetween(String property, Object value1, Object value2, boolean requirement) {
+        if (requirement) {
+            return orBetween(property, value1, value2);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotBetween(String property, Object value1, Object value2, boolean requirement) {
+        if (requirement) {
+            return orNotBetween(property, value1, value2);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orLeftLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orRightLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orFullLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orFullLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orNotLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotLeftLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orNotLeftLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotRightLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orNotRightLike(property, value);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orNotFullLike(String property, String value, boolean requirement) {
+        if (requirement) {
+            return orNotFullLike(property, value);
+        }
+        return this;
+
+    }
+
+    @Override
+    public FieldGroup orEqualTo(Object param, boolean requirement) {
+        if (requirement) {
+            return orEqualTo(param);
+        }
+        return this;
+    }
+
+    @Override
+    public FieldGroup orAllEqualTo(Object param, boolean requirement) {
+        if (requirement) {
+            return orAllEqualTo(param);
+        }
+        return this;
+    }
 }

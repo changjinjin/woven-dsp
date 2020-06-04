@@ -118,7 +118,7 @@ public class RequestUriMappingsHolder {
     private RequestMappingInfo createRequestMappingInfo(RestOperation requestMapping,
                                                         RequestCondition<?> customCondition) {
         RequestMappingInfo.Builder builder = RequestMappingInfo.paths(new String[]{requestMapping.getFullPath()})
-            .methods(new RequestMethod[]{RequestMethod.valueOf(requestMapping.getMothed().toUpperCase())})
+            .methods(new RequestMethod[]{RequestMethod.valueOf(requestMapping.getMethod().toUpperCase())})
             // .params(requestMapping.params()).headers(requestMapping.headers())
             .consumes(requestMapping.getConsumes()).produces(requestMapping.getProduces())
             .mappingName(requestMapping.operationKey());

@@ -43,7 +43,7 @@ public class DspReactiveAuthorizationManager implements ReactiveAuthorizationMan
 			return false;
 		}
 		Set<String> set = authorities.stream().map(t -> t.getAuthority()).collect(Collectors.toSet());
-		if (set.contains(RequestUriMappingsHolder.operationKey(operation.getFullPath(), operation.getMothed()))) {
+		if (set.contains(RequestUriMappingsHolder.operationKey(operation.getFullPath(), operation.getMethod()))) {
 			return true;
 		}
 		return false;

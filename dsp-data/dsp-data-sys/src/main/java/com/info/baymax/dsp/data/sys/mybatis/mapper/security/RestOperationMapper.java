@@ -29,7 +29,7 @@ public interface RestOperationMapper extends MyIdableMapper<RestOperation> {
             @Result(column = "service_name", jdbcType = JdbcType.VARCHAR, property = "serviceName"),
             @Result(column = "group_name", jdbcType = JdbcType.VARCHAR, property = "groupName"),
             @Result(column = "tags", jdbcType = JdbcType.VARCHAR, property = "tags", typeHandler = VarcharVsStringListTypeHandler.class),
-            @Result(column = "mothed", jdbcType = JdbcType.VARCHAR, property = "mothed"),
+            @Result(column = "mothed", jdbcType = JdbcType.VARCHAR, property = "method"),
             @Result(column = "base_path", jdbcType = JdbcType.VARCHAR, property = "basePath"),
             @Result(column = "relative_path", jdbcType = JdbcType.VARCHAR, property = "relativePath"),
             @Result(column = "full_path", jdbcType = JdbcType.VARCHAR, property = "fullPath"),

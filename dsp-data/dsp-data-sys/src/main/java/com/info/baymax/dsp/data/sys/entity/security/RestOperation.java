@@ -61,7 +61,7 @@ public class RestOperation implements Idable<String> {
     @Comment("接口请求方法")
     @Column(length = 10)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String mothed;
+    private String method;
 
     @ApiModelProperty(value = "接口基本路径")
     @Comment("接口基本路径")
@@ -127,14 +127,14 @@ public class RestOperation implements Idable<String> {
     @ColumnDefault("0")
     private Boolean enabled;
 
-    public RestOperation(String serviceName, String groupName, List<String> tags, String mothed, String basePath,
+    public RestOperation(String serviceName, String groupName, List<String> tags, String method, String basePath,
                          String relativePath, String summary, String description, String operationId, List<String> consumes,
                          List<String> produces, Boolean deprecated) {
         super();
         this.serviceName = serviceName;
         this.groupName = groupName;
         this.tags = tags;
-        this.mothed = mothed;
+        this.method = method;
         this.basePath = basePath;
         this.relativePath = relativePath;
         this.summary = summary;
@@ -160,14 +160,14 @@ public class RestOperation implements Idable<String> {
     }
 
     public String getId() {
-        if (StringUtils.isEmpty(id) && basePath != null && relativePath != null && mothed != null) {
-            this.id = HashUtil.hashKey(operationKey());
-        }
-        return id;
-    }
+		if (StringUtils.isEmpty(id) && StringUtils.isNotEmpty(getFullPath())) {
+			this.id = HashUtil.hashKey(operationKey());
+		}
+		return id;
+	}
 
     public String operationKey() {
-        return trimSlash(getFullPath() + "@" + getMothed());
+        return trimSlash(getFullPath() + "@" + getMethod());
     }
 
     private String trimSlash(String src) {
