@@ -10,13 +10,61 @@ server:
 spring:
   application:
     name: dsp-gateway
-  devtools:
-    restart:
-      enabled: false
   resources:
     add-mappings: true
     static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   cloud:
+    sentinel:
+      enabled: true
+      eager: true
+      transport:
+        dashboard: localhost:8080
+        port: 8721
+        heartbeat-interval-ms: 5s
+      datasource: 
+        flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-flow-rules
+            file-type: json
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-degrade-rules
+            file-type: json
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-system-rules
+            file-type: json
+            rule-type: system
+        authority:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-authority-rules
+            file-type: json
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-paramflow-rules
+            file-type: json
+            rule-type: param-flow
+#        localfile:
+#          file:
+#            file: classpath:sentinel/flowrule.json
+#            file-type: json
+#            rule-type: flow
+#            charset: UTF-8
+#            buf-size: 1024
+#            recommend-refresh-ms: 10000
     nacos:
       discovery:
         enabled: true
@@ -34,7 +82,7 @@ spring:
       default-filters:
       - SetResponseHeader=X-Frame-Options, DENY
       routes:
-      - id: auth
+      - id: auth-server
         uri: lb://dsp-auth-server
         order: 2
         predicates:
@@ -91,7 +139,6 @@ spring:
             client-authentication-method: Basic
             authorization-grant-type: authorization_code
             scope: api,resource,login,read,write,trust
-            redirect-uri-template: http://localhost:8004/api/auth/oauth/authorize
             redirect-uri: http://localhost:8004/api/auth/oauth/authorize
         provider:
           dsp-gateway:
@@ -106,7 +153,7 @@ management:
     binders:
       hystrix.enabled: false
     enable:
-      system: 
+      system:
         cpu: false
       process: false
       logback: false
@@ -154,10 +201,10 @@ management:
       cors:
         max-age: 1800s
   health:
-   redis:
-    enabled: false
-   elasticsearch:
-    enabled: false
+    redis:
+      enabled: false
+    elasticsearch:
+      enabled: false
 security:
   token:
     ignored:
@@ -196,3 +243,7 @@ swagger2:
   - name: access-dataapi
     url: /api/dsp/dataapi/v2/api-docs
     swaggerVersion: 0.1.0
+  handler:
+    auto-startup: true
+    auto-execute: false
+springfox.documentation.auto-startup: false
