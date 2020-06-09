@@ -29,6 +29,14 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>${project.parent.basedir}/dsp-job/dsp-job-schedule/target/lib/</directory>
+			<outputDirectory>libs/job-schedule</outputDirectory>
+			<fileMode>666</fileMode>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
 			<directory>logs</directory>
 			<outputDirectory>./logs</outputDirectory>
 			<fileMode>644</fileMode>

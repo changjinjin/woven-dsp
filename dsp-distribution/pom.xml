@@ -55,6 +55,11 @@
 				<artifactId>dsp-job-schedule</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>dsp-sentinel-dashboard</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -199,6 +204,23 @@
 				<dependency>
 					<groupId>com.info.baymax</groupId>
 					<artifactId>dsp-job-schedule</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>release-sentinel-dashboard</id>
+			<properties>
+				<profileActive>release-sentinel-dashboard</profileActive>
+				<release.finalName>sentinel-dashboard</release.finalName>
+				<hadoop.version>2.7.3</hadoop.version>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.info.baymax</groupId>
+					<artifactId>dsp-sentinel-dashboard</artifactId>
 				</dependency>
 			</dependencies>
 		</profile>

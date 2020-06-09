@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly
+        xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+    <id>release-sentinel-dashboard</id>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>dir</format>
+        <!-- <format>tar.gz</format> -->
+        <!-- <format>zip</format> -->
+    </formats>
+    <fileSets>
+        <fileSet>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>bin/process_helper.sh</include>
+                <include>bin/process-check.sh</include>
+                <include>bin/build.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>conf/dsp-env.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/dsp-sentinel-dashboard/src/main/resources/</directory>
+            <outputDirectory>conf</outputDirectory>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>application.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/dsp-sentinel-dashboard/target/lib/</directory>
+            <outputDirectory>libs/sentinel-dashboard</outputDirectory>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>logs</directory>
+            <outputDirectory>./logs</outputDirectory>
+            <fileMode>644</fileMode>
+            <excludes>
+                <exclude>*.*</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/</directory>
+            <outputDirectory>./</outputDirectory>
+            <directoryMode>644</directoryMode>
+            <fileMode>644</fileMode>
+            <includes>
+                <include>NOTICE</include>
+                <include>LICENSE</include>
+                <include>*.md</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+    <files>
+        <file>
+            <source>bin/sentinel-dashboard.sh</source>
+            <destName>bin/startup.sh</destName>
+            <fileMode>755</fileMode>
+        </file>
+    </files>
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>libs/sentinel-dashboard</outputDirectory>
+            <useTransitiveFiltering>true</useTransitiveFiltering>
+            <useStrictFiltering>true</useStrictFiltering>
+            <fileMode>666</fileMode>
+            <includes>
+                <include>com.info.baymax:dsp-sentinel-dashboard</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

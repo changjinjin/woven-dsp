@@ -112,7 +112,8 @@
 		<module>dsp-data</module>
 		<module>dsp-gateway</module>
 		<module>dsp-distribution</module>
-	</modules>
+    	<module>dsp-sentinel-dashboard</module>
+  </modules>
 
 	<dependencyManagement>
 		<dependencies>
