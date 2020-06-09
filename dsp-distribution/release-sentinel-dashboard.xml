@@ -23,6 +23,7 @@
             <fileMode>755</fileMode>
             <includes>
                 <include>conf/dsp-env.sh</include>
+                <include>conf/logback-spring.xml</include>
             </includes>
         </fileSet>
         <fileSet>
