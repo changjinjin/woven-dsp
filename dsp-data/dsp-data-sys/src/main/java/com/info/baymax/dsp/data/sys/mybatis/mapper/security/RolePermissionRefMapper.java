@@ -16,4 +16,8 @@ public interface RolePermissionRefMapper extends MyBaseMapper<RolePermissionRef>
 	@Delete("delete from ref_role_permission where permission_id = #{permissionId,jdbcType=VARCHAR}")
 	int deleteByPermissionId(@Param("permissionId") String permissionId);
 
+	@Update("update ref_role_permission set permission_id = #{newPermId,jdbcType=VARCHAR} where role_id = #{roleId,jdbcType=VARCHAR} and permission_id = #{permissionId,jdbcType=VARCHAR}")
+	int updatePermissionId(@Param("newPermId") String newPermId, @Param("roleId") String roleId,
+			@Param("permissionId") String permissionId);
+
 }

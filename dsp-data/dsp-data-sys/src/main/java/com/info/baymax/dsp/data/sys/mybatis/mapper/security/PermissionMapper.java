@@ -29,17 +29,9 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 			@Result(column="id",jdbcType=JdbcType.VARCHAR,property="id",id=true),
 			@Result(column="code",jdbcType=JdbcType.VARCHAR,property="code"),
 			@Result(column="name",jdbcType=JdbcType.VARCHAR,property="name"),
-			@Result(column="create_time",jdbcType=JdbcType.TIMESTAMP,property="createTime"),
-			@Result(column="creator",jdbcType=JdbcType.VARCHAR,property="creator"),
 			@Result(column="enabled",jdbcType=JdbcType.INTEGER,property="enabled"),
-			@Result(column="expired_time",jdbcType=JdbcType.BIGINT,property="expiredTime"),
-			@Result(column="last_modified_time",jdbcType=JdbcType.TIMESTAMP,property="lastModifiedTime"),
-			@Result(column="last_modifier",jdbcType=JdbcType.VARCHAR,property="lastModifier"),
-			@Result(column="owner",jdbcType=JdbcType.VARCHAR,property="owner"),
-			@Result(column="version",jdbcType=JdbcType.INTEGER,property="version"),
 			@Result(column="type",jdbcType=JdbcType.INTEGER,property="type"),
 			@Result(column="url",jdbcType=JdbcType.VARCHAR,property="url"),
-			@Result(column="tenant_id",jdbcType=JdbcType.VARCHAR,property="tenantId"),
 			@Result(column="parent_id",jdbcType=JdbcType.VARCHAR,property="parentId"),
 			@Result(column="half_select",jdbcType=JdbcType.INTEGER,property="halfSelect"),
 			@Result(column="icon",jdbcType=JdbcType.VARCHAR,property="icon"),
@@ -65,17 +57,9 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 			@Result(column="id",jdbcType=JdbcType.VARCHAR,property="id",id=true),
 			@Result(column="code",jdbcType=JdbcType.VARCHAR,property="code"),
 			@Result(column="name",jdbcType=JdbcType.VARCHAR,property="name"),
-			@Result(column="create_time",jdbcType=JdbcType.TIMESTAMP,property="createTime"),
-			@Result(column="creator",jdbcType=JdbcType.VARCHAR,property="creator"),
 			@Result(column="enabled",jdbcType=JdbcType.INTEGER,property="enabled"),
-			@Result(column="expired_time",jdbcType=JdbcType.BIGINT,property="expiredTime"),
-			@Result(column="last_modified_time",jdbcType=JdbcType.TIMESTAMP,property="lastModifiedTime"),
-			@Result(column="last_modifier",jdbcType=JdbcType.VARCHAR,property="lastModifier"),
-			@Result(column="owner",jdbcType=JdbcType.VARCHAR,property="owner"),
-			@Result(column="version",jdbcType=JdbcType.INTEGER,property="version"),
 			@Result(column="type",jdbcType=JdbcType.INTEGER,property="type"),
 			@Result(column="url",jdbcType=JdbcType.VARCHAR,property="url"),
-			@Result(column="tenant_id",jdbcType=JdbcType.VARCHAR,property="tenantId"),
 			@Result(column="parent_id",jdbcType=JdbcType.VARCHAR,property="parentId"),
 			@Result(column="half_select",jdbcType=JdbcType.INTEGER,property="halfSelect"),
 			@Result(column="icon",jdbcType=JdbcType.VARCHAR,property="icon"),
@@ -100,6 +84,6 @@ public interface PermissionMapper extends MyIdableMapper<Permission> {
 	// @formatter:on
 	Permission selectOneWithChildren(@Param("id") String id);
 
-	@Select("select max(ord) from dsp_sys_menu where client_id = #{clientId,jdbcType=VARCHAR}")
-	int selectMaxOrder(String clientId);
+	@Select("select max(ord) from dsp_sys_menu")
+	int selectMaxOrder();
 }

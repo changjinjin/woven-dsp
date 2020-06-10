@@ -38,10 +38,9 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 		return permissionMapper;
 	}
 
-	public Permission findByClientIdAndCode(String clientId, String code) {
+	public Permission findByCode(String code) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
 				.fieldGroup()//
-				.andEqualTo("clientId", clientId)//
 				.andEqualTo("code", code)//
 				.end());
 	}
@@ -49,13 +48,13 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
 	@Override
 	public Permission save(Permission t) {
-		Permission exists = findByClientIdAndCode(SaasContext.getCurrentClienId(), t.getCode());
+		Permission exists = findByCode(t.getCode());
 		if (exists != null) {
 			throw new ServiceException(ErrType.ENTITY_EXIST, "相同编码的权限[" + t.getCode() + "]已经存在！");
 		}
 		t.setClientId(SaasContext.getCurrentClienId());
 		t.setEnabled(YesNoType.YES.getValue());
-		t.setOrder(selectMaxOrder(SaasContext.getCurrentClienId()) + 1);
+		t.setOrder(selectMaxOrder() + 1);
 		insertSelective(t);
 		return t;
 	}
@@ -107,8 +106,8 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 	// @Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result ==
 	// null")
 	@Override
-	public List<String> findAuthoritiesByClientId(String clientId) {
-		List<Permission> permissions = findAllByClientId(clientId);
+	public List<String> findAllAuthorities() {
+		List<Permission> permissions = selectAll();
 		if (ICollections.hasElements(permissions)) {
 			return permissions.stream().filter(t -> t.getEnabled() > 0).map(t -> t.getUrl())
 					.collect(Collectors.toList());
@@ -119,19 +118,12 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result==null")
 	@Override
 	public List<Permission> findRootsTree() {
-		List<Permission> allList = findAllByClientId(SaasContext.getCurrentClienId());
+		List<Permission> allList = selectAll();
 		return fetchTree(findRoots(allList), findNotRoots(allList));
 	}
 
-	private List<Permission> findAllByClientId(String clientId) {
-		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("clientId", clientId)//
-				.end());
-	}
-
 	@Override
-	public int selectMaxOrder(String clientId) {
-		return permissionMapper.selectMaxOrder(clientId);
+	public int selectMaxOrder() {
+		return permissionMapper.selectMaxOrder();
 	}
 }

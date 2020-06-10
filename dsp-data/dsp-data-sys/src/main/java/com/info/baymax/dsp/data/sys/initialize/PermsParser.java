@@ -3,8 +3,6 @@ package com.info.baymax.dsp.data.sys.initialize;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
-import javax.xml.bind.JAXBException;
-
 import org.springframework.util.ResourceUtils;
 
 import com.info.baymax.common.utils.JaxbUtils;
@@ -15,21 +13,26 @@ import lombok.extern.slf4j.Slf4j;
 public class PermsParser {
 
     // 就从配置文件中加载系统权限列表
-    public static URL loadPermsFromXml(String initFilePath) {
+    public URL loadPermsFromXml(String xmlFilePath) {
         try {
-            return ResourceUtils.getURL(initFilePath);
+            return ResourceUtils.getURL(xmlFilePath);
         } catch (FileNotFoundException e) {
-            log.warn("权限初始化文件不存在，使用系统默认权限数据", e);
+            log.warn("Permission initialization file does not exist, use system default permission data.", e);
             return null;
         }
     }
 
-    public static PermClients getInitPerms(String initFilePath) throws JAXBException {
+    public PermRoots getInitPerms(String xmlFilePath) {
         // 加载权限列表
-        URL url = loadPermsFromXml(initFilePath);
+        URL url = loadPermsFromXml(xmlFilePath);
         if (url == null) {
-            url = loadPermsFromXml("classpath:init/perms/roots.xml");
+            url = loadPermsFromXml("classpath:init/perms/all.xml");
         }
-        return JaxbUtils.xml2java(url, PermClients.class);
+        try {
+            return JaxbUtils.xml2java(url, PermRoots.class);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return null;
     }
 }

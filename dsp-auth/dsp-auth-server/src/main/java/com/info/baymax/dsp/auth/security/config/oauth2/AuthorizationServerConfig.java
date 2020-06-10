@@ -125,7 +125,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         if (authorities != null && authorities.length > 0) {
             return authorities;
         }
-        Collection<String> authoritiesList = grantedAuthoritiesService.findGrantedAuthorityUrlsByClientId(clientId);
+        Collection<String> authoritiesList = grantedAuthoritiesService.findGrantedAuthorityUrls();
         if (authoritiesList != null) {
             return authoritiesList.stream().toArray(String[]::new);
         }

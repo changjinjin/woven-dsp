@@ -1,9 +1,7 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.comp.base.MainTableController;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
-import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.utils.ICollections;
@@ -13,35 +11,45 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/perm")
 @Api(tags = "系统管理：系统权限管理", value = "系统权限管理接口定义")
-public class PermissionController implements MainTableController<Permission> {
+public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
 
-    @Override
-    public BaseMaintableService<Permission> getBaseMaintableService() {
-        return permissionService;
+    @ApiOperation(value = "添加记录", notes = "新建数据记录，新建时主键为空值")
+    @PostMapping("/save")
+    public Response<?> save(@ApiParam(value = "待新建记录", required = true) @RequestBody @Valid Permission t) {
+        permissionService.saveOrUpdate(t);
+        return Response.ok(t.getId());
     }
 
-    @Override
-    public Response<?> deleteById(String id) {
+    @ApiOperation(value = "修改记录", notes = "编辑数据记录，编辑时根据主键查找修改记录，ID值不能为空，当只需要更新部分字段时可只传部分字段的值，其他字段值为空，或者传全部字段")
+    @PostMapping("/update")
+    public Response<?> update(@ApiParam(value = "待编辑记录", required = true) @RequestBody @Valid Permission t) {
+        permissionService.saveOrUpdate(t);
+        return Response.ok();
+    }
+
+    @ApiOperation(value = "单个删除", notes = "根据ID每次删除一条数据，ID不能为空")
+    @GetMapping("/deleteById")
+    public Response<?> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam String id) {
         permissionService.deleteOnCascadeById(id);
         return Response.ok();
     }
 
+    @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
+    @GetMapping("/infoById")
     @JsonBodys({@JsonBody(type = Permission.class, includes = {"id", "code", "name", "type", "url", "description",
         "enabled", "order", "route", "icon"})})
-    public Response<Permission> infoById(@ApiParam(value = "权限ID", required = true) @RequestBody String id) {
+    public Response<Permission> infoById(@ApiParam(value = "权限ID", required = true) @RequestParam String id) {
         return Response.ok(permissionService.selectByPrimaryKey(id));
     }
 

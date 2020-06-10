@@ -103,8 +103,8 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 
 	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
 	@Override
-	public Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientId(String clientId) {
-		Collection<String> list = findGrantedAuthorityUrlsByClientId(clientId);
+	public Collection<? extends GrantedAuthority> findGrantedAuthorities() {
+		Collection<String> list = findGrantedAuthorityUrls();
 		if (ICollections.hasElements(list)) {
 			return list.stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList());
 		}
@@ -113,8 +113,8 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 
 	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
 	@Override
-	public Collection<String> findGrantedAuthorityUrlsByClientId(String clientId) {
-		return permissionService.findAuthoritiesByClientId(clientId);
+	public Collection<String> findGrantedAuthorityUrls() {
+		return permissionService.findAllAuthorities();
 	}
 
 	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, unless = "#result == null")
@@ -150,11 +150,9 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		}
 
 		// 如果是管理员权限则需要用户拥有所有的权限，这里赋给该账户所有的权限
-
 		if (user.admin()) { // 初始获取如果为空则初始化
-			// List<String> list = permissionService.findAuthoritiesByClientId(clientId);
-			List<RestOperation> list = restOperationService.selectList(
-					ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("enabled", 1).end());
+			List<RestOperation> list = restOperationService
+					.selectList(ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("enabled", 1).end());
 			if (ICollections.hasElements(list)) {
 				user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t.operationKey()))
 						.collect(Collectors.toList()));
@@ -166,20 +164,11 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 			if (StringUtils.isEmpty(clientIds) || !clientIds.contains(clientId)) {
 				throw new NoGrantedAnyAuthorityException("当前用户没有授予平台" + clientId + "的访问权限，禁止登陆该平台！");
 			}
-			
+
 			if (ICollections.hasNoElements(user.getAuthorities())) {
 				user.setAuthorities(Lists.newArrayList(new SimpleGrantedAuthority("Manager")));
-			}  
+			}
 		}
-
-		// 用户没有赋权，用户需要有权限才能登陆服务
-		/*
-		 * if (user.getAuthorities() == null || user.getAuthorities().isEmpty()) { String message =
-		 * this.messages.getMessage("UserErr.noAuthorityGranted", new Object[] { username },
-		 * "Username {0} no authority granted"); log.debug(message); throw new NoGrantedAnyAuthorityException(message);
-		 * }
-		 */
-
 		return new SimpleManagerDetails(clientId, tenant, user);
 	}
 

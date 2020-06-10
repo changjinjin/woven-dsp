@@ -30,7 +30,6 @@ public class TenantServiceImpl extends EntityClassServiceImpl<Tenant> implements
 
 	@Autowired
 	private TenantMapper tenantMapper;
-
 	@Autowired
 	private TenantInitializer tenantInitializer;
 
@@ -70,16 +69,16 @@ public class TenantServiceImpl extends EntityClassServiceImpl<Tenant> implements
 		tenant.setLastModifier(SaasContext.getCurrentUsername());
 		tenant.setEnabled(YesNoType.YES.getValue());
 		insertSelective(tenant);
-		tenantInitializer.initTenantAdminAndPerms(initConfig, tenant, tenant.getAdminPassword());
+		tenantInitializer.initTenantAdmin(initConfig, tenant, tenant.getAdminPassword());
 		return tenant;
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
-	public Tenant updateTenant(InitConfig initConfig, TenantRegisterBean tenant ) {
+	public Tenant updateTenant(InitConfig initConfig, TenantRegisterBean tenant) {
 		tenant.setLastModifier(SaasContext.getCurrentUsername());
 		tenant.setLastModifiedTime(new Date());
 		updateByPrimaryKey(tenant);
-		tenantInitializer.initTenantAdminAndPerms(initConfig, tenant, tenant.getAdminPassword());
+		tenantInitializer.initTenantAdmin(initConfig, tenant, tenant.getAdminPassword());
 		return tenant;
 	}
 

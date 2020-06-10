@@ -15,18 +15,16 @@ public interface GrantedAuthoritiesService {
     /**
      * 查询客户端所有的权限值列表
      *
-     * @param clientId 客户端ID
      * @return 客户端所有的权限值
      */
-    Collection<String> findGrantedAuthorityUrlsByClientId(String clientId);
+    Collection<String> findGrantedAuthorityUrls();
 
     /**
      * 用户授予的权限列表
      *
-     * @param clientId 客户端ID
      * @return 用户权限列表0000.
      */
-    Collection<? extends GrantedAuthority> findGrantedAuthoritiesByClientId(String clientId);
+    Collection<? extends GrantedAuthority> findGrantedAuthorities();
 
     /**
      * 用户授予的权限值列表
