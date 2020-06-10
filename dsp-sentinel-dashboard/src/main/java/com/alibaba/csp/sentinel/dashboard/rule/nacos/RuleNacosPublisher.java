@@ -46,7 +46,7 @@ public class RuleNacosPublisher extends AbstractTypedDynamicRulePublisher {
         if (rules == null) {
             return;
         }
-        configService.publishConfig(NacosConfigUtil.dataId(appName, ruleType.name()), appName,
+        configService.publishConfig(NacosConfigUtil.dataId(appName, ruleType.getName()), appName,
             JSON.toJSONString(rules));
     }
 }

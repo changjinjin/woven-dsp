@@ -51,7 +51,7 @@ public class AuthorityRuleControllerV2 extends RuleController<AuthorityRuleEntit
             return Result.ofFail(-1, "app cannot be null or empty");
         }
         try {
-            List<AuthorityRuleEntity> rules = ruleProvider.getRules(app, AuthorityRuleEntity.class, RuleType.authority);
+            List<AuthorityRuleEntity> rules = ruleProvider.getRules(app, AuthorityRuleEntity.class, RuleType.AUTHORITY);
             rules = repository.saveAll(rules);
             return Result.ofSuccess(rules);
         } catch (Throwable throwable) {
@@ -106,7 +106,7 @@ public class AuthorityRuleControllerV2 extends RuleController<AuthorityRuleEntit
             logger.error("Failed to add authority rule", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(entity.getApp(), RuleType.authority)) {
+        if (!publishRules(entity.getApp(), RuleType.AUTHORITY)) {
             logger.info("Publish authority rules failed after rule add");
         }
         return Result.ofSuccess(entity);
@@ -136,7 +136,7 @@ public class AuthorityRuleControllerV2 extends RuleController<AuthorityRuleEntit
             logger.error("Failed to save authority rule", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(entity.getApp(), RuleType.authority)) {
+        if (!publishRules(entity.getApp(), RuleType.AUTHORITY)) {
             logger.info("Publish authority rules failed after rule update");
         }
         return Result.ofSuccess(entity);
@@ -157,7 +157,7 @@ public class AuthorityRuleControllerV2 extends RuleController<AuthorityRuleEntit
         } catch (Exception e) {
             return Result.ofFail(-1, e.getMessage());
         }
-        if (!publishRules(oldEntity.getApp(), RuleType.authority)) {
+        if (!publishRules(oldEntity.getApp(), RuleType.AUTHORITY)) {
             logger.error("Publish authority rules failed after rule delete");
         }
         return Result.ofSuccess(id);

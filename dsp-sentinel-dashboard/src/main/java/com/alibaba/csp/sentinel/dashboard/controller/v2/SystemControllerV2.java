@@ -61,7 +61,7 @@ public class SystemControllerV2 extends RuleController<SystemRuleEntity> {
             return Result.ofFail(-1, "app can't be null or empty");
         }
         try {
-            List<SystemRuleEntity> rules = ruleProvider.getRules(app, SystemRuleEntity.class, RuleType.system);
+            List<SystemRuleEntity> rules = ruleProvider.getRules(app, SystemRuleEntity.class, RuleType.SYSTEM);
             rules = repository.saveAll(rules);
             return Result.ofSuccess(rules);
         } catch (Throwable throwable) {
@@ -106,7 +106,7 @@ public class SystemControllerV2 extends RuleController<SystemRuleEntity> {
             logger.error("Add SystemRule error", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(entity.getApp(), RuleType.system)) {
+        if (!publishRules(entity.getApp(), RuleType.SYSTEM)) {
             logger.warn("Publish system rules fail after rule add");
         }
         return Result.ofSuccess(entity);
@@ -168,7 +168,7 @@ public class SystemControllerV2 extends RuleController<SystemRuleEntity> {
             logger.error("save error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(exEntity.getApp(), RuleType.system)) {
+        if (!publishRules(exEntity.getApp(), RuleType.SYSTEM)) {
             logger.info("publish system rules fail after rule update");
         }
         return Result.ofSuccess(exEntity);
@@ -190,7 +190,7 @@ public class SystemControllerV2 extends RuleController<SystemRuleEntity> {
             logger.error("delete error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(oldEntity.getApp(), RuleType.system)) {
+        if (!publishRules(oldEntity.getApp(), RuleType.SYSTEM)) {
             logger.info("publish system rules fail after rule delete");
         }
         return Result.ofSuccess(id);

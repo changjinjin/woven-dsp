@@ -68,7 +68,7 @@ public class ParamFlowRuleControllerV2 extends RuleController<ParamFlowRuleEntit
             return Result.ofFail(-1, "app cannot be null or empty");
         }
         try {
-            List<ParamFlowRuleEntity> rules = ruleProvider.getRules(app, ParamFlowRuleEntity.class, RuleType.paramflow);
+            List<ParamFlowRuleEntity> rules = ruleProvider.getRules(app, ParamFlowRuleEntity.class, RuleType.PARAM_FLOW);
             rules = repository.saveAll(rules);
             return Result.ofSuccess(rules);
         } catch (ExecutionException ex) {
@@ -105,7 +105,7 @@ public class ParamFlowRuleControllerV2 extends RuleController<ParamFlowRuleEntit
         entity.setGmtModified(date);
         try {
             entity = repository.save(entity);
-            publishRules(entity.getApp(), RuleType.paramflow);
+            publishRules(entity.getApp(), RuleType.PARAM_FLOW);
             return Result.ofSuccess(entity);
         } catch (Exception ex) {
             logger.error("Error when adding new parameter flow rules", ex.getCause());
@@ -182,7 +182,7 @@ public class ParamFlowRuleControllerV2 extends RuleController<ParamFlowRuleEntit
         entity.setGmtModified(date);
         try {
             entity = repository.save(entity);
-            publishRules(entity.getApp(), RuleType.paramflow);
+            publishRules(entity.getApp(), RuleType.PARAM_FLOW);
             return Result.ofSuccess(entity);
         } catch (Exception ex) {
             logger.error("Error when updating parameter flow rules, id=" + id, ex.getCause());
@@ -210,7 +210,7 @@ public class ParamFlowRuleControllerV2 extends RuleController<ParamFlowRuleEntit
 
         try {
             repository.delete(id);
-            publishRules(oldEntity.getApp(), RuleType.paramflow);
+            publishRules(oldEntity.getApp(), RuleType.PARAM_FLOW);
             return Result.ofSuccess(id);
         } catch (Exception ex) {
             logger.error("Error when deleting parameter flow rules", ex.getCause());

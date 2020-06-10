@@ -12,7 +12,6 @@
  */
 package com.alibaba.csp.sentinel.dashboard.rule.memory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,6 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
-import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.RuleEntity;
 import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.rule.AbstractTypedDynamicRuleProvider;
@@ -30,7 +28,6 @@ import com.alibaba.csp.sentinel.dashboard.rule.RuleType;
 import com.alibaba.csp.sentinel.slots.block.Rule;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 
 /**
  * @author Eric Zhao
@@ -48,27 +45,7 @@ public class RuleApiProvider extends AbstractTypedDynamicRuleProvider {
 		return DsType.memory;
 	}
 
-	@Override
-	public <T extends RuleEntity> List<T> getRules(String appName, Class<T> ruleClass, RuleType ruleType)
-			throws Exception {
-		if (StringUtil.isBlank(appName)) {
-			return new ArrayList<>();
-		}
-		List<MachineInfo> list = appManagement.getDetailApp(appName).getMachines().stream()
-				.filter(MachineInfo::isHealthy)
-				.sorted((e1, e2) -> Long.compare(e2.getLastHeartbeat(), e1.getLastHeartbeat()))
-				.collect(Collectors.toList());
-		if (!list.isEmpty()) {
-			MachineInfo machine = list.get(0);
-			List<? extends Rule> fetchRules = sentinelApiClient.fetchRules(machine.getIp(), machine.getPort(),
-					ruleType.name(), ruleType.getRuleClass());
-			if (fetchRules != null && !fetchRules.isEmpty()) {
-				return JSONArray.parseArray(JSON.toJSONString(fetchRules), ruleClass);
-			}
-		}
-		return new ArrayList<>();
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	protected <T> String fetchFromRmote(String appName, Class<T> ruleClass, RuleType ruleType) throws Exception {
 		if (StringUtil.isBlank(appName)) {
@@ -81,7 +58,7 @@ public class RuleApiProvider extends AbstractTypedDynamicRuleProvider {
 		if (!list.isEmpty()) {
 			MachineInfo machine = list.get(0);
 			List<? extends Rule> fetchRules = sentinelApiClient.fetchRules(machine.getIp(), machine.getPort(),
-					ruleType.name(), ruleType.getRuleClass());
+					ruleType.getName(), ruleType.getClazz());
 			if (fetchRules != null && !fetchRules.isEmpty()) {
 				return JSON.toJSONString(fetchRules);
 			}

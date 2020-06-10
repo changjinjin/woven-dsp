@@ -37,7 +37,7 @@ public class RuleNacosProvider extends AbstractTypedDynamicRuleProvider {
 
     @Override
     protected <T> String fetchFromRmote(String appName, Class<T> ruleClass, RuleType ruleType) throws Exception {
-        return configService.getConfig(NacosConfigUtil.dataId(appName, ruleType.name()), appName, 3000);
+        return configService.getConfig(NacosConfigUtil.dataId(appName, ruleType.getName()), appName, 3000);
     }
 
 }

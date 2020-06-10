@@ -60,7 +60,7 @@ public class RuleApiPublisher extends AbstractTypedDynamicRulePublisher {
 				continue;
 			}
 			// TODO: parse the results
-			sentinelApiClient.setRules(appName, machine.getIp(), machine.getPort(), ruleType.name(), rules);
+			sentinelApiClient.setRules(appName, machine.getIp(), machine.getPort(), ruleType.getName(), rules);
 		}
 	}
 

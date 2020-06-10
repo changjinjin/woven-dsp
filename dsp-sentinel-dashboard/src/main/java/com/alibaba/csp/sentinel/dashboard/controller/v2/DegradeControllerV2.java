@@ -51,7 +51,7 @@ public class DegradeControllerV2 extends RuleController<DegradeRuleEntity> {
             return Result.ofFail(-1, "app can't be null or empty");
         }
         try {
-            List<DegradeRuleEntity> rules = ruleProvider.getRules(app, DegradeRuleEntity.class, RuleType.degrade);
+            List<DegradeRuleEntity> rules = ruleProvider.getRules(app, DegradeRuleEntity.class, RuleType.DEGRADE);
             rules = repository.saveAll(rules);
             return Result.ofSuccess(rules);
         } catch (Throwable throwable) {
@@ -109,7 +109,7 @@ public class DegradeControllerV2 extends RuleController<DegradeRuleEntity> {
             logger.error("add error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(entity.getApp(), RuleType.degrade)) {
+        if (!publishRules(entity.getApp(), RuleType.DEGRADE)) {
             logger.info("publish degrade rules fail after rule add");
         }
         return Result.ofSuccess(entity);
@@ -160,7 +160,7 @@ public class DegradeControllerV2 extends RuleController<DegradeRuleEntity> {
             logger.error("save error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(entity.getApp(), RuleType.degrade)) {
+        if (!publishRules(entity.getApp(), RuleType.DEGRADE)) {
             logger.info("publish degrade rules fail after rule update");
         }
         return Result.ofSuccess(entity);
@@ -184,7 +184,7 @@ public class DegradeControllerV2 extends RuleController<DegradeRuleEntity> {
             logger.error("delete error:", throwable);
             return Result.ofThrowable(-1, throwable);
         }
-        if (!publishRules(oldEntity.getApp(), RuleType.degrade)) {
+        if (!publishRules(oldEntity.getApp(), RuleType.DEGRADE)) {
             logger.info("publish degrade rules fail after rule delete");
         }
         return Result.ofSuccess(id);
