@@ -27,7 +27,12 @@ public class ServiceException extends BizException {
 		this(type.getStatus(), message);
 	}
 
+	public ServiceException(ErrType type, Throwable cause) {
+		this(type.getStatus(), type.getMessage(), cause);
+	}
+
 	public ServiceException(Integer status, String message, Throwable cause) {
 		super(status, message, cause);
 	}
+
 }

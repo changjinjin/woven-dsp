@@ -1,13 +1,16 @@
 package com.info.baymax.dsp.access.dataapi.config;
 
+import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
-import com.info.baymax.dsp.data.platform.bean.GrowthType;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
+import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.entity.DataTransferRecord;
+import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
-import com.info.baymax.dsp.data.platform.service.DataTransferRecordService;
+import com.merce.woven.metrics.report.MetricsReporter;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,10 +18,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * 接口参数和结果加密解密切面处理
@@ -32,12 +38,19 @@ import java.lang.reflect.Method;
 @Transactional(rollbackOn = Exception.class)
 public class DataPullRecordAspect {
 
+    @Value("${spring.application.name}")
+    private String appName;
+
+    @Autowired
+    private MetricsReporter metricsReporter;
     @Autowired
     private DataCustAppService dataCustAppService;
     @Autowired
     private DataServiceEntityService dataServiceEntityService;
     @Autowired
-    private DataTransferRecordService dataTransferRecordService;
+    private DataResourceService dataResourceService;
+    @Autowired
+    private DatasetService datasetService;
 
     @Pointcut("execution(* com.info.baymax..*(..)) && @annotation(com.info.baymax.dsp.access.dataapi.config.PullLog)")
     public void joinPointExpression() {
@@ -63,7 +76,7 @@ public class DataPullRecordAspect {
             throw e;
         } finally {
             long endTime = System.currentTimeMillis();
-            doLog(args, startTime, endTime, resultCode);
+            report(args, startTime, endTime, resultCode);
         }
     }
 
@@ -72,7 +85,7 @@ public class DataPullRecordAspect {
      *
      * @param args 接口参数列表
      */
-    private void doLog(Object[] args, long startTime, long endTime, int resultCode) {
+    private void report(Object[] args, long startTime, long endTime, int resultCode) {
         try {
             PullRequest request = (PullRequest) args[0];
             String accessKey = request.getAccessKey();
@@ -91,10 +104,38 @@ public class DataPullRecordAspect {
                 return;
             }
 
-            dataTransferRecordService.insertSelective(DataTransferRecord.pull(app.getName(), app.getTenantId(),
-                app.getOwner(), app.getCustId(), app.getCustName(), app.getId(), app.getName(), dataServiceId,
-                dataService.getName(), startTime, endTime, endTime - startTime, GrowthType.LIST, "", (long) offset,
-                (long) size, resultCode));
+            DataResource dataResource = dataResourceService.selectByPrimaryKey(dataService.getDataResId());
+            if (dataResource == null) {
+                return;
+            }
+            Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
+            if (dataset == null) {
+                return;
+            }
+
+            DataTransferRecord record = DataTransferRecord.builder()//
+                .sid(UUID.randomUUID().toString())//
+                .write_time(new Date())//
+                .datasetId(dataset.getId())///
+                .datasetName(dataset.getName())//
+                .custId(app.getCustId())//
+                .custName(app.getCustName())//
+                .custAppId(app.getId())//
+                .custAppName(app.getName())//
+                .dataServiceId(dataServiceId)//
+                .dataServiceName(dataService.getName())//
+                .startTime(startTime)//
+                .endTime(endTime)//
+                .cost(endTime - startTime)//
+                .transferType("PULL")//
+                .growthType("LIST")//
+                .cursorVal("")//
+                .offset((long) offset)//
+                .records((long) size)//
+                .resultCode(resultCode)//
+                .tenantId(app.getTenantId())//
+                .owner(app.getOwner()).build();
+            metricsReporter.report("dataset", appName, startTime, record);
             log.debug(
                 "some body pull data with params:accessKey={},encrypted={},timestamp={},dataServiceId={},offset={},size={}.",
                 accessKey, encrypted, timestamp, dataServiceId, offset, size);

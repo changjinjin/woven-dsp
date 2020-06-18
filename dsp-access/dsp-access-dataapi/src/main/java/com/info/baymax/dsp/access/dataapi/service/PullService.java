@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
-import java.util.List;
+import com.info.baymax.common.page.IPage;
+
 import java.util.Map;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Map;
  */
 public interface PullService {
 
-    List<Map<String, Object>> query(String storage, Map<String, String> fieldMap, Map<String, String> conf, int offset,
-                                    int size, String[] includes);
+	IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf, String[] includes,
+			int offset, int limit);
 
 }

@@ -3,7 +3,6 @@ package com.info.baymax.dsp.access.dataapi.web.controller;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.config.PullLog;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.access.dataapi.service.RestSignService;
@@ -25,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.*;
 
@@ -37,19 +37,14 @@ public class DataApiController implements Serializable {
 
     @Autowired
     private DataServiceEntityService dataServiceEntityService;
-
     @Autowired
     private DataCustAppService custAppService;
-
     @Autowired
     private DataResourceService dataResourceService;
-
     @Autowired
     private DatasetService datasetService;
-
     @Autowired
     private PullService pullService;
-
     @Autowired
     private RestSignService restSignService;
 
@@ -63,17 +58,15 @@ public class DataApiController implements Serializable {
     @ApiOperation(value = "数据拉取接口")
     @PostMapping("/pull")
     @PullLog
-    public PullResponse pullData(@ApiParam(value = "数据拉取是请求信息", required = true) @RequestBody PullRequest request,
-                                 @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {
+    public PullResponse pullData(
+        @ApiParam(value = "数据拉取是请求信息", required = true) @RequestBody @Valid PullRequest request,
+        @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {
         Long dataServiceId = request.getDataServiceId();
         String requestKey = request.getAccessKey();
         String host = hosts.split(",")[0];
         int offset = request.getOffset();
         int size = request.getSize();
 
-        if (dataServiceId == null) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "请求缺少dataServiceId参数");
-        }
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(Long.valueOf(dataServiceId));
         if (dataService == null) {
             throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
@@ -116,10 +109,10 @@ public class DataApiController implements Serializable {
                     }
                 }
             }
-            List<Map<String, Object>> list = pullService.query(dataset.getStorage(), fieldMap,
-                dataset.getStorageConfigurations(), offset, size, includes.toArray(new String[0]));
-            return PullResponse.ok(IPage.<Map<String, Object>>of(1, list.size(), list.size(), list)).request(request)
-                .encrypt(restSignService.signKeyIfExist(accessKey));
+            return PullResponse
+                .ok(pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
+                    includes.toArray(new String[0]), offset, size))
+                .request(request).encrypt(restSignService.signKeyIfExist(accessKey));
         } else {
             throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
         }

@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
-import org.elasticsearch.action.search.SearchResponse;
+import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.page.IPageable;
 
 import java.util.Map;
 
@@ -10,6 +11,6 @@ import java.util.Map;
  */
 public interface ElasticSearchService {
 
-    SearchResponse query(Map<String, String> conf, int offset, int size, String[] includes);
+	IPage<MapEntity> query(Map<String, String> conf, String[] includes, IPageable pageable);
 
 }

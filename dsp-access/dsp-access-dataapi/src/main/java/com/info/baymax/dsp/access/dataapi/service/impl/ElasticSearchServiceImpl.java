@@ -1,19 +1,22 @@
 package com.info.baymax.dsp.access.dataapi.service.impl;
 
+import com.info.baymax.common.message.exception.ServiceException;
+import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.page.IPageable;
+import com.info.baymax.dsp.access.dataapi.config.jest.JestClientUtils;
+import com.info.baymax.dsp.access.dataapi.config.jest.JestConf;
 import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
+import com.info.baymax.dsp.access.dataapi.service.MapEntity;
+import io.searchbox.client.JestClient;
+import io.searchbox.core.Search;
+import io.searchbox.core.SearchResult;
+import io.searchbox.params.Parameters;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.stereotype.Service;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -25,38 +28,33 @@ import java.util.Map;
 public class ElasticSearchServiceImpl implements ElasticSearchService {
 
     @Override
-    public SearchResponse query(Map<String, String> conf, int offset, int size, String[] includes) {
-        String clusterName = conf.get("clusterName");
-        String ipAddresses = conf.get("ipAddresses");
-        String index = conf.get("index");
-        String indexType = conf.get("indexType");
-        Settings settings = Settings.builder().put("cluster.name", clusterName).build();
-        System.setProperty("es.set.netty.runtime.available.processors", "false");
-
-        TransportClient client = new PreBuiltTransportClient(settings);
+    public IPage<MapEntity> query(Map<String, String> conf, String[] includes, IPageable pageable) {
+        JestClient jestClient = null;
         try {
-            for (String ipAndPort : ipAddresses.split(",")) {
-                String[] ipPort = ipAndPort.split(":");
-                client.addTransportAddress(
-                    new InetSocketTransportAddress(InetAddress.getByName(ipPort[0]), 9303));
-                //todo dataset 配置es端口
+            JestConf jestConf = JestConf.fromMap(conf);
+            jestClient = JestClientUtils.jestClient(jestConf);
+            SearchResult searchResult = jestClient.execute(new Search.Builder(SearchSourceBuilder.searchSource()
+                .query(QueryBuilders.matchAllQuery()).fetchSource(includes, new String[]{}).toString())
+                .addIndices(jestConf.getIndices()).addTypes(jestConf.getIndexTypes())
+                .setParameter(Parameters.FROM, pageable.getOffset())
+                .setParameter(Parameters.SIZE, pageable.getPageSize()).build());
+            if (searchResult.isSucceeded()) {
+                return IPage.<MapEntity>of(pageable, searchResult.getTotal(),
+                    searchResult.getSourceAsObjectList(MapEntity.class, false));
             }
-        } catch (UnknownHostException e) {
-            log.error("unknown es host", e);
-            client.close();
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+        } finally {
+            if (jestClient != null) {
+                try {
+                    jestClient.close();
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+                }
+            }
         }
-
-        QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
-
-        String[] excludes = new String[0];
-
-        SearchSourceBuilder searchSourceBuilder = SearchSourceBuilder.searchSource().fetchSource(includes, excludes);
-
-        SearchResponse response = client.prepareSearch(index).setTypes(indexType).setSource(searchSourceBuilder)
-            .setQuery(queryBuilder).setFrom(offset).setSize(size).get();
-
-        client.close();
-        return response;
+        return IPage.<MapEntity>of(pageable, 0, null);
     }
 }

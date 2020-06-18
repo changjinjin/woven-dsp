@@ -49,6 +49,15 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.merce.woven</groupId>
+			<artifactId>woven-metrics</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>dsp-data-elasticsearch</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 			<exclusions>

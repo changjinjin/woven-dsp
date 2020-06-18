@@ -53,12 +53,11 @@
 		<snowball.version>0.1.41</snowball.version>
 
 		<!-- other dependencies -->
-		<fastjson.version>1.2.57</fastjson.version>
+		<fastjson.version>1.2.71</fastjson.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
 		<guava.version>22.0</guava.version>
-
-		<elasticsearch.version>5.5.3</elasticsearch.version>
+		<jest.version>6.3.1</jest.version>
 
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
@@ -102,6 +101,7 @@
 		<micrometer-core.version>1.1.4</micrometer-core.version>
 
 		<spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
+		<baymax.version>3.1</baymax.version>
 	</properties>
 
 	<modules>
@@ -112,8 +112,8 @@
 		<module>dsp-data</module>
 		<module>dsp-gateway</module>
 		<module>dsp-distribution</module>
-    	<module>dsp-sentinel-dashboard</module>
-  </modules>
+		<module>dsp-sentinel-dashboard</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -138,6 +138,11 @@
 				<version>2.2.0.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.merce.woven</groupId>
+				<artifactId>woven-metrics</artifactId>
+				<version>${baymax.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javassist</groupId>
@@ -329,27 +334,10 @@
 				<artifactId>pagehelper-spring-boot-starter</artifactId>
 				<version>${pagehelper-spring-boot.version}</version>
 			</dependency>
-
-			<!-- elasticsearch dependencies -->
 			<dependency>
-				<groupId>org.elasticsearch</groupId>
-				<artifactId>elasticsearch</artifactId>
-				<version>${elasticsearch.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.elasticsearch.client</groupId>
-				<artifactId>transport</artifactId>
-				<version>${elasticsearch.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.elasticsearch.plugin</groupId>
-				<artifactId>transport-netty3-client</artifactId>
-				<version>${elasticsearch.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.elasticsearch.plugin</groupId>
-				<artifactId>transport-netty4-client</artifactId>
-				<version>${elasticsearch.version}</version>
+				<groupId>io.searchbox</groupId>
+				<artifactId>jest</artifactId>
+				<version>${jest.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -1,16 +1,12 @@
 package com.info.baymax.common.page;
 
-import java.io.Serializable;
-
-import javax.persistence.Transient;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
 
 /**
  * 分页参数包装
@@ -36,21 +32,18 @@ public class IPageable implements Serializable {
      * 是否分页，默认分页
      */
     @ApiModelProperty(value = "是否分页,默认true", allowableValues = "true,false")
-    @Transient
     protected Boolean pageable = true;
 
     /**
      * 页码
      */
     @ApiModelProperty(value = "页码，默认1")
-    @Transient
     protected Integer pageNum;
 
     /**
      * 页长
      */
     @ApiModelProperty(value = "页长，默认10")
-    @Transient
     protected Integer pageSize;
 
     /**
@@ -59,7 +52,6 @@ public class IPageable implements Serializable {
     @ApiModelProperty(value = "排序条件，多个条件用“,”分开，如：id asc,name desc（字段名称取数据库中字段名而非实体属性名）", hidden = true)
     @JsonIgnore
     @JSONField(serialize = false)
-    @Transient
     protected String orderByClause;
 
     /**
@@ -148,7 +140,7 @@ public class IPageable implements Serializable {
 
     public static IPageable offset(int offset, int limit) {
         if (offset < 0) {
-        	offset = 0;
+            offset = 0;
         }
         if (limit < 0) {
             limit = DEFAULT_PAGESIZE;
@@ -189,6 +181,10 @@ public class IPageable implements Serializable {
 
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
+    }
+
+    public long getOffset() {
+        return (pageNum - 1) * pageSize;
     }
 
     /**

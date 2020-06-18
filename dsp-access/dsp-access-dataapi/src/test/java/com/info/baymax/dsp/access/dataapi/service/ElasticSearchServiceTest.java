@@ -1,9 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.page.IPageable;
 import com.info.baymax.dsp.access.dataapi.DspDataapiStarter;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,9 @@ public class ElasticSearchServiceTest {
             conf.put("ipAddresses", "192.168.1.85:9303");
             // conf.put("client.transport.sniff", "false");
             // conf.put("xpack.security.user", "elastic:changeme");
-            SearchResponse query = elasticSearchService.query(conf, 0, 10, new String[]{"id", "ts"});
-            SearchHit[] hits = query.getHits().getHits();
-            for (SearchHit searchHit : hits) {
-                System.out.println(searchHit.getSourceAsString());
-            }
+            IPage<MapEntity> page = elasticSearchService.query(conf, new String[]{"id", "ts"},
+                IPageable.offset(1, 10));
+            System.out.println(JSON.toJSONString(page));
         } catch (Exception e) {
             e.printStackTrace();
         }

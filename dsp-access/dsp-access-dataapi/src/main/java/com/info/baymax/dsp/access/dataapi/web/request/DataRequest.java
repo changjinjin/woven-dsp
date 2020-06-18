@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 /**
@@ -22,9 +24,11 @@ public class DataRequest implements Serializable {
     private static final long serialVersionUID = 1837415801984192215L;
 
     @ApiModelProperty("消费者应用accessKey")
+    @NotBlank
     private String accessKey;
 
     @ApiModelProperty("接口请求的时间戳")
+    @Positive
     private long timestamp;
 
     @ApiModelProperty("是否使用加密，如果使用这返回报文需要加密处理")

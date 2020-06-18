@@ -59,7 +59,6 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
     /**
      * 数据服务一但生成就不支持修改了，如果后期允许修改涉及到很多属性的置空
      */
-
     @Override
     public Response<DataService> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(id);

@@ -11,7 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import tk.mybatis.spring.annotation.MapperScan;
 
 @EnableCaching
@@ -19,7 +18,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableAutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})
-@ComponentScan(basePackages = {"com.info.baymax"})
+@ComponentScan(basePackages = {"com.info.baymax","com.merce.woven"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-dataapi.properties"})

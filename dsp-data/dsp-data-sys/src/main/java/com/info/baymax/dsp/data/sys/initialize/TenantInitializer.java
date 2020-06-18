@@ -38,8 +38,7 @@ public class TenantInitializer {
 
 	private static int order = 0;
 
-	@Autowired
-	private PermsParser permsParser;
+	private PermsParser permsParser = new PermsParser();
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
