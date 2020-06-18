@@ -2,13 +2,11 @@ package com.info.baymax.dsp.common.webflux.config;
 
 import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorAttributes;
 import com.info.baymax.dsp.common.webflux.server.error.GlobalErrorWebExceptionHandler;
-import com.info.baymax.dsp.common.webflux.server.result.PathTweakingRequestMappingHandlerMapping;
 import com.info.baymax.dsp.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxRegistrations;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +22,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -109,17 +106,16 @@ public class WebFluxExtConfig {
             return chain.filter(ctx);
         };
     }
-    
-    
-    @Configuration
-    @Primary
-	class WebFluxRegistrationsConfig implements WebFluxRegistrations {
 
-		@Override
-		public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-			return new PathTweakingRequestMappingHandlerMapping();
-		}
-		 
-	}
+    /*
+     * @Configuration
+     *
+     * @Primary class WebFluxRegistrationsConfig implements WebFluxRegistrations {
+     *
+     * @Override public RequestMappingHandlerMapping getRequestMappingHandlerMapping() { return new
+     * PathTweakingRequestMappingHandlerMapping(); }
+     *
+     * }
+     */
 
 }

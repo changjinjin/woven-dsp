@@ -21,7 +21,6 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +78,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
                 list.add(map);
             }
             return list;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
@@ -125,7 +124,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
                 list.add(map);
             }
             return list;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
@@ -172,7 +171,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
                 list.add(map);
             }
             return list;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
@@ -219,7 +218,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
                 list.add(map);
             }
             return list;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
@@ -259,7 +258,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             List<Hit<DataTransferRecord, Void>> hits = result.getHits(DataTransferRecord.class);
             return IPage.<DataTransferRecord>of(pageNum, pageSize, result.getTotal(),
                 hits.stream().map(t -> t.source).collect(Collectors.toList()));
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
