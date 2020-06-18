@@ -37,7 +37,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
     @Autowired
     private JestClient jestClient;
 
-    private String name = "dataset";
+    private String name = DataTransferRecord.TYPE_NAME;
 
     @Override
     public List<Map<String, Object>> userVisitTopN(long start, long end, int n, boolean reverse)

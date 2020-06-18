@@ -18,7 +18,7 @@ public class MetricsReporterTest extends AbstractBootTest {
     @Test
     public void report() {
         for (int i = 0; i < 10000; i++) {
-            reporter.report("dataset", appName, System.nanoTime(),
+            reporter.report(MetricsEntity.TYPE_NAME, appName, System.nanoTime(),
                 MetricsEntity.builder().title("title_" + i).weight(i).birth(new Date()).build());
         }
     }

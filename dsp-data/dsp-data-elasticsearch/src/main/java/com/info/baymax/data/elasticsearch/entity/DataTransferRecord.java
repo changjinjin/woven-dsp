@@ -22,7 +22,7 @@ import java.util.Date;
 @ApiModel
 public class DataTransferRecord implements Serializable {
     private static final long serialVersionUID = 3127150491057357093L;
-    public static String type_name = "dataTransferRecord";
+    public static String TYPE_NAME = "dataset_access_record";
 
     @ApiModelProperty("主键")
     @JestId

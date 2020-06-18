@@ -441,7 +441,7 @@ public class JobExecutorService {
                 return;
             }
             Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
-            if (dataResource == null) {
+            if (dataset == null) {
                 return;
             }
             DataTransferRecord record = null;
@@ -468,9 +468,7 @@ public class JobExecutorService {
                     .resultCode(resultCode)//
                     .tenantId(app.getTenantId())//
                     .owner(app.getOwner()).build();
-                metricsReporter.report("dataset", appName, startTime, record);
             } else {
-
                 record = DataTransferRecord.builder()//
                     .sid(UUID.randomUUID().toString())//
                     .write_time(new Date())//
@@ -493,8 +491,8 @@ public class JobExecutorService {
                     .resultCode(1)//
                     .tenantId(app.getTenantId())//
                     .owner(app.getOwner()).build();
-                metricsReporter.report("dataset", appName, startTime, record);
             }
+            metricsReporter.report(DataTransferRecord.TYPE_NAME, appName, startTime, record);
         } catch (Exception e) {
             log.error("record push service error with dataServiceId:" + dataService.getId() + ",executionId:"
                 + execution.getId(), e);

@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 @Getter
 public final class MetricsEntity {
+	public static final String TYPE_NAME = "metrics_entity";
     private String title;
     private int weight;
     private Date birth;

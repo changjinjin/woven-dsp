@@ -135,7 +135,7 @@ public class DataPullRecordAspect {
                 .resultCode(resultCode)//
                 .tenantId(app.getTenantId())//
                 .owner(app.getOwner()).build();
-            metricsReporter.report("dataset", appName, startTime, record);
+            metricsReporter.report(DataTransferRecord.TYPE_NAME, appName, startTime, record);
             log.debug(
                 "some body pull data with params:accessKey={},encrypted={},timestamp={},dataServiceId={},offset={},size={}.",
                 accessKey, encrypted, timestamp, dataServiceId, offset, size);
