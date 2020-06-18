@@ -17,6 +17,49 @@ spring:
     add-mappings: true
     static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   cloud:
+    sentinel:
+      enabled: true
+      eager: true
+      transport:
+        dashboard: 192.168.2.145:8080
+        port: 8721
+        heartbeat-interval-ms: 5s
+      datasource:
+        flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-flow-rules
+            file-type: json
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-degrade-rules
+            file-type: json
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-system-rules
+            file-type: json
+            rule-type: system
+        authority:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-authority-rules
+            file-type: json
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr:127.0.0.1:8848}
+            group-id: ${spring.application.name}
+            data-id: ${spring.application.name}-paramflow-rules
+            file-type: json
+            rule-type: param-flow
     nacos:
       discovery:
         enabled: true
@@ -34,7 +77,7 @@ spring:
       default-filters:
       - SetResponseHeader=X-Frame-Options, DENY
       routes:
-      - id: auth
+      - id: auth-server
         uri: lb://dsp-auth-server
         order: 2
         predicates:
@@ -76,8 +119,6 @@ spring:
   security:
     oauth2:
       resourceserver:
-#        jwt:
-#          jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
         opaquetoken:
           client-id: dsp-gateway
           client-secret: 123456
@@ -99,14 +140,13 @@ spring:
             authorization-uri: http://localhost:8004/api/auth/oauth/authorize
             token-uri: http://localhost:8004/api/auth/oauth/token
             user-info-uri: http://localhost:8004/api/auth/oauth/userinfo
-#            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
             user-info-authentication-method: Basic
 management:
   metrics:
     binders:
       hystrix.enabled: false
     enable:
-      system: 
+      system:
         cpu: false
       process: false
       logback: false
@@ -154,10 +194,10 @@ management:
       cors:
         max-age: 1800s
   health:
-   redis:
-    enabled: false
-   elasticsearch:
-    enabled: false
+    redis:
+      enabled: false
+    elasticsearch:
+      enabled: false
 security:
   token:
     ignored:
@@ -183,9 +223,6 @@ security:
 swagger2:
   enabled: true
   resources:
-  - name: gateway
-    url: /v2/api-docs
-    swaggerVersion: 0.1.0
   - name: auth-server
     url: /api/auth/v2/api-docs
     swaggerVersion: 0.1.0

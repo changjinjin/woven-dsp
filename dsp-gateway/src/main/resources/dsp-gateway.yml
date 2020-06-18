@@ -173,7 +173,7 @@ management:
         user-name: elastic
         password: changeme
         auto-create-index: true
-        batchSize: 1000
+        batchSize: 3
         connect-timeout: 10s
   endpoint:
     health:
