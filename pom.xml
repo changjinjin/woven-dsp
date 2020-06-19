@@ -57,7 +57,8 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
 		<guava.version>22.0</guava.version>
-		<jest.version>6.3.1</jest.version>
+		<elasticsearch.version>5.5.3</elasticsearch.version>
+		<jest.version>5.3.4</jest.version>
 
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
@@ -333,6 +334,11 @@
 				<groupId>com.github.pagehelper</groupId>
 				<artifactId>pagehelper-spring-boot-starter</artifactId>
 				<version>${pagehelper-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.elasticsearch</groupId>
+				<artifactId>elasticsearch</artifactId>
+				<version>${elasticsearch.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.searchbox</groupId>
