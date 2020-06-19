@@ -41,10 +41,20 @@ public class EsMetricsIndexProperties {
         try {
             do {
                 indies.add(index);
-                if ("yyyy-MM".equals(dateFormat) || "yyyyMM".equals(dateFormat)) {
-                    now = now.minusMonths(1);
-                } else if ("yyyy-ww".equals(dateFormat.toLowerCase()) || "yyyyww".equals(dateFormat.toLowerCase())) {
-                    now = now.minusWeeks(1);
+                switch (dateFormat) {
+                    case "yyyyMMdd":
+                    case "yyyy-MM-dd":
+                        now = now.minusDays(1);
+                        break;
+                    case "yyyy-ww":
+                    case "yyyy-WW":
+                    case "yyyyww":
+                    case "yyyyWW":
+                        now = now.minusWeeks(1);
+                        break;
+                    default:
+                        now = now.minusMonths(1);
+                        break;
                 }
                 index = prefix + "-" + now.format(formatter);
             } while (client.execute(new IndicesExists.Builder(index).build()).isSucceeded());
