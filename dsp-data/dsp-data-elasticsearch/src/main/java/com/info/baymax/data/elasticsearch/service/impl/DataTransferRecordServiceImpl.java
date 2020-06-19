@@ -3,6 +3,7 @@ package com.info.baymax.data.elasticsearch.service.impl;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.page.IPage;
+import com.info.baymax.data.elasticsearch.config.EsMetricsIndexProperties;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.data.elasticsearch.service.DataTransferRecordService;
 import io.searchbox.client.JestClient;
@@ -35,13 +36,20 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
 
     @Autowired
     private JestClient jestClient;
+    @Autowired
+    private EsMetricsIndexProperties properties;
 
-    private String name = DataTransferRecord.TYPE_NAME;
+    private String TYPE_NAME = DataTransferRecord.TYPE_NAME;
+    private String INDEX_TYPE = "doc";
+
+    private List<String> getIndies() {
+        return properties.getMetricsIndex(jestClient);
+    }
 
     @Override
     public List<Map<String, Object>> userVisitTopN(long start, long end, int n, boolean reverse)
         throws ServiceException {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", name));
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", TYPE_NAME));
         if (start > 0) {
             queryBuilder.must(rangeQuery("@timestamp").gte(start));
         }
@@ -56,8 +64,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
-            result = jestClient
-                .execute(new Search.Builder(builder.toString()).addIndex("metrics-2020-06").addType("doc").build());
+            result = jestClient.execute(
+                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -86,7 +94,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
 
     @Override
     public List<Map<String, Object>> datasetVisitTopN(long start, long end, int n, boolean reverse) {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", name));
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", TYPE_NAME));
         if (start > 0) {
             queryBuilder.must(rangeQuery("@timestamp").gte(start));
         }
@@ -102,8 +110,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
-            result = jestClient
-                .execute(new Search.Builder(builder.toString()).addIndex("metrics-2020-06").addType("doc").build());
+            result = jestClient.execute(
+                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -132,7 +140,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
 
     @Override
     public List<Map<String, Object>> userVisitDatasetTopN(String custId, long start, long end, int n, boolean reverse) {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", name))
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", TYPE_NAME))
             .must(termQuery("custId.keyword", custId));
         if (start > 0) {
             queryBuilder.must(rangeQuery("@timestamp").gte(start));
@@ -149,8 +157,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
-            result = jestClient
-                .execute(new Search.Builder(builder.toString()).addIndex("metrics-2020-06").addType("doc").build());
+            result = jestClient.execute(
+                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -180,7 +188,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
     @Override
     public List<Map<String, Object>> datasetVisitUserTopN(String datasetId, long start, long end, int n,
                                                           boolean reverse) throws ServiceException {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", name))
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", TYPE_NAME))
             .must(termQuery("datasetId.keyword", datasetId));
         if (start > 0) {
             queryBuilder.must(rangeQuery("@timestamp").gte(start));
@@ -196,8 +204,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
-            result = jestClient
-                .execute(new Search.Builder(builder.toString()).addIndex("metrics-2020-06").addType("doc").build());
+            result = jestClient.execute(
+                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -227,7 +235,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
     @Override
     public IPage<DataTransferRecord> queryList(String keyword, String transferType, String growthType, String custId,
                                                String datasetId, long start, long end, int pageNum, int pageSize) {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", name));
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", TYPE_NAME));
         if (StringUtils.isNotEmpty(keyword)) {
             queryBuilder.should(fuzzyQuery("datasetName", keyword)).should(fuzzyQuery("custName", keyword))
                 .should(fuzzyQuery("custAppName", keyword)).should(fuzzyQuery("dataServiceName", keyword));
@@ -253,8 +261,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         SearchSourceBuilder builder = new SearchSourceBuilder().query(queryBuilder).sort("@timestamp", SortOrder.DESC)
             .from((pageNum - 1) * pageSize).size(pageSize);
         try {
-            SearchResult result = jestClient
-                .execute(new Search.Builder(builder.toString()).addIndex("metrics-2020-06").addType("doc").build());
+            SearchResult result = jestClient.execute(
+                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Hit<DataTransferRecord, Void>> hits = result.getHits(DataTransferRecord.class);
             return IPage.<DataTransferRecord>of(pageNum, pageSize, result.getTotal(),
                 hits.stream().map(t -> t.source).collect(Collectors.toList()));
