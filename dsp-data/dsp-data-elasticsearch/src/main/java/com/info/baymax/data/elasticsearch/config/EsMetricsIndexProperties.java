@@ -4,6 +4,7 @@ import io.searchbox.client.JestClient;
 import io.searchbox.indices.IndicesExists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,8 +12,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-@ConfigurationProperties(prefix = "spring.elasticsearch.metrics.index")
 @Slf4j
+@Configuration
+@ConfigurationProperties(prefix = "spring.elasticsearch.metrics.index")
 public class EsMetricsIndexProperties {
 
     /**
