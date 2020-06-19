@@ -43,7 +43,7 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
     private String INDEX_TYPE = "doc";
 
     private List<String> getIndies() {
-        return properties.getMetricsIndex(jestClient);
+        return properties.getIndies(jestClient);
     }
 
     @Override

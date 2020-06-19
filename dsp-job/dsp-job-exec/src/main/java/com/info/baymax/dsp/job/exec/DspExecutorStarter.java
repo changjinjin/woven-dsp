@@ -20,10 +20,10 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringCloudApplication
 @EnableAutoConfiguration
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.exec"})
-@ComponentScan(basePackages = {"com.info.baymax"})
+@ComponentScan(basePackages = {"com.info.baymax", "com.merce.woven"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource({ "classpath:dsp-common.properties", "classpath:dsp-job-exec.properties" })
+@PropertySource({"classpath:dsp-common.properties", "classpath:dsp-job-exec.properties"})
 @EnableAsync
 public class DspExecutorStarter {
 
