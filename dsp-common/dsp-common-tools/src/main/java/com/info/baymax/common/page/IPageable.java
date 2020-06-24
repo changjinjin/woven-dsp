@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 
 /**
@@ -38,12 +39,14 @@ public class IPageable implements Serializable {
      * 页码
      */
     @ApiModelProperty(value = "页码，默认1")
+    @Positive
     protected Integer pageNum;
 
     /**
      * 页长
      */
     @ApiModelProperty(value = "页长，默认10")
+    @Positive
     protected Integer pageSize;
 
     /**

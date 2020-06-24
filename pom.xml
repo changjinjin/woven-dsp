@@ -37,6 +37,9 @@
 		<commons-logging.version>1.1.3</commons-logging.version>
 		<commons-beanutils.version>1.9.1</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
+		<commons-dbutils.version>1.7</commons-dbutils.version>
+        <sqlhelper.version>3.1.0</sqlhelper.version>
+        <easyjson.version>3.0.0</easyjson.version>
 
 		<!-- mybatis dependencies -->
 		<mybatis.version>3.5.4</mybatis.version>
@@ -251,6 +254,21 @@
 				<groupId>commons-beanutils</groupId>
 				<version>${commons-beanutils.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>commons-dbutils</groupId>
+				<artifactId>commons-dbutils</artifactId>
+				<version>${commons-dbutils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.fangjinuo.sqlhelper</groupId>
+				<artifactId>sqlhelper-dbutils</artifactId>
+				<version>${sqlhelper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.fangjinuo.sqlhelper</groupId>
+				<artifactId>sqlhelper-jsqlparser</artifactId>
+				<version>${sqlhelper.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.netflix.netflix-commons</groupId>
@@ -318,6 +336,11 @@
 				<groupId>com.github.pagehelper</groupId>
 				<artifactId>pagehelper</artifactId>
 				<version>${pagehelper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.fangjinuo.easyjson</groupId>
+				<artifactId>easyjson-jackson</artifactId>
+				<version>${easyjson.version}</version>
 			</dependency>
 
 			<dependency>

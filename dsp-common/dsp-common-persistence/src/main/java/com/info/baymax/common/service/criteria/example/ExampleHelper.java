@@ -4,8 +4,11 @@ import com.google.common.collect.Lists;
 import com.info.baymax.common.mybatis.mapper.example.Example;
 import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
 import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
-import com.info.baymax.common.service.criteria.example.SqlEnums.AndOr;
-import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
+import com.info.baymax.common.service.criteria.field.Field;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.common.service.criteria.field.Sort;
+import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
+import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
 import org.apache.commons.lang3.StringUtils;
 import tk.mybatis.mapper.entity.EntityColumn;
@@ -21,6 +24,7 @@ import java.util.Set;
  * @author jingwei.yang
  * @date 2019年7月1日 下午5:07:38
  */
+@SuppressWarnings("unchecked")
 public class ExampleHelper {
 
     public static Example createExample(ExampleQuery query) {
@@ -90,7 +94,7 @@ public class ExampleHelper {
         }
 
         // 条件组合
-        FieldGroup fieldGroup = query.getFieldGroup();
+        FieldGroup<ExampleQuery> fieldGroup = query.getFieldGroup();
         if (fieldGroup != null) {
             createCriteria(example, fieldGroup);
         }
@@ -101,13 +105,13 @@ public class ExampleHelper {
         return example;
     }
 
-    private static void createCriteria(Example example, FieldGroup fieldGroup) {
+    private static void createCriteria(Example example, FieldGroup<ExampleQuery> fieldGroup) {
         if (fieldGroup != null) {
             example.setCriteria(from(example.criteria(), fieldGroup));
         }
     }
 
-    public static Criteria from(Criteria criteria, FieldGroup fieldGroup) {
+    public static Criteria from(Criteria criteria, FieldGroup<ExampleQuery> fieldGroup) {
         if (fieldGroup == null) {
             return criteria;
         }
@@ -254,7 +258,7 @@ public class ExampleHelper {
             } else {
                 criteria.criteria(
                     from(new Criteria(criteria.getPropertyMap(), criteria.isExists(), criteria.isNotNull()),
-                        (FieldGroup) item));
+                        (FieldGroup<ExampleQuery>) item));
             }
         }
         return criteria;

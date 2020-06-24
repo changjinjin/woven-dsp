@@ -2,7 +2,7 @@ package com.info.baymax.common.service;
 
 import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
-import com.info.baymax.common.service.criteria.ExampleQueryService;
+import com.info.baymax.common.service.criteria.example.ExampleQueryService;
 
 import java.io.Serializable;
 

@@ -25,12 +25,12 @@ public class DataRequest implements Serializable {
 
     @ApiModelProperty("消费者应用accessKey")
     @NotBlank
-    private String accessKey;
+    protected String accessKey;
 
     @ApiModelProperty("接口请求的时间戳")
     @Positive
-    private long timestamp;
+    protected long timestamp;
 
     @ApiModelProperty("是否使用加密，如果使用这返回报文需要加密处理")
-    private boolean encrypted;
+    protected boolean encrypted;
 }

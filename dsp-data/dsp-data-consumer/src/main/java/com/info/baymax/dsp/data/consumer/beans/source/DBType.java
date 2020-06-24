@@ -2,13 +2,25 @@ package com.info.baymax.dsp.data.consumer.beans.source;
 
 public enum DBType {
 
-    Mysql("Mysql"), Teradata("Teradata"), JDBCODBCBridge("JDBC-ODBC Bridge"), OracleThin("Oracle Thin"),
+    Mysql("Mysql"),
+    Teradata("Teradata"),
+    JDBCODBCBridge("JDBC-ODBC Bridge"),
+    OracleThin("Oracle Thin"),
     SQLServerMicrosoftDriver("Microsoft SQL Server (Microsoft Driver)"),
-    QLServerMicrosoftJTDS("Microsoft SQL Server(JTDS)"), Sybase("Sybase"), PostgreSQL("PostgreSQL"), HSQLDB("HSQLDB"),
-    Greenplum("Greenplum"), GBase("GBase"), GenericDB("Generic DB"), DB2("DB2"), DBONE("DBONE"), SnowBall("SnowBall"),
-    HIVE("HIVE");
+    QLServerMicrosoftJTDS("Microsoft SQL Server(JTDS)"),
+    Sybase("Sybase"),
+    PostgreSQL("PostgreSQL"),
+    HSQLDB("HSQLDB"),
+    Greenplum("Greenplum"),
+    GBase("GBase"),
+    GenericDB("Generic DB"),
+    DB2("DB2"),
+    DBONE("DBONE"),
+    SnowBall("SnowBall"),
+    HIVE("HIVE"),
+    Kingbase("Kingbase");
 
-    private String value;
+    private final String value;
 
     DBType(String type) {
         this.value = type;
@@ -36,7 +48,5 @@ public enum DBType {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+
 }

@@ -22,7 +22,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -64,8 +63,6 @@ public class DataApiController implements Serializable {
         Long dataServiceId = request.getDataServiceId();
         String requestKey = request.getAccessKey();
         String host = hosts.split(",")[0];
-        int offset = request.getOffset();
-        int size = request.getSize();
 
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(Long.valueOf(dataServiceId));
         if (dataService == null) {
@@ -111,7 +108,7 @@ public class DataApiController implements Serializable {
             }
             return PullResponse
                 .ok(pullService.query(dataset.getStorage(), fieldMap, dataset.getStorageConfigurations(),
-                    includes.toArray(new String[0]), offset, size))
+                    request.getQuery().allProperties(includes)))
                 .request(request).encrypt(restSignService.signKeyIfExist(accessKey));
         } else {
             throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");

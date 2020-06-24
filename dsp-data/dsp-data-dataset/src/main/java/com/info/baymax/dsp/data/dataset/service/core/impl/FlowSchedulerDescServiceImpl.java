@@ -2,7 +2,7 @@ package com.info.baymax.dsp.data.dataset.service.core.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
 import com.info.baymax.dsp.data.dataset.mybatis.mapper.core.FlowSchedulerDescMapper;
@@ -30,7 +30,7 @@ public class FlowSchedulerDescServiceImpl extends EntityClassServiceImpl<FlowSch
 	public List<FlowSchedulerDesc> findAllToLaunch() {
 		return selectList(ExampleQuery.builder(getEntityClass())//
 				.fieldGroup()//
-				.group(FieldGroup.builder()//
+				.group(FieldGroup.<ExampleQuery>builder()//
 						.andEqualTo("schedulerId", "cron")//
 						.orEqualTo("totalExecuted", 0))
 				.andEqualTo("enabled", 1)//

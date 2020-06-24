@@ -1,12 +1,11 @@
 package com.info.baymax.dsp.access.dataapi.service.impl;
 
 import com.info.baymax.common.page.IPage;
-import com.info.baymax.common.page.IPageable;
-import com.info.baymax.dsp.access.dataapi.service.ElasticSearchService;
-import com.info.baymax.dsp.access.dataapi.service.Engine;
-import com.info.baymax.dsp.access.dataapi.service.MapEntity;
+import com.info.baymax.dsp.access.dataapi.data.DataReader;
+import com.info.baymax.dsp.access.dataapi.data.MapEntity;
+import com.info.baymax.dsp.access.dataapi.data.StorageConf;
+import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +16,15 @@ import java.util.Map;
  * @Date: 2020/1/8
  */
 @Service
-@Slf4j
 public class PullServiceImpl implements PullService {
 
     @Autowired
-    ElasticSearchService elasticSearchService;
+    private DataReader<MapEntity> dataReader;
 
     @Override
     public IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf,
-                                  String[] includes, int offset, int limit) {
-        switch (Engine.valueOf(storage.toUpperCase())) {
-            case ELASTICSEARCH:
-                return elasticSearchService.query(conf, includes, IPageable.offset(offset, limit));
-            default:
-                log.info("{} storage doesn't support PULL type", storage);
-                return null;
-        }
+                                  RequestQuery query) {
+        conf.put("storage", storage);
+        return dataReader.read(StorageConf.from(conf), query);
     }
 }

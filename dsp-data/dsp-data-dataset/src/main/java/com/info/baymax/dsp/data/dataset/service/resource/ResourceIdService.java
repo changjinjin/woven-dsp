@@ -1,13 +1,13 @@
 package com.info.baymax.dsp.data.dataset.service.resource;
 
-import java.util.List;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.info.baymax.common.service.criteria.ExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.example.ExampleQueryService;
 import com.info.baymax.common.service.entity.EntityClassService;
 import com.info.baymax.common.utils.ICollections;
+
+import java.util.List;
 
 /**
  * 与资源目录相关的通用方法接口

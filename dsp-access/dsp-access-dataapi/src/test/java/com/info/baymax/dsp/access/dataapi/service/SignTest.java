@@ -3,6 +3,8 @@ package com.info.baymax.dsp.access.dataapi.service;
 import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.utils.crypto.AESUtil;
+import com.info.baymax.dsp.access.dataapi.data.MapEntity;
+import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
 import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullResponse;
 import org.junit.Test;
@@ -19,16 +21,24 @@ public class SignTest extends AbstractBootTest {
     @Test
     public void test() {
         try {
-            String accessKey = "9345f6a5-52c9-4882-9e6c-a3438778353a";
+            String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
             String secretKey = restSignService.secertkey(accessKey);
             System.out.println(secretKey);
-
             String signKeyIfExist = restSignService.signKeyIfExist(accessKey);
             System.out.println(signKeyIfExist);
-
             DataRequest request = new DataRequest(accessKey, System.currentTimeMillis(), true);
+            RequestQuery query = RequestQuery.builder()//
+                .page(1, 3)//
+                .allProperties("id", "code", "date", "project", "income", "manager")//
+                .selectProperties("id", "code", "project", "income", "manager")//
+                .fieldGroup()//
+                .andGreaterThan("id", 2)//
+                .andIn("code", new Integer[]{1, 2, 3})//
+                .end()//
+                .orderBy("id")//
+                .orderBy("code");
 
-            IPage<MapEntity> page = pullService.query(null, null, null, null, 0, 0);
+            IPage<MapEntity> page = pullService.query(null, null, null, query);
             PullResponse encrypt = PullResponse.ok(page).request(request).encrypt(signKeyIfExist);
             System.out.println(JSON.toJSONString(encrypt));
         } catch (Exception e) {

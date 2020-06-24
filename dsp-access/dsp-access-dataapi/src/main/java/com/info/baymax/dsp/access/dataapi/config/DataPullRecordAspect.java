@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.config;
 
+import com.info.baymax.common.page.IPageable;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
@@ -92,8 +93,6 @@ public class DataPullRecordAspect {
             boolean encrypted = request.isEncrypted();
             long timestamp = request.getTimestamp();
             Long dataServiceId = request.getDataServiceId();
-            int offset = request.getOffset();
-            int size = request.getSize();
             DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
             if (app == null) {
                 return;
@@ -113,6 +112,9 @@ public class DataPullRecordAspect {
                 return;
             }
 
+            IPageable pageable = request.getQuery().getPageable();
+            long offset = pageable.getOffset();
+            Integer pageSize = pageable.getPageSize();
             DataTransferRecord record = DataTransferRecord.builder()//
                 .sid(UUID.randomUUID().toString())//
                 .write_time(new Date())//
@@ -131,14 +133,14 @@ public class DataPullRecordAspect {
                 .growthType("LIST")//
                 .cursorVal("")//
                 .offset((long) offset)//
-                .records((long) size)//
+                .records((long) pageSize)//
                 .resultCode(resultCode)//
                 .tenantId(app.getTenantId())//
                 .owner(app.getOwner()).build();
             metricsReporter.report(DataTransferRecord.TYPE_NAME, appName, startTime, record);
             log.debug(
                 "some body pull data with params:accessKey={},encrypted={},timestamp={},dataServiceId={},offset={},size={}.",
-                accessKey, encrypted, timestamp, dataServiceId, offset, size);
+                accessKey, encrypted, timestamp, dataServiceId, offset, pageSize);
         } catch (Exception e) {
             log.error("record data pull info error", e);
         }

@@ -2,7 +2,7 @@ package com.info.baymax.dsp.common.mybatis.mybatis.test;
 
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.common.mybatis.mybatis.entity.TUser;
 import com.info.baymax.dsp.common.mybatis.mybatis.service.TUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,12 @@ public class ExampleQueryDemoTest extends AbstractMapperTest {
             .andBetween("birth", "2010-01-01", "2020-01-01")// birth between "2010-01-01" and "2020-01-01"
             .andIsNotNull("intro")// intro is not null
             .orGroup(// 添加一个条件 or ( id = 1 and name = 'zhangsan')
-                FieldGroup.builder()//
+                FieldGroup.<ExampleQuery>builder()//
                     .andEqualTo("id", 1)//
                     .andEqualTo("name", "zhangsan")//
             )//
             .orGroup(// 添加一个条件 or ( id < 10 and name = 'wangwu' or age between 10 and 13)
-                FieldGroup.builder()//
+                FieldGroup.<ExampleQuery>builder()//
                     .andLessThan("id", 10)// id = 10
                     .andEqualTo("name", "wangwu")// name = 'wangwu'
                     .orBetween("age", 10, 13) // age between 10 and 13

@@ -5,9 +5,9 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.Field;
-import com.info.baymax.common.service.criteria.example.FieldGroup;
-import com.info.baymax.common.service.criteria.example.SqlEnums.Operator;
+import com.info.baymax.common.service.criteria.field.Field;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -17,7 +17,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

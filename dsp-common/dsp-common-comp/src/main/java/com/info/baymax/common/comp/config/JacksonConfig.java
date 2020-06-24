@@ -21,6 +21,10 @@ public class JacksonConfig {
         return config(builder.createXmlMapper(false).build());
     }
 
+    public static ObjectMapper config() {
+        return config(null);
+    }
+
     public static ObjectMapper config(ObjectMapper m) {
         if (m == null) {
             m = Jackson2ObjectMapperBuilder.json().build();

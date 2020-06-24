@@ -17,7 +17,7 @@ import java.util.Map;
 public class JestClientUtils {
 
     public static JestClient jestClient(Map<String, String> conf) {
-        return jestClient(JestConf.fromMap(conf), defaultGson());
+        return jestClient(JestConf.from(conf), defaultGson());
     }
 
     public static JestClient jestClient(JestConf conf) {
