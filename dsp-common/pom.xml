@@ -28,5 +28,6 @@
         <module>dsp-common-webflux</module>
         <module>dsp-common-webmvc</module>
         <module>dsp-common-cache</module>
+        <module>dsp-common-elasticsearch-jdbc</module>
     </modules>
 </project>
