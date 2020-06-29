@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
+import com.info.baymax.dsp.access.dataapi.data.Query;
 import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullResponse;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class SignTest extends AbstractBootTest {
             String signKeyIfExist = restSignService.signKeyIfExist(accessKey);
             System.out.println(signKeyIfExist);
             DataRequest request = new DataRequest(accessKey, System.currentTimeMillis(), true);
-            RequestQuery query = RequestQuery.builder()//
+            Query query = Query.builder()//
                 .page(1, 3)//
                 .allProperties("id", "code", "date", "project", "income", "manager")//
                 .selectProperties("id", "code", "project", "income", "manager")//

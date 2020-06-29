@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.data.condition;
+package com.info.baymax.dsp.access.dataapi.data.jdbc.condition;
 
 import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.service.criteria.field.Field;

@@ -28,6 +28,7 @@ import java.util.Date;
     indexes = {@Index(columnList = "name"), @Index(columnList = "lastModifiedTime DESC")})
 @Comment("集群信息表")
 public class ClusterEntity<T> extends Maintable {
+    private static final long serialVersionUID = -610633148032389882L;
 
     @ApiModelProperty("df-executor注册信息.")
     @Transient

@@ -18,7 +18,8 @@ public enum DBType {
     DBONE("DBONE"),
     SnowBall("SnowBall"),
     HIVE("HIVE"),
-    Kingbase("Kingbase");
+    Kingbase("Kingbase"),
+    Elasticsearch("Elasticsearch");
 
     private final String value;
 

@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
 import com.info.baymax.common.page.IPage;
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
+
 import org.springframework.core.Ordered;
 
 /**
@@ -30,7 +30,7 @@ public interface DataReader<T> extends Ordered {
      * @return 分页数据
      * @throws DataReadException
      */
-    IPage<T> read(StorageConf conf, RequestQuery query) throws DataReadException;
+    IPage<T> read(StorageConf conf, Query query) throws DataReadException;
 
     @Override
     default int getOrder() {

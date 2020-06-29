@@ -45,15 +45,6 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
     @Autowired
     private DataCustAppService dataCustAppService;
 
-    @Value("${dataapi.url.list}")
-    private String dataApiUrl;
-
-    @Value("${dataapi.path}")
-    private String dataApiPath;
-
-    @Value("${dataapi.params}")
-    private String queryParams;
-
     @Override
     public BaseEntityService<DataApplication> getBaseEntityService() {
         return dataApplicationService;
@@ -99,18 +90,6 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 dataService.setOwner(SaasContext.getCurrentUserId());//不能存customer的id,存管理员id
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
                 dataService.setDataResId(dataApplication.getDataResId());
-
-                if (dataService.getType() == DataServiceType.SERVICE_TYPE_PULL) { // pull 服务, 配置接口信息
-                    dataService.setUrl(dataApiUrl);
-                    dataService.setPath(dataApiPath);
-
-                    Map<String, String> pullConfig = new HashMap<>();
-                    for (String param : queryParams.split("#")) {
-                        pullConfig.put(param.split(":")[0], param.split(":")[1]);
-                    }
-                    dataService.setPullConfiguration(pullConfig);
-                }
-                dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_READY);
 
                 List<DataService> records = dataServiceEntityService.findAllByTenantIdAndName(dataService.getTenantId(), dataApplication.getName());
                 if(records != null && records.size() > 0) {

@@ -187,7 +187,7 @@ public class IPageable implements Serializable {
     }
 
     public long getOffset() {
-        return (pageNum - 1) * pageSize;
+        return Math.max(0, (pageNum - 1) * pageSize);
     }
 
     /**

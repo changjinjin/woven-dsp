@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.web.request;
 
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
+import com.info.baymax.dsp.access.dataapi.data.Query;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,9 +22,9 @@ public class PullRequest extends DataRequest {
 
     @ApiModelProperty("查询条件")
     @NotNull
-    private RequestQuery query;
+    private Query query;
 
-    public PullRequest(Long dataServiceId, RequestQuery query, String accessKey, long timestamp, boolean encrypted) {
+    public PullRequest(Long dataServiceId, Query query, String accessKey, long timestamp, boolean encrypted) {
         super(accessKey, timestamp, encrypted);
         this.dataServiceId = dataServiceId;
         this.query = query;

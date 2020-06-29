@@ -3,8 +3,8 @@ package com.info.baymax.dsp.access.dataapi.service.impl;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.data.DataReader;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
+import com.info.baymax.dsp.access.dataapi.data.Query;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,7 @@ public class PullServiceImpl implements PullService {
     private DataReader<MapEntity> dataReader;
 
     @Override
-    public IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf,
-                                  RequestQuery query) {
+    public IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf, Query query) {
         conf.put("storage", storage);
         return dataReader.read(StorageConf.from(conf), query);
     }

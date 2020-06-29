@@ -16,22 +16,6 @@ import java.util.stream.Collectors;
 @Builder
 public class JestConf implements Serializable {
     private static final long serialVersionUID = 660896701924731075L;
-
-    /**
-     * 集群名称
-     */
-    private String clusterName;
-
-    /**
-     * 索引名称列表
-     */
-    private List<String> indices;
-
-    /**
-     * 索引类型列表
-     */
-    private List<String> indexTypes;
-
     /**
      * Comma-separated list of the Elasticsearch instances to use.
      */
@@ -89,10 +73,7 @@ public class JestConf implements Serializable {
 
     public static JestConf from(Map<String, String> conf) {
         JestConfBuilder builder = JestConf.builder();
-        builder.clusterName(conf.getOrDefault("clusterName", ""))
-            .uris(formatUris(Arrays.asList(conf.getOrDefault("ipAddresses", "").split(","))))
-            .indices(Arrays.asList(conf.get("index")))//
-            .indexTypes(Arrays.asList(conf.get("indexType")));
+        builder.uris(formatUris(Arrays.asList(conf.getOrDefault("ipAddresses", "").split(","))));
 
         String username = conf.get("username");
         if (StringUtils.isNotEmpty(username)) {
@@ -130,10 +111,7 @@ public class JestConf implements Serializable {
 
     public static JestConf from(ElasticSearchStorageConf conf) {
         JestConfBuilder builder = JestConf.builder();
-        builder.clusterName(conf.getClusterName()).uris(formatUris(Arrays.asList(conf.getIpAddresses().split(","))))
-            .indices(Arrays.asList(conf.getIndex()))//
-            .indexTypes(Arrays.asList(conf.getIndexType()));
-
+        builder.uris(formatUris(Arrays.asList(conf.getIpAddresses().split(","))));
         String username = conf.getUsername();
         if (StringUtils.isNotEmpty(username)) {
             builder.username(username);

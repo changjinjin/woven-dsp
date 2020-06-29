@@ -7,14 +7,9 @@ import com.info.baymax.common.page.IPageable;
 import com.info.baymax.dsp.access.dataapi.config.jest.JestClientUtils;
 import com.info.baymax.dsp.access.dataapi.config.jest.JestConf;
 import com.info.baymax.dsp.access.dataapi.data.*;
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
 import io.searchbox.client.JestClient;
-import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
-import io.searchbox.params.Parameters;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -31,19 +26,14 @@ public class ElasticSearchDataReader extends MapEntityDataReader {
     }
 
     @Override
-    public IPage<MapEntity> read(StorageConf conf, RequestQuery query) throws DataReadException {
+    public IPage<MapEntity> read(StorageConf conf, Query query) throws DataReadException {
         JestClient jestClient = null;
         IPageable pageable = query.getPageable();
         try {
             JestConf jestConf = JestConf.from((ElasticSearchStorageConf) conf);
             jestClient = JestClientUtils.jestClient(jestConf);
-            SearchResult searchResult = jestClient.execute(new Search.Builder(SearchSourceBuilder.searchSource()
-                .query(QueryBuilders.matchAllQuery())
-                .fetchSource(query.getSelectProperties().toArray(new String[query.getSelectProperties().size()]),
-                    new String[]{})
-                .toString()).addIndices(jestConf.getIndices()).addTypes(jestConf.getIndexTypes())
-                .setParameter(Parameters.FROM, pageable.getOffset())
-                .setParameter(Parameters.SIZE, pageable.getPageSize()).build());
+            SearchResult searchResult = jestClient
+                .execute(ElasticsearchQueryParser.getInstance().parse((ElasticSearchStorageConf) conf, query));
             if (searchResult.isSucceeded()) {
                 return IPage.<MapEntity>of(pageable, searchResult.getTotal(),
                     searchResult.getSourceAsObjectList(MapEntity.class, false));
@@ -63,5 +53,4 @@ public class ElasticSearchDataReader extends MapEntityDataReader {
         }
         return IPage.<MapEntity>of(pageable, 0, null);
     }
-
 }

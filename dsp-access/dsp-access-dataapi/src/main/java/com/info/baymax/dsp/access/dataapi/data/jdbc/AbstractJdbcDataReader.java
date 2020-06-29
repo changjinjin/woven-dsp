@@ -4,8 +4,7 @@ import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.dsp.access.dataapi.data.*;
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
-import com.info.baymax.dsp.access.dataapi.data.condition.SelectSql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.SelectSql;
 import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import com.jn.sqlhelper.apachedbutils.QueryRunner;
 import com.jn.sqlhelper.dialect.pagination.PagingRequest;
@@ -32,11 +31,11 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
     }
 
     @Override
-    public IPage<MapEntity> read(StorageConf conf, RequestQuery query) throws DataReadException {
+    public IPage<MapEntity> read(StorageConf conf, Query query) throws DataReadException {
         IPageable pageable = query.getPageable();
         try {
             JdbcStorageConf jdbcConf = (JdbcStorageConf) conf;
-            SelectSql selectSql = SelectSql.build(query.table(jdbcConf.getTable()));
+            SelectSql selectSql = JdbcQueryParser.getInstance().parse(jdbcConf, query);
             if (selectSql.isValid()) {
                 Connection conn = getConn(jdbcConf);
                 if (conn != null) {

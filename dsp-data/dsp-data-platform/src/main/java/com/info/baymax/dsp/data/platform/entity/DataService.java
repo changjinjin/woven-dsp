@@ -77,6 +77,7 @@ public class DataService extends BaseEntity {
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
+    @Deprecated
     private Map<String, String> pullConfiguration;
 
     @ApiModelProperty("调度类型：once,cron,event")

@@ -1,8 +1,8 @@
-package com.info.baymax.dsp.access.dataapi.data.condition;
+package com.info.baymax.dsp.access.dataapi.data.jdbc.condition;
 
 import com.info.baymax.common.service.criteria.field.Sort;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.access.dataapi.data.DataReadException;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -11,19 +11,18 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @ToString
 @Slf4j
 public class SelectSql implements Serializable {
     private static final long serialVersionUID = 9076946654365840665L;
 
-    private SelectSql(RequestQuery query) {
-        build(selectProperties(query.getAllProperties(), query.getSelectProperties(), query.getExcludeProperties()),
-            query.getTable(), ConditionSql.build(query.getFieldGroup()), orderBy(query.getOrdSort()));
+    private SelectSql(JdbcQuery query) {
+        build(StringUtils.join(query.finalSelectProperties(), ", "), query.getTable(),
+            ConditionSql.build(query.getFieldGroup()), orderBy(query.getOrdSort()));
     }
 
-    public static SelectSql build(RequestQuery query) {
+    public static SelectSql build(JdbcQuery query) {
         return new SelectSql(query);
     }
 
@@ -59,23 +58,6 @@ public class SelectSql implements Serializable {
         this.valid = true;
 
         log.debug("make executeSql:" + executeSql + ", paramValues:" + Arrays.toString(paramValues));
-    }
-
-    private String selectProperties(Set<String> allProperties, Set<String> selectProperties,
-                                    Set<String> excludeProperties) {
-        if (ICollections.hasElements(allProperties)) {
-            if (ICollections.hasElements(excludeProperties)) {
-                allProperties.removeAll(excludeProperties);
-            }
-            if (ICollections.hasElements(selectProperties)) {
-                selectProperties.retainAll(allProperties);
-            }
-        }
-        if (ICollections.hasNoElements(selectProperties)) {
-            throw new DataReadException("no suitable fields for query with allProperties:" + allProperties
-                + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
-        }
-        return StringUtils.join(selectProperties, ", ");
     }
 
     private String orderBy(List<Sort> ordSort) {

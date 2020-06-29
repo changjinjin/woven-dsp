@@ -1,17 +1,17 @@
 package com.info.baymax.dsp.access.dataapi.jdbc;
 
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
-import com.info.baymax.dsp.access.dataapi.data.condition.SelectSql;
+import com.info.baymax.dsp.access.dataapi.data.Query;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.SelectSql;
 import org.junit.Test;
 
-public class RequestQueryTest {
+public class QueryTest {
 
     @Test
     public void test() {
         try {
-            RequestQuery query = RequestQuery.builder()//
+            Query query = Query.builder()//
                 .page(2, 10)//
-                .table("t_user")//
                 .allProperties("id", "name", "age", "weight", "height", "remark")//
                 .selectProperties("id", "name", "age", "weight")//
                 .excludeProperties("weight")//
@@ -23,7 +23,7 @@ public class RequestQueryTest {
                 .end()//
                 .orderByAsc("id")//
                 .orderByDesc("age");
-            SelectSql sql = SelectSql.build(query);
+            SelectSql sql = SelectSql.build(JdbcQuery.from(query).table("t_user"));
             System.out.println(sql.toString());
         } catch (Exception e) {
             e.printStackTrace();

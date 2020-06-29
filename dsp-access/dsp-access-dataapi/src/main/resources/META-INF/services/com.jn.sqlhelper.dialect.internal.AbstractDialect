@@ -1,1 +1,2 @@
 com.jn.sqlhelper.dialect.snowball.SnowBallDialect
+com.jn.sqlhelper.dialect.elasticsearch.ElasticsearchDialect

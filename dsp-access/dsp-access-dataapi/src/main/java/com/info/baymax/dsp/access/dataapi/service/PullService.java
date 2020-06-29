@@ -2,7 +2,7 @@ package com.info.baymax.dsp.access.dataapi.service;
 
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.data.condition.RequestQuery;
+import com.info.baymax.dsp.access.dataapi.data.Query;
 
 import java.util.Map;
 
@@ -21,6 +21,6 @@ public interface PullService {
      * @param query    查询参数
      * @return 结果集
      */
-    IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf, RequestQuery query);
+    IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf, Query query);
 
 }
