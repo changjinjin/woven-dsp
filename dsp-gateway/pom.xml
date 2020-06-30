@@ -167,6 +167,10 @@
             <artifactId>springfox-spring-webflux</artifactId>
             <exclusions>
                 <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-webflux</artifactId>
                 </exclusion>
