@@ -32,11 +32,13 @@ public class ElasticSearchDataReader extends MapEntityDataReader {
         try {
             JestConf jestConf = JestConf.from((ElasticSearchStorageConf) conf);
             jestClient = JestClientUtils.jestClient(jestConf);
-            SearchResult searchResult = jestClient
-                .execute(ElasticsearchQueryParser.getInstance().parse((ElasticSearchStorageConf) conf, query));
+            SearchResult searchResult = new ISearchResult(jestClient.execute(QueryParser
+                .getInstance(ElasticsearchQuerySqlParser.class).parse((ElasticSearchStorageConf) conf, query)));
             if (searchResult.isSucceeded()) {
                 return IPage.<MapEntity>of(pageable, searchResult.getTotal(),
                     searchResult.getSourceAsObjectList(MapEntity.class, false));
+            } else {
+                log.error("es query failed,errorMessage:" + searchResult.getErrorMessage());
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

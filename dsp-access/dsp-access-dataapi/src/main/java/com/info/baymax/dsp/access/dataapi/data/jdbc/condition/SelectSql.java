@@ -4,6 +4,7 @@ import com.info.baymax.common.service.criteria.field.Sort;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -30,12 +31,14 @@ public class SelectSql implements Serializable {
      * 执行sql
      */
     @Getter
+    @Setter
     private String executeSql;
 
     /**
      * 参数值列表
      */
     @Getter
+    @Setter
     private Object[] paramValues = new Object[0];
 
     /**
@@ -70,5 +73,14 @@ public class SelectSql implements Serializable {
             return StringUtils.stripEnd(buf.toString().trim(), ",");
         }
         return "";
+    }
+
+    public void addParamValues(Object... values) {
+        if (values != null && values.length > 0) {
+            Object[] newValues = new Object[paramValues.length + values.length];
+            System.arraycopy(paramValues, 0, newValues, 0, paramValues.length);
+            System.arraycopy(values, 0, newValues, paramValues.length, values.length);
+            this.paramValues = newValues;
+        }
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 
 @Slf4j
 public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
+    private final QueryRunner runner = new QueryRunner();
     protected DBType dbType;
 
     public AbstractJdbcDataReader(DBType dbType) {
@@ -34,14 +35,12 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
     public IPage<MapEntity> read(StorageConf conf, Query query) throws DataReadException {
         IPageable pageable = query.getPageable();
         try {
-            JdbcStorageConf jdbcConf = (JdbcStorageConf) conf;
-            SelectSql selectSql = JdbcQueryParser.getInstance().parse(jdbcConf, query);
+            SelectSql selectSql = parseSql(conf, query);
             if (selectSql.isValid()) {
-                Connection conn = getConn(jdbcConf);
+                Connection conn = getConn((JdbcStorageConf) conf);
                 if (conn != null) {
                     PagingRequest<?, MapEntity> request = SqlPaginations.preparePagination(pageable.getPageNum(),
                         pageable.getPageSize());
-                    QueryRunner runner = new QueryRunner();
                     List<MapEntity> list = runner.query(conn, selectSql.getExecuteSql(), new MapEntityListHandler(),
                         selectSql.getParamValues());
                     log.debug("query result:" + list.size());
@@ -67,4 +66,7 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
         }
     }
 
+    public SelectSql parseSql(StorageConf conf, Query query) throws Exception {
+        return QueryParser.getInstance(JdbcQueryParser.class).parse((JdbcStorageConf) conf, query);
+    }
 }

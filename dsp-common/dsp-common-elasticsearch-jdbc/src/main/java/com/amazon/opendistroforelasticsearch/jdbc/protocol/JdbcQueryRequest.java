@@ -57,13 +57,13 @@ public class JdbcQueryRequest implements QueryRequest {
 		return params;
 	}
 
-	public void setParameters(List<JdbcQueryParam> parameters) {
-		this.params = parameters;
+	public void setParams(List<JdbcQueryParam> params) {
+		this.params = params;
 	}
 
 	@Override
 	public int getFetchSize() {
-		return fetchSize;
+		return Math.max(fetchSize, 1);
 	}
 
 	@Override

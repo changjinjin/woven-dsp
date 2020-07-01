@@ -53,12 +53,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <dependency>
-            <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
-            <artifactId>opendistro-sql-jdbc</artifactId>
-            <version>1.8.0.0</version>
-        </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>

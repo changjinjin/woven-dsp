@@ -54,16 +54,10 @@ public abstract class AbstractQuery<T extends AbstractQuery<T>> implements Query
     @ApiModelProperty("排序属性信息")
     protected List<Sort> ordSort;
 
-    /*************************************
-     * 构造器
-     *****************************************/
     public AbstractQuery() {
         super();
     }
 
-    /*************************************
-     * 条件组装
-     *****************************************/
     @Override
     public T paged() {
         return paged(true);

@@ -159,7 +159,7 @@ public class IPageable implements Serializable {
         this.pageable = pageable;
     }
 
-    public Integer getPageNum() {
+    public int getPageNum() {
         return pageNum <= 0 ? DEFAULT_PAGENUM : pageNum;
     }
 
@@ -167,7 +167,7 @@ public class IPageable implements Serializable {
         this.pageNum = pageNum;
     }
 
-    public Integer getPageSize() {
+    public int getPageSize() {
         return pageSize <= 0 ? DEFAULT_PAGESIZE : pageSize;
     }
 

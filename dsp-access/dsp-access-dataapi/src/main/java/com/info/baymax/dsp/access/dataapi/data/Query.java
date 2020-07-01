@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
+import com.google.common.collect.Sets;
 import com.info.baymax.common.service.criteria.query.AbstractQuery;
 import com.info.baymax.common.utils.ICollections;
-import com.inforefiner.repackaged.com.google.common.collect.Sets;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -30,20 +30,10 @@ public class Query extends AbstractQuery<Query> implements Serializable {
     @ApiModelProperty(value = "所有的字段列表", hidden = true)
     private Set<String> allProperties;
 
-    /**
-     * 创建一个Query的构建器
-     *
-     * @return 默认的构建器
-     */
     public static Query builder() {
         return new Query();
     }
 
-    /**
-     * 创建一个Query的构建器
-     *
-     * @return 默认的构建器
-     */
     public static Query builder(Query query) {
         return query == null ? new Query() : query;
     }

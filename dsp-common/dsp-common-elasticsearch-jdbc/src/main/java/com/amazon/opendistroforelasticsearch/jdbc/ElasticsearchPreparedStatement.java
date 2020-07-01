@@ -83,7 +83,7 @@ public class ElasticsearchPreparedStatement extends ElasticsearchStatement imple
     protected ResultSet executeQueryX(int fetchSize) throws SQLException {
         checkParamsFilled();
         JdbcQueryRequest jdbcQueryRequest = new JdbcQueryRequest(sql, fetchSize);
-        jdbcQueryRequest.setParameters(Arrays.asList(parameters));
+        jdbcQueryRequest.setParams(Arrays.asList(parameters));
         return executeQueryRequest(jdbcQueryRequest);
     }
 

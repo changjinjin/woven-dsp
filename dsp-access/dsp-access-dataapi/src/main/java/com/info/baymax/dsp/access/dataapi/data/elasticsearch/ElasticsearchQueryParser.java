@@ -1,12 +1,11 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
 
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
+import com.google.common.collect.Lists;
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.Query;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQueryParser;
 import io.searchbox.core.Search;
 import io.searchbox.core.search.sort.Sort;
 import io.searchbox.core.search.sort.Sort.Sorting;
@@ -24,19 +23,6 @@ import java.util.stream.Collectors;
 
 public class ElasticsearchQueryParser implements QueryParser<ElasticSearchStorageConf, ElasticsearchQuery, Search> {
 
-    private static ElasticsearchQueryParser parser = null;
-
-    public static ElasticsearchQueryParser getInstance() {
-        if (parser == null) {
-            synchronized (JdbcQueryParser.class) {
-                if (parser == null) {
-                    parser = new ElasticsearchQueryParser();
-                }
-            }
-        }
-        return parser;
-    }
-
     @Override
     public Search parse(ElasticSearchStorageConf storageConf, Query query) throws Exception {
         IPageable pageable = query.getPageable();
@@ -49,7 +35,7 @@ public class ElasticsearchQueryParser implements QueryParser<ElasticSearchStorag
     }
 
     @Override
-    public ElasticsearchQuery parseQuery(ElasticSearchStorageConf storageConf, Query query) throws Exception {
+    public ElasticsearchQuery convert(ElasticSearchStorageConf storageConf, Query query) throws Exception {
         return ElasticsearchQuery.from(query).clusterName(storageConf.getClusterName()).indices(storageConf.getIndex())
             .indexType(storageConf.getIndexType());
     }
@@ -71,15 +57,14 @@ public class ElasticsearchQueryParser implements QueryParser<ElasticSearchStorag
 
     private BoolQueryBuilder boolQueryBuilder(FieldGroup<Query> fieldGroup) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        List<CriteriaItem> ordItems = fieldGroup.ordItems();
-
+        // TODO parse fieldGroup to a BoolQueryBuilder
+        // List<CriteriaItem> ordItems = fieldGroup.ordItems();
         // if (start > 0) {
         // queryBuilder.must(rangeQuery("@timestamp").gte(start));
         // }
         // if (end > 0) {
         // queryBuilder.must(rangeQuery("@timestamp").lt(end));
         // }
-
         return boolQuery;
     }
 
