@@ -73,9 +73,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                         config.entryTtl(Duration.ofSeconds(cacheInstance.getExpiration())));// 这个缓存空间30秒
             }
         }
-        CustomRedisCacheManager cacheManager = CustomRedisCacheManager
-                .customBuilder(factory)
-                .cacheDefaults(config)
+        CustomRedisCacheManager cacheManager = CustomRedisCacheManager.customBuilder(factory).cacheDefaults(config)
                 .initialCacheNames(cacheNames)// 注意这两句的调用顺序，一定要先调用该方法设置初始化的缓存名，再初始化相关的配置
                 .withInitialCacheConfigurations(configMap).build();
         return cacheManager;
