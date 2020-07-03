@@ -5,11 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.dsp.access.dataapi.data.Query;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
@@ -22,10 +21,9 @@ import java.io.IOException;
  * @date 2020年6月24日 上午11:51:23
  */
 @ApiModel
-@Setter
 @Getter
 @ToString
-public class JdbcQuery extends Query {
+public class JdbcQuery extends RecordQuery {
     private static final long serialVersionUID = 5616355016961992353L;
 
     @ApiModelProperty(value = "表名称", hidden = true)
@@ -36,7 +34,7 @@ public class JdbcQuery extends Query {
         return this;
     }
 
-    public static JdbcQuery from(Query query)
+    public static JdbcQuery from(RecordQuery query)
         throws JsonParseException, JsonMappingException, JsonProcessingException, IOException {
         ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
         return mapper.readValue(mapper.writeValueAsBytes(query), new TypeReference<JdbcQuery>() {

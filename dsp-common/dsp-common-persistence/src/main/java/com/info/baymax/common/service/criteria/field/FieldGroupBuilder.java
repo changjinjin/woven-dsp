@@ -1,7 +1,6 @@
 package com.info.baymax.common.service.criteria.field;
 
 import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
-import com.info.baymax.common.service.criteria.query.QueryBuilder;
 
 import java.util.List;
 
@@ -12,9 +11,7 @@ import java.util.List;
  * @author jingwei.yang
  * @date 2019年9月6日 上午11:41:02
  */
-@SuppressWarnings("unchecked")
-public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGroupBuilder<T, B>>
-    extends FieldBuilder<B> {
+public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends FieldBuilder<B> {
 
     /**
      * 并行条件之间的逻辑关系，默认AND
@@ -94,7 +91,7 @@ public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGro
      * @param group group对象
      * @return this builder
      */
-    B group(FieldGroup<T> group);
+    B group(FieldGroup group);
 
     /**
      * 添加一个and group
@@ -102,7 +99,7 @@ public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGro
      * @param group group对象
      * @return this builder
      */
-    B andGroup(FieldGroup<T> group);
+    B andGroup(FieldGroup group);
 
     /**
      * 添加一个or group
@@ -110,7 +107,7 @@ public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGro
      * @param group group对象
      * @return this builder
      */
-    B orGroup(FieldGroup<T> group);
+    B orGroup(FieldGroup group);
 
     /**
      * 添加一个or group
@@ -118,7 +115,7 @@ public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGro
      * @param group group对象
      * @return this builder
      */
-    B removeGroup(FieldGroup<T> group);
+    B removeGroup(FieldGroup group);
 
     /**
      * 批量删除 group
@@ -126,7 +123,7 @@ public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGro
      * @param groups groups集合
      * @return this builder
      */
-    B removeGroups(FieldGroup<T>... groups);
+    B removeGroups(FieldGroup... groups);
 
     /**
      * 批量删除 group
@@ -134,7 +131,7 @@ public interface FieldGroupBuilder<T extends QueryBuilder<T>, B extends FieldGro
      * @param groups groups集合
      * @return this builder
      */
-    B removeGroups(List<FieldGroup<T>> groups);
+    B removeGroups(List<FieldGroup> groups);
 
     /**
      * 根据条件节点顺序重新设置节点索引

@@ -6,7 +6,7 @@ package com.info.baymax.dsp.access.dataapi.data;
  * @author jingwei.yang
  * @date 2020年6月22日 上午10:53:48
  */
-public abstract class MapEntityDataReader implements DataReader<MapEntity> {
+public abstract class MapEntityDataReader implements DataReader<MapEntity, MapEntity> {
 
     private Engine engine;
 

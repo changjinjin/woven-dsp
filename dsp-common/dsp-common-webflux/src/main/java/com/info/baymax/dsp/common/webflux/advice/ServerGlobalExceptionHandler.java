@@ -44,7 +44,7 @@ public class ServerGlobalExceptionHandler {
         log.error(e.getMessage(), e);
         ServerHttpResponse response = swe.getResponse();
         response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
     }
 
     /**
@@ -60,11 +60,11 @@ public class ServerGlobalExceptionHandler {
     public Response<?> bizExceptionHandler(BizException e) {
         log.error(e.getMessage(), e);
         Response<?> result = Response.error(e.getStatus(),
-            StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()));
+            StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus())).build();
         if (result != null) {
             return result;
         }
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
     }
 
     @ResponseBody
@@ -75,9 +75,9 @@ public class ServerGlobalExceptionHandler {
         log.error(e.getMessage(), e);
         if (e instanceof DuplicateKeyException) {
             return Response.error(ErrType.INTERNAL_SERVER_ERROR,
-                StringUtils.defaultString(e.getMessage(), "Duplicate key error!"));
+                StringUtils.defaultString(e.getMessage(), "Duplicate key error!")).build();
         } else {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
         }
     }
 
@@ -99,7 +99,7 @@ public class ServerGlobalExceptionHandler {
             buff.append(field);
         }
         buff.append("] ").append(fieldError.getDefaultMessage());
-        return Response.error(ErrType.BAD_REQUEST, buff.toString());
+        return Response.error(ErrType.BAD_REQUEST, buff.toString()).build();
     }
 
     @ResponseBody
@@ -116,6 +116,6 @@ public class ServerGlobalExceptionHandler {
                 break;// 拿第一条错误信息即可，满足快速失败就行
             }
         }
-        return Response.error(ErrType.BAD_REQUEST, message);
+        return Response.error(ErrType.BAD_REQUEST, message).build();
     }
 }

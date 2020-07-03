@@ -1,12 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.Cache.ValueWrapper;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.utils.PasswordGenerator;
@@ -14,39 +9,47 @@ import com.info.baymax.common.utils.crypto.RSAGenerater;
 import com.info.baymax.dsp.access.dataapi.service.RestSignService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
-import com.info.baymax.dsp.data.sys.constant.CacheNames;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RestSignServiceImpl implements RestSignService {
+    private String prefix = "sign_";
+    private static final Cache<String, String> ACCESSKEY_CACHE = CacheBuilder.newBuilder().maximumSize(1000) // 设置缓存的最大容量
+        .expireAfterWrite(20, TimeUnit.MINUTES) // 设置缓存在写入10分钟后失效
+        .concurrencyLevel(10) // 设置并发级别为10
+        .recordStats() // 开启缓存统计
+        .build();
 
-	private String prefix = "sign_";
+    @Autowired
+    private DataCustAppService dataCustAppService;
 
-	@Autowired
-	private CacheManager cacheManager;
+    @Override
+    public String secertkey(String accessKey) {
+        DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
+        // 生成随机的对称加密秘钥并使用app的私钥进行加密返回给用户
+        String encryptKey = RSAGenerater.encryptByPrivateKey(new PasswordGenerator(16, 3).generateRandomPassword(),
+            app.getPrivateKey());
+        ACCESSKEY_CACHE.put(signKey(accessKey), encryptKey);
+        return encryptKey;
+    }
 
-	@Autowired
-	private DataCustAppService dataCustAppService;
+    @Override
+    public String signKeyIfExist(String accessKey) {
+        DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
+        // 返回解密的对称加密秘钥明文用于加解密报文内容
+        String wrappKey = ACCESSKEY_CACHE.getIfPresent(signKey(accessKey));
+        if (StringUtils.isNotEmpty(wrappKey)) {
+            return RSAGenerater.decryptByPublicKey(wrappKey, app.getPublicKey());
+        }
+        throw new ServiceException(ErrType.SECRET_KEY_ERROR,
+            "There is no secret key available in the current request. The secret key has expired or has been deleted. Please request a secret key first.");
+    }
 
-	@Cacheable(cacheNames = CacheNames.CACHE_SIGN, key = "'sign_'+#accessKey", unless = "#result == null")
-	@Override
-	public String secertkey(String accessKey) {
-		DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
-		// 生成随机的对称加密秘钥并使用app的私钥进行加密返回给用户
-		return RSAGenerater.encryptByPrivateKey(new PasswordGenerator(16, 3).generateRandomPassword(),
-				app.getPrivateKey());
-	}
-
-	@Override
-	public String signKeyIfExist(String accessKey) {
-		DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
-		// 返回解密的对称加密秘钥明文用于加解密报文内容
-		Cache cache = cacheManager.getCache(CacheNames.CACHE_SIGN);
-		if (cache != null) {
-			ValueWrapper valueWrapper = cache.get(prefix + accessKey);
-			if (valueWrapper != null) {
-				return RSAGenerater.decryptByPublicKey(valueWrapper.get().toString(), app.getPublicKey());
-			}
-		}
-		throw new ServiceException(ErrType.SECRET_KEY_ERROR);
-	}
+    private String signKey(String accessKey) {
+        return prefix + accessKey;
+    }
 }

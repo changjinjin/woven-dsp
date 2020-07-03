@@ -1,8 +1,13 @@
 package com.info.baymax.dsp.access.dataapi.client;
 
 import com.alibaba.fastjson.JSON;
-import com.info.baymax.dsp.access.dataapi.data.Query;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.service.criteria.agg.AggType;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
+import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +29,10 @@ public class DataPullClientTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    @Test
-    public void pullJdbc() throws Exception {
-        String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
-        long dataServiceId = 725059842368077824L;
+    private String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
+
+    @Before
+    public void init() {
         webTestClient//
             .get().uri(uriBuilder -> uriBuilder.path("/data/secertkey").queryParam("accessKey", accessKey).build())
             .accept(MediaType.APPLICATION_JSON)//
@@ -37,18 +42,20 @@ public class DataPullClientTest {
             .consumeWith(t -> {
                 System.out.println(JSON.toJSONString(t));
             });
+    }
 
-        Query query = Query.builder()//
+    @Test
+    public void pullJdbc() throws Exception {
+        long dataServiceId = 725059842368077824L;
+        RecordQuery query = RecordQuery.builder()//
             .page(1, 3)//
             .allProperties("id", "code", "date", "project", "income", "manager")//
             .selectProperties("id", "code", "project", "income", "manager")//
-            .fieldGroup()//
-            .andGreaterThan("id", 2)//
-            .andIn("code", new String[]{"'1'", "'2'", "'3'"})//
-            .end()//
+            .fieldGroup(FieldGroup.builder().andGreaterThan("id", 2).andIn("code",
+                new String[]{"'1'", "'2'", "'3'"}))//
             .orderBy("id")//
             .orderBy("code");
-        PullRequest request = new PullRequest(dataServiceId, query, accessKey, System.currentTimeMillis(), false);
+        PullRequest request = new PullRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
         webTestClient//
             .post().uri("/data/pull")//
             .header("hosts", "183.6.116.33")//
@@ -65,33 +72,58 @@ public class DataPullClientTest {
 
     @Test
     public void pullEsJdbc() throws Exception {
-        String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
+        RecordQuery query = RecordQuery.builder()//
+            .page(1, 3)//
+            .allProperties("skuId", "name", "category", "price", "brand", "stock")//
+            .selectProperties("skuId", "name", "category", "price", "brand", "stock")//
+            .fieldGroup(FieldGroup.builder().andGreaterThan("price", 200D)//
+                // .andIn("category", new String[] { "101" })//
+            )//
+            .orderBy("skuId")//
+            .orderBy("name");
+
+        long dataServiceId = 727202723199451136L;
+        PullRequest request = new PullRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+        System.out.println("request:" + JSON.toJSONString(request));
         webTestClient//
-            .get().uri(uriBuilder -> uriBuilder.path("/data/secertkey").queryParam("accessKey", accessKey).build())
+            .post().uri("/data/pull")//
+            .header("hosts", "183.6.116.33")//
+            .body(Mono.just(request), PullRequest.class)//
             .accept(MediaType.APPLICATION_JSON)//
             .exchange()//
             .expectStatus().isOk()//
             .expectBody()//
             .consumeWith(t -> {
-                System.out.println(JSON.toJSONString(t));
+                String string = new String(t.getResponseBodyContent());
+                System.out.println(string);
             });
+    }
 
-        Query query = Query.builder()//
+    @Test
+    public void pullEsJdbcAgg() throws Exception {
+        AggQuery query = AggQuery.builder()//
             .page(1, 3)//
-            .allProperties("skuId", "name", "category", "price", "brand", "stock")//
-            .selectProperties("skuId", "name", "category", "price", "brand", "stock")//
-            .fieldGroup()//
-            .andGreaterThan("price", 200D)//
-            // .andIn("category", new String[] { "101" })//
-            .end()//
+            // .allProperties("skuId", "name", "category", "price", "brand", "stock")//
+            // .selectProperties("skuId", "name", "category", "price", "brand", "stock")//
+            .fieldGroup(FieldGroup.builder().andGreaterThan("price", 200D)//
+                // .andIn("category", new String[] { "101" })//
+            )//
             .orderBy("skuId")//
-            .orderBy("name");
+            .orderBy("name")//
+            .aggField("price", AggType.COUNT)//
+            .aggField("price", AggType.AVG)//
+            .aggField("price", AggType.MAX)//
+            .aggField("price", AggType.MIN)//
+            .aggField("price", AggType.SUM)//
+            .groupFields("skuId", "name", "category")//
+            .havingFieldGroup(FieldGroup.builder().andBetween("avg_price", 0, 10000))//
+            .havingOrderBy("max_price");
 
         long dataServiceId = 727202723199451136L;
-        PullRequest request = new PullRequest(dataServiceId, query, accessKey, System.currentTimeMillis(), false);
+        AggRequest request = new AggRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
         System.out.println("request:" + JSON.toJSONString(request));
         webTestClient//
-            .post().uri("/data/pull")//
+            .post().uri("/data/agg")//
             .header("hosts", "183.6.116.33")//
             .body(Mono.just(request), PullRequest.class)//
             .accept(MediaType.APPLICATION_JSON)//

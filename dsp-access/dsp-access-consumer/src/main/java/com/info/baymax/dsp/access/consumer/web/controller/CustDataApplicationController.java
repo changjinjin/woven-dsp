@@ -12,7 +12,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: haijun
@@ -36,8 +35,8 @@ public class CustDataApplicationController implements BaseEntityController<DataA
     @ResponseBody
     public Response<IPage<DataApplication>> page(@ApiParam(value = "查询条件") @RequestBody ExampleQuery query) {
         // 过滤当前消费者的数据
-        return BaseEntityController.super.page(
-            query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+        query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+        return BaseEntityController.super.page(query);
     }
 
 }

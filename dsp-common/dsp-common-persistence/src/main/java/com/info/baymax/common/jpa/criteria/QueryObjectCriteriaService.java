@@ -151,8 +151,8 @@ class ExampleQueryTransferHelper {
         return query;
     }
 
-    public static FieldGroup<ExampleQuery> fieldListToFieldGroup(List<FieldObject> fieldList) {
-        FieldGroup<ExampleQuery> group = FieldGroup.<ExampleQuery>builder();
+    public static FieldGroup fieldListToFieldGroup(List<FieldObject> fieldList) {
+        FieldGroup group = FieldGroup.<ExampleQuery>builder();
         if (fieldList != null) {
             for (FieldObject fieldObject : fieldList) {
                 Field field = fieldObjectToField(fieldObject);

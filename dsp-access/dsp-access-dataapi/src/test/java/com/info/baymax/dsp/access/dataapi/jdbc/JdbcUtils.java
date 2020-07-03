@@ -15,7 +15,7 @@ public class JdbcUtils {
      * 数据源缓存
      */
     private static final Cache<String, DataSource> dsCache = CacheBuilder.newBuilder().maximumSize(100) // 设置缓存的最大容量
-        .expireAfterWrite(10, TimeUnit.MINUTES) // 设置缓存在写入一分钟后失效
+        .expireAfterWrite(10, TimeUnit.MINUTES) // 设置缓存在写入10分钟后失效
         .concurrencyLevel(10) // 设置并发级别为10
         .recordStats() // 开启缓存统计
         .build();

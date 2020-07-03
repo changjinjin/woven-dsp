@@ -16,6 +16,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
@@ -40,9 +41,7 @@ public class PermissionServiceImpl extends EntityClassServiceImpl<Permission> im
 
 	public Permission findByCode(String code) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("code", code)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo("code", code)));
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)

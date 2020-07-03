@@ -28,7 +28,9 @@ public class DataCustAppController implements BaseEntityController<DataCustApp> 
 
     @Override
     public Response<IPage<DataCustApp>> page(ExampleQuery query) {
-        return BaseEntityController.super.page(ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+        query = ExampleQuery.builder(query);
+        query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+        return BaseEntityController.super.page(query);
     }
 
 }

@@ -2,6 +2,7 @@ package com.info.baymax.dsp.data.dataset.service.core.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
 import com.info.baymax.dsp.data.dataset.mybatis.mapper.core.FlowExecutionMapper;
@@ -27,18 +28,14 @@ public class FlowExecutionServiceImpl extends EntityClassServiceImpl<FlowExecuti
 	@Override
 	public FlowExecution findOneByJobId(String jobId) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("jobId", jobId)//
-				.end()//
+				.fieldGroup(FieldGroup.builder().andEqualTo("jobId", jobId))//
 		);
 	}
 
 	@Override
 	public List<FlowExecution> findByFlowSchedulerId(String flowSchedulerId) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("flowSchedulerId", flowSchedulerId)//
-				.end()//
+				.fieldGroup(FieldGroup.builder().andEqualTo("flowSchedulerId", flowSchedulerId))//
 				.orderByDesc("lastModifiedTime")//
 		);
 	}
@@ -46,9 +43,7 @@ public class FlowExecutionServiceImpl extends EntityClassServiceImpl<FlowExecuti
 	@Override
 	public List<FlowExecution> findByFlowId(String flowId) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("flowId", flowId)//
-				.end()//
+				.fieldGroup(FieldGroup.builder().andEqualTo("flowId", flowId))//
 				.orderByDesc("lastModifiedTime")//
 		);
 	}
@@ -62,9 +57,7 @@ public class FlowExecutionServiceImpl extends EntityClassServiceImpl<FlowExecuti
 	@Override
 	public List<FlowExecution> findAllRunningExecutions() {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andIn("statusType", new String[] { "RUNNING", "READY" })//
-				.end()//
+				.fieldGroup(FieldGroup.builder().andIn("statusType", new String[] { "RUNNING", "READY" }))//
 				.orderByDesc("lastModifiedTime")//
 		);
 	}
@@ -72,9 +65,7 @@ public class FlowExecutionServiceImpl extends EntityClassServiceImpl<FlowExecuti
 	@Override
 	public List<FlowExecution> findAllByStatusType(String statusType) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("statusType", statusType)//
-				.end()//
+				.fieldGroup(FieldGroup.builder().andEqualTo("statusType", statusType))//
 				.orderByDesc("lastModifiedTime")//
 		);
 	}
@@ -82,9 +73,7 @@ public class FlowExecutionServiceImpl extends EntityClassServiceImpl<FlowExecuti
 	@Override
 	public int countByStatusType(String statusType) {
 		return selectCount(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("statusType", statusType)//
-				.end()//
+				.fieldGroup(FieldGroup.builder().andEqualTo("statusType", statusType))//
 		);
 	}
 }

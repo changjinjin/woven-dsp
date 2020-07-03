@@ -55,14 +55,14 @@ public class CustomerController implements MainTableController<Customer> {
     @PostMapping("/resetPwd")
     public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam @NotEmpty String[] ids) {
         consumerService.resetPwd(ids, sysInitConfig.getPassword());
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "修改用户启用停用状态", notes = "根据ID修改用户的启用或停用状态，需要传用户ID和修改的目标状态值（0-停用，1-启用），批量操作")
     @PostMapping("/resetStatus")
     public Response<?> resetStatus(@ApiParam(value = "修改状态的对象列表", required = true) @RequestBody @NotEmpty List<Customer> list) {
         consumerService.resetStatus(list);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "消费者应用配置查询", notes = "消费者应用配置查询")

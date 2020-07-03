@@ -5,6 +5,7 @@ import com.info.baymax.common.service.criteria.field.Field;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
 import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
+import com.info.baymax.common.utils.ICollections;
 import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
@@ -15,15 +16,15 @@ import java.util.*;
 @ToString
 public class ConditionSql implements Serializable {
     private static final long serialVersionUID = 7871946632377823592L;
-    private FieldGroup<?> fieldGroup;
+    private FieldGroup fieldGroup;
 
     private int i = 0;
 
-    private ConditionSql(FieldGroup<?> fieldGroup) {
+    private ConditionSql(FieldGroup fieldGroup) {
         this.fieldGroup = fieldGroup;
     }
 
-    public static ConditionSql build(FieldGroup<?> fieldGroup) {
+    public static ConditionSql build(FieldGroup fieldGroup) {
         return new ConditionSql(fieldGroup).parse();
     }
 
@@ -60,9 +61,6 @@ public class ConditionSql implements Serializable {
     /**
      * 分析命名SQL语句获取抽象NSQl实例；java(JDBC)提供SQL语句命名参数而是通过?标识参数位置， 通过此对象可以命名参数方式使用SQL语句，命名参数以?开始后跟名称?name。 例如：SELECT * FROM
      * table WHERE name = ?name AND email = ?email;
-     *
-     * @param sql
-     * @return
      */
     private ConditionSql parse() {
         namingSql = where(fieldGroup);
@@ -103,16 +101,18 @@ public class ConditionSql implements Serializable {
         return this;
     }
 
-    private String where(FieldGroup<?> fieldGroup) {
+    private String where(FieldGroup fieldGroup) {
         StringBuffer buf = new StringBuffer();
         List<CriteriaItem> ordItems = fieldGroup.reIndex().ordItems();
-        for (CriteriaItem item : ordItems) {
-            if (item instanceof FieldGroup) {
-                FieldGroup<?> group = (FieldGroup<?>) item;
-                buf.append("( ").append(where(group)).append(" )");
-            } else {
-                Field field = (Field) item;
-                buf.append(field(field));
+        if (ICollections.hasElements(ordItems)) {
+            for (CriteriaItem item : ordItems) {
+                if (item instanceof FieldGroup) {
+                    FieldGroup group = (FieldGroup) item;
+                    buf.append("( ").append(where(group)).append(" )");
+                } else {
+                    Field field = (Field) item;
+                    buf.append(field(field));
+                }
             }
         }
         return trimAndOr(buf.toString());

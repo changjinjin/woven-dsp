@@ -4,6 +4,7 @@ import com.info.baymax.common.entity.preprocess.PreEntityService;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,122 +35,84 @@ public interface CommonEntityService<ID extends Serializable, T extends CommonEn
 
 	default T findOne(String tenantId, ID id) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_ID, id)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_ID, id)));
 	}
 
 	default List<T> findByIds(String tenantId, ID[] ids) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andIn(PROPERTY_ID, ids)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andIn(PROPERTY_ID, ids)));
 	}
 
 	default T findOne(ID id) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_ID, id)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_ID, id)));
 	}
 
 	default List<T> findAllByTenantId(String tenantId) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
 				.offset(0, Integer.MAX_VALUE)//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)));
 	}
 
 	default List<T> findAllByTenantIdAndName(String tenantId, String name) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_NAME, name)//
-				.end());
+				.fieldGroup(
+						FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_NAME, name)));
 	}
 
 	default List<T> findAllByTenantIdAndOwner(String tenantId, String owner) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_OWNER, owner)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_OWNER,
+						owner)));
 	}
 
 	default int delete(String tenantId, ID id) {
 		return delete(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_ID, id)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_ID, id)));
 	}
 
 	default int delete(String tenantId, String owner, ID id) {
 		return delete(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_OWNER, owner)//
-				.andEqualTo(PROPERTY_ID, id)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)
+						.andEqualTo(PROPERTY_OWNER, owner).andEqualTo(PROPERTY_ID, id)));
 	}
 
 	default int deleteByIds(String tenantId, ID[] ids) {
 		return delete(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andIn(PROPERTY_ID, ids)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andIn(PROPERTY_ID, ids)));
 	}
 
 	default int deleteByIds(String tenantId, String owner, ID[] ids) {
 		return delete(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_OWNER, owner)//
-				.andIn(PROPERTY_ID, ids)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)
+						.andEqualTo(PROPERTY_OWNER, owner).andIn(PROPERTY_ID, ids)));
 	}
 
 	default List<T> findAll(String tenantId, ID[] ids) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andIn(PROPERTY_ID, ids)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andIn(PROPERTY_ID, ids)));
 	}
 
 	default int count(String tenantId) {
 		return selectCount(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)));
 	}
 
 	default T findOneByName(String tenantId, String owner, String name) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_OWNER, owner)//
-				.andEqualTo(PROPERTY_NAME, name)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)
+						.andEqualTo(PROPERTY_OWNER, owner).andEqualTo(PROPERTY_NAME, name)));
 	}
 
 	default int deleteByOwner(String owner) {
 		return delete(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_OWNER, owner)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_OWNER, owner)));
 	}
 
 	default boolean existsByTenantIdAndName(String tenantId, String name) {
 		Integer count = selectCount(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo(PROPERTY_TENANTID, tenantId)//
-				.andEqualTo(PROPERTY_NAME, name)//
-				.end());
+				.fieldGroup(
+						FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_NAME, name)));
 		return count > 0;
 	}
 }

@@ -2,9 +2,10 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.page.IPageable;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.dsp.access.dataapi.data.*;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.SelectSql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AbstractQuerySql;
 import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import com.jn.sqlhelper.apachedbutils.QueryRunner;
 import com.jn.sqlhelper.dialect.pagination.PagingRequest;
@@ -18,6 +19,8 @@ import java.util.List;
 @Slf4j
 public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
     private final QueryRunner runner = new QueryRunner();
+    private final MapEntityListHandler rsh = new MapEntityListHandler();
+
     protected DBType dbType;
 
     public AbstractJdbcDataReader(DBType dbType) {
@@ -32,26 +35,31 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
     }
 
     @Override
-    public IPage<MapEntity> read(StorageConf conf, Query query) throws DataReadException {
-        IPageable pageable = query.getPageable();
-        try {
-            SelectSql selectSql = parseSql(conf, query);
-            if (selectSql.isValid()) {
-                Connection conn = getConn((JdbcStorageConf) conf);
-                if (conn != null) {
-                    PagingRequest<?, MapEntity> request = SqlPaginations.preparePagination(pageable.getPageNum(),
-                        pageable.getPageSize());
-                    List<MapEntity> list = runner.query(conn, selectSql.getExecuteSql(), new MapEntityListHandler(),
-                        selectSql.getParamValues());
-                    log.debug("query result:" + list.size());
-                    PagingResult<MapEntity> result = request.getResult();
-                    if (result != null) {
-                        return IPage.<MapEntity>of(pageable, result.getTotal(), result.getItems());
-                    }
+    public IPage<MapEntity> readRecord(StorageConf conf, RecordQuery query) throws Exception {
+        return executeQuery(conf, query.getPageable(),
+            QueryParser.getInstance(JdbcQueryParser.class).parse((JdbcStorageConf) conf, query));
+    }
+
+    @Override
+    public IPage<MapEntity> readAgg(StorageConf conf, AggQuery query) throws Exception {
+        return executeQuery(conf, query.getPageable(),
+            QueryParser.getInstance(JdbcQueryParser.class).parseAgg((JdbcStorageConf) conf, query));
+    }
+
+    private IPage<MapEntity> executeQuery(StorageConf conf, IPageable pageable, AbstractQuerySql<?> selectSql)
+        throws Exception {
+        if (selectSql.isValid()) {
+            Connection conn = getConn((JdbcStorageConf) conf);
+            if (conn != null) {
+                PagingRequest<?, MapEntity> request = SqlPaginations.preparePagination(pageable.getPageNum(),
+                    pageable.getPageSize());
+                List<MapEntity> list = runner.query(conn, selectSql.getExecuteSql(), rsh, selectSql.getParamValues());
+                log.debug("query result:" + list.size());
+                PagingResult<MapEntity> result = request.getResult();
+                if (result != null) {
+                    return IPage.<MapEntity>of(pageable, result.getTotal(), result.getItems());
                 }
             }
-        } catch (Exception e) {
-            throw new DataReadException(e.getMessage(), e);
         }
         return IPage.<MapEntity>of(pageable, 0, null);
     }
@@ -66,7 +74,4 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
         }
     }
 
-    public SelectSql parseSql(StorageConf conf, Query query) throws Exception {
-        return QueryParser.getInstance(JdbcQueryParser.class).parse((JdbcStorageConf) conf, query);
-    }
 }

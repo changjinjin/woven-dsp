@@ -2,10 +2,11 @@ package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
 
 import com.google.common.collect.Lists;
 import com.info.baymax.common.page.IPageable;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.access.dataapi.data.Query;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import io.searchbox.core.Search;
 import io.searchbox.core.search.sort.Sort;
 import io.searchbox.core.search.sort.Sort.Sorting;
@@ -21,10 +22,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ElasticsearchQueryParser implements QueryParser<ElasticSearchStorageConf, ElasticsearchQuery, Search> {
+public class ElasticsearchQueryParser
+    implements QueryParser<ElasticSearchStorageConf, ElasticsearchQuery, Search, AggQuery, Search> {
 
     @Override
-    public Search parse(ElasticSearchStorageConf storageConf, Query query) throws Exception {
+    public Search parse(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
         IPageable pageable = query.getPageable();
         return new Search.Builder(searchBuilder(query.finalSelectProperties(), query.getFieldGroup()))
             .addIndices(Arrays.asList(storageConf.getIndex()))//
@@ -35,12 +37,22 @@ public class ElasticsearchQueryParser implements QueryParser<ElasticSearchStorag
     }
 
     @Override
-    public ElasticsearchQuery convert(ElasticSearchStorageConf storageConf, Query query) throws Exception {
+    public ElasticsearchQuery convert(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
         return ElasticsearchQuery.from(query).clusterName(storageConf.getClusterName()).indices(storageConf.getIndex())
             .indexType(storageConf.getIndexType());
     }
 
-    private String searchBuilder(Set<String> includes, FieldGroup<Query> fieldGroup) {
+    @Override
+    public Search parseAgg(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
+        return null;
+    }
+
+    @Override
+    public AggQuery convertAgg(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
+        return query.table(storageConf.getIndex());
+    }
+
+    private String searchBuilder(Set<String> includes, FieldGroup fieldGroup) {
         String[] includeFields = null;
         if (ICollections.hasElements(includes)) {
             includeFields = includes.stream().toArray(String[]::new);
@@ -55,7 +67,7 @@ public class ElasticsearchQueryParser implements QueryParser<ElasticSearchStorag
         return SearchSourceBuilder.searchSource().query(queryBuilder).fetchSource(includeFields, null).toString();
     }
 
-    private BoolQueryBuilder boolQueryBuilder(FieldGroup<Query> fieldGroup) {
+    private BoolQueryBuilder boolQueryBuilder(FieldGroup fieldGroup) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         // TODO parse fieldGroup to a BoolQueryBuilder
         // List<CriteriaItem> ordItems = fieldGroup.ordItems();

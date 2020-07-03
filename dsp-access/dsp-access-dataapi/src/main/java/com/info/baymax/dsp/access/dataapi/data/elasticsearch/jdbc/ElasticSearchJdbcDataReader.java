@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
 import com.info.baymax.common.page.IPage;
-import com.info.baymax.dsp.access.dataapi.data.DataReadException;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.data.Query;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.AbstractJdbcDataReader;
@@ -23,8 +23,13 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
     }
 
     @Override
-    public IPage<MapEntity> read(StorageConf conf, Query query) throws DataReadException {
-        return super.read(new ElasticSearchJdbcStorageConf((ElasticSearchStorageConf) conf), query);
+    public IPage<MapEntity> readRecord(StorageConf conf, RecordQuery query) throws Exception {
+        return super.readRecord(new ElasticSearchJdbcStorageConf((ElasticSearchStorageConf) conf), query);
+    }
+
+    @Override
+    public IPage<MapEntity> readAgg(StorageConf conf, AggQuery query) throws Exception {
+        return super.readAgg(new ElasticSearchJdbcStorageConf((ElasticSearchStorageConf) conf), query);
     }
 
     // 优先级要高（低）于ElasticSearchDataReader

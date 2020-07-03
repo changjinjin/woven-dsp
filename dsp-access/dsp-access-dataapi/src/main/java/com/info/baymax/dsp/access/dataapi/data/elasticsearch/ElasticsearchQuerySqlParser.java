@@ -1,13 +1,16 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
 
 import com.info.baymax.common.page.IPageable;
-import com.info.baymax.dsp.access.dataapi.data.Query;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc.ElasticSearchJdbcStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQueryParser;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.SelectSql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AbstractQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.QuerySql;
 import com.jn.sqlhelper.dialect.elasticsearch.ElasticsearchDialect;
 import com.jn.sqlhelper.dialect.internal.limit.AbstractLimitHandler;
 import com.jn.sqlhelper.dialect.internal.limit.LimitHandler;
@@ -24,18 +27,30 @@ import java.util.Locale;
 public class ElasticsearchQuerySqlParser extends ElasticsearchQueryParser {
 
     @Override
-    public Search parse(ElasticSearchStorageConf storageConf, Query query) throws Exception {
-        IPageable pageable = query.getPageable();
-        SelectSql selectSql = extracted(pageable, parseSql(new ElasticSearchJdbcStorageConf(storageConf), query));
+    public Search parse(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
+        AbstractQuerySql<?> selectSql = parseLimit(query.getPageable(),
+            parseSql(new ElasticSearchJdbcStorageConf(storageConf), query));
+        return new Search.Builder(parseDsl(selectSql)).addIndex(storageConf.getIndex())
+            .addType(storageConf.getIndexType()).allowNoIndices(true).ignoreUnavailable(true).build();
+    }
+
+    @Override
+    public Search parseAgg(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
+        AbstractQuerySql<?> selectSql = parseLimit(query.getPageable(),
+            parseAggSql(new ElasticSearchJdbcStorageConf(storageConf), query));
+        return new Search.Builder(parseDsl(selectSql)).addIndex(storageConf.getIndex())
+            .addType(storageConf.getIndexType()).allowNoIndices(true).ignoreUnavailable(true).build();
+    }
+
+    private String parseDsl(AbstractQuerySql<?> selectSql) {
         ElasticSql2DslParser sql2DslParser = new ElasticSql2DslParser();
         ElasticSqlParseResult parseResult = sql2DslParser.parse(selectSql.getExecuteSql(), selectSql.getParamValues());
         String dsl = parseResult.toDsl();
         log.debug("query dsl：" + dsl);
-        return new Search.Builder(dsl).addIndex(storageConf.getIndex()).addType(storageConf.getIndexType())
-            .allowNoIndices(true).ignoreUnavailable(true).build();
+        return dsl;
     }
 
-    private SelectSql extracted(IPageable pageable, SelectSql selectSql) {
+    private AbstractQuerySql<?> parseLimit(IPageable pageable, AbstractQuerySql<?> selectSql) {
         LimitHandler limitHandler = new SimpleLimitHandler();
         ElasticsearchDialect dialect = new ElasticsearchDialect();
         dialect.setUseLimitInVariableMode(true);
@@ -55,8 +70,12 @@ public class ElasticsearchQuerySqlParser extends ElasticsearchQueryParser {
         return selectSql;
     }
 
-    public SelectSql parseSql(StorageConf conf, Query query) throws Exception {
+    public QuerySql parseSql(StorageConf conf, RecordQuery query) throws Exception {
         return QueryParser.getInstance(JdbcQueryParser.class).parse((JdbcStorageConf) conf, query);
+    }
+
+    public AggQuerySql parseAggSql(StorageConf conf, AggQuery query) throws Exception {
+        return QueryParser.getInstance(JdbcQueryParser.class).parseAgg((JdbcStorageConf) conf, query);
     }
 
 }

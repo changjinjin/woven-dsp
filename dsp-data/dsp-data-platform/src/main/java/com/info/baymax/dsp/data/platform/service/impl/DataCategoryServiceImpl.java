@@ -6,6 +6,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;
@@ -67,10 +68,7 @@ public class DataCategoryServiceImpl extends EntityClassServiceImpl<DataCategory
             }
         } else {
             ExampleQuery existQuery = ExampleQuery.builder(getEntityClass())//
-                .fieldGroup()//
-                .andEqualTo("name", t.getName())//
-                .andNotEqualTo("id", t.getId())//
-                .end();
+                .fieldGroup(FieldGroup.builder().andEqualTo("name", t.getName()).andNotEqualTo("id", t.getId()));
             if (exists(existQuery)) {
                 throw new ServiceException(ErrType.ENTITY_EXIST, "同层级相同名称的目录已经存在。");
             }
@@ -110,8 +108,8 @@ public class DataCategoryServiceImpl extends EntityClassServiceImpl<DataCategory
         DataCategory root = selectByPrimaryKey(id);
         if (root != null) {
             List<DataCategory> list = selectList(ExampleQuery.builder(getEntityClass()).selectProperties("id")
-                .fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
-                .andRightLike("path", root.getPath()).end());
+                .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+                    .andRightLike("path", root.getPath())));
             if (ICollections.hasElements(list)) {
                 List<Long> ids = list.stream().map(t -> t.getId()).collect(Collectors.toList());
                 return deleteByPrimaryKeys(ids);

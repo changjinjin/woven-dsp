@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.es;
+package com.info.baymax.dsp.access.dataapi.essql;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.es.sql.bean.ElasticSqlParseResult;

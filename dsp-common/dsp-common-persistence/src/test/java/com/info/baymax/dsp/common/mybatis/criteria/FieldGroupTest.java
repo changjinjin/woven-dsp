@@ -16,27 +16,27 @@ public class FieldGroupTest {
 
     @Test
     public void test() {
-        FieldGroup<?> g = FieldGroup.<ExampleQuery>builder()//
+        FieldGroup g = FieldGroup.builder()//
             .andEqualTo("Brower", "Baidu")//
             .andEqualTo("Brower Version", "Amigo")//
             .group(//
-                FieldGroup.<ExampleQuery>builder()//
+                FieldGroup.builder()//
                     .andEqualTo("Brower", "Sougou")//
                     .andEqualTo("Country", "Alianbia")//
                     .group(//
-                        FieldGroup.<ExampleQuery>builder()//
+                        FieldGroup.builder()//
                             .andEqualTo("id", 1)//
                             .andEqualTo("name", "zhangsan")//
                     )//
                     .group(//
-                        FieldGroup.<ExampleQuery>builder()//
+                        FieldGroup.builder()//
                             .andEqualTo("Brower Version", "Amigo")//
                             .andEqualTo("Device", "100 Plus 100C")//
                     )//
             )//
             .andEqualTo("Platform", "Amigo")//
             .group(//
-                FieldGroup.<ExampleQuery>builder()//
+                FieldGroup.builder()//
                     .andEqualTo("Brower", "Chrome")//
                     .andEqualTo("Country", "China")//
             )//
@@ -46,15 +46,15 @@ public class FieldGroupTest {
 
     @Test
     public void test1() {
-        FieldGroup<?> group = FieldGroup.<ExampleQuery>builder()//
+        FieldGroup group = FieldGroup.builder()//
             .andEqualTo("name", "zhangsan") //
-            .group(FieldGroup.<ExampleQuery>builder()//
+            .group(FieldGroup.builder()//
                 .andEqualTo("name", "zhangsan")//
-                .group(FieldGroup.<ExampleQuery>builder()//
+                .group(FieldGroup.builder()//
                     .andEqualTo("name", "zhangsan")//
                     .andEqualTo("age", 11))//
                 .andEqualTo("age", 11)//
-                .group(FieldGroup.<ExampleQuery>builder()//
+                .group(FieldGroup.builder()//
                     .andEqualTo("name", "zhangsan")//
                     .andEqualTo("age", 11)))//
             .andEqualTo("age", 11)//
@@ -70,15 +70,15 @@ public class FieldGroupTest {
 
     @Test
     public void test2() {
-        FieldGroup<ExampleQuery> group = FieldGroup.<ExampleQuery>builder()//
+        FieldGroup group = FieldGroup.builder()//
             .andEqualTo("name", "zhangsan") //
-            .group(FieldGroup.<ExampleQuery>builder()//
+            .group(FieldGroup.builder()//
                 .andEqualTo("name", "zhangsan")//
-                .group(FieldGroup.<ExampleQuery>builder()//
+                .group(FieldGroup.builder()//
                     .andEqualTo("name", "zhangsan")//
                     .andEqualTo("age", 11))//
                 .andEqualTo("age", 11)//
-                .group(FieldGroup.<ExampleQuery>builder()//
+                .group(FieldGroup.builder()//
                     .andEqualTo("name", "zhangsan")//
                     .andEqualTo("age", 11)))//
             .andEqualTo("age", 11)//

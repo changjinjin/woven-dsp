@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "消费端：数据资源查询相关接口", description = "数据资源查询相关接口")
 @RestController
@@ -22,8 +21,9 @@ public class CustDataResourceController {
     @ApiOperation(value = "消费者查询可申请的数据资源，分页查询")
     @PostMapping("/page")
     public Response<IPage<DataResource>> queryPage(@ApiParam("查询条件") @RequestBody ExampleQuery query) {
-        return Response.ok(dataResourceService.selectPage(ExampleQuery.builder(query).fieldGroup()
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("openStatus", 1).end()));
+        query = ExampleQuery.builder(query);
+        query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("openStatus", 1);
+        return Response.ok(dataResourceService.selectPage(query));
     }
 
     @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")

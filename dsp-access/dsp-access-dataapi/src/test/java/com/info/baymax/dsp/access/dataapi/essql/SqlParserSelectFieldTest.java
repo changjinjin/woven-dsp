@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.es;
+package com.info.baymax.dsp.access.dataapi.essql;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.es.sql.bean.ElasticSqlParseResult;

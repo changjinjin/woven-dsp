@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
 import com.google.common.collect.Sets;
-import com.info.baymax.common.service.criteria.query.AbstractQuery;
+import com.info.baymax.common.service.criteria.query.AbstractPropertiesQuery;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,6 +12,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -24,21 +25,21 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class Query extends AbstractQuery<Query> implements Serializable {
+public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements Serializable {
     private static final long serialVersionUID = 5616355016961992353L;
 
     @ApiModelProperty(value = "所有的字段列表", hidden = true)
-    private Set<String> allProperties;
+    private LinkedHashSet<String> allProperties;
 
-    public static Query builder() {
-        return new Query();
+    public static RecordQuery builder() {
+        return new RecordQuery();
     }
 
-    public static Query builder(Query query) {
-        return query == null ? new Query() : query;
+    public static RecordQuery builder(RecordQuery query) {
+        return query == null ? new RecordQuery() : query;
     }
 
-    public Query allProperties(Collection<String> allProperties) {
+    public RecordQuery allProperties(Collection<String> allProperties) {
         if (this.allProperties == null) {
             this.allProperties = Sets.newLinkedHashSet();
         }
@@ -46,12 +47,8 @@ public class Query extends AbstractQuery<Query> implements Serializable {
         return this;
     }
 
-    public Query allProperties(String... allProperties) {
-        if (this.allProperties == null) {
-            this.allProperties = Sets.newLinkedHashSet();
-        }
-        this.allProperties.addAll(Arrays.asList(allProperties));
-        return this;
+    public RecordQuery allProperties(String... allProperties) {
+        return allProperties(Arrays.asList(allProperties));
     }
 
     public Set<String> finalSelectProperties() {

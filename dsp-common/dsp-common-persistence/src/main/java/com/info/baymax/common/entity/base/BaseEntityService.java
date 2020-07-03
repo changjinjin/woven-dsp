@@ -1,6 +1,7 @@
 package com.info.baymax.common.entity.base;
 
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 
 import java.util.List;
 
@@ -14,24 +15,18 @@ import java.util.List;
 public interface BaseEntityService<T extends BaseEntity> extends CommonEntityService<Long, T> {
     default int countExpired(Long expireTime) {
         return selectCount(ExampleQuery.builder(getEntityClass())//
-                .fieldGroup()//
-                .andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
-                .andNotEqualTo(PROPERTY_EXPIREDTIME, 0)//
-                .end());
+            .fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
+                .andNotEqualTo(PROPERTY_EXPIREDTIME, 0)));
     }
 
     default List<T> findExpired(Long expireTime) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-                .fieldGroup()//
-                .andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
-                .andNotEqualTo(PROPERTY_EXPIREDTIME, 0)//
-                .end());
+            .fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
+                .andNotEqualTo(PROPERTY_EXPIREDTIME, 0)));
     }
 
     default int deleteExpired(Long expireTime) {
-        return selectCount(ExampleQuery.builder(getEntityClass())//
-                .fieldGroup()//
-                .andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
-                .end());
+        return selectCount(ExampleQuery.builder(getEntityClass())
+            .fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)));
     }
 }

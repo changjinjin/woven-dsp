@@ -2,9 +2,8 @@ package com.info.baymax.dsp.access.dataapi.service;
 
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.data.Query;
-
-import java.util.Map;
+import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
 
 /**
  * @Author: guofeng.wu
@@ -13,14 +12,21 @@ import java.util.Map;
 public interface PullService {
 
     /**
-     * 分页查询数据
+     * 数据拉取请求查询逻辑
      *
-     * @param storage  存储类型
-     * @param fieldMap 字段映射
-     * @param conf     配置参数
-     * @param query    查询参数
-     * @return 结果集
+     * @param request 拉取请求参数
+     * @param hosts   配置主机
+     * @return 数据结果集
      */
-    IPage<MapEntity> query(String storage, Map<String, String> fieldMap, Map<String, String> conf, Query query);
+    IPage<MapEntity> pullRecords(PullRequest request, String hosts);
+
+    /**
+     * 数据聚合请求查询逻辑
+     *
+     * @param request 拉取请求参数
+     * @param hosts   配置主机
+     * @return 聚合结果集
+     */
+    IPage<MapEntity> pullAggs(AggRequest request, String hosts);
 
 }

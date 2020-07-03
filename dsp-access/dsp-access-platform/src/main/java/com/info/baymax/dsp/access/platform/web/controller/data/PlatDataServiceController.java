@@ -6,6 +6,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
@@ -53,7 +54,7 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
         }
         dataServiceEntityService.update(dataService);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     /**
@@ -84,10 +85,10 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         // @formatter:off
         query = ExampleQuery
             .builder(query)
-            .fieldGroup()
-            .andEqualTo("flowId", flowId)
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId())
-            .end();
+            .fieldGroup(FieldGroup.builder()
+                .andEqualTo("flowId", flowId)
+                .andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+            );
         // @formatter:on
         return Response.ok(flowExecutionService.selectPage(query));
     }

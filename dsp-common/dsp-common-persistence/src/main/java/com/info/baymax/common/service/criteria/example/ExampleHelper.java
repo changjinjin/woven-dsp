@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import tk.mybatis.mapper.entity.EntityColumn;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +25,6 @@ import java.util.Set;
  * @author jingwei.yang
  * @date 2019年7月1日 下午5:07:38
  */
-@SuppressWarnings("unchecked")
 public class ExampleHelper {
 
     public static Example createExample(ExampleQuery query) {
@@ -94,7 +94,7 @@ public class ExampleHelper {
         }
 
         // 条件组合
-        FieldGroup<ExampleQuery> fieldGroup = query.getFieldGroup();
+        FieldGroup fieldGroup = query.getFieldGroup();
         if (fieldGroup != null) {
             createCriteria(example, fieldGroup);
         }
@@ -105,13 +105,13 @@ public class ExampleHelper {
         return example;
     }
 
-    private static void createCriteria(Example example, FieldGroup<ExampleQuery> fieldGroup) {
+    private static void createCriteria(Example example, FieldGroup fieldGroup) {
         if (fieldGroup != null) {
             example.setCriteria(from(example.criteria(), fieldGroup));
         }
     }
 
-    public static Criteria from(Criteria criteria, FieldGroup<ExampleQuery> fieldGroup) {
+    public static Criteria from(Criteria criteria, FieldGroup fieldGroup) {
         if (fieldGroup == null) {
             return criteria;
         }
@@ -258,7 +258,7 @@ public class ExampleHelper {
             } else {
                 criteria.criteria(
                     from(new Criteria(criteria.getPropertyMap(), criteria.isExists(), criteria.isNotNull()),
-                        (FieldGroup<ExampleQuery>) item));
+                        (FieldGroup) item));
             }
         }
         return criteria;
@@ -277,7 +277,7 @@ public class ExampleHelper {
         }
     }
 
-    private static String createOrderByClause(Map<String, EntityColumn> propertyMap, List<Sort> ordSort) {
+    private static String createOrderByClause(Map<String, EntityColumn> propertyMap, LinkedHashSet<Sort> ordSort) {
         if (ICollections.hasNoElements(ordSort)) {
             return null;
         }

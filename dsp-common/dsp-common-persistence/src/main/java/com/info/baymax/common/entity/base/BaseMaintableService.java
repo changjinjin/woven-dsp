@@ -1,6 +1,7 @@
 package com.info.baymax.common.entity.base;
 
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 
 import java.util.List;
 
@@ -15,23 +16,17 @@ public interface BaseMaintableService<T extends Maintable> extends CommonEntityS
 
 	default int countExpired(Long expireTime) {
 		return selectCount(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)));
 	}
 
 	default List<T> findExpired(Long expireTime) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)));
 	}
 
 	default int deleteExpired(Long expireTime) {
 		return selectCount(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andLessThan(PROPERTY_EXPIREDTIME, expireTime)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)));
 	}
 
 }

@@ -2,6 +2,7 @@ package com.info.baymax.dsp.auth.security.authentication.manager;
 
 import com.google.common.collect.Lists;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.auth.security.authentication.GrantedAuthoritiesService;
 import com.info.baymax.dsp.auth.security.config.SecurityInitProperties;
@@ -151,8 +152,8 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 
 		// 如果是管理员权限则需要用户拥有所有的权限，这里赋给该账户所有的权限
 		if (user.admin()) { // 初始获取如果为空则初始化
-			List<RestOperation> list = restOperationService
-					.selectList(ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("enabled", 1).end());
+			List<RestOperation> list = restOperationService.selectList(ExampleQuery.builder(RestOperation.class)
+					.fieldGroup(FieldGroup.builder().andEqualTo("enabled", 1)));
 			if (ICollections.hasElements(list)) {
 				user.setAuthorities(list.stream().map(t -> new SimpleGrantedAuthority(t.operationKey()))
 						.collect(Collectors.toList()));

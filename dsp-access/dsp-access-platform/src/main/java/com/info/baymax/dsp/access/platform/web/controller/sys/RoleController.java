@@ -8,6 +8,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.service.security.RoleService;
@@ -38,7 +39,7 @@ public class RoleController implements MainTableController<Role> {
     @PostMapping("/updateRrrs")
     public Response<?> updateRrrs(@ApiParam(value = "角色信息", required = true) @RequestBody Role t) {
         roleService.updateRrrs(t);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "查询角色列表")
@@ -55,7 +56,8 @@ public class RoleController implements MainTableController<Role> {
         @JsonBody(type = Permission.class, includes = {"id", "name"})})
     @Override
     public Response<IPage<Role>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        query = ExampleQuery.builder(query).fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
+        query = ExampleQuery.builder(query)
+            .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", SaasContext.getCurrentTenantId()));
         IPage<Role> page = roleService.selectPage(query);
         return Response.ok(page);
     }
@@ -73,6 +75,6 @@ public class RoleController implements MainTableController<Role> {
     public Response<?> resetStatus(
         @ApiParam(value = "修改状态的角色列表，包含角色ID和修改后状态属性值", required = true) @RequestBody @NotEmpty List<Role> list) {
         roleService.resetStatus(list);
-        return Response.ok();
+        return Response.ok().build();
     }
 }
