@@ -4,6 +4,7 @@ import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
@@ -54,7 +55,7 @@ public class DataResourceController implements BaseEntityController<DataResource
         } else {
             throw new RuntimeException("Open DataResource but openStatus is 0");
         }
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "关闭某数据资源的申请权限")
@@ -65,26 +66,24 @@ public class DataResourceController implements BaseEntityController<DataResource
         // status,禁止申请权限,或者删除记录
         // --TODO-- updateOpenStatus 0
         log.info("close dataResource and delete dataApplication, ids.size={}...", ids.length);
-//        dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids);
+        // dataApplicationService.deleteByIds(SaasContext.getCurrentTenantId(), ids);
         dataResourceService.closeDataResource(Arrays.asList(ids));
-        //tag 为1 表示自动停止数据资源关联数据申请和数据服务
+        // tag 为1 表示自动停止数据资源关联数据申请和数据服务
         if (tag == 1) {
             ExampleQuery dataApplicationQuery = ExampleQuery.builder(DataApplication.class)
-                    .fieldGroup()
-                    .andIn("dataResId", ids)
-                    .end();
+                .fieldGroup(FieldGroup.builder().andIn("dataResId", ids));
             List<DataApplication> list = dataApplicationService.selectList(dataApplicationQuery);
             for (DataApplication dataApplication : list) {
-                //更新申请状态: 待审批申请状态置为拒绝
+                // 更新申请状态: 待审批申请状态置为拒绝
                 if (dataApplication.getStatus() == 0) {
                     dataApplicationService.updateDataApplicationStatus(dataApplication.getId(), -1);
                 }
-                //更新服务状态: 数据资源相关联的数据服务状态置为停止
+                // 更新服务状态: 数据资源相关联的数据服务状态置为停止
                 dataServiceEntityService.updateStatusByApplicationId(dataApplication.getId(),
-                        DataServiceStatus.SERVICE_STATUS_STOPPED, ScheduleJobStatus.JOB_STATUS_TO_STOP);
+                    DataServiceStatus.SERVICE_STATUS_STOPPED, ScheduleJobStatus.JOB_STATUS_TO_STOP);
             }
         }
-        return Response.ok();
+        return Response.ok().build();
     }
 
 }

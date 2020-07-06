@@ -39,7 +39,7 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
         "enabled", "tenantId", "owner", "createTime", "creator", "lastModifiedTime",
         "lastModifier"}) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);
-        if (!response.success()) {
+        if (!response.isOk()) {
             return response;
         }
         return BaseEntityController.super.save(t);
@@ -49,7 +49,7 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
     public Response<?> update(@ApiModelFields(requiredFields = {"id", "name", "type", "attributes"}, hiddenFields = {
         "tenantId", "owner", "createTime", "creator", "lastModifiedTime", "lastModifier"}) CustDataSource t) {
         Response<?> response = CheckEntity.checkDataSource(t);
-        if (!response.success()) {
+        if (!response.isOk()) {
             return response;
         }
         return BaseEntityController.super.update(t);
@@ -57,8 +57,9 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 
     @Override
     public Response<IPage<CustDataSource>> page(ExampleQuery query) {
-        return BaseEntityController.super.page(
-            ExampleQuery.builder(query).fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+        query = ExampleQuery.builder(query);
+        query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+        return BaseEntityController.super.page(query);
     }
 
     @ApiOperation(value = "查询数据库驱动信息", notes = "如果是JDBC类型的数据源，查询系统内置的数据库驱动信息用于用户创建数据源")

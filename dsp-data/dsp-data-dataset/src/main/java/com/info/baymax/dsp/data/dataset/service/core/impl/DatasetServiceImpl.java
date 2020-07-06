@@ -4,6 +4,7 @@ import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.core.Schema;
@@ -34,18 +35,14 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 	@Override
 	public List<Dataset> findBySchemaIdAndCreateTime(Date start, Date end, String schemaId) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andBetween("createTime", start, end) //
-				.andEqualTo("schemaId", schemaId)//
-				.end());
+				.fieldGroup(
+						FieldGroup.builder().andBetween("createTime", start, end).andEqualTo("schemaId", schemaId)));
 	}
 
 	@Override
 	public List<Dataset> findBySchemaId(String schemaId) {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("schemaId", schemaId)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo("schemaId", schemaId)));
 	}
 
 	@Override
@@ -79,7 +76,7 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 	private List<Dataset> querySchemas(List<Dataset> datasets) {
 		if (ICollections.hasElements(datasets)) {
 			List<String> schemaIds = datasets.stream().map(t -> t.getSchemaId()).collect(Collectors.toList());
-			//如果没有查询schemaId字段，则不必要查询直接返回即可
+			// 如果没有查询schemaId字段，则不必要查询直接返回即可
 			if (ICollections.hasNoElements(schemaIds)) {
 				return datasets;
 			}
@@ -113,18 +110,14 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 	}
 
 	@Override
-	public Dataset findOneByName(String tenant, String name){
+	public Dataset findOneByName(String tenant, String name) {
 		List<Dataset> list = selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("tenantId", tenant)
-				.andEqualTo("name", name)
-				.end()//
-				.orderByDesc("lastModifiedTime")
-		);
+				.fieldGroup(FieldGroup.builder().andEqualTo("tenantId", tenant).andEqualTo("name", name))//
+				.orderByDesc("lastModifiedTime"));
 
-		if(list!=null && list.size()>0){
+		if (list != null && list.size() > 0) {
 			return list.get(0);
-		}else{
+		} else {
 			return null;
 		}
 	}

@@ -29,21 +29,21 @@ public interface BaseIdableAndExampleQueryController<ID extends Serializable, T 
     @PostMapping("/update")
     default Response<?> update(@ApiParam(value = "待编辑记录", required = true) @RequestBody @Valid T t) {
         getBaseIdableAndExampleQueryService().saveOrUpdate(t);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "单个删除", notes = "根据ID每次删除一条数据，ID不能为空")
     @GetMapping("/deleteById")
     default Response<?> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam ID id) {
         getBaseIdableAndExampleQueryService().deleteById(id);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "批量删除", notes = "根据ID批量删除数据，数据集不能为空")
     @GetMapping("/deleteByIds")
     default Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam @NotEmpty ID[] ids) {
         getBaseIdableAndExampleQueryService().deleteByIds(ids);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "分页查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")

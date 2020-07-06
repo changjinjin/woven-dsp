@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.job.sch.service.event;
 
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
@@ -50,7 +51,7 @@ public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
             Dataset dataset = JsonBuilder.getInstance().fromJson(messageBody, Dataset.class);
             String datasetId = dataset.getId();
             List<DataResource> dataResourceList = dataResourceService.selectList(
-                    ExampleQuery.builder().fieldGroup().andEqualTo("datasetId", datasetId).end());
+                    ExampleQuery.builder().fieldGroup(FieldGroup.builder().andEqualTo("datasetId", datasetId)));
 
             List<Long> dataResIdList = new ArrayList<>();
             for (DataResource dataResource : dataResourceList) {
@@ -60,12 +61,13 @@ public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
             logger.debug("dataResIdList size: " + dataResIdList.size());
 
             if (dataResIdList.size() > 0) {
-                ExampleQuery dataServiceQuery = ExampleQuery.builder().fieldGroup()
+                ExampleQuery dataServiceQuery = ExampleQuery.builder().fieldGroup(
+                        FieldGroup.builder()
                         .andIn("dataResId", dataResIdList.toArray())
                         .andEqualToIfNotNull("scheduleType", ScheduleType.SCHEDULER_TYPE_EVENT)
                         .andEqualToIfNotNull("status", DataServiceStatus.SERVICE_STATUS_DEPLOYED)
                         .andNotEqualToIfNotNull("isRunning", ScheduleJobStatus.JOB_STATUS_RUNNING)
-                        .end();
+                );
 
                 List<DataService> dataServiceList = dataServiceEntityService.selectList(dataServiceQuery);
 

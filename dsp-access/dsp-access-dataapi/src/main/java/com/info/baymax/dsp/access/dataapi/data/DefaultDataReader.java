@@ -2,6 +2,7 @@ package com.info.baymax.dsp.access.dataapi.data;
 
 import com.google.common.collect.Lists;
 import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.utils.ICollections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 @Component("dataReader")
 @Slf4j
-public class DefaultDataReader implements DataReader<MapEntity>, ApplicationContextAware {
+public class DefaultDataReader implements DataReader<MapEntity, MapEntity>, ApplicationContextAware {
     private final List<MapEntityDataReader> readers = Lists.newArrayList();
 
     @Override
@@ -32,7 +33,26 @@ public class DefaultDataReader implements DataReader<MapEntity>, ApplicationCont
     }
 
     @Override
-    public IPage<MapEntity> read(StorageConf conf, Query query) throws DataReadException {
+    public IPage<MapEntity> readRecord(StorageConf conf, RecordQuery query) throws Exception {
+        try {
+            return findSuitableReader(conf).readRecord(conf, query);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new DataReadException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public IPage<MapEntity> readAgg(StorageConf conf, AggQuery query) throws Exception {
+        try {
+            return findSuitableReader(conf).readAgg(conf, query);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new DataReadException(e.getMessage(), e);
+        }
+    }
+
+    private MapEntityDataReader findSuitableReader(StorageConf conf) {
         if (conf != null && ICollections.hasElements(readers)) {
             for (MapEntityDataReader reader : readers) {
                 boolean supports = reader.supports(conf);
@@ -41,11 +61,11 @@ public class DefaultDataReader implements DataReader<MapEntity>, ApplicationCont
                 if (supports) {
                     log.debug("find suitable DataReader '" + reader.getClass().getSimpleName() + "' for StorageConf '"
                         + conf.getClass().getName() + "'.");
-                    return reader.read(conf, query);
+                    return reader;
                 }
             }
         }
-        throw new DataReadException("No proper data reader for configuration: " + conf);
+        throw new DataReadException("No suitable data reader for configuration: " + conf);
     }
 
 }

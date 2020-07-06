@@ -22,28 +22,26 @@ public class ExampleQueryDemoTest extends AbstractMapperTest {
             .paged()// 分页
             .pageNum(1)// 页码
             .pageSize(10)// 页长
-
             .excludeProperties("poassword")// 排除的查询字段
             .selectProperties("id", "name", "age")// 查询的字段
-
-            .fieldGroup()// 构建匹配条件
-            .andEqualTo("gender", 1)// gender = 1
-            .andGreaterThanOrEqualTo("age", 12)// age >= 12
-            .andLeftLike("name", "zhangsan")// name like 'zhangsan%'
-            .andBetween("birth", "2010-01-01", "2020-01-01")// birth between "2010-01-01" and "2020-01-01"
-            .andIsNotNull("intro")// intro is not null
-            .orGroup(// 添加一个条件 or ( id = 1 and name = 'zhangsan')
-                FieldGroup.<ExampleQuery>builder()//
-                    .andEqualTo("id", 1)//
-                    .andEqualTo("name", "zhangsan")//
-            )//
-            .orGroup(// 添加一个条件 or ( id < 10 and name = 'wangwu' or age between 10 and 13)
-                FieldGroup.<ExampleQuery>builder()//
-                    .andLessThan("id", 10)// id = 10
-                    .andEqualTo("name", "wangwu")// name = 'wangwu'
-                    .orBetween("age", 10, 13) // age between 10 and 13
-            )//
-            .end()// 返回query
+            .fieldGroup(FieldGroup.builder()//
+                .andEqualTo("gender", 1)// gender = 1
+                .andGreaterThanOrEqualTo("age", 12)// age >= 12
+                .andLeftLike("name", "zhangsan")// name like 'zhangsan%'
+                .andBetween("birth", "2010-01-01", "2020-01-01")// birth between "2010-01-01" and "2020-01-01"
+                .andIsNotNull("intro")// intro is not null
+                .orGroup(// 添加一个条件 or ( id = 1 and name = 'zhangsan')
+                    FieldGroup.builder()//
+                        .andEqualTo("id", 1)//
+                        .andEqualTo("name", "zhangsan")//
+                )//
+                .orGroup(// 添加一个条件 or ( id < 10 and name = 'wangwu' or age between 10 and 13)
+                    FieldGroup.builder()//
+                        .andLessThan("id", 10)// id = 10
+                        .andEqualTo("name", "wangwu")// name = 'wangwu'
+                        .orBetween("age", 10, 13) // age between 10 and 13
+                )//
+            )// 构建匹配条件
             .orderBy("createTime")// 正序排序
             .orderByDesc("id")// 逆序排序
             .forUpdate(true);
@@ -71,13 +69,11 @@ public class ExampleQueryDemoTest extends AbstractMapperTest {
 
         // 2、 修改的匹配条件放到query对象里
         ExampleQuery query = ExampleQuery.builder(TUser.class)//
-            .fieldGroup()//
-            .andEqualTo("gender", 0)// and gender = 0
-            .andLike("username", "%lisi")// and username like '%lisi'
-            .andNotIn("id", new Long[]{1L, 2L, 34L})// id not in (1 ,2 34)
-            .andBetween("birth", "1990-01-01", "2019-1231")// and birth between '1990-01-01' and '2019-1231'
-            .end();
-
+            .fieldGroup(FieldGroup.builder().andEqualTo("gender", 0)// and gender = 0
+                .andLike("username", "%lisi")// and username like '%lisi'
+                .andNotIn("id", new Long[]{1L, 2L, 34L})// id not in (1 ,2 34)
+                .andBetween("birth", "1990-01-01", "2019-1231")// and birth between '1990-01-01' and '2019-1231'
+            );
         // 3、执行更新
         // 全量字段更新
         int updateByExample = tUserService.updateByExample(record, query);

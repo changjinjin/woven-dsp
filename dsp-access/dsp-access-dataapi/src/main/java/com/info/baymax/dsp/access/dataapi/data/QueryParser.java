@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
 import com.google.common.collect.Maps;
+import com.info.baymax.common.service.criteria.agg.AggQuery;
 
 import java.util.Map;
 
@@ -12,13 +13,14 @@ import java.util.Map;
  * @author jingwei.yang
  * @date 2020年6月28日 下午12:23:27
  */
-public interface QueryParser<S extends StorageConf, Q extends Query, T> {
-    public static final Map<Class<? extends QueryParser<?, ?, ?>>, QueryParser<?, ?, ?>> cache = Maps.newHashMap();
+public interface QueryParser<S extends StorageConf, RQ extends RecordQuery, R, AQ extends AggQuery, A> {
+    public static final Map<Class<? extends QueryParser<?, ?, ?, ?, ?>>, QueryParser<?, ?, ?, ?, ?>> cache = Maps
+        .newHashMap();
 
     @SuppressWarnings("unchecked")
-    static <Q extends QueryParser<?, ?, ?>> Q getInstance(Class<Q> clazz)
+    static <Q extends QueryParser<?, ?, ?, ?, ?>> Q getInstance(Class<Q> clazz)
         throws InstantiationException, IllegalAccessException {
-        QueryParser<?, ?, ?> parser = null;
+        QueryParser<?, ?, ?, ?, ?> parser = null;
         synchronized (cache) {
             parser = cache.get(clazz);
             if (parser == null) {
@@ -30,22 +32,42 @@ public interface QueryParser<S extends StorageConf, Q extends Query, T> {
     }
 
     /**
-     * 根据query信息解析查询的参数
+     * 根据RecordQuery信息解析查询的参数
      *
      * @param storageConf 存储配置信息
-     * @param query       通用查询条件
-     * @return 对应的引擎的查询条件
+     * @param query       通用记录查询条件
+     * @return 对应引擎的记录查询条件
      */
-    T parse(S storageConf, Query query) throws Exception;
+    R parse(S storageConf, RecordQuery query) throws Exception;
 
     /**
-     * 根据存储参数和查询参数构建Query对象
+     * 根据存储信息和RecordQuery查询参数构建Query对象
      *
      * @param storageConf 存储配置信息
      * @param query       查询参数信息
-     * @return 指定类型的Query对象
+     * @return 对应引擎的RecordQuery实现
      * @throws Exception
      */
-    Q convert(S storageConf, Query query) throws Exception;
+    RQ convert(S storageConf, RecordQuery query) throws Exception;
+
+    /**
+     * 根据AggQuery信息解析查询的参数
+     *
+     * @param storageConf 存储配置信息
+     * @param query       通用聚合查询条件
+     * @return 对应引擎的聚合查询条件
+     * @throws Exception
+     */
+    A parseAgg(S storageConf, AggQuery query) throws Exception;
+
+    /**
+     * 根据AggQuery信息解析查询的参数
+     *
+     * @param storageConf 存储配置信息
+     * @param query       通用聚合查询条件
+     * @return 对应引擎的AggQuery实现
+     * @throws Exception
+     */
+    AQ convertAgg(S storageConf, AggQuery query) throws Exception;
 
 }

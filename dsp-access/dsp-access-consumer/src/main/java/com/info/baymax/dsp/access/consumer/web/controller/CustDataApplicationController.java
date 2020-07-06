@@ -36,8 +36,8 @@ public class CustDataApplicationController implements BaseEntityController<DataA
     @ResponseBody
     public Response<IPage<DataApplication>> page(@ApiParam(value = "查询条件") @RequestBody ExampleQuery query) {
         // 过滤当前消费者的数据
-        return BaseEntityController.super.page(
-            query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId()).end());
+        query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+        return BaseEntityController.super.page(query);
     }
 
 }

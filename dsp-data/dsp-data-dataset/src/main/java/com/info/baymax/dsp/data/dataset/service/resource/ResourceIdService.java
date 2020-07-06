@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.ExampleQueryService;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassService;
 import com.info.baymax.common.utils.ICollections;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public interface ResourceIdService<T extends ResourceId> extends EntityClassService<T>, ExampleQueryService<T> {
 
     default List<T> selectByResourceId(String resourceId) {
-        return selectList(
-            ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("resourceId", resourceId).end());
+        return selectList(ExampleQuery.builder(getEntityClass())
+            .fieldGroup(FieldGroup.builder().andEqualTo("resourceId", resourceId)));
     }
 
     default String[] selectInstanceIdsByResourceId(String resourceId) {
-        List<T> list = selectList(ExampleQuery.builder(getEntityClass()).selectProperties("id").fieldGroup()
-            .andEqualTo("resourceId", resourceId).end());
+        List<T> list = selectList(ExampleQuery.builder(getEntityClass()).selectProperties("id")
+            .fieldGroup(FieldGroup.builder().andEqualTo("resourceId", resourceId)));
         if (ICollections.hasElements(list)) {
             return list.stream().map(t -> t.getId()).toArray(String[]::new);
         }
@@ -33,8 +34,8 @@ public interface ResourceIdService<T extends ResourceId> extends EntityClassServ
     }
 
     default String[] selectInstanceIdsByResourceIds(String[] resourceIds) {
-        List<T> list = selectList(ExampleQuery.builder(getEntityClass()).selectProperties("id").fieldGroup()
-            .andIn("resourceId", resourceIds).end());
+        List<T> list = selectList(ExampleQuery.builder(getEntityClass()).selectProperties("id")
+            .fieldGroup(FieldGroup.builder().andIn("resourceId", resourceIds)));
         if (ICollections.hasElements(list)) {
             return list.stream().map(t -> t.getId()).toArray(String[]::new);
         }
@@ -42,28 +43,29 @@ public interface ResourceIdService<T extends ResourceId> extends EntityClassServ
     }
 
     default int deleteByResourceId(String resourceId) {
-        return delete(ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("resourceId", resourceId).end());
+        return delete(ExampleQuery.builder(getEntityClass())
+            .fieldGroup(FieldGroup.builder().andEqualTo("resourceId", resourceId)));
     }
 
     default int updateResourceIdByInstanceId(String instanceId, String resourceId) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resourceId", resourceId);
         return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()),
-            ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("id", instanceId).end());
+            ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder().andEqualTo("id", instanceId)));
     }
 
     default int updateResourceIdByInstanceIds(String[] instanceIds, String resourceId) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resourceId", resourceId);
         return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()),
-            ExampleQuery.builder(getEntityClass()).fieldGroup().andIn("id", instanceIds).end());
+            ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder().andIn("id", instanceIds)));
     }
 
     default int updateNewResourceIdByOldResourceId(String newResourceId, String oldResourceId) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("resourceId", newResourceId);
-        return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()),
-            ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("resourceId", oldResourceId).end());
+        return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()), ExampleQuery
+            .builder(getEntityClass()).fieldGroup(FieldGroup.builder().andEqualTo("resourceId", oldResourceId)));
     }
 
 }

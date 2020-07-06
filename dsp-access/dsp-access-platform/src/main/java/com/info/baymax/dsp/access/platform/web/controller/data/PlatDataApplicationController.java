@@ -5,8 +5,6 @@ import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
-import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
@@ -17,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -100,7 +97,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 log.error("approval and save dataservice exception :", e);
                 dataApplicationService.updateDataApplicationStatus(dataService.getApplicationId(), 0);
                 log.info("restore dataApplication status success :{}, {}", dataApplication.getId(), 0);
-                return Response.error(ErrType.ENTITY_SAVE_ERROR, "save dataService error");
+                return Response.error(ErrType.ENTITY_SAVE_ERROR, "save dataService error").build();
             }
         }
         return Response.ok(dataService.getId());

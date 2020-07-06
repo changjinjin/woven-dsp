@@ -1,7 +1,5 @@
 package com.info.baymax.common.service.criteria.example;
 
-import com.info.baymax.common.service.criteria.query.QueryBuilder;
-
 /**
  * 查询条件构造器接口
  *
@@ -9,15 +7,8 @@ import com.info.baymax.common.service.criteria.query.QueryBuilder;
  * @author jingwei.yang
  * @date 2019年9月5日 下午3:10:55
  */
-public interface ExampleQueryBuilder<B extends ExampleQueryBuilder<B>> extends QueryBuilder<B> {
+public interface ExampleQueryBuilder<B extends ExampleQueryBuilder<B>> {
 
-    /**
-     * 是否锁表查询，一般无需指定
-     *
-     * @param forUpdate 是否锁表，默认false
-     * @return this builder
-     */
-    B forUpdate(boolean forUpdate);
 
     /**
      * 指定计数字段，是有统计技术的查询才有用，默认不需指定
@@ -35,12 +26,6 @@ public interface ExampleQueryBuilder<B extends ExampleQueryBuilder<B>> extends Q
      */
     B joinSql(JoinSql joinSql);
 
-    /**
-     * 清空forUpdate条件
-     *
-     * @return this builder
-     */
-    B clearForUpdate();
 
     /**
      * 清空CountProperty条件

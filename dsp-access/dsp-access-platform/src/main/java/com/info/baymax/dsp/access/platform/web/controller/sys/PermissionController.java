@@ -35,14 +35,14 @@ public class PermissionController {
     @PostMapping("/update")
     public Response<?> update(@ApiParam(value = "待编辑记录", required = true) @RequestBody @Valid Permission t) {
         permissionService.saveOrUpdate(t);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "单个删除", notes = "根据ID每次删除一条数据，ID不能为空")
     @GetMapping("/deleteById")
     public Response<?> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam String id) {
         permissionService.deleteOnCascadeById(id);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
@@ -60,7 +60,7 @@ public class PermissionController {
     public Response<List<Permission>> rootsTree() {
         List<Permission> roots = permissionService.findRootsTree();
         if (ICollections.hasNoElements(roots)) {
-            return Response.error(ErrType.ENTITY_QUERY_LIST_ERROR, "无可分配的权限列表");
+            return Response.error(ErrType.ENTITY_QUERY_LIST_ERROR, "无可分配的权限列表").build();
         }
         return Response.ok(roots);
     }

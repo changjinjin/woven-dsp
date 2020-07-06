@@ -6,6 +6,7 @@ import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.criteria.query.SortObject;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.JoinSql;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -69,7 +70,7 @@ public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends Resour
 		}
 
 		// 构建query条件
-		return exampleQuery(queryObject).fieldGroup().andIn("resourceId", resourceIds).end();
+		return exampleQuery(queryObject).fieldGroup(FieldGroup.builder().andIn("resourceId", resourceIds));
 	}
 
 	/**
@@ -158,7 +159,8 @@ public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends Resour
 		StringBuffer sqlBuf = new StringBuffer();
 		sqlBuf.append("INNER JOIN merce_resource_dir rs ON t.resource_id = rs.id and rs.path like '").append(path)
 				.append("%'");
-		return exampleQuery(queryObject).joinSql(JoinSql.builder().appendTable(sqlBuf.toString()).tableAlias("t").build());
+		return exampleQuery(queryObject)
+				.joinSql(JoinSql.builder().appendTable(sqlBuf.toString()).tableAlias("t").build());
 	}
 
 	@Override

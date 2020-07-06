@@ -15,6 +15,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
@@ -41,18 +42,14 @@ public class TenantServiceImpl extends EntityClassServiceImpl<Tenant> implements
 	@Override
 	public int countByName(String name) {
 		return selectCount(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("name", name)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo("name", name)));
 	}
 
 	@Cacheable(cacheNames = CacheNames.CACHE_SECURITY, key = "'security_cache_tenant_name_'+#name", unless = "#result==null")
 	@Override
 	public Tenant findByName(String name) {
 		return selectOne(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.andEqualTo("name", name)//
-				.end());
+				.fieldGroup(FieldGroup.builder().andEqualTo("name", name)));
 	}
 
 	@CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)

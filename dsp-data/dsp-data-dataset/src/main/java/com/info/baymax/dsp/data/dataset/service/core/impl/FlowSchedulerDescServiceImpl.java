@@ -29,12 +29,8 @@ public class FlowSchedulerDescServiceImpl extends EntityClassServiceImpl<FlowSch
 	@Override
 	public List<FlowSchedulerDesc> findAllToLaunch() {
 		return selectList(ExampleQuery.builder(getEntityClass())//
-				.fieldGroup()//
-				.group(FieldGroup.<ExampleQuery>builder()//
-						.andEqualTo("schedulerId", "cron")//
-						.orEqualTo("totalExecuted", 0))
-				.andEqualTo("enabled", 1)//
-				.end()//
+				.fieldGroup(FieldGroup.builder().group(FieldGroup.builder()//
+						.andEqualTo("schedulerId", "cron").orEqualTo("totalExecuted", 0)).andEqualTo("enabled", 1))//
 		);
 	}
 

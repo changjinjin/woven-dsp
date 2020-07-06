@@ -2,10 +2,11 @@ package com.info.baymax.dsp.access.dataapi.service;
 
 import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.data.Query;
-import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
+import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +27,19 @@ public class SignTest extends AbstractBootTest {
             System.out.println(secretKey);
             String signKeyIfExist = restSignService.signKeyIfExist(accessKey);
             System.out.println(signKeyIfExist);
-            DataRequest request = new DataRequest(accessKey, System.currentTimeMillis(), true);
-            Query query = Query.builder()//
+
+            RecordQuery query = RecordQuery.builder()//
                 .page(1, 3)//
                 .allProperties("id", "code", "date", "project", "income", "manager")//
                 .selectProperties("id", "code", "project", "income", "manager")//
-                .fieldGroup()//
-                .andGreaterThan("id", 2)//
-                .andIn("code", new Integer[]{1, 2, 3})//
-                .end()//
+                .fieldGroup(FieldGroup.builder()//
+                    .andGreaterThan("id", 2)//
+                    .andIn("code", new Integer[]{1, 2, 3})//
+                )//
                 .orderBy("id")//
                 .orderBy("code");
-
-            IPage<MapEntity> page = pullService.query(null, null, null, query);
+            PullRequest request = new PullRequest(accessKey, null, System.currentTimeMillis(), false, query);
+            IPage<MapEntity> page = pullService.pullRecords(request, null);
             PullResponse encrypt = PullResponse.ok(page).request(request).encrypt(signKeyIfExist);
             System.out.println(JSON.toJSONString(encrypt));
         } catch (Exception e) {

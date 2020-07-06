@@ -2,6 +2,7 @@ package com.info.baymax.dsp.data.dataset.service.security.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
@@ -18,8 +19,6 @@ public class ResourceDescServiceImpl extends EntityClassServiceImpl<ResourceDesc
     @Autowired
     private ResourceDescMapper resourceDescMapper;
 
-    private final String[] queryFields = {"id", "parentId", "resType", "name", "order", "path", "tenantId"};
-
     @Override
     public MyIdableMapper<ResourceDesc> getMyIdableMapper() {
         return resourceDescMapper;
@@ -28,69 +27,48 @@ public class ResourceDescServiceImpl extends EntityClassServiceImpl<ResourceDesc
     @Override
     public List<ResourceDesc> findByTenantAndOwner(String tenantId, String owner) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo(PROPERTY_OWNER, owner)//
-            .andEqualTo("isHide", 0)//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)
+                .andEqualTo(PROPERTY_OWNER, owner).andEqualTo("isHide", 0)));
     }
 
     @Override
     public List<ResourceDesc> findByParent(String tenantId, String parentId) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo("parentId", parentId)//
-            .andEqualTo("isHide", 0)//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId)
+                .andEqualTo("parentId", parentId).andEqualTo("isHide", 0)));
     }
 
     @Override
     public List<ResourceDesc> findAllByParent(String tenantId, String parentId) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo("parentId", parentId)//
-            .end());
+            .fieldGroup(
+                FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo("parentId", parentId)));
     }
 
     @Override
     public ResourceDesc findByNameAndParent(String tenantId, String name, String parentId) {
         return selectOne(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo(PROPERTY_NAME, name)//
-            .andEqualTo("parentId", parentId)//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_NAME, name)
+                .andEqualTo("parentId", parentId)));
     }
 
     @Override
     public List<ResourceDesc> findRoots(String tenantId) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andIsNull("parentId")//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andIsNull("parentId")));
     }
 
     @Override
     public List<ResourceDesc> findByIds(String tenantId, String[] ids) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andIn("id", ids)//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andIn("id", ids)));
     }
 
     @Override
     public ResourceDesc findByNameAndResTypeAndParentIsNullAndTenantId(String name, String resType, String tenantId) {
         return selectOne(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo("resType", resType)//
-            .andEqualTo(PROPERTY_NAME, name)//
-            .andIsNull("parentId")//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo("resType", resType)
+                .andEqualTo(PROPERTY_NAME, name).andIsNull("parentId")));
     }
 
     @Override
@@ -101,11 +79,8 @@ public class ResourceDescServiceImpl extends EntityClassServiceImpl<ResourceDesc
     @Override
     public ResourceDesc findRootsByName(String tenantId, String name) {
         return selectOne(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo(PROPERTY_NAME, name)//
-            .andIsNull("parentId")//
-            .end());
+            .fieldGroup(FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_NAME, name)
+                .andIsNull("parentId")));
     }
 
     @Override
@@ -123,10 +98,10 @@ public class ResourceDescServiceImpl extends EntityClassServiceImpl<ResourceDesc
     @Override
     public String[] selectUserResourceIdsByResTypeAndPath(String userId, String resType, String path) {
         List<ResourceDesc> resourceList = null;
-        ExampleQuery query = ExampleQuery.builder(getEntityClass()).selectProperties("id").fieldGroup()
-                .andLeftLike("path", path).end();
+        ExampleQuery query = ExampleQuery.builder(getEntityClass()).selectProperties("id")
+            .fieldGroup(FieldGroup.builder().andLeftLike("path", path));
 
-        resourceList = selectList(query.fieldGroup().andLeftLike("path", path).end());
+        resourceList = selectList(query.fieldGroup(FieldGroup.builder().andLeftLike("path", path)));
 
         if (ICollections.hasElements(resourceList)) {
             return resourceList.stream().map(t -> t.getId()).toArray(String[]::new);

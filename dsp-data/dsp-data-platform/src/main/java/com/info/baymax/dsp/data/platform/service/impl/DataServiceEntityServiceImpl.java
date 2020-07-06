@@ -3,6 +3,7 @@ package com.info.baymax.dsp.data.platform.service.impl;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleHelper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.mybatis.mapper.DataServiceMapper;
@@ -19,7 +20,8 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackOn = Exception.class)
-public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataService> implements DataServiceEntityService {
+public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataService>
+    implements DataServiceEntityService {
 
     @Autowired
     DataServiceMapper dataServiceMapper;
@@ -31,17 +33,8 @@ public class DataServiceEntityServiceImpl extends EntityClassServiceImpl<DataSer
 
     @Override
     public List<DataService> querySpecialDataService(Integer[] type, Integer[] status, Integer[] isRunning) {
-        // @formatter:off
-        //select * from dsp_data_service where (schedule_type = 'once' or schedule_type='cron') and type = #{type, jdbcType=INTEGER} and status = #{status, jdbcType=INTEGER} and is_running = #{isRunning, jdbcType=INTEGER} for update")
-        ExampleQuery query = ExampleQuery
-            .builder(DataService.class)
-            .forUpdate(true)
-            .fieldGroup()
-            .andIn("type", type)
-            .andIn("status", status)
-            .andIn("isRunning", isRunning)
-            .end();
-        // @formatter:on
+        ExampleQuery query = ExampleQuery.builder(DataService.class).forUpdate(true).fieldGroup(
+            FieldGroup.builder().andIn("type", type).andIn("status", status).andIn("isRunning", isRunning));
         List<DataService> list = selectByExample(ExampleHelper.createExample(query, getEntityClass()));
         return list;
     }

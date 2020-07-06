@@ -42,7 +42,7 @@ public class TenantController {
     public Response<Long> create(
         @ApiParam(value = "租户注册信息", required = true) @RequestBody @Decrypt TenantRegisterBean tenant) {
         tenantService.createTenant(initConfig, tenant);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @PostMapping("/update")
@@ -51,7 +51,7 @@ public class TenantController {
     public Response<?> update(@ApiParam(value = "租户ID", required = true) @PathVariable("id") String id,
                               @ApiParam(value = "租户注册信息", required = true) @RequestBody @Decrypt TenantRegisterBean tenant) {
         tenantService.updateTenant(initConfig, tenant);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @GetMapping("/infoById")
@@ -75,7 +75,7 @@ public class TenantController {
     @PostMapping("page")
     @ApiOperation("条件查询租户(分页/排序)")
     public Response<IPage<Tenant>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        query = query.fieldGroup().andNotEqualTo("name", "root").end();
+        query.fieldGroup().andNotEqualTo("name", "root");
         return Response.ok(tenantService.selectPage(query));
     }
 
@@ -83,14 +83,14 @@ public class TenantController {
     @ApiOperation(value = "启用租户")
     public Response<?> enable(@ApiParam(value = "ID集合", required = true) @RequestBody String[] ids) {
         tenantService.enableTenants(ids);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @PostMapping("disable")
     @ApiOperation(value = "停用租户")
     public Response<?> disable(@ApiParam(value = "ID集合", required = true) @RequestBody String[] ids) {
         tenantService.disableTenants(ids);
-        return Response.ok();
+        return Response.ok().build();
     }
 
 }

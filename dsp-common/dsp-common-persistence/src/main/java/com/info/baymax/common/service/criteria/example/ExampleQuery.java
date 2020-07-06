@@ -1,6 +1,8 @@
 package com.info.baymax.common.service.criteria.example;
 
-import com.info.baymax.common.service.criteria.query.AbstractQuery;
+import com.google.common.collect.Lists;
+import com.info.baymax.common.service.criteria.query.AbstractPropertiesQuery;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Example Query ,这个对象的属性可以构造一个{@link com.info.baymax.common.mybatis.mapper.example.Example} 对象
@@ -19,12 +22,15 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class ExampleQuery extends AbstractQuery<ExampleQuery>
-    implements ExampleQueryBuilder<ExampleQuery>, Serializable {
+public class ExampleQuery extends AbstractPropertiesQuery<ExampleQuery> implements ExampleQueryBuilder<ExampleQuery>,
+    DistinctQueryBuilder<ExampleQuery>, ForUpdateQueryBuilder<ExampleQuery>, Serializable {
     private static final long serialVersionUID = 4850854513242762929L;
 
     @ApiModelProperty(value = "查询数据类型", hidden = true)
     private Class<?> entityClass;
+
+    @ApiModelProperty(value = "是否去重，默认false", hidden = true)
+    protected boolean distinct;
 
     @ApiModelProperty(value = "是否锁表，默认false", hidden = true)
     private boolean forUpdate;
@@ -78,9 +84,11 @@ public class ExampleQuery extends AbstractQuery<ExampleQuery>
         this.entityClass = entityClass;
     }
 
-    /*************************************
-     * 条件组装
-     *****************************************/
+    @Override
+    public ExampleQuery distinct(boolean distinct) {
+        this.distinct = distinct;
+        return this;
+    }
 
     @Override
     public ExampleQuery forUpdate(boolean forUpdate) {
@@ -101,12 +109,12 @@ public class ExampleQuery extends AbstractQuery<ExampleQuery>
     }
 
     /***** clear logic ****/
+
     @Override
-    public ExampleQuery clear() {
-        super.clear();
-        clearForUpdate();
-        clearCountProperty();
-        clearJoinSql();
+    public ExampleQuery clearDistinct() {
+        if (this.distinct) {
+            this.distinct = false;
+        }
         return this;
     }
 
@@ -131,4 +139,20 @@ public class ExampleQuery extends AbstractQuery<ExampleQuery>
         this.joinSql = null;
         return this;
     }
+
+    @Override
+    public ExampleQuery clear() {
+        super.clear();
+        clearForUpdate();
+        clearCountProperty();
+        clearJoinSql();
+        return this;
+    }
+
+	@Override
+	public List<String> getFinalSelectProperties(String tableAlias) {
+		return Lists.newArrayList(selectProperties);
+	}
+    
+    
 }

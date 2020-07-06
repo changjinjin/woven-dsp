@@ -2,6 +2,7 @@ package com.info.baymax.dsp.data.dataset.service.core.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.ProcessConfig;
 import com.info.baymax.dsp.data.dataset.mybatis.mapper.core.ProcessConfigMapper;
@@ -24,30 +25,22 @@ public class ProcessConfigServiceImpl extends EntityClassServiceImpl<ProcessConf
     @Override
     public List<ProcessConfig> findByProcessConfigType(String processConfigType) {
         return selectList(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo("processConfigType", processConfigType)//
-            .end()//
+            .fieldGroup(FieldGroup.builder().andEqualTo("processConfigType", processConfigType))//
         );
     }
 
     @Override
     public List<ProcessConfig> findByProcessConfigType(String tenantId, String processConfigType) {
 
-        return selectList(ExampleQuery.builder(getEntityClass())
-            .fieldGroup()
-            .andEqualTo(PROPERTY_TENANTID, tenantId)
-            .andEqualTo("processConfigType", processConfigType)
-            .end()
-        );
+        return selectList(ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder()
+            .andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo("processConfigType", processConfigType)));
     }
 
     @Override
     public ProcessConfig findOneByName(String tenantId, String name) {
         return selectOne(ExampleQuery.builder(getEntityClass())//
-            .fieldGroup()//
-            .andEqualTo(PROPERTY_TENANTID, tenantId)//
-            .andEqualTo(PROPERTY_NAME, name)//
-            .end()//
+            .fieldGroup(
+                FieldGroup.builder().andEqualTo(PROPERTY_TENANTID, tenantId).andEqualTo(PROPERTY_NAME, name))//
         );
     }
 }

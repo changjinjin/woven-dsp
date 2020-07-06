@@ -56,5 +56,4 @@ public class Customer extends Maintable implements CryptoBean {
             password = cryptorDelegater.decrypt(password, secretKey, wrapped, cryptoType);
         }
     }
-
 }

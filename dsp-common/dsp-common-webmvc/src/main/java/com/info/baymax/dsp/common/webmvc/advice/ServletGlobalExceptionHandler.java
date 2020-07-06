@@ -40,7 +40,7 @@ public class ServletGlobalExceptionHandler {
     @Order(-2)
     public Response<?> uncaughtExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
     }
 
     /**
@@ -55,13 +55,13 @@ public class ServletGlobalExceptionHandler {
     public Response<?> bizExceptionHandler(HttpServletResponse response, BizException e) {
         log.error(e.getMessage(), e);
         Response<?> result = Response.error(e.getStatus(),
-            StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()));
+                StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus())).build();
         if (result != null) {
             response.setStatus(HttpStatus.OK.value());
             return result;
         }
         response.setStatus(HttpStatus.OK.value());
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
     }
 
     /**
@@ -77,9 +77,9 @@ public class ServletGlobalExceptionHandler {
     public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
         if (e instanceof DuplicateKeyException) {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Duplicate key error!");
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Duplicate key error!").build();
         } else {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage());
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
         }
     }
 
@@ -88,7 +88,7 @@ public class ServletGlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(-5)
     public Response<?> webExchangeBindException(ServletRequestBindingException exception) {
-        return Response.error(ErrType.BAD_REQUEST, exception.getMessage());
+        return Response.error(ErrType.BAD_REQUEST, exception.getMessage()).build();
     }
 
     @ResponseBody
@@ -105,6 +105,6 @@ public class ServletGlobalExceptionHandler {
                 break;// 拿第一条错误信息即可，满足快速失败就行
             }
         }
-        return Response.error(ErrType.BAD_REQUEST, message);
+        return Response.error(ErrType.BAD_REQUEST, message).build();
     }
 }

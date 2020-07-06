@@ -68,8 +68,7 @@ public class UserController implements MainTableController<User> {
         @ReturnOperation(cryptoOperation = CryptoOperation.Encrypt, cryptoType = CryptoType.AES)})
     @Override
     public Response<IPage<User>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        query = query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
-            .andFullLike("clientIds", "dsp").end();
+        query.fieldGroup().andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andFullLike("clientIds", "dsp");
         IPage<User> page = userService.selectPage(query);
         return Response.ok(page);
     }
@@ -86,22 +85,24 @@ public class UserController implements MainTableController<User> {
         if (t != null) {
             return Response.ok(t);
         }
-        return Response.error(ErrType.ENTITY_NOT_EXIST);
+        return Response.error(ErrType.ENTITY_NOT_EXIST).build();
     }
 
     @ApiOperation(value = "修改密码")
     @PostMapping("/changePwd")
     @Cryptoable(enableParam = true)
-    public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
+    public Response<?> changePwd(
+        @ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
         userService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), initConfig.getPwdMode());
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "重置用户密码")
     @PostMapping("/resetPwd")
-    public Response<?> resetPwd(@ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam @NotEmpty String[] ids) {
+    public Response<?> resetPwd(
+        @ApiParam(value = "重置密码的用户ID数组", required = true) @RequestParam @NotEmpty String[] ids) {
         userService.resetPwd(ids, initConfig.getPassword());
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "修改用户启用状态")
@@ -109,7 +110,7 @@ public class UserController implements MainTableController<User> {
     public Response<?> resetStatus(
         @ApiParam(value = "修改状态的用户列表，包含用户ID和修改后状态属性值", required = true) @RequestBody @NotEmpty List<User> list) {
         userService.resetStatus(list);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "获取可用的资源队列")

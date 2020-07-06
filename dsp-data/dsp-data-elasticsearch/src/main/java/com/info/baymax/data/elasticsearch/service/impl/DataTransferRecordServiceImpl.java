@@ -64,8 +64,10 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
+            String query = builder.toString();
+            log.debug("jestClient query:" + query);
             result = jestClient.execute(
-                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
+                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -110,8 +112,10 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
+            String query = builder.toString();
+            log.debug("jestClient query:" + query);
             result = jestClient.execute(
-                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
+                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -157,8 +161,10 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
+            String query = builder.toString();
+            log.debug("jestClient query:" + query);
             result = jestClient.execute(
-                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
+                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -204,8 +210,10 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
             SortOrder.DESC);
         SearchResult result = null;
         try {
+            String query = builder.toString();
+            log.debug("jestClient query:" + query);
             result = jestClient.execute(
-                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
+                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
             Long count = 0L;
             String key = null;
@@ -261,8 +269,10 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         SearchSourceBuilder builder = new SearchSourceBuilder().query(queryBuilder).sort("@timestamp", SortOrder.DESC)
             .from((pageNum - 1) * pageSize).size(pageSize);
         try {
+            String query = builder.toString();
+            log.debug("jestClient query:" + query);
             SearchResult result = jestClient.execute(
-                new Search.Builder(builder.toString()).addIndices(getIndies()).addType(INDEX_TYPE).build());
+                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Hit<DataTransferRecord, Void>> hits = result.getHits(DataTransferRecord.class);
             return IPage.<DataTransferRecord>of(pageNum, pageSize, result.getTotal(),
                 hits.stream().map(t -> t.source).collect(Collectors.toList()));

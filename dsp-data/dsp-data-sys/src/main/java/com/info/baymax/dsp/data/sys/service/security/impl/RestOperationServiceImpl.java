@@ -2,6 +2,7 @@ package com.info.baymax.dsp.data.sys.service.security.impl;
 
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.entity.security.PermOperationRef;
@@ -47,9 +48,9 @@ public class RestOperationServiceImpl extends EntityClassServiceImpl<RestOperati
      * @param reservedIds 需要保留的数据的ID列表（ID对于每一个RestOperation是唯一且不可变的）
      */
     private void clear(String serviceName, String[] reservedIds) {
-        permOperationRefService.delete(
-            ExampleQuery.builder(PermOperationRef.class).fieldGroup().andNotIn("operationId", reservedIds).end());
-        delete(ExampleQuery.builder(RestOperation.class).fieldGroup().andEqualTo("serviceName", serviceName)
-            .andNotIn("id", reservedIds).end());
+        permOperationRefService.delete(ExampleQuery.builder(PermOperationRef.class)
+            .fieldGroup(FieldGroup.builder().andNotIn("operationId", reservedIds)));
+        delete(ExampleQuery.builder(RestOperation.class)
+            .fieldGroup(FieldGroup.builder().andEqualTo("serviceName", serviceName).andNotIn("id", reservedIds)));
     }
 }

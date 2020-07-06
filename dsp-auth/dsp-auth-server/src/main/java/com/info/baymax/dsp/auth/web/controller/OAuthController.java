@@ -57,7 +57,7 @@ public class OAuthController {
             customTokenServices.revokeToken(accessToken.substring("Bearer".length()).trim());
         } catch (Exception e) {
         }
-        return Response.ok();
+        return Response.ok().build();
     }
 
     // @ApiOperation(value = "验证 JSON Web令牌地址", hidden = true)

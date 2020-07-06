@@ -30,7 +30,7 @@ public class CustCustomerController {
     @Cryptoable(enableParam = true)
     public Response<?> changePwd(@ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
         consumerService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), PwdMode.SIMPLE);
-        return Response.ok();
+        return Response.ok().build();
     }
 
 }

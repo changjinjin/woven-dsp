@@ -16,13 +16,13 @@ public class CheckEntity {
     public static Response<?> checkDataSource(CustDataSource dataSource) {
         List<String> errorList = new LinkedList<>();
         if (dataSource == null) {
-            return Response.error(ErrType.ENTITY_EMPTY, "dataSource is null");
+            return Response.error(ErrType.ENTITY_EMPTY, "dataSource is null").build();
         } else {
             if (StringUtils.isEmpty(dataSource.getName()) || "$unknow".equals(dataSource.getName())) {
-                return Response.error(ErrType.ENTITY_EMPTY, "dataSource[Attributes[name]] is null");
+                return Response.error(ErrType.ENTITY_EMPTY, "dataSource[Attributes[name]] is null").build();
             }
             if (!DataSourceType.contains(dataSource.getType())) {
-                return Response.error(ErrType.BAD_REQUEST, "dataSource[type] is INVALID");
+                return Response.error(ErrType.BAD_REQUEST, "dataSource[type] is INVALID").build();
             }
             if (DataSourceType.DB.getValue().equals(dataSource.getType())) {
                 Map<String, Object> storageMap = dataSource.getAttributes();
@@ -263,9 +263,9 @@ public class CheckEntity {
             }
 
             if(errorList.size() > 0){
-                return Response.error(ErrType.BAD_REQUEST, JsonBuilder.getInstance().toJson(errorList));
+                return Response.error(ErrType.BAD_REQUEST, JsonBuilder.getInstance().toJson(errorList)).build();
             }
         }
-        return Response.ok();
+        return Response.ok().build();
     }
 }

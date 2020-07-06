@@ -41,23 +41,23 @@ public class GlobalExceptionHandler {
             if (e instanceof BizException || BizException.class.isAssignableFrom(e.getClass())) {
                 BizException e1 = (BizException) e;
                 String message = e1.getMessage();
-                result = Response.error(e1.getStatus(), message != null ? message : "未知错误，错误代码：" + e1.getStatus());
+                result = Response.error(e1.getStatus(), message != null ? message : "未知错误，错误代码：" + e1.getStatus()).build();
             } else if (e instanceof NoHandlerFoundException) {
-                result = Response.error(ErrType.NOT_FOUND);
+                result = Response.error(ErrType.NOT_FOUND).build();
             } else if (e instanceof AuthenticationException
                 || AuthenticationException.class.isAssignableFrom(e.getClass())) {
-                result = Response.error(ErrType.UNAUTHORIZED);
+                result = Response.error(ErrType.UNAUTHORIZED).build();
             } else if (e instanceof HttpMessageNotReadableException) {
-                result = Response.error(ErrType.NOT_ACCEPTABLE);
+                result = Response.error(ErrType.NOT_ACCEPTABLE).build();
             } else if (e instanceof HttpRequestMethodNotSupportedException) {
-                result = Response.error(ErrType.METHOD_NOT_ALLOWED);
+                result = Response.error(ErrType.METHOD_NOT_ALLOWED).build();
             } else if (e instanceof MaxUploadSizeExceededException || e instanceof SizeLimitExceededException) {
-                result = Response.error(ErrType.FILE_MAX_UPLOAD_SIZE_EXCEEDED_ERROR);
+                result = Response.error(ErrType.FILE_MAX_UPLOAD_SIZE_EXCEEDED_ERROR).build();
             } else if (e instanceof MultipartException) {
-                result = Response.error(ErrType.FILE_IO_READ_ERROR);
+                result = Response.error(ErrType.FILE_IO_READ_ERROR).build();
             } else if (e instanceof OAuth2Exception) {
                 CustomOauth2Exception customOauth2Exception = new CustomOauth2Exception((OAuth2Exception) e);
-                result = Response.error(customOauth2Exception.getHttpErrorCode(), customOauth2Exception.getSummary());
+                result = Response.error(customOauth2Exception.getHttpErrorCode(), customOauth2Exception.getSummary()).build();
             }
         }
 
@@ -65,6 +65,6 @@ public class GlobalExceptionHandler {
             return result;
         }
         // 其他异常
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR);
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR).build();
     }
 }

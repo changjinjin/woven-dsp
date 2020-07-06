@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.info.baymax.dsp.access.dataapi.data.Query;
+import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ElasticsearchQuery extends Query {
+public class ElasticsearchQuery extends RecordQuery {
     private static final long serialVersionUID = -3987015051297973072L;
 
     /**
@@ -73,7 +73,7 @@ public class ElasticsearchQuery extends Query {
         return this;
     }
 
-    public static ElasticsearchQuery from(Query query)
+    public static ElasticsearchQuery from(RecordQuery query)
         throws JsonParseException, JsonMappingException, JsonProcessingException, IOException {
         ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
         return mapper.readValue(mapper.writeValueAsBytes(query), new TypeReference<ElasticsearchQuery>() {

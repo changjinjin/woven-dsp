@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 
 /**
@@ -60,8 +61,8 @@ public interface TreeIdableExampleQueryService<ID extends Serializable, T extend
     }
 
     default List<T> selectByParentId(ID parentId, Map<String, Object> extParams) {
-        return selectList(ExampleQuery.builder(getEntityClass()).fieldGroup().andEqualTo("parentId", parentId)
-            .andAllEqualTo(extParams).end());
+        return selectList(ExampleQuery.builder(getEntityClass())
+            .fieldGroup(FieldGroup.builder().andEqualTo("parentId", parentId).andAllEqualTo(extParams)));
     }
 
 }

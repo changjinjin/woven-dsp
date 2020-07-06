@@ -56,15 +56,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>transport</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.0.24</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
@@ -181,6 +172,10 @@
         <dependency>
             <groupId>com.github.fangjinuo.easyjson</groupId>
             <artifactId>easyjson-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.datayoo.moql</groupId>
+            <artifactId>moql-querier</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

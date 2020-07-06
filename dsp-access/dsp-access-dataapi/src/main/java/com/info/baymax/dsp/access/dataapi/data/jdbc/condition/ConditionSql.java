@@ -5,6 +5,7 @@ import com.info.baymax.common.service.criteria.field.Field;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
 import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
+import com.info.baymax.common.utils.ICollections;
 import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
@@ -15,16 +16,22 @@ import java.util.*;
 @ToString
 public class ConditionSql implements Serializable {
     private static final long serialVersionUID = 7871946632377823592L;
-    private FieldGroup<?> fieldGroup;
+    private FieldGroup fieldGroup;
 
     private int i = 0;
+    private String tableAlias;
 
-    private ConditionSql(FieldGroup<?> fieldGroup) {
+    private ConditionSql(String tableAlias, FieldGroup fieldGroup) {
+        this.tableAlias = StringUtils.defaultIfEmpty(tableAlias, null);
         this.fieldGroup = fieldGroup;
     }
 
-    public static ConditionSql build(FieldGroup<?> fieldGroup) {
-        return new ConditionSql(fieldGroup).parse();
+    public static ConditionSql build(FieldGroup fieldGroup) {
+        return new ConditionSql(null, fieldGroup).parse();
+    }
+
+    public static ConditionSql build(String alias, FieldGroup fieldGroup) {
+        return new ConditionSql(alias, fieldGroup).parse();
     }
 
     /**
@@ -34,10 +41,10 @@ public class ConditionSql implements Serializable {
     private String namingSql;
 
     /**
-     * 执行sql
+     * 有占位符的sql
      */
     @Getter
-    private String executeSql;
+    private String placeholderSql;
 
     /**
      * 参数名称列表
@@ -60,9 +67,6 @@ public class ConditionSql implements Serializable {
     /**
      * 分析命名SQL语句获取抽象NSQl实例；java(JDBC)提供SQL语句命名参数而是通过?标识参数位置， 通过此对象可以命名参数方式使用SQL语句，命名参数以?开始后跟名称?name。 例如：SELECT * FROM
      * table WHERE name = ?name AND email = ?email;
-     *
-     * @param sql
-     * @return
      */
     private ConditionSql parse() {
         namingSql = where(fieldGroup);
@@ -87,7 +91,7 @@ public class ConditionSql implements Serializable {
                 name_builder.setLength(0);
             }
         }
-        executeSql = sql_builder.toString();
+        placeholderSql = sql_builder.toString();
         if (names != null && names.size() > 0) {
             paramNames = names.toArray(paramNames = new String[names.size()]);
             int mapSize = paramMap.size();
@@ -103,16 +107,18 @@ public class ConditionSql implements Serializable {
         return this;
     }
 
-    private String where(FieldGroup<?> fieldGroup) {
+    private String where(FieldGroup fieldGroup) {
         StringBuffer buf = new StringBuffer();
         List<CriteriaItem> ordItems = fieldGroup.reIndex().ordItems();
-        for (CriteriaItem item : ordItems) {
-            if (item instanceof FieldGroup) {
-                FieldGroup<?> group = (FieldGroup<?>) item;
-                buf.append("( ").append(where(group)).append(" )");
-            } else {
-                Field field = (Field) item;
-                buf.append(field(field));
+        if (ICollections.hasElements(ordItems)) {
+            for (CriteriaItem item : ordItems) {
+                if (item instanceof FieldGroup) {
+                    FieldGroup group = (FieldGroup) item;
+                    buf.append("( ").append(where(group)).append(" )");
+                } else {
+                    Field field = (Field) item;
+                    buf.append(field(field));
+                }
             }
         }
         return trimAndOr(buf.toString());
@@ -123,7 +129,6 @@ public class ConditionSql implements Serializable {
         String property = field.getName();
         Operator oper = field.getOper();
         Object[] values = field.getValue();
-
         switch (andOr) {
             case OR:
                 switch (oper) {
@@ -198,11 +203,15 @@ public class ConditionSql implements Serializable {
         return "param" + i++;
     }
 
+    public String getTableAlias() {
+        return StringUtils.isEmpty(this.tableAlias) ? "" : (this.tableAlias + ".");
+    }
+
     private String condition(String andOr, String property, String operator, Object value) {
         String paramName = paramName();
         paramMap.put(paramName, value);
-        return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(operator)
-            .append(" ?").append(paramName).toString();
+        return new StringBuffer().append(" ").append(andOr).append(" ").append(getTableAlias()).append(property)
+            .append(" ").append(operator).append(" ?").append(paramName).toString();
     }
 
     private String andCondition(String property, String operator, Object value) {
@@ -219,16 +228,16 @@ public class ConditionSql implements Serializable {
         String paramName2 = paramName();
         paramMap.put(paramName2, value2);
         StringBuffer buf = new StringBuffer();
-        buf.append(" ").append(andOr).append(" ").append(property).append(" ").append(not).append(" ")
-            .append("between ?").append(paramName1).append(" and ?").append(paramName2);
+        buf.append(" ").append(andOr).append(" ").append(getTableAlias()).append(property).append(" ").append(not)
+            .append(" ").append("between ?").append(paramName1).append(" and ?").append(paramName2);
         return buf.toString();
     }
 
     private String inCondition(String andOr, String property, String not, Iterable<?> values) {
         String paramName = paramName();
         paramMap.put(paramName, StringUtils.join(values, ","));
-        return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(not)
-            .append(" ").append(" in ( ?").append(paramName).append(")").toString();
+        return new StringBuffer().append(" ").append(andOr).append(" ").append(getTableAlias()).append(property)
+            .append(" ").append(not).append(" ").append(" in ( ?").append(paramName).append(")").toString();
     }
 
     private String trimAndOr(String sql) {

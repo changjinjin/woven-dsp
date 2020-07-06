@@ -2,6 +2,8 @@ package com.info.baymax.dsp.access.dataapi.config;
 
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
+import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
@@ -88,7 +90,7 @@ public class DataPullRecordAspect {
      */
     private void report(Object[] args, long startTime, long endTime, int resultCode) {
         try {
-            PullRequest request = (PullRequest) args[0];
+            DataRequest<?> request = (DataRequest<?>) args[0];
             String accessKey = request.getAccessKey();
             boolean encrypted = request.isEncrypted();
             long timestamp = request.getTimestamp();
@@ -112,7 +114,13 @@ public class DataPullRecordAspect {
                 return;
             }
 
-            IPageable pageable = request.getQuery().getPageable();
+            IPageable pageable = null;
+            if (request instanceof AggRequest) {
+                pageable = ((AggRequest) request).getQuery().getPageable();
+            } else {
+                pageable = ((PullRequest) request).getQuery().getPageable();
+            }
+
             long offset = pageable.getOffset();
             Integer pageSize = pageable.getPageSize();
             DataTransferRecord record = DataTransferRecord.builder()//

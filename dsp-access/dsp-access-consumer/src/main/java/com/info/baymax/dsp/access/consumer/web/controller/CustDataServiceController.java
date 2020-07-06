@@ -6,6 +6,7 @@ import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
@@ -36,8 +37,8 @@ public class CustDataServiceController implements BaseEntityController<DataServi
     @Override
     public Response<IPage<DataService>> page(
         @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        return Response.ok(dataServiceEntityService.selectPage(
-            ExampleQuery.builder(query).fieldGroup().andEqualTo("custId", SaasContext.getCurrentUserId()).end()));
+        return Response.ok(dataServiceEntityService.selectPage(ExampleQuery.builder(query)
+            .fieldGroup(FieldGroup.builder().andEqualTo("custId", SaasContext.getCurrentUserId()))));
     }
 
     @Override
@@ -55,7 +56,6 @@ public class CustDataServiceController implements BaseEntityController<DataServi
             dataService.setPath(null);
             dataService.setPullConfiguration(null);
         }
-
         return Response.ok(dataService);
     }
 
@@ -63,8 +63,9 @@ public class CustDataServiceController implements BaseEntityController<DataServi
     @ResponseBody
     @PostMapping("/tasklist/{flowId}")
     public Response<IPage<FlowExecution>> query(@PathVariable String flowId, @RequestBody ExampleQuery query) {
-        return Response.ok(flowExecutionService.selectPage(ExampleQuery.builder(query).fieldGroup()
-            .andEqualTo("flowId", flowId).andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end()));
+        query = ExampleQuery.builder(query);
+        query.fieldGroup().andEqualTo("flowId", flowId).andEqualTo("tenantId", SaasContext.getCurrentTenantId());
+        return Response.ok(flowExecutionService.selectPage(query));
     }
 
 }

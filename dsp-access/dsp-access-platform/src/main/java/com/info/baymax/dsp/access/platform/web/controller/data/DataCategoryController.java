@@ -37,7 +37,7 @@ public class DataCategoryController implements BaseEntityController<DataCategory
     @Override
     public Response<?> deleteById(Long id) {
         dataCategoryService.deleteById(id);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "根据ID批量删除", hidden = true)
@@ -56,7 +56,7 @@ public class DataCategoryController implements BaseEntityController<DataCategory
     @PostMapping("sort")
     public Response<?> sort(@ApiParam(value = "待排序记录，只传id属性即可", required = true) @RequestBody @NotEmpty List<DataCategory> list) {
         dataCategoryService.sort(list);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "移动目录")
@@ -66,7 +66,7 @@ public class DataCategoryController implements BaseEntityController<DataCategory
                             @ApiParam(value = "目标目录", required = true) @RequestParam @NotNull Long destId//
     ) {
         dataCategoryService.move(ids, destId);
-        return Response.ok();
+        return Response.ok().build();
     }
 
     @ApiOperation(value = "目录列表")
