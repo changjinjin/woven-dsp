@@ -107,8 +107,7 @@ public class JobExecutorService {
              * flow加一个标识,标识它是共享数据flow,完成后给平台和用户发一个通知,列表显示通知。
              */
             // 构建ExampleQuery更新DataService
-            exampleQuery = ExampleQuery.builder(DataService.class).fieldGroup().andEqualTo("id", dataService.getId())
-                .end();
+            exampleQuery = ExampleQuery.builder(DataService.class).fieldGroup(FieldGroup.builder().andEqualTo("id", dataService.getId()));
 
             FlowDesc flowDesc = null;
             String clusterId = dataset.getStorageConfigurations().get("clusterId");
