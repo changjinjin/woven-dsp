@@ -5,6 +5,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
@@ -420,14 +421,14 @@ public class JobExecutorService {
     }
 
     private Integer countAllExecutions(String flowId) {
-        ExampleQuery query = ExampleQuery.builder(FlowExecution.class).fieldGroup().andEqualTo("flowId", flowId)
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).end();
+        ExampleQuery query = ExampleQuery.builder(FlowExecution.class).fieldGroup(FieldGroup.builder().andEqualTo("flowId", flowId)
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()));
         return flowExecutionService.selectCount(query);
     }
 
     private Integer countFailedExecutions(String flowId) {
-        ExampleQuery query = ExampleQuery.builder(FlowExecution.class).fieldGroup().andEqualTo("flowId", flowId)
-            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("statusType", "FAILED").end();
+        ExampleQuery query = ExampleQuery.builder(FlowExecution.class).fieldGroup(FieldGroup.builder().andEqualTo("flowId", flowId)
+            .andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("statusType", "FAILED"));
         return flowExecutionService.selectCount(query);
     }
 
