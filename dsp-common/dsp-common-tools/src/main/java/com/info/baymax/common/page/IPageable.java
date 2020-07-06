@@ -33,21 +33,21 @@ public class IPageable implements Serializable {
      * 是否分页，默认分页
      */
     @ApiModelProperty(value = "是否分页,默认true", allowableValues = "true,false")
-    protected Boolean pageable = true;
+    protected boolean pageable = true;
 
     /**
      * 页码
      */
     @ApiModelProperty(value = "页码，默认1")
     @Positive
-    protected Integer pageNum;
+    protected int pageNum;
 
     /**
      * 页长
      */
     @ApiModelProperty(value = "页长，默认10")
     @Positive
-    protected Integer pageSize;
+    protected int pageSize;
 
     /**
      * 排序条件，多个条件用“,”分开，如：id asc,name desc（字段名称取数据库中字段名而非实体属性名）
@@ -151,7 +151,7 @@ public class IPageable implements Serializable {
         return new IPageable(true, (int) Math.floor((offset + limit) / limit), limit);
     }
 
-    public Boolean isPageable() {
+    public boolean isPageable() {
         return pageable;
     }
 

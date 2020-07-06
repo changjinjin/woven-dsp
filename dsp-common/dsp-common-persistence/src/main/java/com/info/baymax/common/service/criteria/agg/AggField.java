@@ -16,6 +16,9 @@ import java.io.Serializable;
 public class AggField implements Serializable {
     private static final long serialVersionUID = -878572549536122362L;
 
+    @ApiModelProperty(value = "表别名", hidden = true)
+    private String tableAlias;
+
     @ApiModelProperty("聚合字段名称")
     private String name;
 
@@ -35,10 +38,16 @@ public class AggField implements Serializable {
         return this.alias;
     }
 
+    public AggField tableAlias(String tableAlias) {
+        this.tableAlias = tableAlias;
+        return this;
+    }
+
     @Override
     public String toString() {
         return new StringBuffer().append(aggType.getValue()).append("(").append((distinct ? "distinct " : ""))
-            .append(name).append(") ").append(getAlias()).toString();
+            .append(StringUtils.isEmpty(tableAlias) ? "" : (tableAlias + ".")).append(name).append(") ")
+            .append(getAlias()).toString();
     }
 
     public static void main(String[] args) {

@@ -53,7 +53,8 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
             if (conn != null) {
                 PagingRequest<?, MapEntity> request = SqlPaginations.preparePagination(pageable.getPageNum(),
                     pageable.getPageSize());
-                List<MapEntity> list = runner.query(conn, selectSql.getExecuteSql(), rsh, selectSql.getParamValues());
+                List<MapEntity> list = runner.query(conn, selectSql.getPlaceholderSql(), rsh,
+                    selectSql.getParamValues());
                 log.debug("query result:" + list.size());
                 PagingResult<MapEntity> result = request.getResult();
                 if (result != null) {

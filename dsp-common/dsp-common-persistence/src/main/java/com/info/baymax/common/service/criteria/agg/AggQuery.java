@@ -11,6 +11,8 @@ import lombok.Getter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
 @ApiModel
 @Getter
 public class AggQuery extends AbstractAggQuery<AggQuery> {
@@ -28,15 +30,20 @@ public class AggQuery extends AbstractAggQuery<AggQuery> {
         return this;
     }
 
-    public List<String> finalSelectProperties() {
+    public List<String> getFinalSelectProperties(String tableAlias) {
         List<String> selects = Lists.newArrayList();
         if (ICollections.hasElements(groupFields)) {
-            selects.addAll(groupFields);
+            if (StringUtils.isNotEmpty(tableAlias)) {
+                selects.addAll(groupFields.stream().map(t -> tableAlias + "." + t).collect(Collectors.toList()));
+            } else {
+                selects.addAll(groupFields);
+            }
         }
         if (ICollections.hasElements(aggFields)) {
-            selects.addAll(aggFields.stream().map(t -> t.toString()).collect(Collectors.toList()));
+            selects.addAll(
+                aggFields.stream().map(t -> t.tableAlias(tableAlias).toString()).collect(Collectors.toList()));
         }
-        return selects;
+        return Lists.newArrayList(selects);
     }
 
     public static void main(String[] args) {

@@ -1,19 +1,17 @@
 package com.info.baymax.dsp.access.dataapi.essql;
 
-import org.es.sql.bean.ElasticSqlParseResult;
-import org.es.sql.parser.ElasticSql2DslParser;
+import org.datayoo.moql.sql.SqlDialectType;
+import org.datayoo.moql.translator.MoqlTranslator;
 import org.junit.Test;
 
 public class EssqlTest {
 
     @Test
     public void test1() throws Exception {
-        String sql = "select skuId, name, category, avg(price) count_price, avg(price) avg_price, avg(price) max_price, avg(price) min_price, avg(price) sum_price from commodity where  price > ?  group by skuId, name, category having  avg_price  between ? and ?  order by max_price ASC limit ?, ? ";
-        Object[] params = new Object[]{200.0, 0, 10000, 0, 3};
-
-        ElasticSql2DslParser sql2DslParser = new ElasticSql2DslParser();
-        ElasticSqlParseResult parseResult = sql2DslParser.parse(sql, params);
-        System.out.println(parseResult.toDsl());
+        // sql = "select w.skuId, w.name, w.category from commodity w where w.price > 200 and w.skuId between 100 and
+        // 200 and w.name in ('zhangsan','lisi') order by w.price limit 1, 10 ";
+        String sql = "select w.skuId, w.name, w.category, avg(w.price) count_price, avg(w.price) avg_price, avg(w.price) max_price, avg(w.price) min_price, avg(w.price) sum_price from w.commodity where w.price > 200.0  group by w.skuId, w.name, w.category having avg_price  between 0 and 10000  order by max_price ASC limit 1, 3 ";
+        System.out.println(MoqlTranslator.translateMoql2Dialect(sql, SqlDialectType.ELASTICSEARCH));
     }
 
 }

@@ -10,7 +10,7 @@ public class JdbcQueryParser implements QueryParser<JdbcStorageConf, JdbcQuery, 
 
     @Override
     public QuerySql parse(JdbcStorageConf storageConf, RecordQuery query) throws Exception {
-        return QuerySql.builder(convert(storageConf, query));
+        return QuerySql.builder("w", convert(storageConf, query));
     }
 
     @Override
@@ -20,7 +20,7 @@ public class JdbcQueryParser implements QueryParser<JdbcStorageConf, JdbcQuery, 
 
     @Override
     public AggQuerySql parseAgg(JdbcStorageConf conf, AggQuery query) throws Exception {
-        return AggQuerySql.builder(convertAgg(conf, query));
+        return AggQuerySql.builder("w", convertAgg(conf, query));
     }
 
     @Override

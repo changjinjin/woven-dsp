@@ -15,5 +15,5 @@ public class PullRequest extends DataRequest<RecordQuery> {
 
     public PullRequest(String accessKey, Long dataServiceId, long timestamp, boolean encrypted, RecordQuery query) {
         super(accessKey, dataServiceId, timestamp, encrypted, query);
-    }
+    } 
 }

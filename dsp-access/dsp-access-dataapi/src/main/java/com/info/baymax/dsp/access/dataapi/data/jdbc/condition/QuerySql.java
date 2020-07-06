@@ -12,37 +12,31 @@ import java.util.Arrays;
 public class QuerySql extends AbstractQuerySql<JdbcQuery> {
     private static final long serialVersionUID = 9076946654365840665L;
 
-    protected QuerySql(JdbcQuery query) {
-        super(query);
+    protected QuerySql(String tableAlias, JdbcQuery query) {
+        super(tableAlias, query);
     }
 
     public static QuerySql builder(JdbcQuery query) {
-        return new QuerySql(query);
+        return new QuerySql("", query);
+    }
+
+    public static QuerySql builder(String tableAlias, JdbcQuery query) {
+        return new QuerySql(tableAlias, query);
     }
 
     protected void build(JdbcQuery query) {
         if (valid(query)) {
             StringBuffer buf = new StringBuffer();
-
-            // select column1,column2,column3... from table
-            buf.append("select ").append(StringUtils.join(query.finalSelectProperties(), ", ")).append(" from ")
-                .append(query.getTable());
-
-            // where 条件
-            ConditionSql whereConditionSql = ConditionSql.build(query.fieldGroup());
-            if (whereConditionSql != null && StringUtils.isNotEmpty(whereConditionSql.getExecuteSql())) {
-                buf.append(" where ").append(whereConditionSql.getExecuteSql()).append(" ");
-            }
+            buf.append(selectAndWhere(query.getFinalSelectProperties(tableAlias), query.getTable(), tableAlias,
+                query.getFieldGroup()));
 
             // order by 条件
             String orderBy = orderBy(query.getOrdSort());
             if (StringUtils.isNotEmpty(orderBy)) {
                 buf.append(" order by ").append(orderBy);
             }
-
-            this.executeSql = buf.toString();
-            this.paramValues = whereConditionSql.getParamValues();
-            log.debug("make executeSql:" + executeSql + ", paramValues:" + Arrays.toString(paramValues));
+            this.placeholderSql = buf.toString();
+            log.debug("make executeSql:" + placeholderSql + ", paramValues:" + Arrays.toString(paramValues));
         }
     }
 

@@ -11,7 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -36,7 +35,7 @@ public class DataApiController implements Serializable {
     }
 
     @ApiOperation(value = "数据拉取接口")
-    @PostMapping("/pull")
+    @PostMapping("/pullRecords")
     @PullLog
     public PullResponse pullData(@ApiParam(value = "数据拉取请求信息", required = true) @RequestBody @Valid PullRequest request,
                                  @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {
@@ -45,7 +44,7 @@ public class DataApiController implements Serializable {
     }
 
     @ApiOperation(value = "数据聚合查询接口")
-    @PostMapping("/agg")
+    @PostMapping("/pullAggs")
     @PullLog
     public PullResponse aggData(@ApiParam(value = "数据拉取是请求信息", required = true) @RequestBody @Valid AggRequest request,
                                 @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {

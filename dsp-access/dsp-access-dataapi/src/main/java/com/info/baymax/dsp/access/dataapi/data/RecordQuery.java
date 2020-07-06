@@ -3,17 +3,17 @@ package com.info.baymax.dsp.access.dataapi.data;
 import com.google.common.collect.Sets;
 import com.info.baymax.common.service.criteria.query.AbstractPropertiesQuery;
 import com.info.baymax.common.utils.ICollections;
+import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * rest 接口访问参数结构类
@@ -51,16 +51,17 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
         return allProperties(Arrays.asList(allProperties));
     }
 
-    public Set<String> finalSelectProperties() {
-        Set<String> select = Sets.newHashSet();
+    @Override
+    public List<String> getFinalSelectProperties(String tableAlias) {
+        Set<String> select = Sets.newLinkedHashSet();
         if (ICollections.hasElements(allProperties)) {
-            Set<String> all = Sets.newHashSet(allProperties);
+            Set<String> all = Sets.newLinkedHashSet(allProperties);
             if (ICollections.hasElements(excludeProperties)) {
-                Set<String> exclude = Sets.newHashSet(excludeProperties);
+                Set<String> exclude = Sets.newLinkedHashSet(excludeProperties);
                 all.removeAll(exclude);
             }
             if (ICollections.hasElements(selectProperties)) {
-                select = Sets.newHashSet(selectProperties);
+                select = Sets.newLinkedHashSet(selectProperties);
                 select.retainAll(all);
             }
         }
@@ -68,6 +69,9 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
             throw new DataReadException("no suitable fields for query with allProperties:" + allProperties
                 + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
         }
-        return select;
+        if (StringUtils.isNotEmpty(tableAlias)) {
+            return select.stream().map(t -> tableAlias + "." + t).collect(Collectors.toList());
+        }
+        return Lists.newArrayList(select);
     }
 }

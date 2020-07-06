@@ -140,4 +140,12 @@ public abstract class AbstractQuery<T extends AbstractQuery<T>> implements Field
         return (T) this;
     }
 
+    /**
+     * 获取最终的查询字段列表
+     *
+     * @param tableAlias 表别名
+     * @return 最终查询字段列表
+     */
+    public abstract List<String> getFinalSelectProperties(String tableAlias);
+
 }

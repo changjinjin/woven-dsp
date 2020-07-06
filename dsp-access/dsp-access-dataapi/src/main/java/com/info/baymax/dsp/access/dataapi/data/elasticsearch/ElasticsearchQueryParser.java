@@ -19,7 +19,6 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ElasticsearchQueryParser
@@ -28,7 +27,7 @@ public class ElasticsearchQueryParser
     @Override
     public Search parse(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
         IPageable pageable = query.getPageable();
-        return new Search.Builder(searchBuilder(query.finalSelectProperties(), query.getFieldGroup()))
+        return new Search.Builder(searchBuilder(query.getFinalSelectProperties(""), query.getFieldGroup()))
             .addIndices(Arrays.asList(storageConf.getIndex()))//
             .addTypes(Arrays.asList(storageConf.getIndexType()))//
             .addSort(sorts(query.getOrdSort()))//
@@ -52,7 +51,7 @@ public class ElasticsearchQueryParser
         return query.table(storageConf.getIndex());
     }
 
-    private String searchBuilder(Set<String> includes, FieldGroup fieldGroup) {
+    private String searchBuilder(List<String> includes, FieldGroup fieldGroup) {
         String[] includeFields = null;
         if (ICollections.hasElements(includes)) {
             includeFields = includes.stream().toArray(String[]::new);
