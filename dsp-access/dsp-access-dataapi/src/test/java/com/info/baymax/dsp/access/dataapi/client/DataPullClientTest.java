@@ -6,7 +6,7 @@ import com.info.baymax.common.service.criteria.agg.AggType;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -55,11 +55,11 @@ public class DataPullClientTest {
 						new String[] { "'1'", "'2'", "'3'" }))//
 				.orderBy("id")//
 				.orderBy("code");
-		PullRequest request = new PullRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+		RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
 		webTestClient//
 				.post().uri("/data/pull")//
 				.header("hosts", "183.6.116.33")//
-				.body(Mono.just(request), PullRequest.class)//
+				.body(Mono.just(request), RecordRequest.class)//
 				.accept(MediaType.APPLICATION_JSON)//
 				.exchange()//
 				.expectStatus().isOk()//
@@ -83,12 +83,12 @@ public class DataPullClientTest {
 				.orderBy("name");
 
 		long dataServiceId = 727202723199451136L;
-		PullRequest request = new PullRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+		RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
 		System.out.println("request:" + JSON.toJSONString(request));
 		webTestClient//
 				.post().uri("/data/pullRecords")//
 				.header("hosts", "183.6.116.33")//
-				.body(Mono.just(request), PullRequest.class)//
+				.body(Mono.just(request), RecordRequest.class)//
 				.accept(MediaType.APPLICATION_JSON)//
 				.exchange()//
 				.expectStatus().isOk()//
@@ -125,7 +125,7 @@ public class DataPullClientTest {
 		webTestClient//
 				.post().uri("/data/pullAggs")//
 				.header("hosts", "183.6.116.33")//
-				.body(Mono.just(request), PullRequest.class)//
+				.body(Mono.just(request), RecordRequest.class)//
 				.accept(MediaType.APPLICATION_JSON)//
 				.exchange()//
 				.expectStatus().isOk()//

@@ -19,7 +19,7 @@ import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -57,7 +57,7 @@ public class PullServiceImpl implements PullService {
     private DataReader<MapEntity, MapEntity> dataReader;
 
     @Override
-    public IPage<MapEntity> pullRecords(PullRequest request, String hosts) {
+    public IPage<MapEntity> pullRecords(RecordRequest request, String hosts) {
         return doQuery(request, hosts);
     }
 

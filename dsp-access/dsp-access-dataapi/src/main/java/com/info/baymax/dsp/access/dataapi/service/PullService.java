@@ -3,7 +3,7 @@ package com.info.baymax.dsp.access.dataapi.service;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 
 /**
  * @Author: guofeng.wu
@@ -18,7 +18,7 @@ public interface PullService {
      * @param hosts   配置主机
      * @return 数据结果集
      */
-    IPage<MapEntity> pullRecords(PullRequest request, String hosts);
+    IPage<MapEntity> pullRecords(RecordRequest request, String hosts);
 
     /**
      * 数据聚合请求查询逻辑

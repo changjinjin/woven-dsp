@@ -4,7 +4,7 @@ import com.info.baymax.common.page.IPageable;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
@@ -118,7 +118,7 @@ public class DataPullRecordAspect {
             if (request instanceof AggRequest) {
                 pageable = ((AggRequest) request).getQuery().getPageable();
             } else {
-                pageable = ((PullRequest) request).getQuery().getPageable();
+                pageable = ((RecordRequest) request).getQuery().getPageable();
             }
 
             long offset = pageable.getOffset();

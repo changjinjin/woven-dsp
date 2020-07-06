@@ -6,7 +6,7 @@ import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
-import com.info.baymax.dsp.access.dataapi.web.request.PullRequest;
+import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class SignTest extends AbstractBootTest {
                 )//
                 .orderBy("id")//
                 .orderBy("code");
-            PullRequest request = new PullRequest(accessKey, null, System.currentTimeMillis(), false, query);
+            RecordRequest request = new RecordRequest(accessKey, null, System.currentTimeMillis(), false, query);
             IPage<MapEntity> page = pullService.pullRecords(request, null);
             PullResponse encrypt = PullResponse.ok(page).request(request).encrypt(signKeyIfExist);
             System.out.println(JSON.toJSONString(encrypt));
