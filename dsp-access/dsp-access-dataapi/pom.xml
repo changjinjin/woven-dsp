@@ -175,7 +175,7 @@
         </dependency>
         <dependency>
             <groupId>org.datayoo.moql</groupId>
-            <artifactId>moql-querier</artifactId>
+            <artifactId>moql-translator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

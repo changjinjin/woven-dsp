@@ -61,7 +61,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
 		<guava.version>22.0</guava.version>
-		<elasticsearch.version>6.8.6</elasticsearch.version>
+		<elasticsearch.version>5.5.3</elasticsearch.version>
 		<jest.version>6.3.1</jest.version>
 
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
@@ -278,6 +278,11 @@
 			<dependency>
 				<groupId>org.datayoo.moql</groupId>
 				<artifactId>moql-querier</artifactId>
+				<version>${moql.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.datayoo.moql</groupId>
+				<artifactId>moql-translator</artifactId>
 				<version>${moql.version}</version>
 			</dependency>
 
