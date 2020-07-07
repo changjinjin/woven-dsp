@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.agg.AggType;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import org.junit.Before;

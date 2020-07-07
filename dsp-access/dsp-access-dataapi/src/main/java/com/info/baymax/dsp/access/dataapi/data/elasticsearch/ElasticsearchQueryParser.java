@@ -4,9 +4,10 @@ import com.google.common.collect.Lists;
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
-import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
+
 import io.searchbox.core.Search;
 import io.searchbox.core.search.sort.Sort;
 import io.searchbox.core.search.sort.Sort.Sorting;

@@ -3,7 +3,7 @@ package com.info.baymax.dsp.access.dataapi.query;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.agg.AggType;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.QuerySql;

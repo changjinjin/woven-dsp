@@ -5,6 +5,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.config.jest.JestClientUtils;
 import com.info.baymax.dsp.access.dataapi.config.jest.JestConf;
 import com.info.baymax.dsp.access.dataapi.data.*;

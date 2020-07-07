@@ -6,7 +6,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;

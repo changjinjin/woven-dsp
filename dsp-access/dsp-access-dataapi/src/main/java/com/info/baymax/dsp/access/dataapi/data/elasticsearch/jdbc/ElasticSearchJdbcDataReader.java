@@ -2,8 +2,8 @@ package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.data.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.AbstractJdbcDataReader;

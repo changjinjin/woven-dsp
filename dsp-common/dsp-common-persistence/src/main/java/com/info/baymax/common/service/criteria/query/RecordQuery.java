@@ -1,9 +1,8 @@
-package com.info.baymax.dsp.access.dataapi.data;
+package com.info.baymax.common.service.criteria.query;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.info.baymax.common.service.criteria.query.AbstractPropertiesQuery;
 import com.info.baymax.common.utils.ICollections;
-import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -63,10 +62,14 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
             if (ICollections.hasElements(selectProperties)) {
                 select = Sets.newLinkedHashSet(selectProperties);
                 select.retainAll(all);
+            } else {
+                select.addAll(all);
             }
+        } else {
+            select.addAll(selectProperties);
         }
         if (ICollections.hasNoElements(select)) {
-            throw new DataReadException("no suitable fields for query with allProperties:" + allProperties
+            throw new RuntimeException("no suitable fields for query with allProperties:" + allProperties
                 + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
         }
         if (StringUtils.isNotEmpty(tableAlias)) {

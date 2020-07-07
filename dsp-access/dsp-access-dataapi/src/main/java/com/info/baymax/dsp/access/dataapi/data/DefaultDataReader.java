@@ -3,6 +3,7 @@ package com.info.baymax.dsp.access.dataapi.data;
 import com.google.common.collect.Lists;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.common.utils.ICollections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;
