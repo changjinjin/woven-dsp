@@ -66,26 +66,29 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(
-                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
-            List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
-            Long count = 0L;
-            String key = null;
-            String key1 = null;
+            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Map<String, Object>> list = new ArrayList<>();
-            Map<String, Object> map = null;
-            for (Entry entry : idAgg) {
-                key = entry.getKeyAsString();
-                count = entry.getCount();
-                List<Entry> nameAgg = entry.getTermsAggregation("custNameAgg").getBuckets();
-                for (Entry entry1 : nameAgg) {
-                    key1 = entry1.getKeyAsString();
+            if (result.isSucceeded()) {
+                List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
+                Long count = 0L;
+                String key = null;
+                String key1 = null;
+                Map<String, Object> map = null;
+                for (Entry entry : idAgg) {
+                    key = entry.getKeyAsString();
+                    count = entry.getCount();
+                    List<Entry> nameAgg = entry.getTermsAggregation("custNameAgg").getBuckets();
+                    for (Entry entry1 : nameAgg) {
+                        key1 = entry1.getKeyAsString();
+                    }
+                    map = new HashMap<String, Object>();
+                    map.put("custId", key);
+                    map.put("custName", key1);
+                    map.put("count", count);
+                    list.add(map);
                 }
-                map = new HashMap<String, Object>();
-                map.put("custId", key);
-                map.put("custName", key1);
-                map.put("count", count);
-                list.add(map);
+            } else {
+                log.error("es query failed,errorMessage:" + result.getErrorMessage());
             }
             return list;
         } catch (Exception e) {
@@ -114,26 +117,29 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(
-                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
-            List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
-            Long count = 0L;
-            String key = null;
-            String key1 = null;
+            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Map<String, Object>> list = new ArrayList<>();
-            Map<String, Object> map = null;
-            for (Entry entry : idAgg) {
-                key = entry.getKeyAsString();
-                count = entry.getCount();
-                List<Entry> nameAgg = entry.getTermsAggregation("datasetNameAgg").getBuckets();
-                for (Entry entry1 : nameAgg) {
-                    key1 = entry1.getKeyAsString();
+            if (result.isSucceeded()) {
+                List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
+                Long count = 0L;
+                String key = null;
+                String key1 = null;
+                Map<String, Object> map = null;
+                for (Entry entry : idAgg) {
+                    key = entry.getKeyAsString();
+                    count = entry.getCount();
+                    List<Entry> nameAgg = entry.getTermsAggregation("datasetNameAgg").getBuckets();
+                    for (Entry entry1 : nameAgg) {
+                        key1 = entry1.getKeyAsString();
+                    }
+                    map = new HashMap<String, Object>();
+                    map.put("datasetId", key);
+                    map.put("datasetName", key1);
+                    map.put("count", count);
+                    list.add(map);
                 }
-                map = new HashMap<String, Object>();
-                map.put("datasetId", key);
-                map.put("datasetName", key1);
-                map.put("count", count);
-                list.add(map);
+            } else {
+                log.error("es query failed,errorMessage:" + result.getErrorMessage());
             }
             return list;
         } catch (Exception e) {
@@ -163,26 +169,29 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(
-                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
-            List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
-            Long count = 0L;
-            String key = null;
-            String key1 = null;
+            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Map<String, Object>> list = new ArrayList<>();
-            Map<String, Object> map = null;
-            for (Entry entry : idAgg) {
-                key = entry.getKeyAsString();
-                count = entry.getCount();
-                List<Entry> nameAgg = entry.getTermsAggregation("datasetNameAgg").getBuckets();
-                for (Entry entry1 : nameAgg) {
-                    key1 = entry1.getKeyAsString();
+            if (result.isSucceeded()) {
+                List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
+                Long count = 0L;
+                String key = null;
+                String key1 = null;
+                Map<String, Object> map = null;
+                for (Entry entry : idAgg) {
+                    key = entry.getKeyAsString();
+                    count = entry.getCount();
+                    List<Entry> nameAgg = entry.getTermsAggregation("datasetNameAgg").getBuckets();
+                    for (Entry entry1 : nameAgg) {
+                        key1 = entry1.getKeyAsString();
+                    }
+                    map = new HashMap<String, Object>();
+                    map.put("datasetId", key);
+                    map.put("datasetName", key1);
+                    map.put("count", count);
+                    list.add(map);
                 }
-                map = new HashMap<String, Object>();
-                map.put("datasetId", key);
-                map.put("datasetName", key1);
-                map.put("count", count);
-                list.add(map);
+            } else {
+                log.error("es query failed,errorMessage:" + result.getErrorMessage());
             }
             return list;
         } catch (Exception e) {
@@ -212,26 +221,29 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(
-                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
-            List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
-            Long count = 0L;
-            String key = null;
-            String key1 = null;
+            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
             List<Map<String, Object>> list = new ArrayList<>();
-            Map<String, Object> map = null;
-            for (Entry entry : idAgg) {
-                key = entry.getKeyAsString();
-                count = entry.getCount();
-                List<Entry> nameAgg = entry.getTermsAggregation("custNameAgg").getBuckets();
-                for (Entry entry1 : nameAgg) {
-                    key1 = entry1.getKeyAsString();
+            if (result.isSucceeded()) {
+                List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
+                Long count = 0L;
+                String key = null;
+                String key1 = null;
+                Map<String, Object> map = null;
+                for (Entry entry : idAgg) {
+                    key = entry.getKeyAsString();
+                    count = entry.getCount();
+                    List<Entry> nameAgg = entry.getTermsAggregation("custNameAgg").getBuckets();
+                    for (Entry entry1 : nameAgg) {
+                        key1 = entry1.getKeyAsString();
+                    }
+                    map = new HashMap<String, Object>();
+                    map.put("custId", key);
+                    map.put("custName", key1);
+                    map.put("count", count);
+                    list.add(map);
                 }
-                map = new HashMap<String, Object>();
-                map.put("custId", key);
-                map.put("custName", key1);
-                map.put("count", count);
-                list.add(map);
+            } else {
+                log.error("es query failed,errorMessage:" + result.getErrorMessage());
             }
             return list;
         } catch (Exception e) {
@@ -271,11 +283,16 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            SearchResult result = jestClient.execute(
-                    new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
-            List<Hit<DataTransferRecord, Void>> hits = result.getHits(DataTransferRecord.class);
-            return IPage.<DataTransferRecord>of(pageNum, pageSize, result.getTotal(),
-                hits.stream().map(t -> t.source).collect(Collectors.toList()));
+            SearchResult result = jestClient
+                .execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
+            if (result.isSucceeded()) {
+                List<Hit<DataTransferRecord, Void>> hits = result.getHits(DataTransferRecord.class);
+                return IPage.<DataTransferRecord>of(pageNum, pageSize, result.getTotal(),
+                    hits.stream().map(t -> t.source).collect(Collectors.toList()));
+            } else {
+                log.error("es query failed,errorMessage:" + result.getErrorMessage());
+            }
+            return IPage.<DataTransferRecord>of(pageNum, pageSize, 0);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
