@@ -116,7 +116,7 @@ public class DataPullClientTest {
 				.aggField("price", AggType.MIN)//
 				.aggField("price", AggType.SUM)//
 				.groupFields("skuId", "name", "category")//
-				.havingFieldGroup(FieldGroup.builder().andBetween("avg_price", 0, 10000))//
+				.havingFieldGroup(FieldGroup.builder()/* .andBetween("avg_price", 0, 10000) */)//
 				.havingOrderBy("max_price");
 
 		long dataServiceId = 727202723199451136L;

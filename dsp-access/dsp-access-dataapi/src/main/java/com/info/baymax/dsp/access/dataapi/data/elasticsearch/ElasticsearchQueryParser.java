@@ -1,13 +1,13 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
 
 import com.google.common.collect.Lists;
+import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
-
 import io.searchbox.core.Search;
 import io.searchbox.core.search.sort.Sort;
 import io.searchbox.core.search.sort.Sort.Sorting;
@@ -70,7 +70,7 @@ public class ElasticsearchQueryParser
     private BoolQueryBuilder boolQueryBuilder(FieldGroup fieldGroup) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         // TODO parse fieldGroup to a BoolQueryBuilder
-        // List<CriteriaItem> ordItems = fieldGroup.ordItems();
+        List<CriteriaItem> ordItems = fieldGroup.ordItems();
         // if (start > 0) {
         // queryBuilder.must(rangeQuery("@timestamp").gte(start));
         // }
@@ -87,5 +87,4 @@ public class ElasticsearchQueryParser
         }
         return Lists.newArrayList();
     }
-
 }

@@ -50,7 +50,7 @@ public interface AggFieldQueryBuilder<B extends AggFieldQueryBuilder<B>> {
      * @return this builder
      */
     default B aggField(String name, String alias, AggType aggType, boolean distinct) {
-        return aggFields(AggField.builder().name(name).alias(alias).aggType(AggType.AVG).distinct(distinct).build());
+        return aggFields(AggField.builder().name(name).alias(alias).aggType(aggType).distinct(distinct).build());
     }
 
     /**
