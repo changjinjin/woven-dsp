@@ -108,16 +108,18 @@ public class ConditionSql implements Serializable {
     }
 
     private String where(FieldGroup fieldGroup) {
-        StringBuffer buf = new StringBuffer();
-        List<CriteriaItem> ordItems = fieldGroup.reIndex().ordItems();
-        if (ICollections.hasElements(ordItems)) {
-            for (CriteriaItem item : ordItems) {
-                if (item instanceof FieldGroup) {
-                    FieldGroup group = (FieldGroup) item;
-                    buf.append("( ").append(where(group)).append(" )");
-                } else {
-                    Field field = (Field) item;
-                    buf.append(field(field));
+        StringBuffer buf = new StringBuffer("");
+        if (fieldGroup != null) {
+            List<CriteriaItem> ordItems = fieldGroup.reIndex().ordItems();
+            if (ICollections.hasElements(ordItems)) {
+                for (CriteriaItem item : ordItems) {
+                    if (item instanceof FieldGroup) {
+                        FieldGroup group = (FieldGroup) item;
+                        buf.append("( ").append(where(group)).append(" )");
+                    } else {
+                        Field field = (Field) item;
+                        buf.append(field(field));
+                    }
                 }
             }
         }
