@@ -92,7 +92,7 @@ public class DataPullClientTest {
             .aggField("income", AggType.MAX)//
             .aggField("income", AggType.MIN)//
             .groupField("code")//
-            .groupField("manager")//
+            .groupField("date")//
             .havingFieldGroup(
                 FieldGroup.builder().andGreaterThan("sum_income", 1000).andLessThan("min_income", 10000))//
             .orderBy("sum_income");

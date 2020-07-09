@@ -26,6 +26,12 @@ public abstract class AbstractResponse<T> implements ErrMsg, Serializable {
      */
     @ApiModelProperty("业务错误信息：status字段为非0值时返回对应的错误信息")
     protected String message;
+    
+    /**
+     *  详情描述，错误信息等
+     */
+    @ApiModelProperty("详情描述，错误信息等")
+    protected Object details;
 
     /**
      * 业务报文
@@ -35,13 +41,14 @@ public abstract class AbstractResponse<T> implements ErrMsg, Serializable {
     protected T content;
 
     protected AbstractResponse(ErrMsg errMsg, T content) {
-        this(errMsg.getStatus(), errMsg.getMessage(), content);
+        this(errMsg.getStatus(), errMsg.getMessage(), content,null);
     }
 
-    protected AbstractResponse(Integer status, String message, T content) {
+    protected AbstractResponse(Integer status, String message, T content,Object details) {
         this.status = status;
         this.message = message;
         this.content = content;
+        this.details = details;
     }
 
     public boolean isOk() {

@@ -17,7 +17,11 @@ public class Response<T> extends AbstractResponse<T> {
     }
 
     protected Response(Integer status, String message, T content) {
-        super(status, message, content);
+        super(status, message, content, null);
+    }
+
+    protected Response(Integer status, String message, T content, Object details) {
+        super(status, message, content, details);
     }
 
     // Static builder methods
@@ -93,6 +97,8 @@ public class Response<T> extends AbstractResponse<T> {
 
         Builder message(String message);
 
+        Builder details(Object details);
+
         default <T> Response<T> build() {
             return content(null);
         }
@@ -104,6 +110,7 @@ public class Response<T> extends AbstractResponse<T> {
 
         private final Integer status;
         private String message;
+        private Object details;
 
         public DefaultBuilder(Integer status) {
             this.status = status;
@@ -116,8 +123,14 @@ public class Response<T> extends AbstractResponse<T> {
         }
 
         @Override
+        public Builder details(Object details) {
+            this.details = details;
+            return this;
+        }
+
+        @Override
         public <T> Response<T> content(T content) {
-            return new Response<T>(this.status, this.message, content);
+            return new Response<T>(this.status, this.message, content, this.details);
         }
     }
 }

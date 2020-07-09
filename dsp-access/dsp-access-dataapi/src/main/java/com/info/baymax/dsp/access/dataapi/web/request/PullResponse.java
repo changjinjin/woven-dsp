@@ -28,7 +28,7 @@ public class PullResponse extends AbstractResponse<Object> {
     }
 
     protected PullResponse(Integer status, String message, Object content) {
-        super(status, message, content);
+        super(status, message, content, null);
     }
 
     private String serialize() {

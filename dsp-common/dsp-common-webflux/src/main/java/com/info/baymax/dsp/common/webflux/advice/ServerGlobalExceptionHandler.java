@@ -59,8 +59,9 @@ public class ServerGlobalExceptionHandler {
     @Order(-3)
     public Response<?> bizExceptionHandler(BizException e) {
         log.error(e.getMessage(), e);
-        Response<?> result = Response.error(e.getStatus(),
-            StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus())).build();
+        Response<?> result = Response
+            .error(e.getStatus(), StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()))
+            .build();
         if (result != null) {
             return result;
         }
@@ -74,8 +75,8 @@ public class ServerGlobalExceptionHandler {
     public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
         if (e instanceof DuplicateKeyException) {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR,
-                StringUtils.defaultString(e.getMessage(), "Duplicate key error!")).build();
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Data duplication constraint violation.").details(e.getMessage())
+                .build();
         } else {
             return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
         }

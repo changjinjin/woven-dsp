@@ -11,7 +11,7 @@ import java.util.List;
  * @author jingwei.yang
  * @date 2019年9月6日 上午11:41:02
  */
-public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends FieldBuilder<B> {
+public interface FieldGroupBuilder<B extends FieldGroupBuilder<B>> extends FieldBuilder<B>{
 
     /**
      * 并行条件之间的逻辑关系，默认AND

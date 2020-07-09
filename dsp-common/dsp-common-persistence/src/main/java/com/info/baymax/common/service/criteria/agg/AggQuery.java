@@ -1,9 +1,7 @@
 package com.info.baymax.common.service.criteria.agg;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,16 +45,4 @@ public class AggQuery extends AbstractAggQuery<AggQuery> {
         }
         return Lists.newArrayList(selects);
     }
-
-    public static void main(String[] args) {
-        AggQuery query = AggQuery.builder()//
-            .fieldGroup(FieldGroup.builder().andGreaterThan("avg_name", 2))//
-            .orderBy("avg_name")//
-            .aggField("age", AggType.AVG)//
-            .aggField("name", AggType.COUNT)//
-            .groupField("class")//
-            ;
-        System.out.println(JSON.toJSONString(query));
-    }
-
 }
