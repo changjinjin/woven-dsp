@@ -4,7 +4,7 @@ import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.info.baymax.dsp.job.sch.job.DataShareJob;
 import com.info.baymax.dsp.job.sch.scheduler.DataShareScheduler;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class DataServiceScheduler {
     DataShareScheduler dataShareScheduler;
 
     @Autowired
-    DataServiceEntityService dataServiceEntityService;
+    DataServiceService dataServiceEntityService;
 
     @PostConstruct
     public void updateServiceStatus() {

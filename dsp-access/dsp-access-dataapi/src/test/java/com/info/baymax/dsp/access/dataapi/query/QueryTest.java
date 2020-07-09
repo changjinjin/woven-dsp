@@ -51,15 +51,14 @@ public class QueryTest {
 							.andNotBetween("height", 100, 190, ran.nextBoolean())//
 							.andBetween("id", 1, 10000)//
 					)//
-					.orderByAsc("id")//
-					.orderByDesc("age").aggField("age", AggType.COUNT)//
+					.aggField("age", AggType.COUNT)//
 					.aggField("age", AggType.AVG, true)//
 					.aggField("age", AggType.MAX)//
 					.aggField("age", AggType.MIN)//
 					.aggField("age", AggType.SUM)//
 					.groupFields("gender", "nation")//
 					.havingFieldGroup(FieldGroup.builder().andGreaterThan("sum_age", 100))//
-					.havingOrderByDesc("count_age", "sum_age");
+					.orderByDesc("count_age", "sum_age");
 
 			AggQuerySql sql = AggQuerySql.builder(query);
 			System.out.println(sql.toString());

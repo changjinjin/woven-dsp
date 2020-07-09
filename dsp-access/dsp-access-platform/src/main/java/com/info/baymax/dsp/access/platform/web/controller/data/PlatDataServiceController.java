@@ -13,7 +13,7 @@ import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,20 +28,19 @@ import java.util.Date;
 public class PlatDataServiceController implements BaseEntityController<DataService> {
 
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
-
+    private DataServiceService dataServiceService;
     @Autowired
     private FlowExecutionService flowExecutionService;
 
     @Override
     public BaseEntityService<DataService> getBaseEntityService() {
-        return dataServiceEntityService;
+        return dataServiceService;
     }
 
     @ApiOperation(value = "启用停用", notes = "服务启用停用接口")
     @PostMapping("/updateStatus")
     public Response<?> updateStatus(@ApiParam(value = "启用停用对象，传ID和状态值", required = true) @RequestBody DataService t) {
-        DataService dataService = dataServiceEntityService.selectByPrimaryKey(t.getId());
+        DataService dataService = dataServiceService.selectByPrimaryKey(t.getId());
         dataService.setStatus(t.getStatus());
         if (t.getExpiredTime() != null && t.getExpiredTime() > 0) {
             dataService.setExpiredTime(t.getExpiredTime());
@@ -53,7 +52,7 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
         } else if (t.getStatus() == DataServiceStatus.SERVICE_STATUS_STOPPED) {
             dataService.setIsRunning(ScheduleJobStatus.JOB_STATUS_TO_STOP);
         }
-        dataServiceEntityService.update(dataService);
+        dataServiceService.update(dataService);
         return Response.ok().build();
     }
 
@@ -62,20 +61,18 @@ public class PlatDataServiceController implements BaseEntityController<DataServi
      */
     @Override
     public Response<DataService> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
-        DataService dataService = dataServiceEntityService.selectByPrimaryKey(id);
+        DataService dataService = dataServiceService.selectByPrimaryKey(id);
         if (dataService.getType() == DataServiceType.SERVICE_TYPE_PULL) {
             dataService.setExecutedTimes(null);
             dataService.setFailedTimes(null);
             dataService.setLastExecutedTime(null);
             dataService.setIsRunning(null);
             dataService.setJobInfo(null);
-
         } else if (dataService.getType() == DataServiceType.SERVICE_TYPE_PUSH) {
             dataService.setUrl(null);
             dataService.setPath(null);
             dataService.setPullConfiguration(null);
         }
-
         return Response.ok(dataService);
     }
 

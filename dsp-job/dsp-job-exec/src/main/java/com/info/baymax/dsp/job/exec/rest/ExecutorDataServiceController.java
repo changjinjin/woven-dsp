@@ -8,7 +8,7 @@ import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.info.baymax.dsp.job.exec.service.JobExecutorService;
 import com.info.baymax.dsp.data.dataset.entity.core.*;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import java.util.Map;
 @Slf4j
 public class ExecutorDataServiceController {
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
+    private DataServiceService dataServiceEntityService;
     @Autowired
     private DataResourceService dataResourceService;
     @Autowired

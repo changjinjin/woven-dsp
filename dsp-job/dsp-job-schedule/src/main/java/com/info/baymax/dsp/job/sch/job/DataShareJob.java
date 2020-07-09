@@ -4,7 +4,7 @@ import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.info.baymax.dsp.job.sch.ApplicationContextProvider;
 import com.info.baymax.dsp.job.sch.client.ExecutorRestClient;
 import com.info.baymax.dsp.job.sch.scheduler.DataShareScheduler;
@@ -30,7 +30,7 @@ public class DataShareJob implements Job {
     private ExecutorRestClient executorRestClient;
 
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
+    private DataServiceService dataServiceEntityService;
 
     @Autowired
     DataShareScheduler dataShareScheduler;

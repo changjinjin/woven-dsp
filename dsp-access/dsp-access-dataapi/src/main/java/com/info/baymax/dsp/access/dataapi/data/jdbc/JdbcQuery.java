@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -27,6 +28,7 @@ import java.io.IOException;
 public class JdbcQuery extends RecordQuery {
     private static final long serialVersionUID = 5616355016961992353L;
 
+    @JsonIgnore
     @ApiModelProperty(value = "表名称", hidden = true)
     private String table;
 

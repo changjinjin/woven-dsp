@@ -25,115 +25,156 @@ import reactor.core.publisher.Mono;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DataPullClientTest {
+    @Autowired
+    private WebTestClient webTestClient;
+    private String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
 
-	@Autowired
-	private WebTestClient webTestClient;
+    @Before
+    public void init() {
+        webTestClient//
+            .get().uri(uriBuilder -> uriBuilder.path("/data/secertkey").queryParam("accessKey", accessKey).build())
+            .accept(MediaType.APPLICATION_JSON)//
+            .exchange()//
+            .expectStatus().isOk()//
+            .expectBody()//
+            .consumeWith(t -> {
+                System.out.println(JSON.toJSONString(t));
+            });
+    }
 
-	private String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
+    @Test
+    public void pullJdbc() throws Exception {
+        // long dataServiceId = 725059842368077824L;//snowball
+        long dataServiceId = 730732306678939648L; // mysql
+        RecordQuery query = RecordQuery.builder()//
+            .page(1, 3)//
+            // .allProperties("id", "code", "date", "project", "income", "manager")//
+            // .selectProperties("id", "code", "project", "income", "manager")//
+            .excludeProperties("manager")//
+            .fieldGroup(//
+                FieldGroup.builder()//
+                    .andGreaterThan("id", 2)//
+                // .andIn("code", new String[] { "'1'", "'2'", "'3'" })//
+            )//
+            .orderBy("id")//
+            .orderBy("code");
+        RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+        webTestClient//
+            .post().uri("/data/pullRecords")//
+            .header("hosts", "183.6.116.33")//
+            .body(Mono.just(request), RecordRequest.class)//
+            .accept(MediaType.APPLICATION_JSON)//
+            .exchange()//
+            .expectStatus().isOk()//
+            .expectBody()//
+            .consumeWith(t -> {
+                String string = new String(t.getResponseBodyContent());
+                System.out.println(string);
+            });
+    }
 
-	@Before
-	public void init() {
-		webTestClient//
-				.get().uri(uriBuilder -> uriBuilder.path("/data/secertkey").queryParam("accessKey", accessKey).build())
-				.accept(MediaType.APPLICATION_JSON)//
-				.exchange()//
-				.expectStatus().isOk()//
-				.expectBody()//
-				.consumeWith(t -> {
-					System.out.println(JSON.toJSONString(t));
-				});
-	}
+    @Test
+    public void pullJdbcAgg() throws Exception {
+        // long dataServiceId = 725059842368077824L;//snowball
+        long dataServiceId = 730732306678939648L; // mysql
+        AggQuery query = AggQuery.builder()//
+            .page(1, 3)//
+            // .allProperties("id", "code", "date", "project", "income", "manager")//
+            // .selectProperties("id", "code", "project", "income", "manager")//
+            .fieldGroup(//
+                FieldGroup.builder()//
+                    .andGreaterThan("id", 2)//
+                // .andIn("code", new String[] { "'1'", "'2'", "'3'" })//
+            )//
+            .aggField("income", AggType.COUNT)//
+            .aggField("income", AggType.AVG)//
+            .aggField("income", AggType.SUM)//
+            .aggField("income", AggType.MAX)//
+            .aggField("income", AggType.MIN)//
+            .groupField("code")//
+            .groupField("manager")//
+            .havingFieldGroup(
+                FieldGroup.builder().andGreaterThan("sum_income", 1000).andLessThan("min_income", 10000))//
+            .orderBy("sum_income");
+        AggRequest request = new AggRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+        webTestClient//
+            .post().uri("/data/pullAggs")//
+            .header("hosts", "183.6.116.33")//
+            .body(Mono.just(request), AggRequest.class)//
+            .accept(MediaType.APPLICATION_JSON)//
+            .exchange()//
+            .expectStatus().isOk()//
+            .expectBody()//
+            .consumeWith(t -> {
+                String string = new String(t.getResponseBodyContent());
+                System.out.println(string);
+            });
+    }
 
-	@Test
-	public void pullJdbc() throws Exception {
-		long dataServiceId = 725059842368077824L;
-		RecordQuery query = RecordQuery.builder()//
-				.page(1, 3)//
-				.allProperties("id", "code", "date", "project", "income", "manager")//
-				.selectProperties("id", "code", "project", "income", "manager")//
-				.fieldGroup(FieldGroup.builder().andGreaterThan("id", 2).andIn("code",
-						new String[] { "'1'", "'2'", "'3'" }))//
-				.orderBy("id")//
-				.orderBy("code");
-		RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
-		webTestClient//
-				.post().uri("/data/pull")//
-				.header("hosts", "183.6.116.33")//
-				.body(Mono.just(request), RecordRequest.class)//
-				.accept(MediaType.APPLICATION_JSON)//
-				.exchange()//
-				.expectStatus().isOk()//
-				.expectBody()//
-				.consumeWith(t -> {
-					String string = new String(t.getResponseBodyContent());
-					System.out.println(string);
-				});
-	}
+    @Test
+    public void pullEsJdbc() throws Exception {
+        RecordQuery query = RecordQuery.builder()//
+            .page(1, 3)//
+            .allProperties("skuId", "name", "category", "price", "brand", "stock")//
+            .selectProperties("skuId", "name", "category", "price", "brand", "stock")//
+            .fieldGroup(FieldGroup.builder().andGreaterThan("price", 200D)//
+                // .andIn("category", new String[] { "101" })//
+            )//
+            .orderBy("skuId")//
+            .orderBy("name");
 
-	@Test
-	public void pullEsJdbc() throws Exception {
-		RecordQuery query = RecordQuery.builder()//
-				.page(1, 3)//
-				.allProperties("skuId", "name", "category", "price", "brand", "stock")//
-				.selectProperties("skuId", "name", "category", "price", "brand", "stock")//
-				.fieldGroup(FieldGroup.builder().andGreaterThan("price", 200D)//
-				// .andIn("category", new String[] { "101" })//
-				)//
-				.orderBy("skuId")//
-				.orderBy("name");
+        long dataServiceId = 727202723199451136L;
+        RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+        System.out.println("request:" + JSON.toJSONString(request));
+        webTestClient//
+            .post().uri("/data/pullRecords")//
+            .header("hosts", "183.6.116.33")//
+            .body(Mono.just(request), RecordRequest.class)//
+            .accept(MediaType.APPLICATION_JSON)//
+            .exchange()//
+            .expectStatus().isOk()//
+            .expectBody()//
+            .consumeWith(t -> {
+                String string = new String(t.getResponseBodyContent());
+                System.out.println(string);
+            });
+    }
 
-		long dataServiceId = 727202723199451136L;
-		RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
-		System.out.println("request:" + JSON.toJSONString(request));
-		webTestClient//
-				.post().uri("/data/pullRecords")//
-				.header("hosts", "183.6.116.33")//
-				.body(Mono.just(request), RecordRequest.class)//
-				.accept(MediaType.APPLICATION_JSON)//
-				.exchange()//
-				.expectStatus().isOk()//
-				.expectBody()//
-				.consumeWith(t -> {
-					String string = new String(t.getResponseBodyContent());
-					System.out.println(string);
-				});
-	}
+    @Test
+    public void pullEsJdbcAgg() throws Exception {
+        AggQuery query = AggQuery.builder()//
+            .page(1, 3)//
+            // .allProperties("skuId", "name", "category", "price", "brand", "stock")//
+            // .selectProperties("skuId", "name", "category", "price", "brand", "stock")//
+            .fieldGroup(FieldGroup.builder().andGreaterThan("price", 200D)//
+                // .andIn("category", new String[] { "101" })//
+            )//
+            .orderBy("skuId")//
+            .orderBy("name")//
+            .aggField("price", AggType.COUNT)//
+            .aggField("price", AggType.AVG)//
+            .aggField("price", AggType.MAX)//
+            .aggField("price", AggType.MIN)//
+            .aggField("price", AggType.SUM)//
+            .groupFields("skuId", "name", "category")//
+            .havingFieldGroup(FieldGroup.builder()/* .andBetween("avg_price", 0, 10000) */)//
+            .orderBy("max_price");
 
-	@Test
-	public void pullEsJdbcAgg() throws Exception {
-		AggQuery query = AggQuery.builder()//
-				.page(1, 3)//
-				// .allProperties("skuId", "name", "category", "price", "brand", "stock")//
-				// .selectProperties("skuId", "name", "category", "price", "brand", "stock")//
-				.fieldGroup(FieldGroup.builder().andGreaterThan("price", 200D)//
-				// .andIn("category", new String[] { "101" })//
-				)//
-				.orderBy("skuId")//
-				.orderBy("name")//
-				.aggField("price", AggType.COUNT)//
-				.aggField("price", AggType.AVG)//
-				.aggField("price", AggType.MAX)//
-				.aggField("price", AggType.MIN)//
-				.aggField("price", AggType.SUM)//
-				.groupFields("skuId", "name", "category")//
-				.havingFieldGroup(FieldGroup.builder()/* .andBetween("avg_price", 0, 10000) */)//
-				.havingOrderBy("max_price");
-
-		long dataServiceId = 727202723199451136L;
-		AggRequest request = new AggRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
-		System.out.println("request:" + JSON.toJSONString(request));
-		webTestClient//
-				.post().uri("/data/pullAggs")//
-				.header("hosts", "183.6.116.33")//
-				.body(Mono.just(request), RecordRequest.class)//
-				.accept(MediaType.APPLICATION_JSON)//
-				.exchange()//
-				.expectStatus().isOk()//
-				.expectBody()//
-				.consumeWith(t -> {
-					String string = new String(t.getResponseBodyContent());
-					System.out.println(string);
-				});
-	}
+        long dataServiceId = 727202723199451136L;
+        AggRequest request = new AggRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
+        System.out.println("request:" + JSON.toJSONString(request));
+        webTestClient//
+            .post().uri("/data/pullAggs")//
+            .header("hosts", "183.6.116.33")//
+            .body(Mono.just(request), RecordRequest.class)//
+            .accept(MediaType.APPLICATION_JSON)//
+            .exchange()//
+            .expectStatus().isOk()//
+            .expectBody()//
+            .consumeWith(t -> {
+                String string = new String(t.getResponseBodyContent());
+                System.out.println(string);
+            });
+    }
 
 }

@@ -11,7 +11,7 @@ import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class DataResourceController implements BaseEntityController<DataResource
     private DataApplicationService dataApplicationService;
 
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
+    private DataServiceService dataServiceEntityService;
 
     @Override
     public BaseEntityService<DataResource> getBaseEntityService() {

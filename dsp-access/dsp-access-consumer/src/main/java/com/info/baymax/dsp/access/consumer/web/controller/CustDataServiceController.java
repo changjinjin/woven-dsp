@@ -11,7 +11,7 @@ import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
 import com.info.baymax.dsp.data.dataset.service.core.FlowExecutionService;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class CustDataServiceController implements BaseEntityController<DataService> {
 
     @Autowired
-    DataServiceEntityService dataServiceEntityService;
+    DataServiceService dataServiceEntityService;
 
     @Autowired
     private FlowExecutionService flowExecutionService;

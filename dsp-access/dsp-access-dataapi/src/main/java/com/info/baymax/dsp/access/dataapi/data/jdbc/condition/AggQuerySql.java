@@ -53,7 +53,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
             }
 
             // order by 条件
-            String orderBy = orderBy(query.getHavingSorts());
+            String orderBy = orderBy(query.getOrdSort());
             if (StringUtils.isNotEmpty(orderBy)) {
                 buf.append(" order by ").append(orderBy);
             }

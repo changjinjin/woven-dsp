@@ -9,7 +9,7 @@ import java.util.List;
  * @Author: guofeng.wu
  * @Date: 2019/12/18
  */
-public interface DataServiceEntityService extends BaseEntityService<DataService> {
+public interface DataServiceService extends BaseEntityService<DataService> {
 
     /**
      * 根据服务类型,部署状态,运行状态查询

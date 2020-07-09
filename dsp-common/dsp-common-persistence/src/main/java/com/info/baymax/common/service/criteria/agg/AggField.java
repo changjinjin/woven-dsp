@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 @ApiModel
@@ -16,6 +18,7 @@ import java.io.Serializable;
 public class AggField implements Serializable {
     private static final long serialVersionUID = -878572549536122362L;
 
+    @JsonIgnore
     @ApiModelProperty(value = "表别名", hidden = true)
     private String tableAlias;
 

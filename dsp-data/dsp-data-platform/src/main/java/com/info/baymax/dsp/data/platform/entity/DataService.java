@@ -100,10 +100,6 @@ public class DataService extends BaseEntity {
     @ColumnDefault("0")
     private Integer totalExecuted;
 
-    public Integer getTotalExecuted() {
-        return executedTimes;
-    }
-
     @ApiModelProperty("该服务总共执行的次数")
     @Comment("该服务总共执行的次数")
     @Column(length = 11)

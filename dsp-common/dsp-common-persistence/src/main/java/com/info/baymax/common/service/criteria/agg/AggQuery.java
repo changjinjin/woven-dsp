@@ -1,6 +1,7 @@
 package com.info.baymax.common.service.criteria.agg;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 public class AggQuery extends AbstractAggQuery<AggQuery> {
     private static final long serialVersionUID = -878572549536122362L;
 
+    @JsonIgnore
     @ApiModelProperty(value = "表名称", hidden = true)
     private String table;
 

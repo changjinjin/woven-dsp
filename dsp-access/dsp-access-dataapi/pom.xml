@@ -176,6 +176,12 @@
         <dependency>
             <groupId>org.datayoo.moql</groupId>
             <artifactId>moql-translator</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

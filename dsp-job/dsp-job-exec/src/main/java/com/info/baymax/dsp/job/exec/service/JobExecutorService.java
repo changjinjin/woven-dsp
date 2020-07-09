@@ -28,7 +28,7 @@ import com.info.baymax.dsp.data.platform.bean.TransferType;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
@@ -61,7 +61,7 @@ public class JobExecutorService {
     @Autowired
     private MetricsReporter metricsReporter;
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
+    private DataServiceService dataServiceEntityService;
     @Autowired
     private FlowDescService flowDescService;
     @Autowired

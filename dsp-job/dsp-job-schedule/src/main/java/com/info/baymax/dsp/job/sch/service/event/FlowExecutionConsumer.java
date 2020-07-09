@@ -10,7 +10,7 @@ import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -38,7 +38,7 @@ public class FlowExecutionConsumer implements RocketMQListener<MessageExt> {
     private final Logger logger = LoggerFactory.getLogger(FlowExecutionConsumer.class);
 
     @Autowired
-    DataServiceEntityService dataServiceEntityService;
+    DataServiceService dataServiceEntityService;
 
     @Autowired
     DataResourceService dataResourceService;

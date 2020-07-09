@@ -10,7 +10,7 @@ import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
 import com.info.baymax.dsp.data.platform.entity.DataService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: haijun
@@ -35,10 +33,8 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
 
     @Autowired
     private DataApplicationService dataApplicationService;
-
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
-
+    private DataServiceService dataServiceEntityService;
     @Autowired
     private DataCustAppService dataCustAppService;
 

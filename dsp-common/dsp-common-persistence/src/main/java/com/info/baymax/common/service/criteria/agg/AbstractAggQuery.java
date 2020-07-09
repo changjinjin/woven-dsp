@@ -57,8 +57,7 @@ import java.util.List;
 @ToString
 @SuppressWarnings("unchecked")
 public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends AbstractQuery<AbstractAggQuery<T>>
-    implements AggFieldQueryBuilder<T>, GroupFieldQueryBuilder<T>, HavingFieldGroupQueryBuilder<T>,
-    HavingSortQueryBuilder<T> {
+    implements AggFieldQueryBuilder<T>, GroupFieldQueryBuilder<T>, HavingFieldGroupQueryBuilder<T> {
     private static final long serialVersionUID = 4850854513242762929L;
 
     @ApiModelProperty("聚合条件")
@@ -69,9 +68,6 @@ public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends Ab
 
     @ApiModelProperty("having查询条件")
     protected FieldGroup havingFieldGroup;
-
-    @ApiModelProperty("having结果排序条件")
-    protected LinkedHashSet<Sort> havingSorts;
 
     public AbstractAggQuery() {
         super();
@@ -108,23 +104,6 @@ public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends Ab
     @Override
     public T clearGroupFields() {
         clear(this.groupFields);
-        return (T) this;
-    }
-
-    @Override
-    public T havingSorts(Collection<Sort> sorts) {
-        if (ICollections.hasElements(sorts)) {
-            if (this.havingSorts == null) {
-                this.havingSorts = Sets.newLinkedHashSet();
-            }
-            this.havingSorts.addAll(sorts);
-        }
-        return (T) this;
-    }
-
-    @Override
-    public T clearHavingSorts() {
-        clear(this.havingSorts);
         return (T) this;
     }
 
@@ -169,7 +148,6 @@ public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends Ab
         clearAggFields();
         clearGroupFields();
         clearHavingFieldGroup();
-        clearHavingSorts();
         return (T) this;
     }
 

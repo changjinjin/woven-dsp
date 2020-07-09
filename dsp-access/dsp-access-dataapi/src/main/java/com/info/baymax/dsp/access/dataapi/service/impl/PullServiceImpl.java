@@ -28,9 +28,11 @@ import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
-import com.info.baymax.dsp.data.platform.service.DataServiceEntityService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.inforefiner.repackaged.com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,7 @@ import java.util.stream.Collectors;
 public class PullServiceImpl implements PullService {
 
     @Autowired
-    private DataServiceEntityService dataServiceEntityService;
+    private DataServiceService dataServiceEntityService;
     @Autowired
     private DataCustAppService custAppService;
     @Autowired
@@ -133,7 +135,6 @@ public class PullServiceImpl implements PullService {
     public boolean validate(Map<String, FieldMapping> fieldMap, AggQuery query) {
         Set<String> keySet = fieldMap.keySet();
         validateFieldGroup(keySet, query.getFieldGroup());
-        validateSorts(keySet, query.getOrdSort());
 
         LinkedHashSet<AggField> aggFields = query.getAggFields();
         if (ICollections.hasElements(aggFields)) {
@@ -155,11 +156,9 @@ public class PullServiceImpl implements PullService {
             }
         }
 
+        // validate groupFields
         LinkedHashSet<String> groupFields = query.getGroupFields();
-        if (ICollections.hasNoElements(groupFields)) {
-            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR,
-                "Wrong query attribute 'groupFields'.Aggregation request must have at least one grouping field.");
-        } else {
+        if (ICollections.hasElements(groupFields)) {
             for (String fieldName : groupFields) {
                 if (!keySet.contains(fieldName)) {
                     throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR,
@@ -169,6 +168,7 @@ public class PullServiceImpl implements PullService {
             }
         }
 
+        // validate havingFieldGroup
         Set<String> havingFieldsSet = Sets.newLinkedHashSet();
         havingFieldsSet.addAll(groupFields);
         havingFieldsSet.addAll(aggFields.stream().map(t -> t.getAlias()).collect(Collectors.toSet()));
@@ -176,7 +176,9 @@ public class PullServiceImpl implements PullService {
         if (havingFieldGroup != null) {
             validateFieldGroup(havingFieldsSet, havingFieldGroup);
         }
-        LinkedHashSet<Sort> havingSorts = query.getHavingSorts();
+
+        // validate havingSorts
+        LinkedHashSet<Sort> havingSorts = query.getOrdSort();
         if (ICollections.hasElements(havingSorts)) {
             validateSorts(havingFieldsSet, havingSorts);
         }
@@ -190,19 +192,22 @@ public class PullServiceImpl implements PullService {
 
         DataService dataService = dataServiceEntityService.selectByPrimaryKey(Long.valueOf(dataServiceId));
         if (dataService == null) {
-            throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据服务 " + dataServiceId + " 不存在");
+            throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
+                String.format("The data service with ID %s does not exist.", dataServiceId));
         }
         if (dataService.getType() == 1) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "不支持push共享方式");
+            throw new ControllerException(ErrType.BAD_REQUEST, "The current data service does not support pull mode.");
         }
         if (dataService.getStatus() != 1) {
-            throw new ControllerException(ErrType.BAD_REQUEST, "服务不可用，未部署或已停止或已过期");
+            throw new ControllerException(ErrType.BAD_REQUEST,
+                "The current data service is not available, not deployed, stopped, or expired.");
         }
 
         Long custAppId = dataService.getApplyConfiguration().getCustAppId();
         DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
         if (custApp == null) {
-            throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "接入配置" + custAppId + " 不存在");
+            throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
+                String.format("The access configuration with ID %s does not exist", custAppId));
         }
         String accessKey = custApp.getAccessKey();
         String[] accessIp = custApp.getAccessIp();
@@ -213,19 +218,23 @@ public class PullServiceImpl implements PullService {
         Long dataResId = dataService.getApplyConfiguration().getDataResId();
         DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
         if (dataResource == null) {
-            throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据资源" + dataResId + " 不存在");
+            throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
+                String.format("The data resource with ID %s does not exist", dataResId));
         }
         Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
         if (dataset == null) {
-            throw new ControllerException(ErrType.ENTITY_NOT_EXIST, "数据集" + dataResource.getDatasetId() + " 不存在");
+            throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
+                String.format("The dataset with ID %s does not exist", dataResource.getDatasetId()));
         }
 
         try {
             // 将fieldMappings装进map中以便于查询
             List<FieldMapping> fieldMappings = dataService.getFieldMappings();
-            Map<String, FieldMapping> fieldMap = Maps.newHashMap();
+            final Map<String, FieldMapping> fieldMap = Maps.newHashMap();
             for (FieldMapping fieldMapping : fieldMappings) {
-                fieldMap.put(fieldMapping.getSourceField(), fieldMapping);
+                if (StringUtils.isNotEmpty(fieldMapping.getTargetField())) {
+                    fieldMap.put(fieldMapping.getSourceField(), fieldMapping);
+                }
             }
 
             // 处理存储信息
