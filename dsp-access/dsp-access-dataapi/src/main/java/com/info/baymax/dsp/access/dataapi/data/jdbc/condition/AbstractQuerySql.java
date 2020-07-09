@@ -74,12 +74,12 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         // select column1,column2,column3... from table
         StringBuffer buf = new StringBuffer();
         buf.append("select ").append(StringUtils.join(finalSelectProperties, ", ")).append(" from ").append(table)
-            .append(" ").append(getTableAlias());
+            .append(StringUtils.isEmpty(getTableAlias()) ? "" : " " + getTableAlias());
 
         // where 条件
         ConditionSql whereConditionSql = ConditionSql.build(tableAlias, fieldGroup);
         if (whereConditionSql != null && StringUtils.isNotEmpty(whereConditionSql.getPlaceholderSql())) {
-            buf.append(" where ").append(StringUtils.trimToEmpty(whereConditionSql.getPlaceholderSql())).append(" ");
+            buf.append(" where ").append(StringUtils.trimToEmpty(whereConditionSql.getPlaceholderSql()));
         }
 
         addParamValues(whereConditionSql.getParamValues());

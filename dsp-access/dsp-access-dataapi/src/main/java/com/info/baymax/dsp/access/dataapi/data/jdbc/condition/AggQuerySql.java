@@ -48,8 +48,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
             // having 条件
             ConditionSql havingConditionSql = ConditionSql.build(query.getHavingFieldGroup());
             if (havingConditionSql != null && StringUtils.isNotEmpty(havingConditionSql.getPlaceholderSql())) {
-                buf.append(" having ").append(StringUtils.trimToEmpty(havingConditionSql.getPlaceholderSql()))
-                    .append(" ");
+                buf.append(" having ").append(StringUtils.trimToEmpty(havingConditionSql.getPlaceholderSql()));
             }
 
             // order by 条件

@@ -22,11 +22,12 @@ public class QueryTest {
 					.selectProperties("id", "name", "age", "weight")//
 					.excludeProperties("weight")//
 					.fieldGroup(FieldGroup.builder()//
+							.andGroup(FieldGroup.builder().andEqualTo("name", "1").orNotEqualToIfNotNull("name", "2"))//
 							.andGreaterThan("age", 1, 5 > 1)//
 							.andNotEqualTo("name", "zhangsan")//
 							.andNotBetween("height", 100, 190)//
 							.andIn("id", new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 })//
-					)//
+							)
 					.orderByAsc("id")//
 					.orderByDesc("age");
 			QuerySql sql = QuerySql.builder(JdbcQuery.from(query).table("t_user"));

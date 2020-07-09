@@ -54,6 +54,7 @@ public class DataPullClientTest {
             .fieldGroup(//
                 FieldGroup.builder()//
                     .andGreaterThan("id", 2)//
+                    .andGroup(FieldGroup.builder().andNotEqualTo("code", "x").orNotEqualTo("project", "px"))//
                 // .andIn("code", new String[] { "'1'", "'2'", "'3'" })//
             )//
             .orderBy("id")//
@@ -84,6 +85,7 @@ public class DataPullClientTest {
             .fieldGroup(//
                 FieldGroup.builder()//
                     .andGreaterThan("id", 2)//
+                    .andGroup(FieldGroup.builder().andNotEqualTo("code", "x").orNotEqualTo("project", "px"))//
                 // .andIn("code", new String[] { "'1'", "'2'", "'3'" })//
             )//
             .aggField("income", AggType.COUNT)//
@@ -91,8 +93,8 @@ public class DataPullClientTest {
             .aggField("income", AggType.SUM)//
             .aggField("income", AggType.MAX)//
             .aggField("income", AggType.MIN)//
+            .groupField("project")//
             .groupField("code")//
-            .groupField("date")//
             .havingFieldGroup(
                 FieldGroup.builder().andGreaterThan("sum_income", 1000).andLessThan("min_income", 10000))//
             .orderBy("sum_income");

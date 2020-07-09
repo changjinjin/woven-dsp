@@ -69,7 +69,7 @@ public class ConditionSql implements Serializable {
      * table WHERE name = ?name AND email = ?email;
      */
     private ConditionSql parse() {
-        namingSql = where(fieldGroup);
+        namingSql = trimAndOr(where(fieldGroup));
         char c;
         List<String> names = new ArrayList<String>();
         StringBuilder sql_builder = new StringBuilder();
@@ -115,7 +115,8 @@ public class ConditionSql implements Serializable {
                 for (CriteriaItem item : ordItems) {
                     if (item instanceof FieldGroup) {
                         FieldGroup group = (FieldGroup) item;
-                        buf.append("( ").append(where(group)).append(" )");
+                        buf.append(" ").append(group.getAndOr().name().toLowerCase()).append(" (")
+                            .append(trimAndOr(where(group))).append(")");
                     } else {
                         Field field = (Field) item;
                         buf.append(field(field));
@@ -123,7 +124,7 @@ public class ConditionSql implements Serializable {
                 }
             }
         }
-        return trimAndOr(buf.toString());
+        return buf.toString();
     }
 
     private String field(Field field) {
@@ -239,11 +240,11 @@ public class ConditionSql implements Serializable {
         String paramName = paramName();
         paramMap.put(paramName, StringUtils.join(values, ","));
         return new StringBuffer().append(" ").append(andOr).append(" ").append(getTableAlias()).append(property)
-            .append(" ").append(not).append(" ").append(" in ( ?").append(paramName).append(")").toString();
+            .append(" ").append(not).append("in (?").append(paramName).append(")").toString();
     }
 
     private String trimAndOr(String sql) {
-        return StringUtils.stripStart(StringUtils.stripStart(StringUtils.trim(sql), "and"), "or");
+        return StringUtils.stripStart(StringUtils.stripStart(StringUtils.trim(sql), "and"), "or").trim();
     }
 
     private String andIsNull(String property) {
@@ -283,7 +284,7 @@ public class ConditionSql implements Serializable {
     }
 
     private String andNotIn(String property, Iterable<?> values) {
-        return inCondition("and", property, "not", values);
+        return inCondition("and", property, "not ", values);
     }
 
     private String andBetween(String property, Object value1, Object value2) {
@@ -291,7 +292,7 @@ public class ConditionSql implements Serializable {
     }
 
     private String andNotBetween(String property, Object value1, Object value2) {
-        return betweenCondition("and", property, "not", value1, value2);
+        return betweenCondition("and", property, "not ", value1, value2);
     }
 
     private String andLike(String property, Object value) {
@@ -339,7 +340,7 @@ public class ConditionSql implements Serializable {
     }
 
     private String orNotIn(String property, Iterable<?> values) {
-        return inCondition("or", property, "not", values);
+        return inCondition("or", property, "not ", values);
     }
 
     private String orBetween(String property, Object value1, Object value2) {
@@ -347,7 +348,7 @@ public class ConditionSql implements Serializable {
     }
 
     private String orNotBetween(String property, Object value1, Object value2) {
-        return betweenCondition("or", property, "not", value1, value2);
+        return betweenCondition("or", property, "not ", value1, value2);
     }
 
     private String orLike(String property, Object value) {
