@@ -50,7 +50,8 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
      */
     default List<T> findRoots(List<T> allList) {
         if (ICollections.hasElements(allList))
-            return allList.stream().filter(t -> t.getParentCode() == null).sorted().collect(Collectors.toList());
+            return allList.stream().filter(t -> isDefaultValue(t.getParentCode())).sorted()
+                .collect(Collectors.toList());
         return allList;
     }
 
@@ -62,7 +63,7 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
      */
     default List<T> findNotRoots(List<T> allList) {
         if (ICollections.hasElements(allList))
-            return allList.stream().filter(t -> t.getParentCode() != null).collect(Collectors.toList());
+            return allList.stream().filter(t -> !isDefaultValue(t.getParentCode())).collect(Collectors.toList());
         return Lists.newArrayList();
     }
 
@@ -87,7 +88,7 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
                 while (iterator.hasNext()) {
                     T next = iterator.next();
                     if (next.getParentCode() != null && root.getSelfCode() != null
-                        && root.getSelfCode().toString().equals(next.getParentCode().toString())) {
+                        && root.getSelfCode().equals(next.getParentCode())) {
                         children.add(next);
                         // 已经有关系的节点从非根节点集中删除以减少迭代的次数
                         iterator.remove();
@@ -100,5 +101,18 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
             }
         }
         return roots;
+    }
+
+    default boolean isDefaultValue(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        if (obj instanceof Number) {
+            return ((Number) obj).intValue() == 0;
+        } else if (obj instanceof String) {
+            String s = (String) obj;
+            return s.trim().length() == 0;
+        }
+        return false;
     }
 }
