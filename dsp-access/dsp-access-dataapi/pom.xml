@@ -45,11 +45,6 @@
             <groupId>com.merce.woven</groupId>
             <artifactId>woven-metrics</artifactId>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>dsp-common-elasticsearch-jdbc</artifactId>
-            <version>${project.version}</version>
-        </dependency> -->
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>dsp-data-elasticsearch</artifactId>
@@ -162,6 +157,11 @@
             <systemPath>${basedir}/lib/snowball-jdbc-1.1.0-shaded.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
+            <artifactId>opendistro-sql-jdbc</artifactId>
+            <version>1.9.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.fangjinuo.sqlhelper</groupId>
             <artifactId>sqlhelper-dbutils</artifactId>
         </dependency>
@@ -172,16 +172,6 @@
         <dependency>
             <groupId>com.github.fangjinuo.easyjson</groupId>
             <artifactId>easyjson-jackson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.datayoo.moql</groupId>
-            <artifactId>moql-translator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>dom4j</groupId>
-                    <artifactId>dom4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

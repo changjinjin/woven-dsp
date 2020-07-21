@@ -12,6 +12,7 @@ import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.agg.AggType;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.dsp.access.dataapi.config.jest.ISearchResult;
 import com.info.baymax.dsp.access.dataapi.config.jest.JestClientUtils;
 import com.info.baymax.dsp.access.dataapi.config.jest.JestConf;
 import com.info.baymax.dsp.access.dataapi.data.*;
@@ -40,14 +41,14 @@ public class ElasticSearchDataReader extends MapEntityDataReader {
 
     @Override
     public IPage<MapEntity> readRecord(StorageConf conf, RecordQuery query) throws Exception {
-        return executeQuery(conf, query.getPageable(), QueryParser.getInstance(ElasticsearchQuerySqlParser.class)
-            .parse((ElasticSearchStorageConf) conf, query), null, null);
+        return executeQuery(conf, query.getPageable(), QueryParser.getInstance(ElasticsearchQueryDslParser.class)
+            .parseRecordQuery((ElasticSearchStorageConf) conf, query), null, null);
     }
 
     @Override
     public IPage<MapEntity> readAgg(StorageConf conf, AggQuery query) throws Exception {
-        return executeQuery(conf, query.getPageable(), QueryParser.getInstance(ElasticsearchQuerySqlParser.class)
-            .parseAgg((ElasticSearchStorageConf) conf, query), query.getAggFields(), query.getGroupFields());
+        return executeQuery(conf, query.getPageable(), QueryParser.getInstance(ElasticsearchQueryDslParser.class)
+            .parseAggQuery((ElasticSearchStorageConf) conf, query), query.getAggFields(), query.getGroupFields());
 
     }
 

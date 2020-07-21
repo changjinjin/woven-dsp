@@ -1,9 +1,8 @@
-package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
+package com.info.baymax.dsp.access.dataapi.config.jest;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import io.searchbox.core.SearchResult;
 
 // fix jest issues: "https://github.com/searchbox-io/Jest/issues/656"

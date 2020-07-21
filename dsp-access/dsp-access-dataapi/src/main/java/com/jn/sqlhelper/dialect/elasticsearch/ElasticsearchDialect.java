@@ -1,22 +1,24 @@
 package com.jn.sqlhelper.dialect.elasticsearch;
 
-import com.jn.langx.annotation.Name;
-import com.jn.sqlhelper.dialect.annotation.Driver;
-import com.jn.sqlhelper.dialect.internal.AbstractDialect;
-import com.jn.sqlhelper.dialect.internal.limit.LimitOnlyLimitHandler;
-import com.jn.sqlhelper.dialect.likeescaper.BackslashStyleEscaper;
-
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 
+import com.jn.langx.annotation.Name;
+import com.jn.sqlhelper.dialect.annotation.Driver;
+import com.jn.sqlhelper.dialect.internal.AbstractDialect;
+import com.jn.sqlhelper.dialect.internal.limit.LimitCommaLimitHandler;
+import com.jn.sqlhelper.dialect.likeescaper.BackslashStyleEscaper;
+
+//@Name("elasticsearch")
+//@Driver("com.amazon.opendistroforelasticsearch.jdbc.ElasticsearchDriver")
 @Name("elasticsearch")
-@Driver("com.amazon.opendistroforelasticsearch.jdbc.ElasticsearchDriver")
+@Driver("com.amazon.opendistroforelasticsearch.jdbc.Driver")
 public class ElasticsearchDialect extends AbstractDialect<ElasticsearchDialect> {
 
     public ElasticsearchDialect() {
         super();
         setUrlParser(new ElasticsearchUrlParser());
-        setLimitHandler(new LimitOnlyLimitHandler());
+        setLimitHandler(new LimitCommaLimitHandler());
         setLikeEscaper(BackslashStyleEscaper.INSTANCE);
     }
 

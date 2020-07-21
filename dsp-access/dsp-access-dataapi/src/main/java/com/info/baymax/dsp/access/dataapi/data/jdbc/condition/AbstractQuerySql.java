@@ -43,6 +43,13 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
      */
     @Getter
     @Setter
+    protected String placeholderCountSql;
+
+    /**
+     * 执行sql
+     */
+    @Getter
+    @Setter
     protected String placeholderSql;
 
     /**
@@ -50,6 +57,11 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
      */
     @Getter
     protected Object[] paramValues = new Object[0];
+
+    /**
+     * 计数sql
+     */
+    protected String countSql;
 
     /**
      * 执行sql
@@ -69,35 +81,55 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         return this.valid;
     }
 
-    protected String selectAndWhere(List<String> finalSelectProperties, String table, String tableAlias,
-                                    FieldGroup fieldGroup) {
-        // select column1,column2,column3... from table
-        StringBuffer buf = new StringBuffer();
-        buf.append("select ").append(StringUtils.join(finalSelectProperties, ", ")).append(" from ").append(table)
-            .append(StringUtils.isEmpty(getTableAlias()) ? "" : " " + getTableAlias());
+    protected String properties(List<String> finalSelectProperties) {
+        return " " + StringUtils.join(finalSelectProperties, ", ");
+    }
 
+    protected String count() {
+        return " count(*)";
+    }
+
+    protected String from(String table, String tableAlias) {
+        return new StringBuffer().append(" from ").append(table)
+            .append(StringUtils.isEmpty(getTableAlias()) ? "" : " " + getTableAlias()).toString();
+    }
+
+    protected String where(FieldGroup fieldGroup) {
         // where 条件
+        StringBuffer buf = new StringBuffer();
         ConditionSql whereConditionSql = ConditionSql.build(tableAlias, fieldGroup);
         if (whereConditionSql != null && StringUtils.isNotEmpty(whereConditionSql.getPlaceholderSql())) {
             buf.append(" where ").append(StringUtils.trimToEmpty(whereConditionSql.getPlaceholderSql()));
         }
-
         addParamValues(whereConditionSql.getParamValues());
         return buf.toString();
     }
 
+    protected String selectfromTableWhere(String table, String tableAlias, FieldGroup fieldGroup) {
+        // select column1,column2,column3... from table
+        return new StringBuffer().append("select").append(" %s ").append(from(table, tableAlias))
+            .append(where(fieldGroup)).toString();
+    }
+
+    // protected String selectRecords(List<String> finalSelectProperties, String table, String tableAlias,
+    // FieldGroup fieldGroup) {
+    // return selectFromTableWhere(properties(finalSelectProperties), table, tableAlias, fieldGroup);
+    // }
+    //
+    // protected String selectCount(String table, String tableAlias, FieldGroup fieldGroup) {
+    // return selectFromTableWhere(count(), table, tableAlias, fieldGroup);
+    // }
+
     protected String orderBy(LinkedHashSet<Sort> sorts) {
-        String orderBy = "";
+        StringBuffer buf = new StringBuffer();
         if (ICollections.hasElements(sorts)) {
-            StringBuffer buf = new StringBuffer();
-            buf.append(" ");
+            buf.append(" order by ");
             for (Sort sort : sorts) {
                 buf.append(sort.getName()).append(" ").append(sort.getOrder()).append(", ");
             }
-            orderBy = StringUtils.stripEnd(buf.toString().trim(), ",");
-            log.debug("orderBy: order by " + orderBy);
+            return " " + StringUtils.stripEnd(buf.toString().trim(), ",");
         }
-        return orderBy;
+        return "";
     }
 
     public void addParamValues(Object[] values) {
@@ -108,6 +140,16 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
             this.paramValues = newValues;
         }
         log.debug("add param: " + Arrays.toString(values) + ",paramValues:" + Arrays.toString(paramValues));
+    }
+
+    public String getCountSql() {
+        countSql = placeholderCountSql;
+        if (StringUtils.isNotEmpty(countSql) && paramValues.length > 0) {
+            for (Object obj : paramValues) {
+                countSql = countSql.replaceFirst("\\?", parseObjectType(obj));
+            }
+        }
+        return countSql;
     }
 
     public String getExecuteSql() {

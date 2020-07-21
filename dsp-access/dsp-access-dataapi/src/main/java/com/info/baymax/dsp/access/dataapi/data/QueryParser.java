@@ -39,7 +39,7 @@ public interface QueryParser<S extends StorageConf, RQ extends RecordQuery, R, A
      * @param query       通用记录查询条件
      * @return 对应引擎的记录查询条件
      */
-    R parse(S storageConf, RecordQuery query) throws Exception;
+    R parseRecordQuery(S storageConf, RecordQuery query) throws Exception;
 
     /**
      * 根据存储信息和RecordQuery查询参数构建Query对象
@@ -49,7 +49,7 @@ public interface QueryParser<S extends StorageConf, RQ extends RecordQuery, R, A
      * @return 对应引擎的RecordQuery实现
      * @throws Exception
      */
-    RQ convert(S storageConf, RecordQuery query) throws Exception;
+    RQ convertRecordQuery(S storageConf, RecordQuery query) throws Exception;
 
     /**
      * 根据AggQuery信息解析查询的参数
@@ -59,7 +59,7 @@ public interface QueryParser<S extends StorageConf, RQ extends RecordQuery, R, A
      * @return 对应引擎的聚合查询条件
      * @throws Exception
      */
-    A parseAgg(S storageConf, AggQuery query) throws Exception;
+    A parseAggQuery(S storageConf, AggQuery query) throws Exception;
 
     /**
      * 根据AggQuery信息解析查询的参数
@@ -69,6 +69,6 @@ public interface QueryParser<S extends StorageConf, RQ extends RecordQuery, R, A
      * @return 对应引擎的AggQuery实现
      * @throws Exception
      */
-    AQ convertAgg(S storageConf, AggQuery query) throws Exception;
+    AQ convertAggQuery(S storageConf, AggQuery query) throws Exception;
 
 }

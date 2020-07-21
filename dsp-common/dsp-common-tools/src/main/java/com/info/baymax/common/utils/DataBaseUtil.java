@@ -15,32 +15,25 @@ import java.util.*;
 public class DataBaseUtil {
 
     public static DBConf DB_MYSQL = new DBConf(true, "?", "&", false, true, false, false, "com.mysql.jdbc.Driver");
-    public static DBConf DB_Teradata = new DBConf(true, ",", ",", false, true, false, false,
-        "com.teradata.jdbc.TeraDriver");
+    public static DBConf DB_Teradata = new DBConf(true, ",", ",", false, true, false, false, "com.teradata.jdbc.TeraDriver");
     public static DBConf DB_PostSQL = new DBConf(true, "?", "&", false, true, false, false, "org.postgresql.Driver");
-    public static DBConf DB_MsSQL = new DBConf(true, ";", ";", false, true, false, false,
-        "com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    public static DBConf DB_Sybase = new DBConf(false, ";", ";", true, true, false, false,
-        "net.sourceforge.jtds.jdbc.Driver");
+    public static DBConf DB_MsSQL = new DBConf(true, ";", ";", false, true, false, false, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+    public static DBConf DB_Sybase = new DBConf(false, ";", ";", true, true, false, false, "net.sourceforge.jtds.jdbc.Driver");
     public static DBConf DB_HSQLDB = new DBConf(true, ";", ";", false, true, false, false, "org.hsqldb.jdbcDriver");
-    public static DBConf DB_Greenplum = new DBConf(true, ";", ";", false, true, false, false,
-        "com.pivotal.jdbc.GreenplumDriver");
-    public static DBConf DB_ODBCBridge = new DBConf(false, ";", ";", false, true, false, false,
-        "sun.jdbc.odbc.JdbcOdbcDriver");
-    public static DBConf DB_Informix = new DBConf(true, ":", ";", false, true, false, false,
-        "com.informix.jdbc.IfxDriver");
-    public static DBConf DB_Oracle = new DBConf(false, ":", ";", false, false, false, true,
-        "oracle.jdbc.driver.OracleDriver");
+    public static DBConf DB_Greenplum = new DBConf(true, ";", ";", false, true, false, false, "com.pivotal.jdbc.GreenplumDriver");
+    public static DBConf DB_ODBCBridge = new DBConf(false, ";", ";", false, true, false, false, "sun.jdbc.odbc.JdbcOdbcDriver");
+    public static DBConf DB_Informix = new DBConf(true, ":", ";", false, true, false, false, "com.informix.jdbc.IfxDriver");
+    public static DBConf DB_Oracle = new DBConf(false, ":", ";", false, false, false, true, "oracle.jdbc.driver.OracleDriver");
     public static DBConf DB_ONE = new DBConf(false, ":", ";", false, false, false, true, "com.intple.dbone.Driver");
     public static DBConf DB_DB2 = new DBConf(false, ":", ";", false, false, false, true, "com.ibm.db2.jcc.DB2Driver");
     public static DBConf DB_Kingbase = new DBConf(false, ":", ";", false, false, false, true, "com.kingbase.Driver");
     public static DBConf DB_Kingbase8 = new DBConf(false, ":", ";", false, false, false, true, "com.kingbase8.Driver");
-    public static DBConf SNOW_BALL = new DBConf(true, "?", "&", false, true, false, false,
-        "com.inforefiner.snowball.SnowballDriver");
+    public static DBConf DB_SNOW_BALL = new DBConf(true, "?", "&", false, true, false, false, "com.inforefiner.snowball.SnowballDriver");
+    public static DBConf DB_Elasticsearch = new DBConf(false, "?", "&", true, false, true, false, "com.amazon.opendistroforelasticsearch.jdbc.Driver");
     public static DBConf DB_DMbase = new DBConf(false, ":", ";", false, false, false, true, "dm.jdbc.driver.DmDriver");
 
     public static DBConf[] dbs = {DB_MYSQL, DB_Teradata, DB_PostSQL, DB_MsSQL, DB_Sybase, DB_HSQLDB, DB_Greenplum,
-        DB_ODBCBridge, DB_Informix, DB_Oracle, DB_ONE, DB_DB2, DB_Kingbase, DB_Kingbase8, SNOW_BALL, DB_DMbase};
+        DB_ODBCBridge, DB_Informix, DB_Oracle, DB_ONE, DB_DB2, DB_Kingbase, DB_Kingbase8, DB_SNOW_BALL, DB_Elasticsearch,DB_DMbase};
 
     private static final Map<String, String> jdbcVersionMap = new HashMap<>();
     private static final Map<String, Driver> tmpDriverMap = new HashMap<String, Driver>();
@@ -154,7 +147,7 @@ public class DataBaseUtil {
             rs = metaData.getTables(catalog, null, null, new String[]{"TABLE", "VIEW"});
         } else if (db == DB_MsSQL) {
             rs = metaData.getTables(catalog, "dbo", null, new String[]{"TABLE", "VIEW"});
-        } else if (db == SNOW_BALL) {
+        } else if (db == DB_SNOW_BALL) {
             rs = metaData.getTables(catalog, catalog, null, null);
         } else
             rs = metaData.getTables(catalog, schema, null, new String[]{"TABLE", "VIEW"});
@@ -184,7 +177,7 @@ public class DataBaseUtil {
             rs = metaData.getColumns(catalog, schema, table, null);
         } else if (db == DB_ONE) {
             rs = metaData.getColumns(catalog, "public", table, null);
-        } else if (db == DB_PostSQL || db == SNOW_BALL || db == DB_Kingbase || db == DB_Kingbase8 || db == DB_DMbase) {
+        } else if (db == DB_PostSQL || db == DB_SNOW_BALL || db == DB_Kingbase || db == DB_Kingbase8 || db == DB_DMbase) {
             rs = metaData.getColumns(catalog, null, table, null);
         } else if (db == DB_MsSQL) {
             rs = metaData.getColumns(catalog, "dbo", table, null);
@@ -490,5 +483,6 @@ public class DataBaseUtil {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+       
     }
 }

@@ -40,7 +40,6 @@
 		<commons-dbutils.version>1.7</commons-dbutils.version>
 		<sqlhelper.version>3.1.0</sqlhelper.version>
 		<easyjson.version>3.0.0</easyjson.version>
-		<moql.version>1.1.1</moql.version>
 
 		<!-- mybatis dependencies -->
 		<mybatis.version>3.5.4</mybatis.version>
@@ -275,17 +274,6 @@
 				<artifactId>sqlhelper-jsqlparser</artifactId>
 				<version>${sqlhelper.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.datayoo.moql</groupId>
-				<artifactId>moql-querier</artifactId>
-				<version>${moql.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.datayoo.moql</groupId>
-				<artifactId>moql-translator</artifactId>
-				<version>${moql.version}</version>
-			</dependency>
-
 			<dependency>
 				<groupId>com.netflix.netflix-commons</groupId>
 				<artifactId>netflix-statistics</artifactId>

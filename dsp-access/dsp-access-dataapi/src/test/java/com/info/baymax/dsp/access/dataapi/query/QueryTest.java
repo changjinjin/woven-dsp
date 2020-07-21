@@ -6,7 +6,7 @@ import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.QuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.RecordQuerySql;
 import org.junit.Test;
 
 import java.util.Random;
@@ -30,7 +30,7 @@ public class QueryTest {
 							)
 					.orderByAsc("id")//
 					.orderByDesc("age");
-			QuerySql sql = QuerySql.builder(JdbcQuery.from(query).table("t_user"));
+			RecordQuerySql sql = RecordQuerySql.builder(JdbcQuery.from(query).table("t_user"));
 			System.out.println(sql.toString());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -7,6 +7,7 @@ import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @Getter
@@ -14,7 +15,7 @@ import lombok.ToString;
 public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
     private static final long serialVersionUID = -187465371872121001L;
 
-    private ElasticSearchStorageConf storageConf;
+    private final ElasticSearchStorageConf storageConf;
 
     public ElasticSearchJdbcStorageConf(ElasticSearchStorageConf storageConf) {
         this.storageConf = storageConf;
@@ -37,7 +38,8 @@ public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
 
     @Override
     public String getDriver() {
-        return "com.amazon.opendistroforelasticsearch.jdbc.ElasticsearchDriver";
+        // return "com.amazon.opendistroforelasticsearch.jdbc.ElasticsearchDriver";
+        return "com.amazon.opendistroforelasticsearch.jdbc.Driver";
     }
 
     @Override
@@ -77,17 +79,17 @@ public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
 
     @Override
     public String getUser() {
-        return storageConf.getUsername();
+        return StringUtils.defaultIfEmpty(storageConf.getUsername(), "admin");
     }
 
     @Override
     public String getUsername() {
-        return storageConf.getUsername();
+        return StringUtils.defaultIfEmpty(storageConf.getUsername(), "admin");
     }
 
     @Override
     public String getPassword() {
-        return storageConf.getPassword();
+        return StringUtils.defaultIfEmpty(storageConf.getPassword(), "admin");
     }
 
 }

@@ -1,7 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
@@ -26,7 +25,7 @@ public class ElasticsearchQueryParser
     implements QueryParser<ElasticSearchStorageConf, ElasticsearchQuery, Search, AggQuery, Search> {
 
     @Override
-    public Search parse(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
+    public Search parseRecordQuery(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
         IPageable pageable = query.getPageable();
         return new Search.Builder(searchBuilder(query.getFinalSelectProperties(""), query.getFieldGroup()))
             .addIndices(Arrays.asList(storageConf.getIndex()))//
@@ -37,18 +36,19 @@ public class ElasticsearchQueryParser
     }
 
     @Override
-    public ElasticsearchQuery convert(ElasticSearchStorageConf storageConf, RecordQuery query) throws Exception {
+    public ElasticsearchQuery convertRecordQuery(ElasticSearchStorageConf storageConf, RecordQuery query)
+        throws Exception {
         return ElasticsearchQuery.from(query).clusterName(storageConf.getClusterName()).indices(storageConf.getIndex())
             .indexType(storageConf.getIndexType());
     }
 
     @Override
-    public Search parseAgg(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
+    public Search parseAggQuery(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
         return null;
     }
 
     @Override
-    public AggQuery convertAgg(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
+    public AggQuery convertAggQuery(ElasticSearchStorageConf storageConf, AggQuery query) throws Exception {
         return query.table(storageConf.getIndex());
     }
 
@@ -70,7 +70,7 @@ public class ElasticsearchQueryParser
     private BoolQueryBuilder boolQueryBuilder(FieldGroup fieldGroup) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         // TODO parse fieldGroup to a BoolQueryBuilder
-        List<CriteriaItem> ordItems = fieldGroup.ordItems();
+        // List<CriteriaItem> ordItems = fieldGroup.ordItems();
         // if (start > 0) {
         // queryBuilder.must(rangeQuery("@timestamp").gte(start));
         // }
