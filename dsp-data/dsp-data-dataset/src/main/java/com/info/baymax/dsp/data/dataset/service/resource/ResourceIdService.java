@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.data.dataset.service.resource;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.ImmutableMap;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.ExampleQueryService;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassService;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.common.utils.JsonBuilder;
 
 import java.util.List;
 
@@ -48,24 +48,25 @@ public interface ResourceIdService<T extends ResourceId> extends EntityClassServ
     }
 
     default int updateResourceIdByInstanceId(String instanceId, String resourceId) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resourceId", resourceId);
-        return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()),
+        return updateByExampleSelective(
+            JsonBuilder.getInstance().fromObject(ImmutableMap.<String, Object>of("resourceId", resourceId),
+                getEntityClass()),
             ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder().andEqualTo("id", instanceId)));
     }
 
     default int updateResourceIdByInstanceIds(String[] instanceIds, String resourceId) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resourceId", resourceId);
-        return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()),
+        return updateByExampleSelective(
+            JsonBuilder.getInstance().fromObject(ImmutableMap.<String, Object>of("resourceId", resourceId),
+                getEntityClass()),
             ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder().andIn("id", instanceIds)));
     }
 
     default int updateNewResourceIdByOldResourceId(String newResourceId, String oldResourceId) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("resourceId", newResourceId);
-        return updateByExampleSelective((T) JSON.parseObject(jsonObject.toJSONString(), getEntityClass()), ExampleQuery
-            .builder(getEntityClass()).fieldGroup(FieldGroup.builder().andEqualTo("resourceId", oldResourceId)));
+        return updateByExampleSelective(
+            JsonBuilder.getInstance().fromObject(ImmutableMap.<String, Object>of("resourceId", newResourceId),
+                getEntityClass()),
+            ExampleQuery.builder(getEntityClass())
+                .fieldGroup(FieldGroup.builder().andEqualTo("resourceId", oldResourceId)));
     }
 
 }

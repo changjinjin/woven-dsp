@@ -31,10 +31,6 @@
 			<groupId>commons-beanutils</groupId>
 		</dependency>
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-		<dependency>
 			<artifactId>guava</artifactId>
 			<groupId>com.google.guava</groupId>
 		</dependency>
@@ -57,10 +53,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.houbb</groupId>
-			<artifactId>sensitive-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.validation</groupId>

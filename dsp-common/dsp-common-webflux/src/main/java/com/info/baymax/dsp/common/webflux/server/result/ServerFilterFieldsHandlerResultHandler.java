@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.common.webflux.server.result;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
@@ -8,6 +7,7 @@ import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
 import com.info.baymax.common.message.exception.BizException;
 import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.utils.JsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
@@ -75,7 +75,9 @@ public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWrite
             ServerHttpResponse response = exchange.getResponse();
             response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             // TODO 这里为避免输出的是字符串格式又进行了反序列化，有效率问题，后续处理
-            return writeBody(JSON.parse(jsonSerializer.toJson(result.getReturnValue())), methodParameter, exchange);
+            return writeBody(
+                JsonBuilder.getInstance().fromJson(jsonSerializer.toJson(result.getReturnValue()), Object.class),
+                methodParameter, exchange);
         } catch (JsonProcessingException e) {
             log.error("Message serialization failed", e);
             throw new BizException(ErrType.INTERNAL_SERVER_ERROR.getStatus(), "Message serialization failed", e);

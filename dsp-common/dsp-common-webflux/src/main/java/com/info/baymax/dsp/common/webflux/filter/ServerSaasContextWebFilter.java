@@ -1,7 +1,8 @@
 package com.info.baymax.dsp.common.webflux.filter;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.utils.JsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
@@ -32,7 +33,8 @@ public class ServerSaasContextWebFilter implements WebFilter {
             String decode = null;
             try {
                 decode = URLDecoder.decode(saasContextHeader, "UTF-8");
-                SaasContext saasContext = JSON.parseObject(decode, SaasContext.class);
+                SaasContext saasContext = JsonBuilder.getInstance().fromJson(decode, new TypeReference<SaasContext>() {
+                });
                 if (saasContext != null) {
                     SaasContext.setCurrentSaasContext(saasContext);
                 }

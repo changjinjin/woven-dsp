@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.data.sys.initialize;
 
-import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.enums.types.YesNoType;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.common.utils.JsonBuilder;
 import com.info.baymax.dsp.data.sys.entity.security.*;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RolePermissionRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.PermOperationRefService;
@@ -85,7 +85,7 @@ public class TenantInitializer {
 				tenantService.insertSelective(new Tenant(tenant, Arrays.asList("default")));
 			}
 		} catch (Exception e) {
-			log.warn("save tenant info:{} error, cause by:{}", JSON.toJSONString(rootTenant), e.getMessage());
+			log.warn("save tenant info:{} error, cause by:{}", JsonBuilder.getInstance().toJson(rootTenant), e.getMessage());
 		}
 	}
 
@@ -114,7 +114,7 @@ public class TenantInitializer {
 				userService.updateByPrimaryKeySelective(user);
 			}
 		} catch (Exception e) {
-			log.warn("save user info:{} error, cause by:{}", JSON.toJSONString(user), e.getMessage());
+			log.warn("save user info:{} error, cause by:{}",JsonBuilder.getInstance().toJson(user), e.getMessage());
 		}
 		return user;
 	}
@@ -184,7 +184,7 @@ public class TenantInitializer {
 				});
 			}
 		} catch (Exception e) {
-			log.warn("save permission info:{} error, cause by:{}", JSON.toJSONString(t), e.getMessage());
+			log.warn("save permission info:{} error, cause by:{}", JsonBuilder.getInstance().toJson(t), e.getMessage());
 		}
 	}
 

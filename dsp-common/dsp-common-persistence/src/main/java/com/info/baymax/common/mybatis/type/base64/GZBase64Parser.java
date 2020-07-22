@@ -1,12 +1,14 @@
 package com.info.baymax.common.mybatis.type.base64;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.info.baymax.common.mybatis.type.JsonTypeHandler;
+import com.info.baymax.common.mybatis.type.TypeHandleException;
+import com.info.baymax.common.utils.GZBase64Utils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.info.baymax.common.utils.GZBase64Utils;
+import java.io.IOException;
 
-public interface GZBase64Parser {
+public interface GZBase64Parser extends JsonTypeHandler {
 
     /**
      * 编码压缩
@@ -34,6 +36,27 @@ public interface GZBase64Parser {
             return GZBase64Utils.uncompressString(s);
         }
         return s;
+    }
+
+    default <T> String encodeToJson(T t) {
+        try {
+            return encode(toJson(t));
+        } catch (Exception e) {
+            throw new TypeHandleException(e);
+        }
+    }
+
+    default <T> T decodeFromJson(String result, TypeReference<T> typeReference) {
+        try {
+            String decode = decode(result);
+            if (StringUtils.isEmpty(decode)) {
+                return null;
+            }
+            return fromJson(decode, new TypeReference<T>() {
+            });
+        } catch (Exception e) {
+            throw new TypeHandleException(e);
+        }
     }
 
 }

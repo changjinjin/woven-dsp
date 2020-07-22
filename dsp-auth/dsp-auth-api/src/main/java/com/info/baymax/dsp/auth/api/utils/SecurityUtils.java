@@ -1,7 +1,5 @@
 package com.info.baymax.dsp.auth.api.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.auth.api.UserInfo;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -53,7 +51,7 @@ public final class SecurityUtils {
 
     // get SaasContext from Authentication
     @SuppressWarnings("unchecked")
-	public static SaasContext getSaasContext() {
+    public static SaasContext getSaasContext() {
         Authentication authentication = SecurityUtils.getCurrentAuthentication();
         if (authentication == null) {
             return null;
@@ -82,15 +80,14 @@ public final class SecurityUtils {
         if (userAuthMap == null) {
             return null;
         }
-        JSONObject json = JSON.parseObject(JSON.toJSONString(userAuthMap));
         SaasContext saasContext = SaasContext.getCurrentSaasContext();
-        saasContext.setClientId(json.getString("clientId"));
-        saasContext.setTenantName(json.getString("tenant"));
-        saasContext.setTenantId(json.getString("tenantId"));
-        saasContext.setUserId(json.getString("userId"));
-        saasContext.setUsername(json.getString("name"));
-        saasContext.setAdmin(json.getBooleanValue("admin"));
-        saasContext.setUserType(json.getString("userType"));
+        saasContext.setClientId(userAuthMap.getOrDefault("clientId", "").toString());
+        saasContext.setTenantName(userAuthMap.getOrDefault("tenant", "").toString());
+        saasContext.setTenantId(userAuthMap.getOrDefault("tenantId", "").toString());
+        saasContext.setUserId(userAuthMap.getOrDefault("userId", "").toString());
+        saasContext.setUsername(userAuthMap.getOrDefault("name", "").toString());
+        saasContext.setAdmin(Boolean.valueOf(userAuthMap.getOrDefault("name", "false").toString()));
+        saasContext.setUserType(userAuthMap.getOrDefault("userType", "").toString());
         return saasContext;
     }
 

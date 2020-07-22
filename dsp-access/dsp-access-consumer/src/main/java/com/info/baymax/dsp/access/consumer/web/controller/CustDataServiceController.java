@@ -54,7 +54,6 @@ public class CustDataServiceController implements BaseEntityController<DataServi
         } else if (dataService.getType() == DataServiceType.SERVICE_TYPE_PUSH) {
             dataService.setUrl(null);
             dataService.setPath(null);
-            dataService.setPullConfiguration(null);
         }
         return Response.ok(dataService);
     }
