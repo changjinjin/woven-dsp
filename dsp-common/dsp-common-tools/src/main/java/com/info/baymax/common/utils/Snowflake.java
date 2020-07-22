@@ -14,7 +14,20 @@ package com.info.baymax.common.utils;
  * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，
  * 经测试，SnowFlake每秒能够产生26万ID左右。
  */
-public class SnowFlake {
+public class Snowflake {
+	
+	private static Snowflake singleton = null;
+
+	public static Snowflake getInstance() {
+		if (singleton == null) {
+			synchronized (Snowflake.class) {
+				if (singleton == null) {
+					singleton = new Snowflake(0, 0);
+				}
+			}
+		}
+		return singleton;
+	}
 
     // ==============================Fields===========================================
     /** 开始时间截 (2015-01-01) */
@@ -65,7 +78,7 @@ public class SnowFlake {
      * @param workerId 工作ID (0~31)
      * @param datacenterId 数据中心ID (0~31)
      */
-    public SnowFlake(long workerId, long datacenterId) {
+    public Snowflake(long workerId, long datacenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
         }
@@ -138,7 +151,7 @@ public class SnowFlake {
     //==============================Test=============================================
     /** 测试 */
     public static void main(String[] args) {
-        SnowFlake idWorker = new SnowFlake(0, 0);
+        Snowflake idWorker = new Snowflake(0, 0);
         for (int i = 0; i < 1000; i++) {
             long id = idWorker.nextId();
             System.out.println(Long.toBinaryString(id));

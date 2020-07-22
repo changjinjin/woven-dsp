@@ -1,6 +1,6 @@
 package com.info.baymax.common.mybatis.genid;
 
-import com.info.baymax.common.utils.SnowFlake;
+import com.info.baymax.common.utils.Snowflake;
 
 import tk.mybatis.mapper.genid.GenId;
 
@@ -13,7 +13,6 @@ import tk.mybatis.mapper.genid.GenId;
 public class SnowflakeGenId implements GenId<Long> {
     @Override
     public Long genId(String s, String s1) {
-        SnowFlake idWorker = new SnowFlake(0, 0);
-        return idWorker.nextId();
+        return Snowflake.getInstance().nextId();
     }
 }
