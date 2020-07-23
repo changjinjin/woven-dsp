@@ -69,9 +69,12 @@ public class JsonBuilder {
         if (prettyJson) {
             m.enable(SerializationFeature.INDENT_OUTPUT);
         }
-        m.setSerializationInclusion(Include.NON_NULL);
+        m.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
         m.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         m.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+        m.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+        m.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+        m.setSerializationInclusion(Include.NON_NULL);
         return m;
     }
 }

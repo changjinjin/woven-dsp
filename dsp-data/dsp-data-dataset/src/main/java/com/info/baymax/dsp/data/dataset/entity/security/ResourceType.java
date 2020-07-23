@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.data.dataset.entity.security;
 
-
 import com.info.baymax.common.utils.ICollections;
 
 import java.util.Arrays;
@@ -16,16 +15,22 @@ import java.util.stream.Stream;
  * @date 2019年9月11日 下午9:01:37
  */
 public enum ResourceType {
-    flow_dir("merce_flow"), dataset_dir("merce_dataset"), schema_dir("merce_schema"), datasource_dir("merce_dss"),
-    standard_dir("merce_sdb");
+    flow_dir("Flows", "merce_flow"), dataset_dir("Datasets", "merce_dataset"), schema_dir("Schemas", "merce_schema"),
+    datasource_dir("Datasources", "merce_dss"), standard_dir("Standards", "merce_sdb");
 
     /**
      * 对应所属权限编码
      */
     private final String table;
+    private final String rootName;
 
-    private ResourceType(String table) {
+    private ResourceType(String rootName, String table) {
+        this.rootName = rootName;
         this.table = table;
+    }
+
+    public String getRootName() {
+        return rootName;
     }
 
     public String getTable() {
