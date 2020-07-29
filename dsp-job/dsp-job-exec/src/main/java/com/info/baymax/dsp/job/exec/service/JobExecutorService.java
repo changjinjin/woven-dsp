@@ -131,7 +131,7 @@ public class JobExecutorService {
                     List<FlowField> filterInputs = new ArrayList<>();
                     for (StepDesc step : flowDesc.getSteps()) {
                         if (step.getType().equals("filter")) {
-                            JSONArray fmap = (JSONArray) step.getInputConfigurations().get(0).get("fields");
+                            JSONArray fmap = new JSONArray((List<Object>)step.getInputConfigurations().get(0).get("fields"));
                             for (Object obj : fmap) {
                                 FlowField field = JsonUtils
                                     .fromJson(JsonUtils.toJson(obj), FlowField.class);
