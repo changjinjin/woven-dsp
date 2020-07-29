@@ -54,14 +54,14 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
         DataService record = new DataService();
         record.setIsRunning(isRunning);
         record.setId(id);
-        updateByPrimaryKey(record);
+        updateByPrimaryKeySelective(record);
     }
 
     @Override
     public void recoverDataService() {
         DataService record = new DataService();
         record.setIsRunning(0);
-        updateByExample(record, ExampleQuery.builder().fieldGroup(FieldGroup.builder().andEqualTo("status", 1)
+        updateByExampleSelective(record, ExampleQuery.builder().fieldGroup(FieldGroup.builder().andEqualTo("status", 1)
             .andGroup(FieldGroup.builder().andEqualTo("isRunning", 1).orEqualTo("scheduleType", "cron"))));
     }
 
@@ -70,7 +70,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
         DataService record = new DataService();
         record.setStatus(status);
         record.setIsRunning(isRunning);
-        updateByExample(record,
+        updateByExampleSelective(record,
             ExampleQuery.builder().fieldGroup(FieldGroup.builder().andEqualTo("applicationId", applicationId)));
     }
 }

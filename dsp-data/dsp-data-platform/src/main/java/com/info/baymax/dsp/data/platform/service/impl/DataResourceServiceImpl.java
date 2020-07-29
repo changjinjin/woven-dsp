@@ -6,6 +6,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
@@ -44,14 +45,17 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
             throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "绑定的数据集记录不存在或者已经过期。");
         }
         dataset.setIsRelated(YesNoType.YES.getValue());
-        datasetService.updateByPrimaryKey(dataset);
+        datasetService.updateByPrimaryKeySelective(dataset);
 
         return DataResourceService.super.save(t);
     }
 
     @Override
     public void closeDataResource(List<Long> ids) {
-        resourceMapper.closeDataResourceByIds(ids);
+        DataResource record = new DataResource();
+        record.setOpenStatus(0);
+        updateByExampleSelective(record, ExampleQuery.builder(getEntityClass())
+            .fieldGroup(FieldGroup.builder().andIn("id", ids.toArray(new Long[ids.size()]))));
     }
 
     @Override

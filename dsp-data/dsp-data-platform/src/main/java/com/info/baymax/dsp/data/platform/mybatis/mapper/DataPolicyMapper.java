@@ -11,5 +11,4 @@ import org.apache.ibatis.annotations.Property;
 @CacheNamespace(implementation = RoutingCache.class, readWrite = false, flushInterval = 600000, size = 1000, properties = {
 		@Property(name = "cacheType", value = "${cacheType}") })
 public interface DataPolicyMapper extends MyIdableMapper<DataPolicy> {
-
 }

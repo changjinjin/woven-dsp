@@ -13,7 +13,4 @@ import org.apache.ibatis.annotations.*;
 @CacheNamespace(implementation = RoutingCache.class, readWrite = false, flushInterval = 600000, size = 1000, properties = {
 		@Property(name = "cacheType", value = "${cacheType}") })
 public interface DataApplicationMapper extends MyIdableMapper<DataApplication> {
-
-    @Update("update dsp_data_application set status = #{status, jdbcType=INTEGER} where id = #{id, jdbcType=BIGINT}")
-    void updateDataApplicationStatus(@Param("id") Long id, @Param("status") Integer status);
 }

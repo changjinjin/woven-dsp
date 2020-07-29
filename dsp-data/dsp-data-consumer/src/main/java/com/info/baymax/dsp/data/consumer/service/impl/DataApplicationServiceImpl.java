@@ -20,16 +20,19 @@ public class DataApplicationServiceImpl extends EntityClassServiceImpl<DataAppli
     implements DataApplicationService {
 
     @Autowired
-    DataApplicationMapper dataApplicationMapper;
-
-    @Override
-    public void updateDataApplicationStatus(Long id, Integer status){
-        dataApplicationMapper.updateDataApplicationStatus(id, status);
-    }
-
+    private DataApplicationMapper dataApplicationMapper;
 
     @Override
     public MyIdableMapper<DataApplication> getMyIdableMapper() {
         return dataApplicationMapper;
     }
+
+    @Override
+    public void updateDataApplicationStatus(Long id, Integer status) {
+        DataApplication record = new DataApplication();
+        record.setId(id);
+        record.setStatus(status);
+        dataApplicationMapper.updateByPrimaryKeySelective(record);
+    }
+
 }
