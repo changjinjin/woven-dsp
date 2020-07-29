@@ -1,6 +1,7 @@
 package com.info.baymax.common.mybatis.type.clob;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * Clob VS Object TypeHandler
@@ -9,6 +10,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * @date 2019-05-29 09:46
  */
 public class ClobVsObjectTypeHandler<T> extends AbstractClobTypeHandler<T> {
+    protected Class<T> valueClass;
+
+    @SuppressWarnings("unchecked")
+    public ClobVsObjectTypeHandler() {
+        Type genType = getClass().getGenericSuperclass();
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        valueClass = (Class<T>) params[0];
+    }
+
     @Override
     public String translate2Str(T t) {
         return toJson(t);
@@ -16,8 +26,7 @@ public class ClobVsObjectTypeHandler<T> extends AbstractClobTypeHandler<T> {
 
     @Override
     public T translate2Bean(String result) {
-        return fromJson(result, new TypeReference<T>() {
-        });
+        return fromJson(result, valueClass);
     }
 
 }

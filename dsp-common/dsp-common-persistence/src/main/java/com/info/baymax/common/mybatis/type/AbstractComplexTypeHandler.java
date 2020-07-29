@@ -2,7 +2,7 @@ package com.info.baymax.common.mybatis.type;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 
-public abstract class AbstractComplexTypeHandler<T> extends BaseTypeHandler<T> implements JsonTypeHandler {
+public abstract class AbstractComplexTypeHandler<T> extends BaseTypeHandler<T> implements JsonFormatTypeHandler {
 
 	/**
 	 * 指定默认字符集

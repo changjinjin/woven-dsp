@@ -1,9 +1,10 @@
 package com.info.baymax.dsp.job.sch.scheduler;
 
-import com.info.baymax.common.utils.JsonBuilder;
-import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
-import com.info.baymax.dsp.data.platform.entity.DataService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Date;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -19,9 +20,11 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.util.Date;
+import com.info.baymax.common.utils.JsonUtils;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
+import com.info.baymax.dsp.data.platform.entity.DataService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: haijun
@@ -77,7 +80,7 @@ public class DataShareScheduler implements AbstractScheduler<DataService> {
             jdm.put("serviceId", ds.getId());
             jdm.put("tenantId", ds.getTenantId());
             jdm.put("owner", ds.getOwner());
-            jdm.put("dataService", JsonBuilder.getInstance().toJson(ds));
+            jdm.put("dataService", JsonUtils.toJson(ds));
 
             // name & group
             JobDetail myJob = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jdm).build();

@@ -1,14 +1,14 @@
 package com.info.baymax.dsp.data.dataset.service.resource;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableMap;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.ExampleQueryService;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassService;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.common.utils.JsonBuilder;
-
-import java.util.List;
+import com.info.baymax.common.utils.JsonUtils;
 
 /**
  * 与资源目录相关的通用方法接口
@@ -49,21 +49,21 @@ public interface ResourceIdService<T extends ResourceId> extends EntityClassServ
 
     default int updateResourceIdByInstanceId(String instanceId, String resourceId) {
         return updateByExampleSelective(
-            JsonBuilder.getInstance().fromObject(ImmutableMap.<String, Object>of("resourceId", resourceId),
+            JsonUtils.fromObject(ImmutableMap.<String, Object>of("resourceId", resourceId),
                 getEntityClass()),
             ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder().andEqualTo("id", instanceId)));
     }
 
     default int updateResourceIdByInstanceIds(String[] instanceIds, String resourceId) {
         return updateByExampleSelective(
-            JsonBuilder.getInstance().fromObject(ImmutableMap.<String, Object>of("resourceId", resourceId),
+            JsonUtils.fromObject(ImmutableMap.<String, Object>of("resourceId", resourceId),
                 getEntityClass()),
             ExampleQuery.builder(getEntityClass()).fieldGroup(FieldGroup.builder().andIn("id", instanceIds)));
     }
 
     default int updateNewResourceIdByOldResourceId(String newResourceId, String oldResourceId) {
         return updateByExampleSelective(
-            JsonBuilder.getInstance().fromObject(ImmutableMap.<String, Object>of("resourceId", newResourceId),
+            JsonUtils.fromObject(ImmutableMap.<String, Object>of("resourceId", newResourceId),
                 getEntityClass()),
             ExampleQuery.builder(getEntityClass())
                 .fieldGroup(FieldGroup.builder().andEqualTo("resourceId", oldResourceId)));

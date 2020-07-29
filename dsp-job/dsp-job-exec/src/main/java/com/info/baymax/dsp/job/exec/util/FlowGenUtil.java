@@ -672,14 +672,14 @@ public class FlowGenUtil {
         flow.setIsHide(1);// qa flow不显示在Flows目录下
         flow.setVersion(1);
 
-//        logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
+//        logger.info("begin to save ds flow: " + JsonUtils.toJson(flow));
         FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
 //        logger.info("save ds flow success : id=" + flowCreated.getId());
 
         // flow创建成功，关联拷贝一份history记录
 //        logger.info("copy history flow begin ...");
         FlowHistDesc fh = copyToHistory(flowCreated);
-//        logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
+//        logger.info("copy history flow success: " + JsonUtils.toJson(fh));
 
         return flowCreated;
     }
@@ -772,7 +772,7 @@ public class FlowGenUtil {
         scheduler.setTenantId(dataService.getTenantId());
         scheduler.setOwner(dataService.getOwner());
 
-//        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
+//        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonUtils.toJson(scheduler) );
 
         return scheduler;
     }

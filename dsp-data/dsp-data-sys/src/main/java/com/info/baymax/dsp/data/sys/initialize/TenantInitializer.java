@@ -1,24 +1,31 @@
 package com.info.baymax.dsp.data.sys.initialize;
 
-import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.common.utils.JsonBuilder;
-import com.info.baymax.dsp.data.sys.entity.security.*;
-import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RolePermissionRefMapper;
-import com.info.baymax.dsp.data.sys.service.security.PermOperationRefService;
-import com.info.baymax.dsp.data.sys.service.security.PermissionService;
-import com.info.baymax.dsp.data.sys.service.security.TenantService;
-import com.info.baymax.dsp.data.sys.service.security.UserService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.info.baymax.common.enums.types.YesNoType;
+import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.common.utils.JsonUtils;
+import com.info.baymax.dsp.data.sys.entity.security.PermOperationRef;
+import com.info.baymax.dsp.data.sys.entity.security.Permission;
+import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
+import com.info.baymax.dsp.data.sys.entity.security.RolePermissionRef;
+import com.info.baymax.dsp.data.sys.entity.security.Tenant;
+import com.info.baymax.dsp.data.sys.entity.security.User;
+import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RolePermissionRefMapper;
+import com.info.baymax.dsp.data.sys.service.security.PermOperationRefService;
+import com.info.baymax.dsp.data.sys.service.security.PermissionService;
+import com.info.baymax.dsp.data.sys.service.security.TenantService;
+import com.info.baymax.dsp.data.sys.service.security.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 系统启动时初始化系统中租户相关数据：包含租户下管理员账户、权限列表等数据
@@ -85,7 +92,7 @@ public class TenantInitializer {
 				tenantService.insertSelective(new Tenant(tenant, Arrays.asList("default")));
 			}
 		} catch (Exception e) {
-			log.warn("save tenant info:{} error, cause by:{}", JsonBuilder.getInstance().toJson(rootTenant), e.getMessage());
+			log.warn("save tenant info:{} error, cause by:{}", JsonUtils.toJson(rootTenant), e.getMessage());
 		}
 	}
 
@@ -114,7 +121,7 @@ public class TenantInitializer {
 				userService.updateByPrimaryKeySelective(user);
 			}
 		} catch (Exception e) {
-			log.warn("save user info:{} error, cause by:{}",JsonBuilder.getInstance().toJson(user), e.getMessage());
+			log.warn("save user info:{} error, cause by:{}",JsonUtils.toJson(user), e.getMessage());
 		}
 		return user;
 	}
@@ -184,7 +191,7 @@ public class TenantInitializer {
 				});
 			}
 		} catch (Exception e) {
-			log.warn("save permission info:{} error, cause by:{}", JsonBuilder.getInstance().toJson(t), e.getMessage());
+			log.warn("save permission info:{} error, cause by:{}", JsonUtils.toJson(t), e.getMessage());
 		}
 	}
 

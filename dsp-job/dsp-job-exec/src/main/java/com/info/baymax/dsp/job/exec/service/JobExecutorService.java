@@ -1,12 +1,28 @@
 package com.info.baymax.dsp.job.exec.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSONArray;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.common.utils.JsonBuilder;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
@@ -17,7 +33,13 @@ import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.Status;
-import com.info.baymax.dsp.data.dataset.entity.core.*;
+import com.info.baymax.dsp.data.dataset.entity.core.ClusterEntity;
+import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
 import com.info.baymax.dsp.data.dataset.service.core.ClusterDbService;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
@@ -36,17 +58,8 @@ import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
 import com.info.baymax.dsp.job.exec.util.HdfsUtil;
 import com.merce.woven.metrics.report.MetricsReporter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.PathFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: haijun
@@ -120,8 +133,8 @@ public class JobExecutorService {
                         if (step.getType().equals("filter")) {
                             JSONArray fmap = (JSONArray) step.getInputConfigurations().get(0).get("fields");
                             for (Object obj : fmap) {
-                                FlowField field = JsonBuilder.getInstance()
-                                    .fromJson(JsonBuilder.getInstance().toJson(obj), FlowField.class);
+                                FlowField field = JsonUtils
+                                    .fromJson(JsonUtils.toJson(obj), FlowField.class);
                                 filterInputs.add(field);
                             }
                             String filterCondition = flowGenUtil.getCondition(dataResource, dataService, filterInputs);
@@ -165,7 +178,7 @@ public class JobExecutorService {
             // 给个默认值
             if (runtimePros == null) {
                 String runtimeStr = "[{\"name\":\"all.debug\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.dataset-nullable\",\"value\":\"false\",\"input\":\"false\"},{\"name\":\"all.optimized.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.lineage.enable\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"all.debug-rows\",\"value\":\"20\",\"input\":\"20\"},{\"name\":\"all.runtime.cluster-id\",\"value\":[\"random\",\"cluster1\"],\"input\":[\"random\",\"cluster1\"]},{\"name\":\"dataflow.master\",\"value\":\"yarn\",\"input\":\"yarn\"},{\"name\":\"dataflow.deploy-mode\",\"value\":[\"client\",\"cluster\"],\"input\":[\"client\",\"cluster\"]},{\"name\":\"dataflow.queue\",\"value\":[\"default\"],\"input\":[\"default\"]},{\"name\":\"dataflow.num-executors\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.driver-memory\",\"value\":\"512M\",\"input\":\"512M\"},{\"name\":\"dataflow.executor-memory\",\"value\":\"1G\",\"input\":\"1G\"},{\"name\":\"dataflow.executor-cores\",\"value\":\"2\",\"input\":\"2\"},{\"name\":\"dataflow.verbose\",\"value\":\"true\",\"input\":\"true\"},{\"name\":\"dataflow.local-dirs\",\"value\":\"\",\"input\":\"\"},{\"name\":\"dataflow.sink.concat-files\",\"value\":\"true\",\"input\":\"true\"}]";
-                List<Map<String, Object>> list = (List<Map<String, Object>>) JsonBuilder.getInstance()
+                List<Map<String, Object>> list = (List<Map<String, Object>>) JsonUtils
                     .fromJson(runtimeStr, List.class);
                 runtimePros = new ArrayList<ConfigItem>();
                 for (Map<String, Object> map : list) {
@@ -195,9 +208,9 @@ public class JobExecutorService {
 
             FlowSchedulerDesc scheduler = flowGenUtil.generateScheduler(dataService, flowDesc, runtimePros);
             log.info("flowDesc for DataService [{}] : {}", dataService.getId(),
-                JsonBuilder.getInstance().toJson(flowDesc));
+                JsonUtils.toJson(flowDesc));
             log.info("scheduler for DataService [{}] : {}", dataService.getId(),
-                JsonBuilder.getInstance().toJson(scheduler));
+                JsonUtils.toJson(scheduler));
 
             // 提交任务到woven-server平台
             try {
@@ -403,7 +416,7 @@ public class JobExecutorService {
         try {
             // LogCollector.enableMDC("workflow", executionId);
             log.info("[executor] kill flow rest request:: {} -> {}", executionId,
-                JsonBuilder.getInstance().toJson(event));
+                JsonUtils.toJson(event));
             // messageHandler.killWorkflow(executionId, event);
         } finally {
             // LogCollector.disableMDC();

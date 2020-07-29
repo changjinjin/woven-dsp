@@ -9,7 +9,7 @@ import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.service.criteria.example.ExampleHelper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.common.utils.JsonBuilder;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.common.mybatis.mybatis.entity.TUser;
 
 public class FieldGroupTest {
@@ -41,7 +41,7 @@ public class FieldGroupTest {
                     .andEqualTo("Country", "China")//
             )//
             ;
-        System.out.println(JsonBuilder.getInstance().toJson(g));
+        System.out.println(JsonUtils.toJson(g));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class FieldGroupTest {
             .andEqualTo("age", 11)//
             ;
 
-        System.out.println(JsonBuilder.getInstance().toJson(group));
+        System.out.println(JsonUtils.toJson(group));
         List<CriteriaItem> ordItems = group.ordItems();
         for (CriteriaItem fieldItem : ordItems) {
             System.out.println(fieldItem.getIndex());
@@ -84,7 +84,7 @@ public class FieldGroupTest {
             .andEqualTo("age", 11)//
             ;
         Example example = ExampleHelper.createExample(ExampleQuery.builder().fieldGroup(group), TUser.class);
-        System.out.println(JsonBuilder.getInstance().toJson(example));
+        System.out.println(JsonUtils.toJson(example));
     }
 
 }

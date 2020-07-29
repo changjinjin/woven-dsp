@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.type.BaseTypeHandler;
+
 import com.info.baymax.common.enums.valuable.Valuable;
 
 /**

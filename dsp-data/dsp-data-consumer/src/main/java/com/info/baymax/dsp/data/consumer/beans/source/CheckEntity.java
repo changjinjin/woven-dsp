@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.info.baymax.common.utils.JsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 
 public class CheckEntity {
@@ -263,7 +263,7 @@ public class CheckEntity {
             }
 
             if(errorList.size() > 0){
-                return Response.error(ErrType.BAD_REQUEST, JsonBuilder.getInstance().toJson(errorList)).build();
+                return Response.error(ErrType.BAD_REQUEST, JsonUtils.toJson(errorList)).build();
             }
         }
         return Response.ok().build();

@@ -1,12 +1,13 @@
 package com.info.baymax.common.comp.feign;
 
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.utils.JsonBuilder;
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.utils.JsonUtils;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
 
 /**
  * 服务之间feign调用是需要传递当前用户信息，通过feign RequestInterceptor实现
@@ -30,7 +31,7 @@ public class TransmitTokenFeighClientIntercepter implements RequestInterceptor {
         // 调用dsp是需要以下信息
         try {
             requestTemplate.header(SaasContext.SAAS_CONTEXT_KEY,
-                URLEncoder.encode(JsonBuilder.getInstance().toJson(SaasContext.getCurrentSaasContext()), "UTF-8"));
+                URLEncoder.encode(JsonUtils.toJson(SaasContext.getCurrentSaasContext()), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

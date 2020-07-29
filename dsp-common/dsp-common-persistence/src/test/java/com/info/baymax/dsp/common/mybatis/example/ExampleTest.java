@@ -6,7 +6,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.info.baymax.common.mybatis.mapper.example.Example;
-import com.info.baymax.common.utils.JsonBuilder;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.common.mybatis.mybatis.entity.TUser;
 
 import tk.mybatis.mapper.util.Sqls;
@@ -19,6 +19,6 @@ public class ExampleTest {
             .andWhere(Sqls.custom().andBetween("id", 1, 13).orIn("status", Arrays.asList(1, 2, 3)))//
             .andWhere(Sqls.custom().andEqualTo("username", "lisi").orLessThan("birth", new Date()))//
             .build();
-        System.out.println(JsonBuilder.getInstance().toJson(example));
+        System.out.println(JsonUtils.toJson(example));
     }
 }

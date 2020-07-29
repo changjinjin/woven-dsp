@@ -1,19 +1,21 @@
 package com.info.baymax.dsp.common.webflux.filter;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.utils.JsonBuilder;
-import lombok.extern.slf4j.Slf4j;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.utils.JsonUtils;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 /**
  * SaasContext 拦截初始化
@@ -33,7 +35,7 @@ public class ServerSaasContextWebFilter implements WebFilter {
             String decode = null;
             try {
                 decode = URLDecoder.decode(saasContextHeader, "UTF-8");
-                SaasContext saasContext = JsonBuilder.getInstance().fromJson(decode, new TypeReference<SaasContext>() {
+                SaasContext saasContext = JsonUtils.fromJson(decode, new TypeReference<SaasContext>() {
                 });
                 if (saasContext != null) {
                     SaasContext.setCurrentSaasContext(saasContext);

@@ -1,14 +1,17 @@
 package com.info.baymax.common.mybatis.type.base64;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.info.baymax.common.mybatis.type.JsonTypeHandler;
-import com.info.baymax.common.mybatis.type.TypeHandleException;
-import com.info.baymax.common.utils.GZBase64Utils;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.info.baymax.common.mybatis.type.JsonFormatTypeHandler;
+import com.info.baymax.common.mybatis.type.TypeHandleException;
+import com.info.baymax.common.utils.GZBase64Utils;
 
-public interface GZBase64Parser extends JsonTypeHandler {
+public interface GZBase64Parser extends JsonFormatTypeHandler {
 
     /**
      * 编码压缩
@@ -46,14 +49,54 @@ public interface GZBase64Parser extends JsonTypeHandler {
         }
     }
 
-    default <T> T decodeFromJson(String result, TypeReference<T> typeReference) {
+    default <T> T decodeFromJson(String result, Class<T> tClass) {
+        String decode = null;
         try {
-            String decode = decode(result);
+            decode = decode(result);
             if (StringUtils.isEmpty(decode)) {
                 return null;
             }
-            return fromJson(decode, new TypeReference<T>() {
-            });
+            return fromJson(decode, tClass);
+        } catch (Exception e) {
+            throw new TypeHandleException(e);
+        }
+    }
+
+    default <T> T decodeFromJson(String result, TypeReference<T> typeReference) {
+        String decode = null;
+        try {
+            decode = decode(result);
+            if (StringUtils.isEmpty(decode)) {
+                return null;
+            }
+            return fromJson(decode, typeReference);
+        } catch (Exception e) {
+            throw new TypeHandleException(e);
+        }
+    }
+
+    default <C extends Collection<O>, O> C decodeFromJson(String result, Class<C> cClass, Class<O> oClass) {
+        String decode = null;
+        try {
+            decode = decode(result);
+            if (StringUtils.isEmpty(decode)) {
+                return null;
+            }
+            return fromJson(decode, cClass, oClass);
+        } catch (Exception e) {
+            throw new TypeHandleException(e);
+        }
+    }
+
+    default <M extends Map<K, V>, K, V> M decodeFromJson(String result, Class<M> mCkass, Class<K> kClass,
+                                                         Class<V> vClass) {
+        String decode = null;
+        try {
+            decode = decode(result);
+            if (StringUtils.isEmpty(decode)) {
+                return null;
+            }
+            return fromJson(decode, mCkass, kClass, vClass);
         } catch (Exception e) {
             throw new TypeHandleException(e);
         }

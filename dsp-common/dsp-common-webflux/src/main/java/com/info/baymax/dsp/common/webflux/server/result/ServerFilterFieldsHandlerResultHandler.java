@@ -1,14 +1,7 @@
 package com.info.baymax.dsp.common.webflux.server.result;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.comp.serialize.annotation.JsonBody;
-import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
-import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
-import com.info.baymax.common.message.exception.BizException;
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.utils.JsonBuilder;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -22,9 +15,17 @@ import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.result.method.annotation.AbstractMessageWriterResultHandler;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.info.baymax.common.comp.serialize.annotation.JsonBody;
+import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
+import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
+import com.info.baymax.common.message.exception.BizException;
+import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.utils.JsonUtils;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWriterResultHandler
@@ -76,9 +77,9 @@ public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWrite
             response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             // TODO 这里为避免输出的是字符串格式又进行了反序列化，有效率问题，后续处理
             return writeBody(
-                JsonBuilder.getInstance().fromJson(jsonSerializer.toJson(result.getReturnValue()), Object.class),
+                JsonUtils.fromObject(result.getReturnValue(), Object.class),
                 methodParameter, exchange);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error("Message serialization failed", e);
             throw new BizException(ErrType.INTERNAL_SERVER_ERROR.getStatus(), "Message serialization failed", e);
         }
