@@ -238,7 +238,7 @@ public class PullServiceImpl implements PullService {
             }
 
             // 处理存储信息
-            Map<String, String> conf = dataset.getStorageConfigurations();
+            Map<String, Object> conf = dataset.getStorageConfigurations();
             conf.put("storage", dataset.getStorage());
             Object query = request.getQuery();
             IPage<MapEntity> page = null;

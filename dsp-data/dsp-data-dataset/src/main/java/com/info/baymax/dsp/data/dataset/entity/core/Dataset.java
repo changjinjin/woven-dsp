@@ -4,16 +4,20 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import org.hibernate.annotations.ColumnDefault;
+import com.info.baymax.common.entity.field.DefaultValue;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyObjectValueTypeHandler;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
+import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsSpecialFieldTypeHandler;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceId;
+import com.info.baymax.dsp.data.dataset.utils.ValueBind;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
 
@@ -31,6 +35,7 @@ import java.util.Map;
     @Index(columnList = "lastModifiedTime DESC"), @Index(columnList = "expiredTime")})
 @Comment("数据集信息表")
 public class Dataset extends Maintable implements ResourceId, CryptoBean {
+
     private static final long serialVersionUID = 7644481936552526180L;
 
     @ApiModelProperty("过期时间")
@@ -82,15 +87,18 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
 
     @ApiModelProperty("存储格式:HDFS, HIVE, JDBC, KAFKA, HBASE, FTP, ElasticSearch, SearchOne, REDIS")
     @Comment("存储格式:HDFS, HIVE, JDBC, KAFKA, HBASE, FTP, ElasticSearch, SearchOne, REDIS")
+    @ValueBind(FieldType = ValueBind.fieldType.STRING, EnumStringValues = {"HDFS", "HIVE", "JDBC", "KAFKA", "HBASE",
+        "FTP", "ElasticSearch", "SearchOne", "REDIS"})
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String storage;
 
     @ApiModelProperty("分片类型：H, D, F, Q, 1, 5")
     @Comment("分片类型：H, D, F, Q, 1, 5")
+    @ValueBind(FieldType = ValueBind.fieldType.STRING, EnumStringValues = {"H", "D", "F", "Q", "1", "5"})
     @Column(length = 2)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("'H'")
+    @ColumnDefault("H")
     private String sliceType;// = "H";
 
     @ApiModelProperty("分片时间")
@@ -110,8 +118,8 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Comment("存储配置参数")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    private Map<String, String> storageConfigurations;
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyObjectValueTypeHandler.class)
+    private Map<String, Object> storageConfigurations;
 
     @ApiModelProperty("格式配置参数")
     @Comment("格式配置参数")
@@ -142,11 +150,18 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @ColumnDefault("0")
     private Integer isHide;
 
+    @ApiModelProperty("标识特殊字段,类型,当前值,现用于增量查询")
+    @Comment("标识特殊字段,类型,当前值,现用于增量查询")
+    @Lob
+    @Convert(converter = ObjectToStringConverter.class)
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsSpecialFieldTypeHandler.class)
+    private SpecialFieldEntity specialField;
+
     public Dataset() {
         super();
     }
 
-    public Dataset(String name, Schema schema, String storage, Map<String, String> storageConfigurations) {
+    public Dataset(String name, Schema schema, String storage, Map<String, Object> storageConfigurations) {
         this();
         this.name = name;
         this.schema = schema;
@@ -204,7 +219,7 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Override
     public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (storageConfigurations != null && !storageConfigurations.isEmpty()) {
-            String password = storageConfigurations.get("password");
+            String password = (String) storageConfigurations.get("password");
             if (password != null) {
                 storageConfigurations.replace("password",
                     ciphertext(password, secretKey, wrapped, cryptoType, cryptorDelegater));
@@ -215,16 +230,15 @@ public class Dataset extends Maintable implements ResourceId, CryptoBean {
     @Override
     public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
         if (storageConfigurations != null && !storageConfigurations.isEmpty()) {
-            String password = storageConfigurations.get("password");
+            String password = (String) storageConfigurations.get("password");
             if (password != null) {
                 storageConfigurations.replace("password",
                     plaintext(password, secretKey, wrapped, cryptoType, cryptorDelegater));
             }
-            String sql = storageConfigurations.get("sql");
+            String sql = (String) storageConfigurations.get("sql");
             if (sql != null) {
                 storageConfigurations.replace("sql", plaintext(sql, secretKey, wrapped, cryptoType, cryptorDelegater));
             }
         }
     }
-
 }

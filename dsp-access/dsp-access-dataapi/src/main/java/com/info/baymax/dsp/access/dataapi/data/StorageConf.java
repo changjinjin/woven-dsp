@@ -3,8 +3,7 @@ package com.info.baymax.dsp.access.dataapi.data;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.comp.config.JacksonConfig;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
 import lombok.Getter;
@@ -29,11 +28,9 @@ public class StorageConf implements Serializable {
         return Engine.valueOf(getStorage().toUpperCase());
     }
 
-    public static StorageConf from(Map<String, String> conf) {
+    public static StorageConf from(Map<String, Object> conf) {
         try {
-            ObjectMapper mapper = JacksonConfig.config();
-            String jsonString = mapper.writeValueAsString(conf);
-            return mapper.readValue(jsonString, new TypeReference<StorageConf>() {
+            return JsonUtils.fromObject(conf, new TypeReference<StorageConf>() {
             });
         } catch (Exception e) {
             log.error(e.getMessage(), e);

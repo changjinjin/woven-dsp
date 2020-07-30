@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.job.exec.util;
 
+import com.google.common.collect.Maps;
 import com.info.baymax.dsp.data.consumer.beans.source.DataSourceType;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
@@ -138,14 +139,25 @@ public class FlowGenUtil {
     }
 
 
-    private StepDesc getSourceStep(String stepId, Dataset cdo, List<FlowField> outputFields) throws Exception {
+    private StepDesc getSourceStep(String stepId, Dataset cdo, List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception {
         Flows.StepBuilder sourceStep = null;
         sourceStep = Flows.step("source", stepId, stepId);
+
+        Object ignoreMissingPath = cdo.getStorageConfigurations().get("ignoreMissingPath")!=null ? cdo.getStorageConfigurations().get("ignoreMissingPath") : false;
+        Map<String,Object> datasetInfo = new HashMap<>();
+        List<Map<String,Object>> datasetList = new ArrayList<>();
+        datasetInfo.put("rule", "set_1");
+        datasetInfo.put("dataset", cdo.getName());
+        datasetInfo.put("datasetId", cdo.getId());
+        datasetInfo.put("ignoreMissingPath", ignoreMissingPath);
+        datasetInfo.put("storage", cdo.getStorage());
+        datasetList.add(datasetInfo);
+
         StepDesc step = sourceStep
                 .config("schema", cdo.getSchema().getName()).config("schemaId", cdo.getSchema().getId())
-                .config("dataset", cdo.getName()).config("datasetId", cdo.getId())
-                .config("sessionCache","").config("ignoreMissingPath", false).config("interceptor", "")
-                .withPosition(100, 200).output(outputFields).build();
+                .config("dataset", datasetList)
+                .config("sessionCache","").config("ignoreMissingPath", ignoreMissingPath).config("interceptor", "")
+                .withPosition(100, 200).output(outputFields).uiConfigurations(uiConfigurations).build();
         step.setInputConfigurations(null);// steps规范:(左）无input （右）多个output
 
         return step;
@@ -156,18 +168,20 @@ public class FlowGenUtil {
         return df.format(new Date());
     }
 
-    private StepDesc getFilterStep(String stepId, List<FlowField> inputFields, List<FlowField> outputFields, String condition) throws Exception {
+    private StepDesc getFilterStep(String stepId, List<FlowField> inputFields, List<FlowField> outputFields, String condition, ConfigObject uiConfigurations) throws Exception {
         Flows.StepBuilder filterStep = Flows.step("filter", stepId, stepId);
         StepDesc step = filterStep.config("condition", condition)
                 .config("sessionCache","").config("interceptor", "")
-                .withPosition(300, 200).input(inputFields).output(outputFields).build();
+                .withPosition(300, 200).input(inputFields).output(outputFields)
+                .uiConfigurations(uiConfigurations)
+                .build();
         return step;
     }
 
-    private StepDesc getTransformStep(String stepId, DataService dataService, List<FlowField> inputFields, List<FlowField> outputFields) throws Exception{
+    private StepDesc getTransformStep(String stepId, DataService dataService, List<FlowField> inputFields, List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception{
         Flows.StepBuilder transStep = Flows.step("transform", stepId, stepId);
 
-        List<String> expressions = new ArrayList<>();
+        List<Map<String,String>> expressions = new ArrayList<>();
         List<FieldMapping> fieldConfiguration = dataService.getFieldMappings();
         Map<String,FieldMapping> fieldMap = new HashMap<>();
         for(FieldMapping mapping : fieldConfiguration){
@@ -180,7 +194,9 @@ public class FlowGenUtil {
                 FieldMapping fieldMapping1 = fieldMap.get(field.getColumn());
                 if(StringUtils.isNotEmpty(fieldMapping1.getEncrypt()) && fieldMapping1.getTransformRule() != null && StringUtils.isNotEmpty(fieldMapping1.getTransformRule().getExpression())){
                     TransformRule rule = fieldMapping1.getTransformRule();
-                    expressions.add(rule.getExpression());
+                    Map<String,String> exp = new HashMap<>();
+                    exp.put("value", rule.getExpression());
+                    expressions.add(exp);
                     int index = rule.getExpression().indexOf(" as ");
                     if(index == -1){
                         index = rule.getExpression().indexOf(" AS ");
@@ -207,7 +223,7 @@ public class FlowGenUtil {
 
         StepDesc step = transStep
                 .config("sessionCache","").config("interceptor", "")
-                .withPosition(500, 200).input(inputFields).output(outputFields).build();
+                .withPosition(500, 200).input(inputFields).output(outputFields).uiConfigurations(uiConfigurations).build();
 
         return step;
     }
@@ -236,7 +252,7 @@ public class FlowGenUtil {
         return datasourceType.toUpperCase();
     }
 
-    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix) throws Exception{
+    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix, ConfigObject uiConfigurations) throws Exception{
         CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
         if(!DataSourceType.contains(custDataSource.getType())){
             logger.error("DataSource type not support : "+ custDataSource.getType());
@@ -304,7 +320,7 @@ public class FlowGenUtil {
         }
 
         stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
-        StepDesc step = stepBuilder.withPosition(800, 100).input(targetFields).build();
+        StepDesc step = stepBuilder.withPosition(800, 100).input(targetFields).uiConfigurations(uiConfigurations).build();
         return step;
     }
 
@@ -348,15 +364,8 @@ public class FlowGenUtil {
         ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
         dataset.setResource(resourceDesc);
         dataset.setResourceId(resourceDesc.getId());
-        Map storageConfigurations = new HashMap();
 
-        Iterator<Map.Entry<String,Object>> attributes= custDataSource.getAttributes().entrySet().iterator();
-        while (attributes.hasNext()){
-            Map.Entry<String,Object> entry = attributes.next();
-            String key = entry.getKey();
-            Object val = entry.getValue();
-            storageConfigurations.put(key, val.toString());
-        }
+        Map<String,Object> storageConfigurations = Maps.newHashMap(custDataSource.getAttributes());
         // 删除schema属性,防止和jdbc的跨用户的schema冲突
         if (storageConfigurations.get("schema") != null
                 && storageConfigurations.get("schema").toString().equals(schema.getName())) {
@@ -396,7 +405,7 @@ public class FlowGenUtil {
         return dataset;
     }
 
-    private StepDesc getSQLStep(String stepId, DataResource dataResource, List<FlowField> inputFields, List<FlowField> outputFields) throws Exception{
+    private StepDesc getSQLStep(String stepId, DataResource dataResource, List<FlowField> inputFields, List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception{
         StepDesc step = null;
         for(FlowField field : inputFields){
             if(field.getColumn().equals(dataResource.getIncrementField())){
@@ -405,7 +414,7 @@ public class FlowGenUtil {
                         .config("sessionCache","").config("interceptor", "")
                         .config("sql","select max("+dataResource.getIncrementField()+") as cursorVal from input");
                 outputFields.add(new FlowField("cursorVal","string","", ""));
-                step = stepBuilder.withPosition(700,300).input(inputFields).output(outputFields).build();
+                step = stepBuilder.withPosition(700,300).input(inputFields).output(outputFields).uiConfigurations(uiConfigurations).build();
                 return step;
             }
         }
@@ -414,7 +423,7 @@ public class FlowGenUtil {
         return null;
     }
 
-    private StepDesc getSqlSinkStep(String stepId, DataService dataService,List<FlowField> inputFields, String timeSuffix){
+    private StepDesc getSqlSinkStep(String stepId, DataService dataService,List<FlowField> inputFields, String timeSuffix, ConfigObject uiConfigurations){
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         String schemaName = ExecutorFlowConf.schema_cursor_name;
         String datasetName = ExecutorFlowConf.dataset_cursor_prefix + dataService.getId() + "_" + timeSuffix;
@@ -430,7 +439,7 @@ public class FlowGenUtil {
             schema = createSchema(dataService, inputFields, schemaName);
             schemaId = schema.getId();
         }
-        Map<String,String> storageConfiguration = null;
+        Map<String,Object> storageConfiguration = null;
 
         if(dataset != null){
             datasetId = dataset.getId();
@@ -466,11 +475,11 @@ public class FlowGenUtil {
 
         stepBuilder.config("mode", "overwrite");
         stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
-        Iterator<Map.Entry<String,String>> iterator = storageConfiguration.entrySet().iterator();
+        Iterator<Map.Entry<String,Object>> iterator = storageConfiguration.entrySet().iterator();
         while (iterator.hasNext()){
-            Map.Entry<String,String> entry = iterator.next();
+            Map.Entry<String,Object> entry = iterator.next();
             String key = entry.getKey();
-            String val = entry.getValue();
+            Object val = entry.getValue();
             stepBuilder.config(key, val);
         }
         stepBuilder.config("schemaVersion", schema.getVersion())
@@ -484,12 +493,12 @@ public class FlowGenUtil {
                 .config("countWrittenRecord", "")
                 .config("sliceType", "");
 
-        StepDesc step = stepBuilder.withPosition(900, 300).input(inputFields).build();
+        StepDesc step = stepBuilder.withPosition(900, 300).input(inputFields).uiConfigurations(uiConfigurations).build();
         return step;
     }
 
-    private Map<String,String> initSqlSinkConfiguration(Dataset dataset, Schema schema, DataService dataService){
-        Map<String,String> storageConfiguration = new HashMap<String,String>();
+    private Map<String,Object> initSqlSinkConfiguration(Dataset dataset, Schema schema, DataService dataService){
+        Map<String,Object> storageConfiguration = new HashMap<String,Object>();
         storageConfiguration.put("path", ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
         storageConfiguration.put("relativePath", ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
         storageConfiguration.put("quoteChar", "\"");
@@ -538,19 +547,28 @@ public class FlowGenUtil {
         //transform step input
         List<FlowField> transInputFields = filterOutputs;
 
+        ConfigObject uiConfigurations = new ConfigObject();
+        uiConfigurations.put("output", new String[] {"output"});
+
         // 获取source step,赋值datasetId,schemaId
-        StepDesc sourceStep = getSourceStep("source_1", sourceDataset, sourceOutputs);
+        StepDesc sourceStep = getSourceStep("source_1", sourceDataset, sourceOutputs,uiConfigurations);
 
         //构建filter step
         StepDesc filterStep = null;
         String condition = getCondition(dataResource, dataService, filterInputs);
-        filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition);
+        uiConfigurations = new ConfigObject();
+        uiConfigurations.put("input", new String[] {"input"});
+        uiConfigurations.put("output", new String[] {"output"});
+        filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition,uiConfigurations);
 
         //构建transform step
         StepDesc transStep = null;
         List<FlowField> outputFields = new ArrayList<>();
         if(dataService.getFieldMappings()!=null && dataService.getFieldMappings().size()>0){
-            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFields);
+        	 uiConfigurations = new ConfigObject();
+             uiConfigurations.put("input", new String[] {"input"});
+             uiConfigurations.put("output", new String[] {"output"});
+            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFields,uiConfigurations);
             if(transStep == null){
                 outputFields = filterOutputs;
             }
@@ -559,16 +577,23 @@ public class FlowGenUtil {
         }
 
         //构建sink step
-        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFields, timestamp);
+        uiConfigurations = new ConfigObject();
+        uiConfigurations.put("input", new String[] {"input"});
+        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFields, timestamp,uiConfigurations);
 
         //构建sql step和sink step 2
         StepDesc sqlStep = null;
         StepDesc sinkStep_2 = null;
         if(dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode && getIncrementFieldType(dataResource.getIncrementField(), outputFields) != null){
             List<FlowField> sqlOutFields = new ArrayList<>();
-            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields);
+
+            uiConfigurations = new ConfigObject();
+            uiConfigurations.put("input", new String[] {"input"});
+            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields,uiConfigurations);
             if(sqlStep != null){
-                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp);
+            	uiConfigurations = new ConfigObject();
+                uiConfigurations.put("input", new String[] {"input"});
+                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp,uiConfigurations);
             }
         }
 
@@ -602,9 +627,9 @@ public class FlowGenUtil {
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
         //添加对源数据集的依赖
         if(sourceDataset.getStorage().equals("JDBC")){
-            if(sourceDataset.getStorageConfigurations()!=null && StringUtils.isNotEmpty(sourceDataset.getStorageConfigurations().get("jarPath"))){
+            if(sourceDataset.getStorageConfigurations()!=null && StringUtils.isNotEmpty((String)sourceDataset.getStorageConfigurations().get("jarPath"))){
                 ParameterDesc param = new ParameterDesc();
-                param.setName(sourceDataset.getStorageConfigurations().get("jarPath"));
+                param.setName((String)sourceDataset.getStorageConfigurations().get("jarPath"));
                 param.setCategory("ref");
                 if(flow.getDependencies() != null){
                     flow.getDependencies().add(param);
@@ -672,14 +697,14 @@ public class FlowGenUtil {
         flow.setIsHide(1);// qa flow不显示在Flows目录下
         flow.setVersion(1);
 
-//        logger.info("begin to save ds flow: " + JsonUtils.toJson(flow));
+//        logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
         FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
 //        logger.info("save ds flow success : id=" + flowCreated.getId());
 
         // flow创建成功，关联拷贝一份history记录
 //        logger.info("copy history flow begin ...");
         FlowHistDesc fh = copyToHistory(flowCreated);
-//        logger.info("copy history flow success: " + JsonUtils.toJson(fh));
+//        logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
 
         return flowCreated;
     }
@@ -772,7 +797,7 @@ public class FlowGenUtil {
         scheduler.setTenantId(dataService.getTenantId());
         scheduler.setOwner(dataService.getOwner());
 
-//        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonUtils.toJson(scheduler) );
+//        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
 
         return scheduler;
     }

@@ -44,10 +44,10 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
     private ConfigObject otherConfigurations;
 
     @ApiModelProperty("输入配置信息")
-    private List<ConfigObject> inputConfigurations;
+    private StepFieldGroup inputConfigurations = new StepFieldGroup();
 
     @ApiModelProperty("输出配置信息")
-    private List<ConfigObject> outputConfigurations;
+    private StepFieldGroup outputConfigurations = new StepFieldGroup();
 
     @ApiModelProperty("库信息")
     private List<String> libs;
@@ -55,12 +55,15 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
     @ApiModelProperty("继承信息")
     private String implementation;
 
+    @ApiModelProperty("前端配置信息")
+    private ConfigObject uiConfigurations;
+
     public StepDesc() {
         this("", "", "", null, null, null, 0, 0);
     }
 
     public StepDesc(String id, String name, String type, ConfigObject otherConfigurations,
-                    List<ConfigObject> inputConfigurations, List<ConfigObject> outputConfigurations, int x, int y) {
+                    StepFieldGroup inputConfigurations, StepFieldGroup outputConfigurations, int x, int y) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -72,7 +75,7 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
     }
 
     public StepDesc(String id, String name, StepDesc stepDef, ConfigObject otherConfigurations,
-                    List<ConfigObject> inputConfigurations, List<ConfigObject> outputConfigurations) {
+                    StepFieldGroup inputConfigurations, StepFieldGroup outputConfigurations) {
         this.id = id;
         this.name = name;
         this.type = stepDef.getType();

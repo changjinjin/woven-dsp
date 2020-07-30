@@ -1,22 +1,5 @@
 package com.info.baymax.dsp.job.exec.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.PathFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
-import com.alibaba.fastjson.JSONArray;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.saas.SaasContext;
@@ -33,13 +16,7 @@ import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.Status;
-import com.info.baymax.dsp.data.dataset.entity.core.ClusterEntity;
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowExecution;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
-import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
-import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.data.dataset.service.core.ClusterDbService;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
 import com.info.baymax.dsp.data.dataset.service.core.FlowDescService;
@@ -58,8 +35,18 @@ import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
 import com.info.baymax.dsp.job.exec.util.HdfsUtil;
 import com.merce.woven.metrics.report.MetricsReporter;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @Author: haijun
@@ -123,7 +110,7 @@ public class JobExecutorService {
             exampleQuery = ExampleQuery.builder(DataService.class).fieldGroup(FieldGroup.builder().andEqualTo("id", dataService.getId()));
 
             FlowDesc flowDesc = null;
-            String clusterId = dataset.getStorageConfigurations().get("clusterId");
+            String clusterId = (String) dataset.getStorageConfigurations().get("clusterId");
             if (dataService.getJobInfo() != null && StringUtils.isNotEmpty(dataService.getJobInfo().getFlowId())) {
                 String flowId = dataService.getJobInfo().getFlowId();
                 flowDesc = flowDescService.selectByPrimaryKey(flowId);
@@ -131,12 +118,8 @@ public class JobExecutorService {
                     List<FlowField> filterInputs = new ArrayList<>();
                     for (StepDesc step : flowDesc.getSteps()) {
                         if (step.getType().equals("filter")) {
-                            JSONArray fmap = new JSONArray((List<Object>)step.getInputConfigurations().get(0).get("fields"));
-                            for (Object obj : fmap) {
-                                FlowField field = JsonUtils
-                                    .fromJson(JsonUtils.toJson(obj), FlowField.class);
-                                filterInputs.add(field);
-                            }
+                            List<FieldDesc> list = step.getInputConfigurations().get("input");
+                            filterInputs = list.stream().map(t -> new FlowField(t.getName(), t.getType(), t.getAlias(), t.getDescription())).collect(Collectors.toList());
                             String filterCondition = flowGenUtil.getCondition(dataResource, dataService, filterInputs);
                             if (StringUtils.isNotEmpty(filterCondition)) {
                                 step.getOtherConfigurations().put("condition", filterCondition);

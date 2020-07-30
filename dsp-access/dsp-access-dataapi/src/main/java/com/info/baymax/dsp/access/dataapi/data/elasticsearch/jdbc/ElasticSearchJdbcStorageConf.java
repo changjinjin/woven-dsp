@@ -7,7 +7,6 @@ import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @Getter
@@ -79,17 +78,17 @@ public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
 
     @Override
     public String getUser() {
-        return StringUtils.defaultIfEmpty(storageConf.getUsername(), "admin");
+        return storageConf.getUsername();
     }
 
     @Override
     public String getUsername() {
-        return StringUtils.defaultIfEmpty(storageConf.getUsername(), "admin");
+        return storageConf.getUsername();
     }
 
     @Override
     public String getPassword() {
-        return StringUtils.defaultIfEmpty(storageConf.getPassword(), "admin");
+        return storageConf.getPassword();
     }
 
 }
