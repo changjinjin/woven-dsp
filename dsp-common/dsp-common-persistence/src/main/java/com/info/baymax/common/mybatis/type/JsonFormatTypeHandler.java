@@ -1,4 +1,5 @@
 package com.info.baymax.common.mybatis.type;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.info.baymax.common.utils.JsonUtils;
 
@@ -17,7 +18,7 @@ public interface JsonFormatTypeHandler {
 
     default <M extends Map<K, V>, K, V> M fromJson(String json, Class<M> mCkass, Class<K> kClass, Class<V> vClass) {
         try {
-            return JsonUtils.fromJson(json, JsonUtils.contructMapType(mCkass, kClass, vClass));
+            return JsonUtils.fromJson(json, mCkass, kClass, vClass);
         } catch (Exception e) {
             throw new TypeHandleException(e);
         }
@@ -25,7 +26,7 @@ public interface JsonFormatTypeHandler {
 
     default <C extends Collection<O>, O> C fromJson(String json, Class<C> cClass, Class<O> oClass) {
         try {
-            return JsonUtils.fromJson(json, JsonUtils.contructCollectionType(cClass, oClass));
+            return JsonUtils.fromJson(json, cClass, oClass);
         } catch (Exception e) {
             throw new TypeHandleException(e);
         }

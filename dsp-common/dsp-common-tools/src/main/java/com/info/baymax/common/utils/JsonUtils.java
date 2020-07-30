@@ -64,6 +64,15 @@ public class JsonUtils {
         }
     }
 
+    public static <M extends Map<K, V>, K, V> M fromJson(String json, Class<M> mCkass, Class<K> kClass,
+                                                         Class<V> vClass) {
+        return fromJson(json, contructMapType(mCkass, kClass, vClass));
+    }
+
+    public static <C extends Collection<O>, O> C fromJson(String json, Class<C> cClass, Class<O> oClass) {
+        return fromJson(json, contructCollectionType(cClass, oClass));
+    }
+
     @SuppressWarnings("rawtypes")
     public static JavaType contructCollectionType(Class<? extends Collection> collectionClass, Class<?> elementClass) {
         return mapper.getTypeFactory().constructCollectionType(collectionClass, elementClass);
