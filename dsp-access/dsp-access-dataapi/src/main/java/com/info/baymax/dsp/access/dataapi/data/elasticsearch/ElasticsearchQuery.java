@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
-
+import com.info.baymax.common.utils.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -76,8 +74,7 @@ public class ElasticsearchQuery extends RecordQuery {
 
     public static ElasticsearchQuery from(RecordQuery query)
         throws JsonParseException, JsonMappingException, JsonProcessingException, IOException {
-        ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
-        return mapper.readValue(mapper.writeValueAsBytes(query), new TypeReference<ElasticsearchQuery>() {
+        return JsonUtils.fromObject(query, new TypeReference<ElasticsearchQuery>() {
         });
     }
 

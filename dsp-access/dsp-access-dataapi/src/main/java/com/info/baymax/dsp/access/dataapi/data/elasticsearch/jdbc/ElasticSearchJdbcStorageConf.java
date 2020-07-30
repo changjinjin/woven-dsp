@@ -68,7 +68,7 @@ public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
 
     @Override
     public String getTable() {
-        return storageConf.getIndexType();
+        return storageConf.getIndex();
     }
 
     @Override
