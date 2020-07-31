@@ -12,19 +12,25 @@ import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.agg.AggType;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.access.dataapi.config.jest.ISearchResult;
-import com.info.baymax.dsp.access.dataapi.config.jest.JestClientUtils;
-import com.info.baymax.dsp.access.dataapi.config.jest.JestConf;
+import com.info.baymax.data.elasticsearch.config.jest.ISearchResult;
+import com.info.baymax.data.elasticsearch.config.jest.JestClientUtils;
+import com.info.baymax.data.elasticsearch.config.jest.JestConf;
+import com.info.baymax.data.elasticsearch.config.jest.JestConf.JestConfBuilder;
+import com.info.baymax.data.elasticsearch.config.jest.JestConf.Proxy;
 import com.info.baymax.dsp.access.dataapi.data.*;
 import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import io.searchbox.client.JestClient;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -56,7 +62,7 @@ public class ElasticSearchDataReader extends MapEntityDataReader {
                                           LinkedHashSet<AggField> aggFields, LinkedHashSet<String> groupFields) throws Exception {
         JestClient jestClient = null;
         try {
-            JestConf jestConf = JestConf.from((ElasticSearchStorageConf) conf);
+            JestConf jestConf = from((ElasticSearchStorageConf) conf);
             jestClient = JestClientUtils.jestClient(jestConf);
             SearchResult result = new ISearchResult(jestClient.execute(sreach));
             if (result.isSucceeded()) {
@@ -133,6 +139,33 @@ public class ElasticSearchDataReader extends MapEntityDataReader {
                 }
                 return jsonObject.get("value");
         }
+    }
+
+    public JestConf from(ElasticSearchStorageConf conf) {
+        JestConfBuilder builder = JestConf.builder();
+        List<String> uris = Arrays.asList(conf.getIpAddresses().split(","));
+        builder.uris(
+            uris.stream().map(t -> t.startsWith("http://") ? t : ("http://" + t)).collect(Collectors.toList()));
+        String username = conf.getUsername();
+        if (StringUtils.isNotEmpty(username)) {
+            builder.username(username);
+        }
+
+        String password = conf.getPassword();
+        if (StringUtils.isNotEmpty(password)) {
+            builder.password(password);
+        }
+
+        builder.multiThreaded(conf.isMultiThreaded()).connectionTimeout(Duration.ofSeconds(conf.getConnectionTimeout()))
+            .readTimeout(Duration.ofSeconds(conf.getReadTimeout()));
+
+        String proxyHost = conf.getProxyHost();
+        String proxyPort = conf.getProxyPort();
+        if (StringUtils.isNotEmpty(proxyHost)) {
+            builder.proxy(Proxy.builder().host(proxyHost)
+                .port(Integer.valueOf(StringUtils.defaultIfBlank(proxyPort, "80"))).build());
+        }
+        return builder.build();
     }
 
 }

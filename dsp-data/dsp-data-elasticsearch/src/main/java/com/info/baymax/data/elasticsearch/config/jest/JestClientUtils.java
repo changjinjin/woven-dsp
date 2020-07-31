@@ -1,7 +1,7 @@
-package com.info.baymax.dsp.access.dataapi.config.jest;
+package com.info.baymax.data.elasticsearch.config.jest;
 
 import com.google.gson.Gson;
-import com.info.baymax.dsp.access.dataapi.config.jest.JestConf.Proxy;
+import com.info.baymax.data.elasticsearch.config.jest.JestConf.Proxy;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;

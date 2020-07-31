@@ -4,6 +4,7 @@ import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.data.elasticsearch.config.EsMetricsIndexProperties;
+import com.info.baymax.data.elasticsearch.config.jest.ISearchResult;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.data.elasticsearch.service.DataTransferRecordService;
 import io.searchbox.client.JestClient;
@@ -66,7 +67,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
+            result = new ISearchResult(
+                jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build()));
             List<Map<String, Object>> list = new ArrayList<>();
             if (result.isSucceeded()) {
                 List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
@@ -117,7 +119,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
+            result = new ISearchResult(
+                jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build()));
             List<Map<String, Object>> list = new ArrayList<>();
             if (result.isSucceeded()) {
                 List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
@@ -169,7 +172,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
+            result = new ISearchResult(
+                jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build()));
             List<Map<String, Object>> list = new ArrayList<>();
             if (result.isSucceeded()) {
                 List<Entry> idAgg = result.getAggregations().getTermsAggregation("datasetIdAgg").getBuckets();
@@ -221,7 +225,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            result = jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
+            result = new ISearchResult(
+                jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build()));
             List<Map<String, Object>> list = new ArrayList<>();
             if (result.isSucceeded()) {
                 List<Entry> idAgg = result.getAggregations().getTermsAggregation("custIdAgg").getBuckets();
@@ -284,8 +289,8 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         try {
             String query = builder.toString();
             log.debug("jestClient query:" + query);
-            SearchResult result = jestClient
-                .execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build());
+            SearchResult result = new ISearchResult(
+                jestClient.execute(new Search.Builder(query).addIndices(getIndies()).addType(INDEX_TYPE).build()));
             if (result.isSucceeded()) {
                 List<Hit<DataTransferRecord, Void>> hits = result.getHits(DataTransferRecord.class);
                 return IPage.<DataTransferRecord>of(pageNum, pageSize, result.getTotal(),

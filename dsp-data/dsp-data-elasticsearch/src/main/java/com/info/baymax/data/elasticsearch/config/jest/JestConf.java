@@ -1,6 +1,5 @@
-package com.info.baymax.dsp.access.dataapi.config.jest;
+package com.info.baymax.data.elasticsearch.config.jest;
 
-import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -102,31 +101,6 @@ public class JestConf implements Serializable {
 
         String proxyHost = conf.get("proxy.host");
         String proxyPort = conf.get("proxy.port");
-        if (StringUtils.isNotEmpty(proxyHost)) {
-            builder.proxy(Proxy.builder().host(proxyHost)
-                .port(Integer.valueOf(StringUtils.defaultIfBlank(proxyPort, "80"))).build());
-        }
-        return builder.build();
-    }
-
-    public static JestConf from(ElasticSearchStorageConf conf) {
-        JestConfBuilder builder = JestConf.builder();
-        builder.uris(formatUris(Arrays.asList(conf.getIpAddresses().split(","))));
-        String username = conf.getUsername();
-        if (StringUtils.isNotEmpty(username)) {
-            builder.username(username);
-        }
-
-        String password = conf.getPassword();
-        if (StringUtils.isNotEmpty(password)) {
-            builder.password(password);
-        }
-
-        builder.multiThreaded(conf.isMultiThreaded()).connectionTimeout(Duration.ofSeconds(conf.getConnectionTimeout()))
-            .readTimeout(Duration.ofSeconds(conf.getReadTimeout()));
-
-        String proxyHost = conf.getProxyHost();
-        String proxyPort = conf.getProxyPort();
         if (StringUtils.isNotEmpty(proxyHost)) {
             builder.proxy(Proxy.builder().host(proxyHost)
                 .port(Integer.valueOf(StringUtils.defaultIfBlank(proxyPort, "80"))).build());

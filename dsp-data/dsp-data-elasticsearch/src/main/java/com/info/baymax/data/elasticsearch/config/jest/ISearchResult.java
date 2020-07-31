@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.config.jest;
+package com.info.baymax.data.elasticsearch.config.jest;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
