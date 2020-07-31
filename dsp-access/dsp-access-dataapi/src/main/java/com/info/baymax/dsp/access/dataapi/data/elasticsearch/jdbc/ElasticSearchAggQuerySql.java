@@ -26,15 +26,16 @@ public class ElasticSearchAggQuerySql extends AggQuerySql {
         return new ElasticSearchAggQuerySql(tableAlias, query);
     }
 
-    //适配
+    // 适配
     protected String groupBy(LinkedHashSet<String> groupFields) {
         if (ICollections.hasElements(groupFields)) {
             if (StringUtils.isNotEmpty(tableAlias)) {
                 groupFields = Sets.newLinkedHashSet(
                     groupFields.stream().map(t -> getTableAliasAndDot() + t).collect(Collectors.toList()));
             }
-            return new StringBuffer().append(" group by ").append("(").append(StringUtils.join(groupFields, ", "))
-                .append(")").toString();
+            int size = groupFields.size();
+            return new StringBuffer().append(" group by ").append(size < 2 ? "" : "(")
+                .append(StringUtils.join(groupFields, ", ")).append(size < 2 ? "" : ")").toString();
         }
         return "";
     }
