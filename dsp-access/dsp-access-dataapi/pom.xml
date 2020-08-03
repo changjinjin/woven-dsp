@@ -159,7 +159,6 @@
         <dependency>
             <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
             <artifactId>opendistro-sql-jdbc</artifactId>
-            <version>1.9.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.fangjinuo.sqlhelper</groupId>

@@ -60,7 +60,6 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
 		<guava.version>22.0</guava.version>
-		<elasticsearch.version>6.8.6</elasticsearch.version>
 		<jest.version>6.3.1</jest.version>
 
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
@@ -104,7 +103,6 @@
 
 		<micrometer-core.version>1.1.4</micrometer-core.version>
 
-		<spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
 		<baymax.version>3.1</baymax.version>
 	</properties>
 
@@ -216,23 +214,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.springframework.plugin</groupId>
-				<artifactId>spring-plugin-core</artifactId>
-				<version>${spring-plugin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.plugin</groupId>
-				<artifactId>spring-plugin-metadata</artifactId>
-				<version>${spring-plugin.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework.plugin</groupId>
-						<artifactId>spring-plugin-core</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
@@ -242,7 +223,6 @@
 				<artifactId>ojdbc7</artifactId>
 				<version>${oracle.version}</version>
 			</dependency>
-
 
 			<dependency>
 				<artifactId>commons-io</artifactId>
@@ -363,14 +343,15 @@
 				<version>${pagehelper-spring-boot.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.elasticsearch</groupId>
-				<artifactId>elasticsearch</artifactId>
-				<version>${elasticsearch.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>io.searchbox</groupId>
 				<artifactId>jest</artifactId>
 				<version>${jest.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.amazon.opendistroforelasticsearch.client</groupId>
+				<artifactId>opendistro-sql-jdbc</artifactId>
+				<version>1.9.0.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

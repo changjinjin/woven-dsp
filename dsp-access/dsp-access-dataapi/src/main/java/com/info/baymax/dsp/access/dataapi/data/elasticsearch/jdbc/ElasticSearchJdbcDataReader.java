@@ -14,11 +14,13 @@ import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AbstractQuerySql;
 import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Component
 public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
@@ -63,7 +65,7 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
                     if (totalCount > 0) {
                         List<MapEntity> list = runner.query(conn, selectSql.getPlaceholderSql() + " limit "
                             + pageable.getOffset() + "," + pageable.getPageSize(), rsh, selectSql.getParamValues());
-                        return IPage.<MapEntity>of(pageable, totalCount, list);
+                        return IPage.<MapEntity>of(pageable, totalCount, trimeKeyword(list));
                     }
                 }
             }
@@ -89,5 +91,21 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
         properties.put("password", conf.getPassword());
         return DataBaseUtil.getConnection(conf.getDriver(), conf.getUrl(), conf.getUsername(), conf.getPassword(),
             properties, null);
+    }
+
+    private List<MapEntity> trimeKeyword(List<MapEntity> entitys) {
+        return entitys.stream().map(t -> trimeKeyword(t)).collect(Collectors.toList());
+    }
+
+    private MapEntity trimeKeyword(MapEntity entity) {
+        final MapEntity newEntity = MapEntity.build();
+        entity.forEach((k, v) -> {
+            if (k.endsWith(".keyword")) {
+                newEntity.put(StringUtils.stripEnd(k, ".keyword"), v);
+            } else {
+                newEntity.put(k, v);
+            }
+        });
+        return newEntity;
     }
 }

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ToString(callSuper = true)
@@ -45,7 +46,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
             this.placeholderSql = String.format(new StringBuffer()//
                 .append(sql)//
                 .append(orderBy(query.getOrdSort()))// order by 条件
-                .toString(), properties(query.getFinalSelectProperties(tableAlias)));
+                .toString(), properties(query));
             log.debug("\n\nmake placeholderCountSql:" + placeholderCountSql);
             log.debug("make placeholderSql:" + placeholderSql);
             log.debug("make paramValues:" + Arrays.toString(paramValues) + "\n\n");
@@ -71,6 +72,11 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
             return new StringBuffer().append(" group by ").append(StringUtils.join(groupFields, ", ")).toString();
         }
         return "";
+    }
+
+    @Override
+    protected List<String> getSelectProperties(AggQuery query) {
+        return query.getFinalSelectProperties(tableAlias);
     }
 
 }

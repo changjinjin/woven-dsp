@@ -1,13 +1,15 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
+import com.google.common.collect.Lists;
+import com.info.baymax.common.service.criteria.agg.AggField;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
-import com.inforefiner.repackaged.com.google.common.collect.Sets;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ToString(callSuper = true)
@@ -26,18 +28,23 @@ public class ElasticSearchAggQuerySql extends AggQuerySql {
         return new ElasticSearchAggQuerySql(tableAlias, query);
     }
 
-    // 适配
-    protected String groupBy(LinkedHashSet<String> groupFields) {
+    @Override
+    protected List<String> getSelectProperties(AggQuery query) {
+        List<String> selects = Lists.newArrayList();
+        LinkedHashSet<String> groupFields = query.getGroupFields();
         if (ICollections.hasElements(groupFields)) {
             if (StringUtils.isNotEmpty(tableAlias)) {
-                groupFields = Sets.newLinkedHashSet(
-                    groupFields.stream().map(t -> getTableAliasAndDot() + t).collect(Collectors.toList()));
+                selects.add(tableAlias + ".*");
+            } else {
+                selects.add("*");
             }
-            int size = groupFields.size();
-            return new StringBuffer().append(" group by ").append(size < 2 ? "" : "(")
-                .append(StringUtils.join(groupFields, ", ")).append(size < 2 ? "" : ")").toString();
         }
-        return "";
+        LinkedHashSet<AggField> aggFields = query.getAggFields();
+        if (ICollections.hasElements(aggFields)) {
+            selects.addAll(
+                aggFields.stream().map(t -> t.tableAlias(tableAlias).toString()).collect(Collectors.toList()));
+        }
+        return selects;
     }
 
 }

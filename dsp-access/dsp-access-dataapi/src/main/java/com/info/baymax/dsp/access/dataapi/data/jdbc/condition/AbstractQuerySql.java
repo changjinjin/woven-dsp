@@ -81,8 +81,8 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         return this.valid;
     }
 
-    protected String properties(List<String> finalSelectProperties) {
-        return " " + StringUtils.join(finalSelectProperties, ", ");
+    protected String properties(Q query) {
+        return " " + StringUtils.join(getSelectProperties(query), ", ");
     }
 
     protected String count() {
@@ -107,18 +107,9 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
 
     protected String selectfromTableWhere(String table, String tableAlias, FieldGroup fieldGroup) {
         // select column1,column2,column3... from table
-        return new StringBuffer().append("select").append(" %s ").append(from(table, tableAlias))
+        return new StringBuffer().append("select ").append(" %s ").append(from(table, tableAlias))
             .append(where(fieldGroup)).toString();
     }
-
-    // protected String selectRecords(List<String> finalSelectProperties, String table, String tableAlias,
-    // FieldGroup fieldGroup) {
-    // return selectFromTableWhere(properties(finalSelectProperties), table, tableAlias, fieldGroup);
-    // }
-    //
-    // protected String selectCount(String table, String tableAlias, FieldGroup fieldGroup) {
-    // return selectFromTableWhere(count(), table, tableAlias, fieldGroup);
-    // }
 
     protected String orderBy(LinkedHashSet<Sort> sorts) {
         StringBuffer buf = new StringBuffer();
@@ -221,4 +212,6 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
     private String parseBooleanValue(Object obj) {
         return obj.toString();
     }
+
+    protected abstract List<String> getSelectProperties(Q query);
 }
