@@ -151,10 +151,10 @@
         </dependency>
         <dependency>
             <groupId>com.inforefiner.snowball</groupId>
-            <artifactId>snowball</artifactId>
+            <artifactId>snowball-jdbc</artifactId>
             <version>1.1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/snowball-jdbc-1.1.0-shaded.jar</systemPath>
+            <systemPath>${basedir}/lib/snowball-jdbc-1.1.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
