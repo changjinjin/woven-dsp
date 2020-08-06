@@ -32,7 +32,7 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
     @Override
     public boolean supports(StorageConf conf) {
         return (conf instanceof JdbcStorageConf) && super.supports(conf)
-            && dbType.name().equals(((JdbcStorageConf) conf).getDBType());
+            && dbType.getValue().equals(((JdbcStorageConf) conf).getDBType());
     }
 
     @Override
