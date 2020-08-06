@@ -167,7 +167,7 @@ public class DataResource extends BaseEntity {
     @Comment("数据来源")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    @ColumnDefault("Baymax")
+    @ColumnDefault("'Baymax'")
     private String source;
 
     public DataResource() {
