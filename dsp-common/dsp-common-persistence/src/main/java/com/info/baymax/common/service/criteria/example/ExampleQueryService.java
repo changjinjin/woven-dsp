@@ -1,6 +1,6 @@
 package com.info.baymax.common.service.criteria.example;
 
-import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
+
 import com.info.baymax.common.mybatis.mapper.aggregation.AggregateCondition;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.page.IPageable;
@@ -101,7 +101,7 @@ public interface ExampleQueryService<T> extends BaseExampleService<T>, EntityCla
      * @param query  更新的记录匹配条件
      * @return 更新的数据条数
      */
-    default int updateByExample(@PreUpdate T record, ExampleQuery query) {
+    default int updateByExample(T record, ExampleQuery query) {
         preUpdate(record);
         return updateByExample(record, ExampleHelper.createExample(query, getEntityClass()));
     }
@@ -113,7 +113,7 @@ public interface ExampleQueryService<T> extends BaseExampleService<T>, EntityCla
      * @param query  更新的记录匹配条件
      * @return 更新的数据条数
      */
-    default int updateByExampleSelective(@PreUpdate T record, ExampleQuery query) {
+    default int updateByExampleSelective(T record, ExampleQuery query) {
         preUpdate(record);
         return updateByExampleSelective(record, ExampleHelper.createExample(query, getEntityClass()));
     }

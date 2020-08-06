@@ -1,8 +1,8 @@
 package com.info.baymax.common.service;
 
 import com.github.pagehelper.Page;
-import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
-import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
+
+
 import com.info.baymax.common.mybatis.mapper.aggregation.AggregateCondition;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.mybatis.mapper.example.Example;
@@ -26,16 +26,16 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
 
     BaseExampleMapper<T> getBaseExampleMapper();
 
-    @Preprocess
+    
     @Override
-    default int updateByExample(@PreUpdate T record, Example example) {
+    default int updateByExample(T record, Example example) {
         preUpdate(record);
         return getBaseExampleMapper().updateByExample(record, example);
     }
 
-    @Preprocess
+    
     @Override
-    default int updateByExampleSelective(@PreUpdate T record, Example example) {
+    default int updateByExampleSelective(T record, Example example) {
         preUpdate(record);
         return getBaseExampleMapper().updateByExampleSelective(record, example);
     }

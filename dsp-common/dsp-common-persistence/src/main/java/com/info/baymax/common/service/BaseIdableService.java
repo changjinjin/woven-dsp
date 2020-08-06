@@ -1,9 +1,9 @@
 package com.info.baymax.common.service;
 
 import com.info.baymax.common.entity.id.Idable;
-import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
-import com.info.baymax.common.entity.preprocess.annotation.PreUpdate;
-import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
+
+
+
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
@@ -96,58 +96,58 @@ public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>
         return 0;
     }
 
-    @Preprocess
+    
     @Override
-    default int insertListWithPrimaryKey(@PreInsert List<T> recordList) {
+    default int insertListWithPrimaryKey(List<T> recordList) {
         preInsert(recordList);
         return getMyIdableMapper().insertListWithPrimaryKey(recordList);
     }
 
-    @Preprocess
+    
     @Override
-    default int insertUseGeneratedKeys(@PreInsert T record) {
+    default int insertUseGeneratedKeys(T record) {
         preInsert(record);
         return getMyIdableMapper().insertUseGeneratedKeys(record);
     }
 
-    @Preprocess
+    
     @Override
-    default int replace(@PreInsert T record) {
+    default int replace(T record) {
         preInsert(record);
         return getMyIdableMapper().replace(record);
     }
 
-    @Preprocess
+    
     @Override
-    default int replaceListWithPrimaryKey(@PreInsert List<T> recordList) {
+    default int replaceListWithPrimaryKey(List<T> recordList) {
         preInsert(recordList);
         return getMyIdableMapper().replaceListWithPrimaryKey(recordList);
     }
 
-    @Preprocess
+    
     @Override
-    default int updateByPrimaryKey(@PreUpdate T record) {
+    default int updateByPrimaryKey(T record) {
         preUpdate(record);
         return getMyIdableMapper().updateByPrimaryKey(record);
     }
 
-    @Preprocess
+    
     @Override
-    default int updateByPrimaryKeySelective(@PreUpdate T record) {
+    default int updateByPrimaryKeySelective(T record) {
         preUpdate(record);
         return getMyIdableMapper().updateByPrimaryKeySelective(record);
     }
 
-    @Preprocess
+    
     @Override
-    default int updateListByPrimaryKey(@PreUpdate List<T> recordList) {
+    default int updateListByPrimaryKey(List<T> recordList) {
         preUpdate(recordList);
         return getMyIdableMapper().updateListByPrimaryKey(recordList);
     }
 
-    @Preprocess
+    
     @Override
-    default int updateListByPrimaryKeySelective(@PreUpdate List<T> recordList) {
+    default int updateListByPrimaryKeySelective(List<T> recordList) {
         preUpdate(recordList);
         return getMyIdableMapper().updateListByPrimaryKeySelective(recordList);
     }

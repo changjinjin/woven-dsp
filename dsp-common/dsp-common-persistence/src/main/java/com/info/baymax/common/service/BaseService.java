@@ -1,8 +1,8 @@
 package com.info.baymax.common.service;
 
 import com.github.pagehelper.Page;
-import com.info.baymax.common.entity.preprocess.annotation.PreInsert;
-import com.info.baymax.common.entity.preprocess.annotation.Preprocess;
+
+
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
@@ -30,9 +30,9 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         return getMyBaseMapper();
     }
 
-    @Preprocess
+    
     @Override
-    default int insert(@PreInsert T record) {
+    default int insert(T record) {
         if (record != null) {
             preInsert(record);
             return getMyBaseMapper().insert(record);
@@ -40,9 +40,9 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         return 0;
     }
 
-    @Preprocess
+    
     @Override
-    default int insertSelective(@PreInsert T record) {
+    default int insertSelective(T record) {
         if (record != null) {
             preInsert(record);
             return getMyBaseMapper().insertSelective(record);
@@ -50,9 +50,9 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         return 0;
     }
 
-    @Preprocess
+    
     @Override
-    default int insertList(@PreInsert List<? extends T> recordList) {
+    default int insertList(List<? extends T> recordList) {
         if (ICollections.hasElements(recordList)) {
             preInsert(recordList);
             return getMyBaseMapper().insertList(recordList);
@@ -67,8 +67,8 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
      * @return 插入结果
      * @throws ServiceException
      */
-    @Preprocess
-    default int insertListSelective(@PreInsert List<T> recordList) throws ServiceException {
+    
+    default int insertListSelective(List<T> recordList) throws ServiceException {
         int i = 0;
         if (ICollections.hasElements(recordList)) {
             for (T t : recordList) {
