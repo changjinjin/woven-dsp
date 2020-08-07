@@ -51,7 +51,7 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
     }
 
     @Override
-    public List<String> getFinalSelectProperties(String tableAlias) {
+    public List<String> getFinalSelectProperties() {
         Set<String> select = Sets.newLinkedHashSet();
         if (ICollections.hasElements(allProperties)) {
             Set<String> all = Sets.newLinkedHashSet(allProperties);
@@ -71,9 +71,6 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
         if (ICollections.hasNoElements(select)) {
             throw new RuntimeException("no suitable fields for query with allProperties:" + allProperties
                 + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
-        }
-        if (StringUtils.isNotEmpty(tableAlias)) {
-            return select.stream().map(t -> tableAlias + "." + t).collect(Collectors.toList());
         }
         return Lists.newArrayList(select);
     }

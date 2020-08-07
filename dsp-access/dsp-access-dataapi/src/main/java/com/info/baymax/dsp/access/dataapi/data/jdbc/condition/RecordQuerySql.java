@@ -12,21 +12,17 @@ import java.util.List;
 public class RecordQuerySql extends AbstractQuerySql<JdbcQuery> {
     private static final long serialVersionUID = 9076946654365840665L;
 
-    protected RecordQuerySql(String tableAlias, JdbcQuery query) {
-        super(tableAlias, query);
+    protected RecordQuerySql(JdbcQuery query) {
+        super(query);
     }
 
     public static RecordQuerySql builder(JdbcQuery query) {
-        return new RecordQuerySql("", query);
-    }
-
-    public static RecordQuerySql builder(String tableAlias, JdbcQuery query) {
-        return new RecordQuerySql(tableAlias, query);
+        return new RecordQuerySql(query);
     }
 
     protected void build(JdbcQuery query) {
         if (valid(query)) {
-            String selectfromTableWhere = selectfromTableWhere(query.getTable(), tableAlias, query.getFieldGroup());
+            String selectfromTableWhere = selectfromTableWhere(query.getTable(), query.getFieldGroup());
             this.placeholderCountSql = String.format(selectfromTableWhere, count());
             this.placeholderSql = String.format(
                 new StringBuffer().append(selectfromTableWhere).append(orderBy(query.getOrdSort())).toString(),
@@ -39,7 +35,7 @@ public class RecordQuerySql extends AbstractQuerySql<JdbcQuery> {
 
     @Override
     protected List<String> getSelectProperties(JdbcQuery query) {
-        return query.getFinalSelectProperties(tableAlias);
+        return query.getFinalSelectProperties();
     }
 
 }

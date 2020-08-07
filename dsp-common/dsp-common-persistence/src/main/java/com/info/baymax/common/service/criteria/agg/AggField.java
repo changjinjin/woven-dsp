@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
 
 @ApiModel
@@ -17,10 +15,6 @@ import java.io.Serializable;
 @Builder
 public class AggField implements Serializable {
     private static final long serialVersionUID = -878572549536122362L;
-
-    @JsonIgnore
-    @ApiModelProperty(value = "表别名", hidden = true)
-    private String tableAlias;
 
     @ApiModelProperty("聚合字段名称")
     private String name;
@@ -41,16 +35,19 @@ public class AggField implements Serializable {
         return this.alias;
     }
 
-    public AggField tableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
-        return this;
+    public String getExpr() {
+        return new StringBuffer().append(aggType.getValue()).append("(").append((distinct ? "distinct " : ""))
+            .append(name).append(") ").append(getAlias()).toString();
+    }
+
+    public String getAggExpr() {
+        return new StringBuffer().append(aggType.getValue()).append("(").append((distinct ? "distinct " : ""))
+            .append(name).append(")").toString();
     }
 
     @Override
     public String toString() {
-        return new StringBuffer().append(aggType.getValue()).append("(").append((distinct ? "distinct " : ""))
-            .append(StringUtils.isEmpty(tableAlias) ? "" : (tableAlias + ".")).append(name).append(") ")
-            .append(getAlias()).toString();
+        return getExpr();
     }
 
     public static void main(String[] args) {

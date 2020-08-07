@@ -150,9 +150,7 @@ public class ExampleQuery extends AbstractPropertiesQuery<ExampleQuery> implemen
     }
 
 	@Override
-	public List<String> getFinalSelectProperties(String tableAlias) {
+	public List<String> getFinalSelectProperties() {
 		return Lists.newArrayList(selectProperties);
 	}
-    
-    
 }

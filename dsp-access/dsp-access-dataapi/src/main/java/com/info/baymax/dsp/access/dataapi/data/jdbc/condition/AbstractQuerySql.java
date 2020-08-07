@@ -23,19 +23,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractQuerySql<Q> implements Serializable {
     private static final long serialVersionUID = 9076946654365840665L;
 
-    protected AbstractQuerySql(String tableAlias, Q query) {
-        this.tableAlias = tableAlias;
+    protected AbstractQuerySql(Q query) {
         build(query);
-    }
-
-    protected String tableAlias;
-
-    public String getTableAlias() {
-        return StringUtils.defaultIfEmpty(this.tableAlias, "");
-    }
-
-    public String getTableAliasAndDot() {
-        return StringUtils.isEmpty(this.tableAlias) ? "" : (this.tableAlias + ".");
     }
 
     /**
@@ -74,7 +63,7 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
     @Getter
     protected boolean valid;
 
-    abstract void build(Q query);
+    protected abstract void build(Q query);
 
     protected boolean valid(Q query) {
         this.valid = true;
@@ -89,15 +78,14 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         return " count(*)";
     }
 
-    protected String from(String table, String tableAlias) {
-        return new StringBuffer().append(" from ").append(table)
-            .append(StringUtils.isEmpty(getTableAlias()) ? "" : " " + getTableAlias()).toString();
+    protected String from(String table) {
+        return new StringBuffer().append(" from ").append(table).toString();
     }
 
     protected String where(FieldGroup fieldGroup) {
         // where 条件
         StringBuffer buf = new StringBuffer();
-        ConditionSql whereConditionSql = ConditionSql.build(tableAlias, fieldGroup);
+        ConditionSql whereConditionSql = ConditionSql.build(fieldGroup);
         if (whereConditionSql != null && StringUtils.isNotEmpty(whereConditionSql.getPlaceholderSql())) {
             buf.append(" where ").append(StringUtils.trimToEmpty(whereConditionSql.getPlaceholderSql()));
         }
@@ -105,10 +93,10 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         return buf.toString();
     }
 
-    protected String selectfromTableWhere(String table, String tableAlias, FieldGroup fieldGroup) {
+    protected String selectfromTableWhere(String table, FieldGroup fieldGroup) {
         // select column1,column2,column3... from table
-        return new StringBuffer().append("select ").append(" %s ").append(from(table, tableAlias))
-            .append(where(fieldGroup)).toString();
+        return new StringBuffer().append("select ").append(" %s ").append(from(table)).append(where(fieldGroup))
+            .toString();
     }
 
     protected String orderBy(LinkedHashSet<Sort> sorts) {

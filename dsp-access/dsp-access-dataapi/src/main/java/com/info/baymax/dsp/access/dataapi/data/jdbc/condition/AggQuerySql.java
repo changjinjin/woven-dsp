@@ -3,7 +3,6 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc.condition;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
-import com.inforefiner.repackaged.com.google.common.collect.Sets;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -11,30 +10,25 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ToString(callSuper = true)
 @Slf4j
 public class AggQuerySql extends AbstractQuerySql<AggQuery> {
     private static final long serialVersionUID = 9076946654365840665L;
 
-    protected AggQuerySql(String tableAlias, AggQuery query) {
-        super(tableAlias, query);
+    protected AggQuerySql(AggQuery query) {
+        super(query);
     }
 
     public static AggQuerySql builder(AggQuery query) {
-        return new AggQuerySql("", query);
-    }
-
-    public static AggQuerySql builder(String tableAlias, AggQuery query) {
-        return new AggQuerySql(tableAlias, query);
+        return new AggQuerySql(query);
     }
 
     @Override
     protected void build(AggQuery query) {
         if (valid(query)) {
             StringBuffer buf = new StringBuffer();
-            buf.append(selectfromTableWhere(query.getTable(), tableAlias, query.getFieldGroup()));
+            buf.append(selectfromTableWhere(query.getTable(), query.getFieldGroup()));
             // group by 条件
             buf.append(groupBy(query.getGroupFields()));
             // having 条件
@@ -65,10 +59,6 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
 
     protected String groupBy(LinkedHashSet<String> groupFields) {
         if (ICollections.hasElements(groupFields)) {
-            if (StringUtils.isNotEmpty(tableAlias)) {
-                groupFields = Sets.newLinkedHashSet(
-                    groupFields.stream().map(t -> getTableAliasAndDot() + t).collect(Collectors.toList()));
-            }
             return new StringBuffer().append(" group by ").append(StringUtils.join(groupFields, ", ")).toString();
         }
         return "";
@@ -76,7 +66,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
 
     @Override
     protected List<String> getSelectProperties(AggQuery query) {
-        return query.getFinalSelectProperties(tableAlias);
+        return query.getFinalSelectProperties();
     }
 
 }

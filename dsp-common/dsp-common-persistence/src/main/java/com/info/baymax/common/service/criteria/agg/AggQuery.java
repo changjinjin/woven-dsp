@@ -30,18 +30,13 @@ public class AggQuery extends AbstractAggQuery<AggQuery> {
         return this;
     }
 
-    public List<String> getFinalSelectProperties(String tableAlias) {
+    public List<String> getFinalSelectProperties() {
         List<String> selects = Lists.newArrayList();
         if (ICollections.hasElements(groupFields)) {
-            if (StringUtils.isNotEmpty(tableAlias)) {
-                selects.addAll(groupFields.stream().map(t -> tableAlias + "." + t).collect(Collectors.toList()));
-            } else {
-                selects.addAll(groupFields);
-            }
+            selects.addAll(groupFields);
         }
         if (ICollections.hasElements(aggFields)) {
-            selects.addAll(
-                aggFields.stream().map(t -> t.tableAlias(tableAlias).toString()).collect(Collectors.toList()));
+            selects.addAll(aggFields.stream().map(t -> t.toString()).collect(Collectors.toList()));
         }
         return Lists.newArrayList(selects);
     }
