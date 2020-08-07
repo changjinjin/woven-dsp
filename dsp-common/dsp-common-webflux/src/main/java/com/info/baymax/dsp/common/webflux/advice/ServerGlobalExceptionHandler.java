@@ -44,7 +44,7 @@ public class ServerGlobalExceptionHandler {
         log.error(e.getMessage(), e);
         ServerHttpResponse response = swe.getResponse();
         response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
     }
 
     /**
@@ -59,13 +59,27 @@ public class ServerGlobalExceptionHandler {
     @Order(-3)
     public Response<?> bizExceptionHandler(BizException e) {
         log.error(e.getMessage(), e);
-        Response<?> result = Response
-            .error(e.getStatus(), StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()))
-            .build();
+        Response<?> result = null;
+        Throwable cause = e.getCause();
+        if (cause != null) {
+            if (cause instanceof BizException) {
+                BizException c = (BizException) cause;
+                result = Response
+                    .error(c.getStatus(),
+                        StringUtils.defaultIfEmpty(c.getMessage(), "UNKNOWN ERROR:" + c.getStatus()))
+                    .details(c.toString()).build();
+            } else {
+                result = Response.error(e.getStatus(), cause.getMessage()).details(cause.toString()).build();
+            }
+        } else {
+            result = Response
+                .error(e.getStatus(), StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()))
+                .details(e.toString()).build();
+        }
         if (result != null) {
             return result;
         }
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
     }
 
     @ResponseBody
@@ -75,10 +89,10 @@ public class ServerGlobalExceptionHandler {
     public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
         if (e instanceof DuplicateKeyException) {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Data duplication constraint violation.").details(e.getMessage())
-                .build();
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Data duplication constraint violation.")
+                .details(e.getMessage()).build();
         } else {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
         }
     }
 
@@ -86,8 +100,8 @@ public class ServerGlobalExceptionHandler {
     @ExceptionHandler(WebExchangeBindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(-5)
-    public Response<?> webExchangeBindException(WebExchangeBindException exception) {
-        BindingResult bindingResult = exception.getBindingResult();
+    public Response<?> webExchangeBindException(WebExchangeBindException e) {
+        BindingResult bindingResult = e.getBindingResult();
         FieldError fieldError = bindingResult.getFieldError();
         String objectName = fieldError.getObjectName();
         StringBuffer buff = new StringBuffer();
@@ -100,23 +114,23 @@ public class ServerGlobalExceptionHandler {
             buff.append(field);
         }
         buff.append("] ").append(fieldError.getDefaultMessage());
-        return Response.error(ErrType.BAD_REQUEST, buff.toString()).build();
+        return Response.error(ErrType.BAD_REQUEST, buff.toString()).details(e.toString()).build();
     }
 
     @ResponseBody
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(-6)
-    public Response<?> validationException(ValidationException exception) {
+    public Response<?> validationException(ValidationException e) {
         String message = null;
-        if (exception instanceof ConstraintViolationException) {
-            ConstraintViolationException exs = (ConstraintViolationException) exception;
+        if (e instanceof ConstraintViolationException) {
+            ConstraintViolationException exs = (ConstraintViolationException) e;
             Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
             for (ConstraintViolation<?> item : violations) {
                 message = item.getMessage();
                 break;// 拿第一条错误信息即可，满足快速失败就行
             }
         }
-        return Response.error(ErrType.BAD_REQUEST, message).build();
+        return Response.error(ErrType.BAD_REQUEST, message).details(e.toString()).build();
     }
 }
