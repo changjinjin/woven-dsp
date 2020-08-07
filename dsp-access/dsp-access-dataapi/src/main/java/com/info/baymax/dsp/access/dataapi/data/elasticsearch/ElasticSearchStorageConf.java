@@ -20,8 +20,8 @@ public class ElasticSearchStorageConf extends StorageConf {
     private String ipAddresses;// "info5;//9203"
     private String pathMode;// "exact"
 
-    private String httpAuthPassword;
     private String httpAuthUser;
+    private String httpAuthPassword;
     private String username;
     private String password;
     private boolean multiThreaded = true;

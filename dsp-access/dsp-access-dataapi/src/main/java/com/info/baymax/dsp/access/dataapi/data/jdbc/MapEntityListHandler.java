@@ -29,7 +29,7 @@ public class MapEntityListHandler extends AbstractListHandler<MapEntity> {
 
 	@Override
 	protected MapEntity handleRow(ResultSet rs) throws SQLException {
-		return MapEntity.from(this.convert.toMap(rs));
+		return (MapEntity) this.convert.toMap(rs);
 	}
 
 	static final class MapEntityRowProcessor extends BasicRowProcessor {

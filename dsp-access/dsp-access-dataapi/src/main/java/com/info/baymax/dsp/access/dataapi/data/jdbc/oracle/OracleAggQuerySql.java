@@ -34,7 +34,7 @@ public class OracleAggQuerySql extends AggQuerySql {
         super.build(preBuild(query));
     }
 
-    // Oracle having 不能使用聚合的别名作为条件，这里加having中的条件替换成聚合表达式
+    // Oracle having 不能使用聚合的别名作为条件，这里having中的条件替换成聚合表达式
     private AggQuery preBuild(AggQuery query) {
         LinkedHashSet<AggField> aggFields = query.getAggFields();
         Map<String, String> aggFieldMap = Maps.newHashMap();
