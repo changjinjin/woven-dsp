@@ -9,8 +9,6 @@ import com.jn.sqlhelper.dialect.internal.AbstractDialect;
 import com.jn.sqlhelper.dialect.internal.limit.LimitCommaLimitHandler;
 import com.jn.sqlhelper.dialect.likeescaper.BackslashStyleEscaper;
 
-//@Name("elasticsearch")
-//@Driver("com.amazon.opendistroforelasticsearch.jdbc.ElasticsearchDriver")
 @Name("elasticsearch")
 @Driver("com.amazon.opendistroforelasticsearch.jdbc.Driver")
 public class ElasticsearchDialect extends AbstractDialect<ElasticsearchDialect> {
