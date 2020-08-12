@@ -25,7 +25,7 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
     @ApiModelProperty("流程ID")
     private String flowId;
 
-    @ApiModelProperty("X轴坐标")
+    @ApiModelProperty("节点ID")
     private String id;
 
     @ApiModelProperty("名称")

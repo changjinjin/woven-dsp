@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class FieldDesc implements java.io.Serializable {
+	private static final long serialVersionUID = -1506291117666256459L;
 
-    @ApiModelProperty("名称")
+	@ApiModelProperty("名称")
     private String name;
 
     @ApiModelProperty("类型")

@@ -34,7 +34,6 @@ import java.util.Map;
     @Index(columnList = "lastModifiedTime DESC"), @Index(columnList = "expiredTime")})
 @Comment("数据集信息表")
 public class Dataset extends Maintable implements ResourceId, CryptoBean {
-
     private static final long serialVersionUID = 7644481936552526180L;
 
     @ApiModelProperty("过期时间")
