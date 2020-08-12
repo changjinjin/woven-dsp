@@ -33,10 +33,8 @@ import java.util.List;
 public class DataResourceController implements BaseEntityController<DataResource> {
     @Autowired
     private DataResourceService dataResourceService;
-
     @Autowired
     private DataApplicationService dataApplicationService;
-
     @Autowired
     private DataServiceService dataServiceEntityService;
 

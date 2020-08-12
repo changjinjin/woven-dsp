@@ -1,19 +1,20 @@
 package com.info.baymax.dsp.data.platform.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
+import com.info.baymax.dsp.data.platform.mybatis.type.SourceTypeTypeHandler;
+import com.info.baymax.dsp.data.platform.mybatis.type.SqlConfTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -30,8 +31,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_resource", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {@Index(columnList = "tenantId,storage"),
-        @Index(columnList = "lastModifiedTime DESC")})
+    @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {@Index(columnList = "tenantId,storage"),
+    @Index(columnList = "lastModifiedTime DESC")})
 @Comment("数据资源信息表")
 public class DataResource extends BaseEntity {
     private static final long serialVersionUID = -1646060649387068719L;
@@ -45,9 +46,6 @@ public class DataResource extends BaseEntity {
      * 数据所在分类(目录) - 核对 数据编码 - 核对 数据信息, 例如 有效期(精确到日) , 数据字段定义 等 - 点击 "确认",完成数据关联设置 完成后, 此时数据在 "数据管理"->"数据资源"
      * 中可见(此功能为过渡功能)
      */
-    // id, name, type, label, dataset_id, engine, encoder, configuration, expired_time, tenant_id, creator, modifier,
-    // create_time, last_modified_time
-
     @ApiModelProperty(value = "是否支持pull:0不支持,1支持")
     @Comment("是否支持pull:0不支持,1支持")
     @Column(length = 1)
@@ -119,7 +117,8 @@ public class DataResource extends BaseEntity {
     @Comment("数据集对应的编码,默认utf8")
     @Column(length = 255, nullable = true)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
-    private String encoder = "utf8";
+    @ColumnDefault("'utf8'")
+    private String encoder;
 
     @ApiModelProperty("开放字段及配置字段映射关系")
     @Comment("开放字段及配置字段映射关系")
@@ -170,7 +169,17 @@ public class DataResource extends BaseEntity {
     @ColumnDefault("'Baymax'")
     private String source;
 
-    public DataResource() {
-    }
+    @ApiModelProperty("数据类型:DATASET, DATASOURCE")
+    @Comment("数据类型:DATASET, DATASOURCE")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = SourceTypeTypeHandler.class)
+    @ColumnDefault("'DATASET'")
+    private SourceType sourceType;
 
+    @ApiModelProperty("sql查询配置信息")
+    @Comment("sql查询配置信息")
+    @Column(length = 500)
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = SqlConfTypeHandler.class)
+    private SqlConf sqlConf;
 }

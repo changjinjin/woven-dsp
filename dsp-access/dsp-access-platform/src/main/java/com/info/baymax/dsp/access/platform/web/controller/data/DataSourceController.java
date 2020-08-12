@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
@@ -9,10 +8,9 @@ import com.info.baymax.common.service.criteria.field.Field;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
+import com.info.baymax.dsp.data.dataset.entity.core.DataSource;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
-import com.info.baymax.dsp.data.dataset.entity.security.ResourceType;
-import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
+import com.info.baymax.dsp.data.dataset.service.core.DataSourceService;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,30 +20,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
-@Api(tags = "数据管理：数据集查询接口", description = "Baymax服务平台中dataset数据查询相关接口，用于关联转化数据资源")
+@Api(tags = "数据管理：数据源查询接口", description = "Baymax服务平台中datasource数据查询相关接口，用于关联转化数据资源")
 @RestController
-@RequestMapping("/dataset")
-public class DatasetController {
+@RequestMapping("/datasource")
+public class DataSourceController {
 
     @Autowired
     private ResourceDescService resourceDescService;
     @Autowired
-    private DatasetService datasetService;
-
-    @ApiOperation(value = "资源目录查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
-    @PostMapping("/resDirTree")
-    public Response<List<ResourceDesc>> resourceDirTree() {
-        ExampleQuery query = ExampleQuery.builder(ResourceDesc.class)//
-            .unpaged()// 不分页，查所有
-            .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
-                .andEqualTo("resType", ResourceType.dataset_dir.name()));
-        return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
-    }
+    private DataSourceService dataSourceService;
 
     @ApiOperation(value = "分页查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
     @PostMapping("/page")
-    public Response<IPage<Dataset>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
+    public Response<IPage<DataSource>> page(
+        @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
         FieldGroup fieldGroup = query.fieldGroup();
         List<Field> feilds = fieldGroup.getFields();
         if (ICollections.hasElements(feilds)) {
@@ -57,8 +45,9 @@ public class DatasetController {
                 }
             }
         }
-        fieldGroup.andEqualTo("tenantId", SaasContext.getCurrentTenantId()).andEqualTo("isHide", 0);
-        return Response.ok(datasetService.selectPage(query));
+        fieldGroup.andEqualTo("type", "DB").andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+            .andEqualTo("isHide", 0);
+        return Response.ok(dataSourceService.selectPage(query));
     }
 
     public String[] fetchResourceIds(String rootId) {
@@ -75,7 +64,22 @@ public class DatasetController {
 
     @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
     @GetMapping("/infoById")
-    public Response<Dataset> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam String id) {
-        return Response.ok(datasetService.getSingleResult(QueryObject.builder().addField("id", id)));
+    public Response<DataSource> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam String id) {
+        return Response.ok(dataSourceService.selectByPrimaryKey(id));
+    }
+
+    @ApiOperation(value = "查询数据源的所有表名", notes = "根据ID查询数据源中包含的表名")
+    @GetMapping("/{dataSourceId}/tables")
+    public Response<List<String>> tableList(
+        @ApiParam(value = "数据源ID", required = true) @PathVariable("dataSourceId") String dataSourceId) {
+        return Response.ok(dataSourceService.fetchTableList(dataSourceId));
+    }
+
+    @ApiOperation(value = "查询数据源的所有表名", notes = "根据ID查询数据源中包含的表名")
+    @GetMapping("/{dataSourceId}/{table}/columns")
+    public Response<List<String>> columnList(
+        @ApiParam(value = "数据源ID", required = true) @PathVariable("dataSourceId") String dataSourceId,
+        @ApiParam(value = "表名", required = true) @PathVariable("table") String table) {
+        return Response.ok(dataSourceService.fetchTableColumns(dataSourceId, table));
     }
 }

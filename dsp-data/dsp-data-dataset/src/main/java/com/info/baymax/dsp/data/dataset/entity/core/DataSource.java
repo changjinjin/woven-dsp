@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
 
@@ -62,6 +63,13 @@ public class DataSource extends Maintable implements ResourceId, CryptoBean {
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String resourceId;
+    
+    @ApiModelProperty("是否关联过：0-未关联，1-已经关联")
+    @Comment("是否关联过：0-未关联，1-已经关联")
+    @Column(length = 11)
+    @ColumnType(jdbcType = JdbcType.INTEGER)
+    @ColumnDefault("0")
+    private Integer isRelated;
 
     public DataSource() {
     }

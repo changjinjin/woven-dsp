@@ -15,4 +15,8 @@ public interface DataSourceService extends BaseMaintableService<DataSource>,
     List<DataSource> findByType(String tenantId, String type);
 
     List<String> getDistinctTypes(String tenantId);
+
+    List<String> fetchTableList(String dataSourceId);
+
+    List<String> fetchTableColumns(String dataSourceId, String table);
 }
