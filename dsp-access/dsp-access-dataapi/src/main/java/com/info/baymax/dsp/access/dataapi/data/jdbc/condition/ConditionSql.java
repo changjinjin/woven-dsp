@@ -208,11 +208,11 @@ public class ConditionSql implements Serializable {
     }
 
     private String andCondition(String property, String operator, Object value) {
-        return condition("and", property, operator, value);
+        return condition("AND", property, operator, value);
     }
 
     private String orCondition(String property, String operator, Object value) {
-        return condition("or", property, operator, value);
+        return condition("OR", property, operator, value);
     }
 
     private String betweenCondition(String andOr, String property, String not, Object value1, Object value2) {
@@ -222,7 +222,7 @@ public class ConditionSql implements Serializable {
         paramMap.put(paramName2, value2);
         StringBuffer buf = new StringBuffer();
         buf.append(" ").append(andOr).append(" ").append(property).append(" ").append(not).append(" ")
-            .append("between ?").append(paramName1).append(" and ?").append(paramName2);
+            .append("BETWEEN ?").append(paramName1).append(" AND ?").append(paramName2);
         return buf.toString();
     }
 
@@ -230,19 +230,19 @@ public class ConditionSql implements Serializable {
         String paramName = paramName();
         paramMap.put(paramName, StringUtils.join(values, ","));
         return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(not)
-            .append("in (?").append(paramName).append(")").toString();
+            .append("IN (?").append(paramName).append(")").toString();
     }
 
     private String trimAndOr(String sql) {
-        return StringUtils.stripStart(StringUtils.stripStart(StringUtils.trim(sql), "and"), "or").trim();
+        return StringUtils.stripStart(StringUtils.stripStart(StringUtils.trim(sql), "AND"), "OR").trim();
     }
 
     private String andIsNull(String property) {
-        return " and " + property + " is null";
+        return " AND " + property + " IS NULL";
     }
 
     private String andIsNotNull(String property) {
-        return " and " + property + " is not null";
+        return " AND " + property + " IS NOT NULL";
     }
 
     private String andEqualTo(String property, Object value) {
@@ -270,35 +270,35 @@ public class ConditionSql implements Serializable {
     }
 
     private String andIn(String property, Iterable<?> values) {
-        return inCondition("and", property, "", values);
+        return inCondition("AND", property, "", values);
     }
 
     private String andNotIn(String property, Iterable<?> values) {
-        return inCondition("and", property, "not ", values);
+        return inCondition("AND", property, "NOT ", values);
     }
 
     private String andBetween(String property, Object value1, Object value2) {
-        return betweenCondition("and", property, "", value1, value2);
+        return betweenCondition("AND", property, "", value1, value2);
     }
 
     private String andNotBetween(String property, Object value1, Object value2) {
-        return betweenCondition("and", property, "not ", value1, value2);
+        return betweenCondition("AND", property, "NOT ", value1, value2);
     }
 
     private String andLike(String property, Object value) {
-        return andCondition(property, "like", value);
+        return andCondition(property, "LIKE", value);
     }
 
     private String andNotLike(String property, Object value) {
-        return andCondition(property, "not like", value);
+        return andCondition(property, "NOT LIKE", value);
     }
 
     private String orIsNull(String property) {
-        return " or " + property + " is null";
+        return " OR " + property + " IS NULL";
     }
 
     private String orIsNotNull(String property) {
-        return " or " + property + " is not null";
+        return " OR " + property + " IS NOT NULL";
     }
 
     private String orEqualTo(String property, Object value) {
@@ -326,26 +326,26 @@ public class ConditionSql implements Serializable {
     }
 
     private String orIn(String property, Iterable<?> values) {
-        return inCondition("or", property, "", values);
+        return inCondition("OR", property, "", values);
     }
 
     private String orNotIn(String property, Iterable<?> values) {
-        return inCondition("or", property, "not ", values);
+        return inCondition("OR", property, "NOT ", values);
     }
 
     private String orBetween(String property, Object value1, Object value2) {
-        return betweenCondition("or", property, "", value1, value2);
+        return betweenCondition("OR", property, "", value1, value2);
     }
 
     private String orNotBetween(String property, Object value1, Object value2) {
-        return betweenCondition("or", property, "not ", value1, value2);
+        return betweenCondition("OR", property, "NOT ", value1, value2);
     }
 
     private String orLike(String property, Object value) {
-        return orCondition(property, "like", value);
+        return orCondition(property, "LIKE", value);
     }
 
     private String orNotLike(String property, Object value) {
-        return orCondition(property, "not like", value);
+        return orCondition(property, "NOT LIKE", value);
     }
 }

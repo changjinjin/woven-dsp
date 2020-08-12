@@ -75,11 +75,11 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
     }
 
     protected String count() {
-        return " count(*)";
+        return " COUNT(*)";
     }
 
     protected String from(String table) {
-        return new StringBuffer().append(" from ").append(table).toString();
+        return new StringBuffer().append(" FROM ").append(table).toString();
     }
 
     protected String where(FieldGroup fieldGroup) {
@@ -87,7 +87,7 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         StringBuffer buf = new StringBuffer();
         ConditionSql whereConditionSql = ConditionSql.build(fieldGroup);
         if (whereConditionSql != null && StringUtils.isNotEmpty(whereConditionSql.getPlaceholderSql())) {
-            buf.append(" where ").append(StringUtils.trimToEmpty(whereConditionSql.getPlaceholderSql()));
+            buf.append(" WHERE ").append(StringUtils.trimToEmpty(whereConditionSql.getPlaceholderSql()));
         }
         addParamValues(whereConditionSql.getParamValues());
         return buf.toString();
@@ -95,14 +95,14 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
 
     protected String selectfromTableWhere(String table, FieldGroup fieldGroup) {
         // select column1,column2,column3... from table
-        return new StringBuffer().append("select ").append(" %s ").append(from(table)).append(where(fieldGroup))
+        return new StringBuffer().append("SELECT ").append(" %s ").append(from(table)).append(where(fieldGroup))
             .toString();
     }
 
     protected String orderBy(LinkedHashSet<Sort> sorts) {
         StringBuffer buf = new StringBuffer();
         if (ICollections.hasElements(sorts)) {
-            buf.append(" order by ");
+            buf.append(" ORDER BY ");
             for (Sort sort : sorts) {
                 buf.append(sort.getName()).append(" ").append(sort.getOrder()).append(", ");
             }

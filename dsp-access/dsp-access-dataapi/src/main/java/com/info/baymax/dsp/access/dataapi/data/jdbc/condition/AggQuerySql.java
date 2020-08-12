@@ -51,7 +51,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
         StringBuffer buf = new StringBuffer();
         ConditionSql havingConditionSql = ConditionSql.build(havingFieldGroup);
         if (havingConditionSql != null && StringUtils.isNotEmpty(havingConditionSql.getPlaceholderSql())) {
-            buf.append(" having ").append(StringUtils.trimToEmpty(havingConditionSql.getPlaceholderSql()));
+            buf.append(" HAVING ").append(StringUtils.trimToEmpty(havingConditionSql.getPlaceholderSql()));
         }
         addParamValues(havingConditionSql.getParamValues());
         return buf.toString();
@@ -59,7 +59,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
 
     protected String groupBy(LinkedHashSet<String> groupFields) {
         if (ICollections.hasElements(groupFields)) {
-            return new StringBuffer().append(" group by ").append(StringUtils.join(groupFields, ", ")).toString();
+            return new StringBuffer().append(" GROUP BY ").append(StringUtils.join(groupFields, ", ")).toString();
         }
         return "";
     }

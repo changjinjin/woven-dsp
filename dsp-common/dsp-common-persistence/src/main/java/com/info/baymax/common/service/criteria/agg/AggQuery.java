@@ -10,8 +10,6 @@ import lombok.Getter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
-
 @ApiModel
 @Getter
 public class AggQuery extends AbstractAggQuery<AggQuery> {

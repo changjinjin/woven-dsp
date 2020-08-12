@@ -16,6 +16,9 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.DataReader;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.RecordQuerySql;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
@@ -30,8 +33,9 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.inforefiner.repackaged.com.google.common.collect.Sets;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,12 +64,54 @@ public class PullServiceImpl implements PullService {
 
     @Override
     public IPage<MapEntity> pullRecords(RecordRequest request, String hosts) {
-        return doQuery(request, hosts);
+        try {
+            QueryConf queryConf = doQuery(request, hosts);
+            RecordQuery query = request.getQuery();
+            validate(queryConf.getFieldMap(), query);
+            return dataReader.readRecord(StorageConf.from(queryConf.getConf()), query);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+        }
     }
 
     @Override
     public IPage<MapEntity> pullAggs(AggRequest request, String hosts) {
-        return doQuery(request, hosts);
+        try {
+            QueryConf queryConf = doQuery(request, hosts);
+            AggQuery query = request.getQuery();
+            validate(queryConf.getFieldMap(), query);
+            return dataReader.readAgg(StorageConf.from(queryConf.getConf()), query);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+
+    @Override
+    public String pullRecordsSql(RecordRequest request, String hosts) {
+        try {
+            QueryConf queryConf = doQuery(request, hosts);
+            RecordQuery query = request.getQuery();
+            validate(queryConf.getFieldMap(), query);
+            return RecordQuerySql.builder(JdbcQuery.from(query).table(queryConf.getDataServiceName())).getExecuteSql();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+
+    @Override
+    public String pullAggsSql(AggRequest request, String hosts) {
+        try {
+            QueryConf queryConf = doQuery(request, hosts);
+            AggQuery query = request.getQuery();
+            validate(queryConf.getFieldMap(), query);
+            return AggQuerySql.builder(query.table(queryConf.getDataServiceName())).getExecuteSql();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+        }
     }
 
     public boolean validate(Map<String, FieldMapping> fieldMap, RecordQuery query) {
@@ -185,7 +231,7 @@ public class PullServiceImpl implements PullService {
         return true;
     }
 
-    private IPage<MapEntity> doQuery(DataRequest<?> request, String hosts) {
+    private QueryConf doQuery(DataRequest<?> request, String hosts) {
         Long dataServiceId = request.getDataServiceId();
         String requestKey = request.getAccessKey();
         String host = hosts.split(",")[0];
@@ -240,24 +286,18 @@ public class PullServiceImpl implements PullService {
             // 处理存储信息
             Map<String, Object> conf = dataset.getStorageConfigurations();
             conf.put("storage", dataset.getStorage());
-            Object query = request.getQuery();
-            IPage<MapEntity> page = null;
-
-            // 分开处理不同的query
-            if (query instanceof AggQuery) {
-                AggQuery aggQuery = (AggQuery) query;
-                validate(fieldMap, aggQuery);
-                page = dataReader.readAgg(StorageConf.from(conf), aggQuery);
-            } else {
-                RecordQuery recordQuery = (RecordQuery) query;
-                validate(fieldMap, recordQuery);
-                page = dataReader.readRecord(StorageConf.from(conf), recordQuery.allProperties(fieldMap.keySet()));
-            }
-            return page;
+            return new QueryConf(dataService.getName(), conf, fieldMap);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
     }
 
+    @AllArgsConstructor
+    @Getter
+    private static final class QueryConf {
+        private String dataServiceName;
+        private Map<String, Object> conf;
+        private Map<String, FieldMapping> fieldMap;
+    }
 }

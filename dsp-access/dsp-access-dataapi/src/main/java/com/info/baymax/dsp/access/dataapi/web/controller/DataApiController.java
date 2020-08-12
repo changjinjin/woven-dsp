@@ -5,8 +5,8 @@ import com.info.baymax.dsp.access.dataapi.config.PullLog;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.access.dataapi.service.RestSignService;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.PullResponse;
+import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -45,13 +45,28 @@ public class DataApiController implements Serializable {
             .encrypt(restSignService.signKeyIfExist(request.getAccessKey()));
     }
 
-    @ApiOperation(value = "数据聚合查询接口")
+    @ApiOperation(value = "数据记录查询接口SQL预览")
+    @PostMapping("/pullRecordsSql")
+    public Response<String> pullRecordsSql(
+        @ApiParam(value = "记录请求信息", required = true) @RequestBody @Valid RecordRequest request,
+        @ApiParam(value = "请求端hosts信息，需要与申请应用对相应", required = true) @RequestHeader String hosts) {
+        return Response.ok(pullService.pullRecordsSql(request, hosts));
+    }
+
+    @ApiOperation(value = "数据聚合查询接口SQL")
     @PostMapping("/pullAggs")
     @PullLog
-    public PullResponse pullAggs(
-        @ApiParam(value = "聚合请求信息", required = true) @RequestBody @Valid AggRequest request,
-        @ApiParam(value = "请求端hosts信息，需要与申请应用对应", required = true) @RequestHeader String hosts) {
+    public PullResponse pullAggs(@ApiParam(value = "聚合请求信息", required = true) @RequestBody @Valid AggRequest request,
+                                 @ApiParam(value = "请求端hosts信息，需要与申请应用对应", required = true) @RequestHeader String hosts) {
         return PullResponse.ok(pullService.pullAggs(request, hosts)).request(request)
             .encrypt(restSignService.signKeyIfExist(request.getAccessKey()));
+    }
+
+    @ApiOperation(value = "数据聚合查询接口SQL预览")
+    @PostMapping("/pullAggsSql")
+    public Response<String> pullAggsSql(
+        @ApiParam(value = "聚合请求信息", required = true) @RequestBody @Valid AggRequest request,
+        @ApiParam(value = "请求端hosts信息，需要与申请应用对应", required = true) @RequestHeader String hosts) {
+        return Response.ok(pullService.pullAggsSql(request, hosts));
     }
 }
