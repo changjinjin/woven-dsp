@@ -11,7 +11,7 @@ import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.AbstractJdbcDataReader;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AbstractQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AbstractQuerySql;
 import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.StringUtils;

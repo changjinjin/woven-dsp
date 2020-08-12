@@ -8,7 +8,8 @@ import com.info.baymax.common.service.criteria.field.Field;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.field.Sort;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
+
 import lombok.ToString;
 
 import java.util.LinkedHashSet;

@@ -4,7 +4,8 @@ import com.google.common.collect.Lists;
 import com.info.baymax.common.service.criteria.agg.AggField;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
+
 import lombok.ToString;
 
 import java.util.LinkedHashSet;

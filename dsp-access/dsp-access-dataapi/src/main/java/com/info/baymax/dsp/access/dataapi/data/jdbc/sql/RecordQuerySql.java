@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.data.jdbc.condition;
+package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import lombok.ToString;

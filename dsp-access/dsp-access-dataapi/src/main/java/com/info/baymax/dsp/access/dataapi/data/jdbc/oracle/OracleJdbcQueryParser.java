@@ -3,7 +3,7 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc.oracle;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQueryParser;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
 
 public class OracleJdbcQueryParser extends JdbcQueryParser {
 

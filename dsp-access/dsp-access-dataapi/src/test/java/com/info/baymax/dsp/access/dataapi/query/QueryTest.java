@@ -5,8 +5,9 @@ import com.info.baymax.common.service.criteria.agg.AggType;
 import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.AggQuerySql;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.condition.RecordQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
+import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.RecordQuerySql;
+
 import org.junit.Test;
 
 import java.util.Random;
