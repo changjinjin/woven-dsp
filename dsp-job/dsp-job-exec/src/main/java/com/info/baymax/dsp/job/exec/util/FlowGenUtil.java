@@ -54,10 +54,11 @@ public class FlowGenUtil {
 
     /**
      * 根据source dataset的schema获取输入字段列表
+     *
      * @param schemaId
      * @return
      */
-    private List<FlowField> getSchemaFiled(String schemaId){
+    private List<FlowField> getSchemaFiled(String schemaId) {
         Schema s = schemaService.selectByPrimaryKey(schemaId);
         List<FlowField> result = new ArrayList<>();
         for (int i = 0; i < s.getFields().size(); i++) {
@@ -70,6 +71,7 @@ public class FlowGenUtil {
 
     /**
      * 由输入字段列表和过滤关系获取输出字段
+     *
      * @param inputFields
      * @param fieldMappings
      * @return
@@ -98,6 +100,7 @@ public class FlowGenUtil {
 
     /**
      * 根据输出字段获取下一个step的输入字段
+     *
      * @param outputFields
      * @return
      */
@@ -113,6 +116,7 @@ public class FlowGenUtil {
 
     /**
      * 由输入字段列表和过滤关系获取输出字段
+     *
      * @param inputFields
      * @param fieldMappings
      * @return
@@ -547,53 +551,44 @@ public class FlowGenUtil {
         //transform step input
         List<FlowField> transInputFields = filterOutputs;
 
-        ConfigObject uiConfigurations = new ConfigObject();
-        uiConfigurations.put("output", new String[] {"output"});
-
         // 获取source step,赋值datasetId,schemaId
-        StepDesc sourceStep = getSourceStep("source_1", sourceDataset, sourceOutputs,uiConfigurations);
+        StepDesc sourceStep = getSourceStep("source_1", sourceDataset, sourceOutputs,
+            new ConfigObject().withConfig("output", new String[]{"output"}));
 
-        //构建filter step
+        // 构建filter step
         StepDesc filterStep = null;
         String condition = getCondition(dataResource, dataService, filterInputs);
-        uiConfigurations = new ConfigObject();
-        uiConfigurations.put("input", new String[] {"input"});
-        uiConfigurations.put("output", new String[] {"output"});
-        filterStep = getFilterStep("filter_2", filterInputs, filterOutputs ,condition,uiConfigurations);
+        filterStep = getFilterStep("filter_2", filterInputs, filterOutputs, condition, new ConfigObject()
+            .withConfig("input", new String[]{"input"}).withConfig("output", new String[]{"output"}));
 
-        //构建transform step
+        // 构建transform step
         StepDesc transStep = null;
         List<FlowField> outputFields = new ArrayList<>();
-        if(dataService.getFieldMappings()!=null && dataService.getFieldMappings().size()>0){
-        	 uiConfigurations = new ConfigObject();
-             uiConfigurations.put("input", new String[] {"input"});
-             uiConfigurations.put("output", new String[] {"output"});
-            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFields,uiConfigurations);
-            if(transStep == null){
+        if (dataService.getFieldMappings() != null && dataService.getFieldMappings().size() > 0) {
+            transStep = getTransformStep("transform_3", dataService, transInputFields, outputFields, new ConfigObject()
+                .withConfig("input", new String[]{"input"}).withConfig("output", new String[]{"output"}));
+            if (transStep == null) {
                 outputFields = filterOutputs;
             }
-        }else{
+        } else {
             outputFields = filterOutputs;
         }
 
-        //构建sink step
-        uiConfigurations = new ConfigObject();
-        uiConfigurations.put("input", new String[] {"input"});
-        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFields, timestamp,uiConfigurations);
+        // 构建sink step
+        StepDesc sinkStep = getSinkStep("sink_4", dataService, outputFields, timestamp,
+            new ConfigObject().withConfig("input", new String[]{"input"}));
 
-        //构建sql step和sink step 2
+        // 构建sql step和sink step 2
         StepDesc sqlStep = null;
         StepDesc sinkStep_2 = null;
         if(dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode && getIncrementFieldType(dataResource.getIncrementField(), outputFields) != null){
             List<FlowField> sqlOutFields = new ArrayList<>();
 
-            uiConfigurations = new ConfigObject();
-            uiConfigurations.put("input", new String[] {"input"});
-            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields,uiConfigurations);
-            if(sqlStep != null){
-            	uiConfigurations = new ConfigObject();
-                uiConfigurations.put("input", new String[] {"input"});
-                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp,uiConfigurations);
+            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields,
+                new ConfigObject().withConfig("input", new String[]{"input"}).withConfig("output", new String[]{"output"}));
+            if (sqlStep != null) {
+                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp, new ConfigObject()
+                    .withConfig("input", new String[]{"input"}));
             }
         }
 
