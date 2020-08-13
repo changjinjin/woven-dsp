@@ -5,6 +5,7 @@ import com.info.baymax.common.page.IPageable;
 import com.info.baymax.common.service.criteria.agg.AggQuery;
 import com.info.baymax.common.service.criteria.query.RecordQuery;
 import com.info.baymax.common.utils.DataBaseUtil;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.access.dataapi.data.*;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AbstractQuerySql;
 import com.info.baymax.dsp.data.consumer.beans.source.DBType;
@@ -75,6 +76,7 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
 
     public Connection getConn(JdbcStorageConf conf) throws Exception {
         try {
+        	log.debug("get conn from conf: "+JsonUtils.toJson(conf));
             return DataBaseUtil.getConnection(conf.getDriver(), conf.getUrl(), conf.getUsername(), conf.getPassword(),
                 null, null);
         } catch (Exception e) {

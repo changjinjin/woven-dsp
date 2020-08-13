@@ -7,7 +7,6 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.AbstractListHandler;
 import org.apache.commons.lang3.StringUtils;
 
-import java.nio.charset.Charset;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -41,7 +40,7 @@ public class MapEntityListHandler extends AbstractListHandler<MapEntity> {
 
 		@Override
 		public Map<String, Object> toMap(ResultSet rs) throws SQLException {
-			return toMap(rs, Charset.defaultCharset().name());
+			return toMap(rs, "");
 		}
 
 		protected MapEntity toMap(ResultSet rs, String mandatoryEncoding) throws SQLException {
