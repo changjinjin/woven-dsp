@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;

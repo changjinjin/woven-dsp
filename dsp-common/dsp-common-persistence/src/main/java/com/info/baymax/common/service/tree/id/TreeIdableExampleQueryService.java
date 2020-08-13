@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 
 /**

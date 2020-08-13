@@ -1,16 +1,16 @@
 package com.info.baymax.common.service.criteria.example;
 
+import java.io.Serializable;
+import java.util.List;
+
 import com.google.common.collect.Lists;
-import com.info.baymax.common.service.criteria.query.AbstractPropertiesQuery;
+import com.info.baymax.common.queryapi.record.AbstractPropertiesQuery;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * Example Query ,这个对象的属性可以构造一个{@link com.info.baymax.common.mybatis.mapper.example.Example} 对象

@@ -179,6 +179,7 @@ public class DataResource extends BaseEntity {
 
     @ApiModelProperty("sql查询配置信息")
     @Comment("sql查询配置信息")
+    @Convert(converter = ObjectToStringConverter.class)
     @Column(length = 500)
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = SqlConfTypeHandler.class)
     private SqlConf sqlConf;

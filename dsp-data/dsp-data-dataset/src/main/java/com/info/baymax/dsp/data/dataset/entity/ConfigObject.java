@@ -17,11 +17,16 @@ public class ConfigObject extends HashMap<String, Object> {
         super();
     }
 
-    public ConfigObject(Map o) {
+    public ConfigObject(Map<String,Object> o) {
         super();
         if (o != null) {
             this.putAll(o);
         }
+    }
+    
+    public ConfigObject(String key,Object value) {
+    	super();
+    	put(key, value);
     }
 
     public ConfigObject withConfig(String key, Object value) {

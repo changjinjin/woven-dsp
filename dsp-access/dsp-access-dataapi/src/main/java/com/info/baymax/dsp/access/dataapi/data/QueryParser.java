@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
 import com.google.common.collect.Maps;
-import com.info.baymax.common.service.criteria.agg.AggQuery;
-import com.info.baymax.common.service.criteria.query.RecordQuery;
+import com.info.baymax.common.queryapi.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.record.RecordQuery;
 
 import java.util.Map;
 

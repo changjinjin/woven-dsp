@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.info.baymax</groupId>
 		<artifactId>dsp-job</artifactId>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 	</parent>
 	<artifactId>dsp-job-exec</artifactId>
 	<name>dsp-job-exec</name>

@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
-import com.info.baymax.common.page.IPage;
-import com.info.baymax.common.page.IPageable;
-import com.info.baymax.common.service.criteria.agg.AggQuery;
-import com.info.baymax.common.service.criteria.query.RecordQuery;
+import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.page.IPageable;
+import com.info.baymax.common.queryapi.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.record.RecordQuery;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.access.dataapi.data.*;

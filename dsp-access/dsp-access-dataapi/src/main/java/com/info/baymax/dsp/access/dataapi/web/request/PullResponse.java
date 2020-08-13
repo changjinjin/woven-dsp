@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.web.request;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.common.message.result.AbstractResponse;
 import com.info.baymax.common.message.result.ErrMsg;
 import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -33,8 +32,7 @@ public class PullResponse extends AbstractResponse<Object> {
 
     private String serialize() {
         try {
-            ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
-            return mapper.writeValueAsString(getContent());
+            return JsonUtils.toJson(getContent());
         } catch (Exception e) {
             throw new RuntimeException("content serialize error", e);
         }

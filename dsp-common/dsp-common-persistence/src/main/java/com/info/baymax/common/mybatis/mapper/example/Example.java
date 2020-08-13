@@ -1,10 +1,19 @@
 package com.info.baymax.common.mybatis.mapper.example;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.ibatis.reflection.MetaObject;
+
+import com.info.baymax.common.queryapi.field.CriteriaItem;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.reflection.MetaObject;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.EntityTable;
@@ -14,9 +23,6 @@ import tk.mybatis.mapper.mapperhelper.EntityHelper;
 import tk.mybatis.mapper.util.MetaObjectUtil;
 import tk.mybatis.mapper.util.Sqls;
 import tk.mybatis.mapper.util.StringUtil;
-
-import java.io.Serializable;
-import java.util.*;
 
 /*
  * The MIT License (MIT)
@@ -283,28 +289,6 @@ public class Example implements IDynamicTableName {
                 isProperty = false;
             }
             return this;
-        }
-    }
-
-    @Setter
-    @Getter
-    @ApiModel
-    public abstract static class CriteriaItem implements Comparable<CriteriaItem>, Serializable {
-        private static final long serialVersionUID = 6417720184834620402L;
-
-        // 条件排序序号
-        @ApiModelProperty(value = "条件排序序号")
-        protected int index;
-
-        // 是否是条件组
-        @ApiModelProperty(value = "是否是条件组",hidden = true)
-        private boolean group;
-
-        @Override
-        public int compareTo(CriteriaItem o) {
-            if (o == null)
-                return 1;
-            return index - o.getIndex();
         }
     }
 

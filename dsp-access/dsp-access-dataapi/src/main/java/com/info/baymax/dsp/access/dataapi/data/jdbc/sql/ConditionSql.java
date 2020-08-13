@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
-import com.info.baymax.common.service.criteria.field.Field;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
-import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
+import com.info.baymax.common.queryapi.field.CriteriaItem;
+import com.info.baymax.common.queryapi.field.Field;
+import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.field.SqlEnums.AndOr;
+import com.info.baymax.common.queryapi.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
 import lombok.Getter;
 import lombok.ToString;

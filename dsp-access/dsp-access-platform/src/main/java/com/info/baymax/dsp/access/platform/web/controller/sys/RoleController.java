@@ -5,10 +5,10 @@ import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.service.security.RoleService;
@@ -18,9 +18,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @RestController
 @RequestMapping("/role")

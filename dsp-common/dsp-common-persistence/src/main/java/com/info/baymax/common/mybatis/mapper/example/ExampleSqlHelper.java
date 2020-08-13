@@ -6,8 +6,8 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
 import com.info.baymax.common.mybatis.mapper.example.Example.Criterion;
+import com.info.baymax.common.queryapi.field.CriteriaItem;
 
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;

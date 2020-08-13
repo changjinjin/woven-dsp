@@ -1,7 +1,7 @@
 package com.info.baymax.common.service;
 
 import com.github.pagehelper.PageHelper;
-import com.info.baymax.common.page.IPageable;
+import com.info.baymax.common.queryapi.page.IPageable;
 
 import org.apache.commons.lang3.StringUtils;
 

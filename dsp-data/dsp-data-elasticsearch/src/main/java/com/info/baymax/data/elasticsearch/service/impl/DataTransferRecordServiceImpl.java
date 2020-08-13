@@ -2,7 +2,7 @@ package com.info.baymax.data.elasticsearch.service.impl;
 
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.data.elasticsearch.config.EsMetricsIndexProperties;
 import com.info.baymax.data.elasticsearch.config.jest.ISearchResult;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;

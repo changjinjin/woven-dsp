@@ -4,7 +4,7 @@ import com.info.baymax.common.crypto.delegater.DefaultCryptorDelegater;
 import com.info.baymax.common.crypto.method.AbstractCryptoMethodInvoker;
 import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.page.IPage;
 
 /**
  * 自定义的方法级别参数和返回值加解密调用器

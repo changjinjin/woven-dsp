@@ -4,7 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.core.DataSource;

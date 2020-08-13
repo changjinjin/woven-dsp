@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.config;
 
-import com.info.baymax.common.page.IPageable;
+import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
 import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;

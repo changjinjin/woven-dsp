@@ -5,7 +5,7 @@ import com.info.baymax.common.entity.base.BaseEntityService;
 import com.info.baymax.common.message.exception.ControllerException;
 import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;
 import com.info.baymax.dsp.data.platform.service.DataCategoryService;

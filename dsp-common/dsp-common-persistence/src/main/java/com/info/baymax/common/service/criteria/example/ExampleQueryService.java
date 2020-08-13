@@ -2,8 +2,8 @@ package com.info.baymax.common.service.criteria.example;
 
 
 import com.info.baymax.common.mybatis.mapper.aggregation.AggregateCondition;
-import com.info.baymax.common.page.IPage;
-import com.info.baymax.common.page.IPageable;
+import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.common.service.BaseExampleService;
 import com.info.baymax.common.service.BasePreprocessService;
 import com.info.baymax.common.service.entity.EntityClassService;

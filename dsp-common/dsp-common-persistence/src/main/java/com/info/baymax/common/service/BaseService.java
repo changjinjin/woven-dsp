@@ -6,8 +6,8 @@ import com.github.pagehelper.Page;
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
-import com.info.baymax.common.page.IPage;
-import com.info.baymax.common.page.IPageable;
+import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.common.utils.ICollections;
 import org.apache.ibatis.session.RowBounds;
 

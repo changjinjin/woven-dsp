@@ -1,23 +1,25 @@
 package com.info.baymax.common.service.criteria.example;
 
-import com.google.common.collect.Lists;
-import com.info.baymax.common.mybatis.mapper.example.Example;
-import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
-import com.info.baymax.common.mybatis.mapper.example.Example.CriteriaItem;
-import com.info.baymax.common.service.criteria.field.Field;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.common.service.criteria.field.Sort;
-import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
-import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
-import com.info.baymax.common.utils.ICollections;
-import org.apache.commons.lang3.StringUtils;
-import tk.mybatis.mapper.entity.EntityColumn;
-
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.collect.Lists;
+import com.info.baymax.common.mybatis.mapper.example.Example;
+import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
+import com.info.baymax.common.queryapi.field.CriteriaItem;
+import com.info.baymax.common.queryapi.field.Field;
+import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.field.Sort;
+import com.info.baymax.common.queryapi.field.SqlEnums.AndOr;
+import com.info.baymax.common.queryapi.field.SqlEnums.Operator;
+import com.info.baymax.common.utils.ICollections;
+
+import tk.mybatis.mapper.entity.EntityColumn;
 
 /**
  * CriteriaQuery 辅助器

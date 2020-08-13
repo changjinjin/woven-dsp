@@ -1,5 +1,9 @@
 package com.info.baymax.common.jpa.criteria;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
 import com.info.baymax.common.jpa.criteria.query.FieldObject;
 import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper.ComparatorOperator;
@@ -8,21 +12,17 @@ import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper.OrderDirectio
 import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.criteria.query.SortObject;
 import com.info.baymax.common.jpa.page.Page;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.field.Field;
+import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.field.Sort;
+import com.info.baymax.common.queryapi.field.SqlEnums.AndOr;
+import com.info.baymax.common.queryapi.field.SqlEnums.Operator;
+import com.info.baymax.common.queryapi.field.SqlEnums.OrderType;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.ExampleQueryService;
-import com.info.baymax.common.service.criteria.field.Field;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
-import com.info.baymax.common.service.criteria.field.Sort;
-import com.info.baymax.common.service.criteria.field.SqlEnums.AndOr;
-import com.info.baymax.common.service.criteria.field.SqlEnums.Operator;
-import com.info.baymax.common.service.criteria.field.SqlEnums.OrderType;
 import com.info.baymax.common.utils.EntityUtils;
 import com.info.baymax.common.utils.ICollections;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 通过组合Criteria查询数据方法定义，一般用于一些复杂条件的数据筛选查询

@@ -6,7 +6,7 @@ import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
+import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;

@@ -84,6 +84,7 @@ public class Flows {
             rt.getOtherConfigurations().putAll(step.getOtherConfigurations());
             rt.getInputConfigurations().putAll(step.getInputConfigurations());
             rt.getOutputConfigurations().putAll(step.getOutputConfigurations());
+            rt.setUiConfigurations(step.getUiConfigurations());
             return rt;
         }
 

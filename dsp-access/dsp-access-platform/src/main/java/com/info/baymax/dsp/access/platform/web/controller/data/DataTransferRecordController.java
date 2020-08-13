@@ -2,7 +2,7 @@ package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.message.exception.ServiceException;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.data.elasticsearch.service.DataTransferRecordService;
 import com.info.baymax.dsp.data.platform.bean.GrowthType;

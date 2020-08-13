@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.info.baymax</groupId>
 		<artifactId>dsp-common</artifactId>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 	</parent>
 	<artifactId>dsp-common-persistence</artifactId>
 	<name>dsp-common-persistence</name>
@@ -19,6 +19,11 @@
 		<dependency>
 			<groupId>com.info.baymax</groupId>
 			<artifactId>dsp-common-tools</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>dsp-common-queryapi</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

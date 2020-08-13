@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
-import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.queryapi.aggregate.AggQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQueryParser;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;

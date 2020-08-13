@@ -1,7 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.web.request;
 
-import com.info.baymax.common.service.criteria.query.RecordQuery;
-
+import com.info.baymax.common.queryapi.record.RecordQuery;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

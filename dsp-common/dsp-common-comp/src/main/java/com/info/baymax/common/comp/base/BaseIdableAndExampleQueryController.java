@@ -2,7 +2,7 @@ package com.info.baymax.common.comp.base;
 
 import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.message.result.Response;
-import com.info.baymax.common.page.IPage;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import io.swagger.annotations.ApiOperation;

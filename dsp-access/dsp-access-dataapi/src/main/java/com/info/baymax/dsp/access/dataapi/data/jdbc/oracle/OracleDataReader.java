@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.oracle;
 
-import com.info.baymax.common.page.IPage;
-import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.aggregate.AggQuery;
 import com.info.baymax.dsp.access.dataapi.data.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;

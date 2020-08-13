@@ -1,9 +1,9 @@
 package com.info.baymax.common.entity.base;
 
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.field.FieldGroup;
-
 import java.util.List;
+
+import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 
 /**
  * 继承{@link BaseEntity}的实体类公共查询接口定义

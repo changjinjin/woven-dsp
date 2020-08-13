@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.web.request;
 
-import com.info.baymax.common.service.criteria.agg.AggQuery;
+import com.info.baymax.common.queryapi.aggregate.AggQuery;
+
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
