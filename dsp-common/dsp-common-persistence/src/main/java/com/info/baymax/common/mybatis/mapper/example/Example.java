@@ -10,7 +10,7 @@ import java.util.Set;
 
 import org.apache.ibatis.reflection.MetaObject;
 
-import com.info.baymax.common.queryapi.field.CriteriaItem;
+import com.info.baymax.common.queryapi.query.field.FieldItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -294,7 +294,7 @@ public class Example implements IDynamicTableName {
 
     @Setter
     @Getter
-    public static class Criteria extends CriteriaItem {
+    public static class Criteria extends FieldItem {
         private static final long serialVersionUID = 4411291485392371897L;
 
         // 下标计数器，criteria和criteriaGroup每添加一个元素计数器加1，并把最新的数值赋给新加元素的index字段
@@ -317,7 +317,7 @@ public class Example implements IDynamicTableName {
         protected List<Criteria> criterias;
 
         // 排序的条件组合列表
-        private List<CriteriaItem> ordItems;
+        private List<FieldItem> ordItems;
 
         public Criteria(Map<String, EntityColumn> propertyMap, boolean exists, boolean notNull) {
             super();
@@ -360,7 +360,7 @@ public class Example implements IDynamicTableName {
         }
 
         // 计数器计算
-        private void counter(CriteriaItem item) {
+        private void counter(FieldItem item) {
             int index2 = item.getIndex();
             if (index2 > 0 && index2 > counter) {
                 counter = index2 + 1;
@@ -770,8 +770,8 @@ public class Example implements IDynamicTableName {
             return this;
         }
 
-        public List<CriteriaItem> getOrdItems() {
-            ordItems = new ArrayList<CriteriaItem>();
+        public List<FieldItem> getOrdItems() {
+            ordItems = new ArrayList<FieldItem>();
             if (criterions != null) {
                 ordItems.addAll(criterions);
             }
@@ -786,7 +786,7 @@ public class Example implements IDynamicTableName {
 
     @Setter
     @Getter
-    public static class Criterion extends CriteriaItem {
+    public static class Criterion extends FieldItem {
         private static final long serialVersionUID = -6324904523102903996L;
 
         private String condition;

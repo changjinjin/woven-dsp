@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.auth.web.advice;
 
-import com.info.baymax.common.message.exception.BizException;
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.auth.api.exception.CustomOauth2Exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;

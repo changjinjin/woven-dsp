@@ -3,7 +3,7 @@ package com.info.baymax.data.elasticsearch.service;
 import java.util.List;
 import java.util.Map;
 
-import com.info.baymax.common.message.exception.ServiceException;
+import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 

@@ -20,10 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;

@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.query;
 
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.aggregate.AggType;
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.record.RecordQuery;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.aggregate.AggType;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.RecordQuerySql;

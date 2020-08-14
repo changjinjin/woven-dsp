@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
-import com.info.baymax.common.message.result.Response;
 import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.platform.entity.DataResource;

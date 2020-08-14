@@ -1,28 +1,28 @@
 package com.info.baymax.dsp.access.dataapi.service.impl;
 
 import com.google.common.collect.Maps;
-import com.info.baymax.common.message.exception.ControllerException;
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.queryapi.aggregate.AggField;
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.field.CriteriaItem;
-import com.info.baymax.common.queryapi.field.Field;
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.field.Sort;
+import com.info.baymax.access.dataapi.api.AggRequest;
+import com.info.baymax.access.dataapi.api.DataRequest;
+import com.info.baymax.access.dataapi.api.MapEntity;
+import com.info.baymax.access.dataapi.api.RecordRequest;
+import com.info.baymax.common.queryapi.exception.ControllerException;
+import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.record.RecordQuery;
+import com.info.baymax.common.queryapi.query.aggregate.AggField;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.field.Field;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldItem;
+import com.info.baymax.common.queryapi.query.field.Sort;
+import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.DataReader;
-import com.info.baymax.dsp.access.dataapi.data.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.RecordQuerySql;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
-import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -148,9 +148,9 @@ public class PullServiceImpl implements PullService {
         if (fieldGroup == null) {
             return;
         }
-        List<CriteriaItem> ordItems = fieldGroup.ordItems();
+        List<FieldItem> ordItems = fieldGroup.ordItems();
         if (ICollections.hasElements(ordItems)) {
-            for (CriteriaItem item : ordItems) {
+            for (FieldItem item : ordItems) {
                 if (item instanceof FieldGroup) {
                     validateFieldGroup(keySet, (FieldGroup) item);
                 } else {

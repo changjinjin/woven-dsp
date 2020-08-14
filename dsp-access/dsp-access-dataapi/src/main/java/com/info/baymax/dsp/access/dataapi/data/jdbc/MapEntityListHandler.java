@@ -1,7 +1,8 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
+import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.DataReadException;
-import com.info.baymax.dsp.access.dataapi.data.MapEntity;
+
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.AbstractListHandler;

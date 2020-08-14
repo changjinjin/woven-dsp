@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
-import com.info.baymax.common.queryapi.field.CriteriaItem;
-import com.info.baymax.common.queryapi.field.Field;
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.field.SqlEnums.AndOr;
-import com.info.baymax.common.queryapi.field.SqlEnums.Operator;
+import com.info.baymax.common.queryapi.query.field.Field;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldItem;
+import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
+import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
 import lombok.Getter;
 import lombok.ToString;
@@ -104,9 +104,9 @@ public class ConditionSql implements Serializable {
     private String where(FieldGroup fieldGroup) {
         StringBuffer buf = new StringBuffer("");
         if (fieldGroup != null) {
-            List<CriteriaItem> ordItems = fieldGroup.reIndex().ordItems();
+            List<FieldItem> ordItems = fieldGroup.reIndex().ordItems();
             if (ICollections.hasElements(ordItems)) {
-                for (CriteriaItem item : ordItems) {
+                for (FieldItem item : ordItems) {
                     if (item instanceof FieldGroup) {
                         FieldGroup group = (FieldGroup) item;
                         buf.append(" ").append(group.getAndOr().name().toLowerCase()).append(" (")

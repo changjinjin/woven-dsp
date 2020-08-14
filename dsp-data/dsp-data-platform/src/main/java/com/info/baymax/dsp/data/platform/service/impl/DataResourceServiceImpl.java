@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.data.platform.service.impl;
 
 import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;

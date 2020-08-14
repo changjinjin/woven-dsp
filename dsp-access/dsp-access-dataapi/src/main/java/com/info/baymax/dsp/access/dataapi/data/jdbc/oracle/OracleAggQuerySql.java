@@ -2,11 +2,11 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc.oracle;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.info.baymax.common.queryapi.aggregate.AggField;
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.field.Field;
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.field.Sort;
+import com.info.baymax.common.queryapi.query.aggregate.AggField;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.field.Field;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.Sort;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
 import lombok.ToString;

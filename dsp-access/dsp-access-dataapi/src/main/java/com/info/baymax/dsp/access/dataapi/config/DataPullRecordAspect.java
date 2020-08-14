@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.config;
 
+import com.info.baymax.access.dataapi.api.AggRequest;
+import com.info.baymax.access.dataapi.api.DataRequest;
+import com.info.baymax.access.dataapi.api.RecordRequest;
 import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
-import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.DataRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;

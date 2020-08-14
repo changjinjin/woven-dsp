@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.field.Sort;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.Sort;
 import com.info.baymax.common.utils.ICollections;
 import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import lombok.Getter;

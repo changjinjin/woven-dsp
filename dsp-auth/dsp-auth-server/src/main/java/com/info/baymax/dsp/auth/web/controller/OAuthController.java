@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.auth.web.controller;
 
-import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.auth.security.authentication.CustomTokenServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

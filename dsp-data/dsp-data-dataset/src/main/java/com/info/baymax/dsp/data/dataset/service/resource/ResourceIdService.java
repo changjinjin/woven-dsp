@@ -3,9 +3,9 @@ package com.info.baymax.dsp.data.dataset.service.resource;
 import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.ExampleQueryService;
-import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassService;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.utils.JsonUtils;

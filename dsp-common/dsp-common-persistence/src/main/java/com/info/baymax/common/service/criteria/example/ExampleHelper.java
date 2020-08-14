@@ -11,12 +11,12 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.Lists;
 import com.info.baymax.common.mybatis.mapper.example.Example;
 import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
-import com.info.baymax.common.queryapi.field.CriteriaItem;
-import com.info.baymax.common.queryapi.field.Field;
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.field.Sort;
-import com.info.baymax.common.queryapi.field.SqlEnums.AndOr;
-import com.info.baymax.common.queryapi.field.SqlEnums.Operator;
+import com.info.baymax.common.queryapi.query.field.Field;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldItem;
+import com.info.baymax.common.queryapi.query.field.Sort;
+import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
+import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
 
 import tk.mybatis.mapper.entity.EntityColumn;
@@ -119,12 +119,12 @@ public class ExampleHelper {
         }
         criteria.setAndOr(fieldGroup.getAndOr().name());
 
-        List<CriteriaItem> ordItems = fieldGroup.ordItems();
+        List<FieldItem> ordItems = fieldGroup.ordItems();
         if (ICollections.hasNoElements(ordItems)) {
             return criteria;
         }
 
-        for (CriteriaItem item : ordItems) {
+        for (FieldItem item : ordItems) {
             if (item instanceof Field) {
                 Field field = (Field) item;
                 Operator operator = field.getOper();

@@ -2,7 +2,7 @@ package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.comp.base.BaseEntityController;
 import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import io.swagger.annotations.Api;

@@ -2,7 +2,7 @@ package com.info.baymax.common.entity.base;
 
 import java.util.List;
 
-import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 
 /**

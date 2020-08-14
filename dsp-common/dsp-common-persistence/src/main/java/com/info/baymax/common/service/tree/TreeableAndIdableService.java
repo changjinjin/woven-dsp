@@ -1,10 +1,10 @@
 package com.info.baymax.common.service.tree;
 
+import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.service.tree.id.TreeIdable;
 import com.info.baymax.common.service.tree.id.TreeIdableMapper;
 import com.info.baymax.common.service.tree.sreach.TreeSearchable;
 import com.info.baymax.common.service.tree.sreach.TreeSearchableService;
-import com.info.baymax.common.message.exception.ServiceException;
 
 import java.io.Serializable;
 import java.util.List;

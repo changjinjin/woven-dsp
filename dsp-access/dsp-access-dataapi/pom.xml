@@ -42,6 +42,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>dsp-access-dataapi-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.merce.woven</groupId>
             <artifactId>woven-metrics</artifactId>
         </dependency>

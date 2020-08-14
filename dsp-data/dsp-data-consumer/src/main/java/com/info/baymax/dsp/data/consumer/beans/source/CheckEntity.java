@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 

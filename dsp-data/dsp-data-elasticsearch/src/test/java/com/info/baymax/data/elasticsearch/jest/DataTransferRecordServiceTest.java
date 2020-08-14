@@ -1,6 +1,6 @@
 package com.info.baymax.data.elasticsearch.jest;
 
-import com.info.baymax.common.message.exception.ServiceException;
+import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.data.elasticsearch.AbstractBootTest;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;

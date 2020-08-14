@@ -3,8 +3,9 @@ package com.info.baymax.dsp.common.webmvc.advice;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.result.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

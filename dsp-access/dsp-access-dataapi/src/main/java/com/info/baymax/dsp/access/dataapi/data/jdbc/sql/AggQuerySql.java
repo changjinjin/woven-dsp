@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.utils.ICollections;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;

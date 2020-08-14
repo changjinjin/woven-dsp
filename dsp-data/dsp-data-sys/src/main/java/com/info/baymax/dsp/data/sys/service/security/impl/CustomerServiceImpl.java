@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
 import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.queryapi.exception.ServiceException;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.crypto.check.CompositePasswordChecker;

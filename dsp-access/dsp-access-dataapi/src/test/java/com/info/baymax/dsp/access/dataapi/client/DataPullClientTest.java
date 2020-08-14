@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.access.dataapi.client;
 
 import com.alibaba.fastjson.JSON;
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.aggregate.AggType;
-import com.info.baymax.common.queryapi.field.FieldGroup;
-import com.info.baymax.common.queryapi.record.RecordQuery;
-import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
+import com.info.baymax.access.dataapi.api.AggRequest;
+import com.info.baymax.access.dataapi.api.RecordRequest;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.aggregate.AggType;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;

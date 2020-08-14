@@ -52,6 +52,38 @@
 				<include>*.txt</include>
 			</includes>
 		</fileSet>
+
+		<!-- copy dataapi client -->
+		<fileSet>
+			<directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-client/target/lib/</directory>
+			<outputDirectory>dsp-access-dataapi-client/lib</outputDirectory>
+			<fileMode>666</fileMode>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<excludes>
+				<exclude>lombok-*.jar</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-client/target/</directory>
+			<outputDirectory>dsp-access-dataapi-client/lib</outputDirectory>
+			<fileMode>666</fileMode>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+			<excludes>
+				<exclude>*-sources.jar</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-client/src/test/java/com/info/baymax/access/dataapi/client/</directory>
+			<outputDirectory>dsp-access-dataapi-client/demo</outputDirectory>
+			<fileMode>666</fileMode>
+			<includes>
+				<include>*.java</include>
+			</includes>
+		</fileSet>
 		<!-- copy libs -->
 		<fileSet>
 			<directory>${project.parent.basedir}/dsp-access/dsp-access-consumer/target/lib/</directory>
@@ -110,7 +142,7 @@
 			</includes>
 		</fileSet>
 	</fileSets>
- 
+
 
 	<dependencySets>
 		<dependencySet>

@@ -2,8 +2,8 @@ package com.info.baymax.dsp.access.dataapi.service.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.queryapi.exception.ServiceException;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.PasswordGenerator;
 import com.info.baymax.common.utils.crypto.RSAGenerater;
 import com.info.baymax.dsp.access.dataapi.service.RestSignService;
@@ -31,8 +31,8 @@ public class RestSignServiceImpl implements RestSignService {
     public String secertkey(String accessKey) {
         DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
         // 生成随机的对称加密秘钥并使用app的私钥进行加密返回给用户
-        String encryptKey = RSAGenerater.encryptByPrivateKey(new PasswordGenerator(16, 3).generateRandomPassword(),
-            app.getPrivateKey());
+        String generateRandomPassword = new PasswordGenerator(16, 3).generateRandomPassword();
+        String encryptKey = RSAGenerater.encryptByPrivateKey(generateRandomPassword, app.getPrivateKey());
         ACCESSKEY_CACHE.put(signKey(accessKey), encryptKey);
         return encryptKey;
     }

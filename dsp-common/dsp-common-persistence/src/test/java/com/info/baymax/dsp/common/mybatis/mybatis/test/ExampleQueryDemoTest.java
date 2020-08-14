@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.common.mybatis.mybatis.entity.TUser;
 import com.info.baymax.dsp.common.mybatis.mybatis.service.TUserService;

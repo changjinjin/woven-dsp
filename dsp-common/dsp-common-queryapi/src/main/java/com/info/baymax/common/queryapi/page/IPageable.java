@@ -1,10 +1,9 @@
 package com.info.baymax.common.queryapi.page;
 
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.Serializable;
 
 /**
  * 分页参数包装
@@ -169,7 +168,7 @@ public class IPageable implements Serializable {
     }
 
     public String getOrderByClause() {
-        if (StringUtils.isEmpty(orderByClause)) {
+        if (orderByClause == null || orderByClause.isEmpty()) {
             this.orderByClause = initOrderByClause();
         }
         return this.orderByClause;

@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.common.webflux.server.error;
 
-import com.info.baymax.common.message.exception.BizException;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
+
+import com.info.baymax.common.queryapi.exception.BizException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

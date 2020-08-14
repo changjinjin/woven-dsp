@@ -5,8 +5,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.info.baymax.common.mybatis.mapper.example.Example;
-import com.info.baymax.common.queryapi.field.CriteriaItem;
-import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldItem;
 import com.info.baymax.common.service.criteria.example.ExampleHelper;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.JsonUtils;
@@ -61,8 +61,8 @@ public class FieldGroupTest {
             ;
 
         System.out.println(JsonUtils.toJson(group));
-        List<CriteriaItem> ordItems = group.ordItems();
-        for (CriteriaItem fieldItem : ordItems) {
+        List<FieldItem> ordItems = group.ordItems();
+        for (FieldItem fieldItem : ordItems) {
             System.out.println(fieldItem.getIndex());
             System.out.println(fieldItem);
         }

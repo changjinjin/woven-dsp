@@ -2,9 +2,9 @@ package com.info.baymax.dsp.job.exec.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.field.FieldGroup;
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;

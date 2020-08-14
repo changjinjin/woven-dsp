@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
+import com.info.baymax.access.dataapi.api.AggRequest;
+import com.info.baymax.access.dataapi.api.MapEntity;
+import com.info.baymax.access.dataapi.api.RecordRequest;
 import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.dsp.access.dataapi.data.MapEntity;
-import com.info.baymax.dsp.access.dataapi.web.request.AggRequest;
-import com.info.baymax.dsp.access.dataapi.web.request.RecordRequest;
 
 /**
  * @Author: guofeng.wu

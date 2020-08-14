@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.auth.security.authentication.manager;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.auth.security.authentication.GrantedAuthoritiesService;

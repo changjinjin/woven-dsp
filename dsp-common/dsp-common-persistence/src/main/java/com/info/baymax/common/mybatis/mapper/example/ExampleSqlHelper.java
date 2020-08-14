@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.info.baymax.common.mybatis.mapper.example.Example.Criteria;
 import com.info.baymax.common.mybatis.mapper.example.Example.Criterion;
-import com.info.baymax.common.queryapi.field.CriteriaItem;
+import com.info.baymax.common.queryapi.query.field.FieldItem;
 
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
@@ -29,7 +29,7 @@ public class ExampleSqlHelper {
 
     public static String condition(Criteria criteria) {
         StringBuffer buff = new StringBuffer();
-        List<CriteriaItem> ordItems = criteria.getOrdItems();
+        List<FieldItem> ordItems = criteria.getOrdItems();
         if (ordItems != null) {
             buff.append(criteria.getAndOr()).append(" ").append("(");
             buff.append(trimAndOr(condition(ordItems)));
@@ -38,9 +38,9 @@ public class ExampleSqlHelper {
         return buff.toString();
     }
 
-    private static String condition(List<CriteriaItem> ordItems) {
+    private static String condition(List<FieldItem> ordItems) {
         StringBuffer buff = new StringBuffer();
-        for (CriteriaItem item : ordItems) {
+        for (FieldItem item : ordItems) {
             if (item instanceof Criterion) {
                 buff.append(condition((Criterion) item));
             } else {

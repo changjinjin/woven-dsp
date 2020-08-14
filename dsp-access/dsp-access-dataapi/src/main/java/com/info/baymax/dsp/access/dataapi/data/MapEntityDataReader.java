@@ -1,5 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
+import com.info.baymax.access.dataapi.api.MapEntity;
+
 /**
  * DataReader抽象
  *

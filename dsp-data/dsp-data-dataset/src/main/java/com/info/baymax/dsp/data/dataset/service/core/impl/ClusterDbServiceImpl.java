@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.common.queryapi.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.dataset.entity.core.ClusterEntity;

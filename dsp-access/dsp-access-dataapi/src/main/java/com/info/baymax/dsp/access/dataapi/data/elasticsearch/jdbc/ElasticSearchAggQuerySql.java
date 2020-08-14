@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.common.queryapi.aggregate.AggField;
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.aggregate.AggField;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
 

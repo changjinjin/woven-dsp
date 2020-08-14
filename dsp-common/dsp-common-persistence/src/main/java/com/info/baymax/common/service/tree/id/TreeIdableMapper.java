@@ -1,9 +1,9 @@
 package com.info.baymax.common.service.tree.id;
 
-import com.info.baymax.common.message.exception.ServiceException;
-
 import java.io.Serializable;
 import java.util.List;
+
+import com.info.baymax.common.queryapi.exception.ServiceException;
 
 /**
  * 有主键的树结构数据类型查询接口

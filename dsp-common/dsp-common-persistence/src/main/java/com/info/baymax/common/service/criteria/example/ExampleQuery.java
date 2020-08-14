@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.common.queryapi.record.AbstractPropertiesQuery;
+import com.info.baymax.common.queryapi.query.record.AbstractPropertiesQuery;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

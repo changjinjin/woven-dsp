@@ -1,8 +1,9 @@
 package com.info.baymax.dsp.common.webflux.advice;
 
-import com.info.baymax.common.message.exception.BizException;
-import com.info.baymax.common.message.result.ErrType;
-import com.info.baymax.common.message.result.Response;
+import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.result.Response;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;

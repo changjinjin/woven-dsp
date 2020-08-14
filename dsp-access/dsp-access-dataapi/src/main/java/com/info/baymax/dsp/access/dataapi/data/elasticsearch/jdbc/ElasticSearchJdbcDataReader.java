@@ -1,11 +1,11 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
+import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.page.IPageable;
-import com.info.baymax.common.queryapi.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.record.RecordQuery;
+import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.common.utils.DataBaseUtil;
-import com.info.baymax.dsp.access.dataapi.data.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;

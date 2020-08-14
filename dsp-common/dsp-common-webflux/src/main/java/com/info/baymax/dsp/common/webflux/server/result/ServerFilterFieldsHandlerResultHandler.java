@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.common.comp.serialize.annotation.JsonBody;
 import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
-import com.info.baymax.common.message.exception.BizException;
-import com.info.baymax.common.message.result.ErrType;
+import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;

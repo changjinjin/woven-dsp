@@ -1,14 +1,11 @@
 package com.info.baymax.common.service;
 
 import com.info.baymax.common.entity.id.Idable;
-
-
-
-import com.info.baymax.common.message.exception.ServiceException;
-import com.info.baymax.common.message.result.ErrType;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
+import com.info.baymax.common.queryapi.exception.ServiceException;
+import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.ICollections;
 import org.apache.commons.lang3.StringUtils;
 
