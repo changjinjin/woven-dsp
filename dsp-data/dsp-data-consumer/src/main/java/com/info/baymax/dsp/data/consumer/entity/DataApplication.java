@@ -129,5 +129,4 @@ public class DataApplication extends BaseEntity {
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String auditMind;
-
 }

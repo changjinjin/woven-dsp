@@ -27,8 +27,7 @@ import java.util.Map;
 
 /**
  * @Author: haijun
- * @Date: 2019/12/16 10:14 数据服务即管理员审批通过生成的记录,供消费者调用
- * 服务一旦生成就不会再改变,push对应的flow也就确定了
+ * @Date: 2019/12/16 10:14 数据服务即管理员审批通过生成的记录,供消费者调用 服务一旦生成就不会再改变,push对应的flow也就确定了
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -36,8 +35,8 @@ import java.util.Map;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "dsp_data_service", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
-        @Index(columnList = "lastModifiedTime DESC")})
+    @UniqueConstraint(columnNames = {"tenantId", "name"})}, indexes = {
+    @Index(columnList = "lastModifiedTime DESC")})
 @Comment("数据服务服务信息表")
 public class DataService extends BaseEntity {
     private static final long serialVersionUID = -6235196279782590695L;
@@ -61,24 +60,16 @@ public class DataService extends BaseEntity {
     private Integer type;
 
     @ApiModelProperty(value = "pull服务url列表")
-    @Comment("pull服务url列表")
+    @Comment("push服务url列表")
     @Column(length = 100)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String url;
 
     @ApiModelProperty(value = "pull服务path")
-    @Comment("pull服务path")
+    @Comment("push服务path")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String path;
-
-    @ApiModelProperty(value = "pull服务参数说明")
-    @Comment("pull服务参数说明")
-    @Lob
-    @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
-    @Deprecated
-    private Map<String, String> pullConfiguration;
 
     @ApiModelProperty("调度类型：once,cron,event")
     @Comment("调度类型：once,cron,event")
@@ -167,21 +158,17 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListFieldMappingTypeHandler.class)
     private List<FieldMapping> fieldMappings;
 
-
     @ApiModelProperty("服务过期时间")
     @Comment("服务过期时间")
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @ColumnDefault("0")
     private Long expiredTime;// = 0L;
-    // 9999-12-31
-    protected static Long MAX_DATE_TIME = 253402214400L;
 
     @ApiModelProperty("审核意见")
     @Comment("审核意见")
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String auditMind;
-
 
 }
