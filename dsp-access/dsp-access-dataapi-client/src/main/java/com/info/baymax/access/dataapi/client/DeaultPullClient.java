@@ -66,7 +66,6 @@ public class DeaultPullClient implements PullClient {
 
     private IPage<MapEntity> pullData(String queryName, String accessKey, String publicKey, boolean encrypted,
                                       String hosts, DataRequest<?> request) throws PullClientException {
-        System.out.println(gson.toJson(request));
         String secertkey = null;
         try {
             headers.clear();
