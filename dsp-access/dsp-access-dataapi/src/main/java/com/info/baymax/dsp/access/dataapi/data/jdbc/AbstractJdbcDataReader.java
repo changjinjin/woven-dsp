@@ -80,7 +80,7 @@ public abstract class AbstractJdbcDataReader extends MapEntityDataReader {
 
     public Connection getConn(JdbcStorageConf conf) throws Exception {
         try {
-        	log.debug("get conn from conf: "+JsonUtils.toJson(conf));
+            log.debug("get conn from conf: " + JsonUtils.toJson(conf));
             return DataBaseUtil.getConnection(conf.getDriver(), conf.getUrl(), conf.getUsername(), conf.getPassword(),
                 null, null);
         } catch (Exception e) {

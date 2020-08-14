@@ -11,9 +11,9 @@ import java.util.Map;
  *
  * @param <S>  存儲配置信息
  * @param <RQ> RecordQuery 记录查询条件
- * @param <R>  RecordQuery解析生成查询条件
+ * @param <R>  RecordQuery 解析生成查询条件
  * @param <AQ> AggQuery 聚合查询条件
- * @param <A>  AggQuery解析生成查询条件
+ * @param <A>  AggQuery 解析生成查询条件
  * @author jingwei.yang
  * @date 2020年6月28日 下午12:23:27
  */
