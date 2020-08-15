@@ -6,7 +6,6 @@ import com.info.baymax.common.utils.ICollections;
 import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +17,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
 @Slf4j
 public abstract class AbstractQuerySql<Q> implements Serializable {
     private static final long serialVersionUID = 9076946654365840665L;

@@ -3,7 +3,6 @@ package com.info.baymax.dsp.access.dataapi.data;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
-
 import org.springframework.core.Ordered;
 
 /**
@@ -14,15 +13,7 @@ import org.springframework.core.Ordered;
  * @author jingwei.yang
  * @date 2020年6月22日 上午10:17:13
  */
-public interface DataReader<R, A> extends Ordered {
-
-    /**
-     * 根据配置信息判别是否支持数据读取
-     *
-     * @param conf 配置信息
-     * @return 是否支持
-     */
-    boolean supports(StorageConf conf);
+public interface DataReader<R, A> extends Ordered, Supported<StorageConf> {
 
     /**
      * 数据记录查询数据

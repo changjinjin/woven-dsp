@@ -6,24 +6,16 @@ import com.info.baymax.common.queryapi.query.field.FieldItem;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
-@ToString
 public class ConditionSql extends NamingSql {
-    private FieldGroup fieldGroup;
-
     private int i = 0;
 
-    private ConditionSql(FieldGroup fieldGroup) {
-        this.fieldGroup = fieldGroup;
-    }
-
     public static ConditionSql build(FieldGroup fieldGroup) {
-        ConditionSql conditionSql = new ConditionSql(fieldGroup);
+        ConditionSql conditionSql = new ConditionSql();
         String wherSql = conditionSql.where(fieldGroup);
         conditionSql.parse(wherSql, conditionSql.getParamMap());
         return conditionSql;

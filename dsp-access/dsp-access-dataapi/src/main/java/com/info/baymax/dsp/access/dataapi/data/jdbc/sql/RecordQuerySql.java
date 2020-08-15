@@ -1,13 +1,11 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
 import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.List;
 
-@ToString(callSuper = true)
 @Slf4j
 public class RecordQuerySql extends AbstractQuerySql<JdbcQuery> {
     private static final long serialVersionUID = 9076946654365840665L;
