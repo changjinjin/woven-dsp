@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
-            <artifactId>dsp-access-dataapi-client</artifactId>
+            <artifactId>dsp-access-dataapi-sdk</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

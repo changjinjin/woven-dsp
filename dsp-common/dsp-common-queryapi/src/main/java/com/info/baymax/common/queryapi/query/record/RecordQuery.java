@@ -11,8 +11,6 @@ import java.util.Set;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * rest 接口访问参数结构类
@@ -21,9 +19,7 @@ import lombok.ToString;
  * @date 2020年6月24日 上午11:51:23
  */
 @ApiModel
-@Setter
 @Getter
-@ToString
 public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements Serializable {
 	private static final long serialVersionUID = 5616355016961992353L;
 

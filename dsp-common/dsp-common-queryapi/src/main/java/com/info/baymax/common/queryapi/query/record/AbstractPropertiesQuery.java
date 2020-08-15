@@ -6,8 +6,6 @@ import com.info.baymax.common.queryapi.query.field.Sort;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -20,9 +18,7 @@ import java.util.LinkedHashSet;
  * @date 2020年6月24日 上午11:13:02
  */
 @ApiModel
-@Setter
 @Getter
-@ToString
 @SuppressWarnings("unchecked")
 public abstract class AbstractPropertiesQuery<T extends AbstractPropertiesQuery<T>>
 		extends AbstractQuery<AbstractPropertiesQuery<T>> implements PropertiesQueryBuilder<T> {

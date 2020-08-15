@@ -10,7 +10,7 @@ import java.util.Collection;
  * @author jingwei.yang
  * @date 2019年9月5日 下午3:10:55
  */
-public interface GroupFieldQueryBuilder<B extends GroupFieldQueryBuilder<B>> {
+public interface GroupByFieldQueryBuilder<B extends GroupByFieldQueryBuilder<B>> {
 
     /**
      * 分组条件：添加分组字段集合

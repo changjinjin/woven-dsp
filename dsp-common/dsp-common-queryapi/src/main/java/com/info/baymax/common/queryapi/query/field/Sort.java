@@ -7,11 +7,9 @@ import com.info.baymax.common.queryapi.query.field.SqlEnums.OrderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * 排序属性包装对象
@@ -22,8 +20,6 @@ import lombok.ToString;
 @ApiModel
 @Setter
 @Getter
-@EqualsAndHashCode
-@ToString(doNotUseGetters = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sort implements Serializable {

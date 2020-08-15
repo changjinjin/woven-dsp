@@ -41,9 +41,9 @@ public class OracleAggQuerySql extends AggQuerySql {
         for (AggField aggField : aggFields) {
             aggFieldMap.put(aggField.getAlias(), aggField.getAggExpr());
         }
-        query.setHavingFieldGroup(
-            replaceHavingFieldGroupAlias(aggFieldMap.keySet(), aggFieldMap, query.getHavingFieldGroup()));
-        query.setOrdSort(replaceOrdSortAlias(aggFieldMap.keySet(), aggFieldMap, query.getOrdSort()));
+        query.havingFieldGroup(
+                replaceHavingFieldGroupAlias(aggFieldMap.keySet(), aggFieldMap, query.getHavingFieldGroup()))//
+                .sorts(replaceOrdSortAlias(aggFieldMap.keySet(), aggFieldMap, query.getOrdSort()));
         return query;
     }
 

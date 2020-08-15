@@ -3,7 +3,10 @@ package com.info.baymax.dsp.access.dataapi.service;
 import com.info.baymax.access.dataapi.api.AggRequest;
 import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.access.dataapi.api.RecordRequest;
+import com.info.baymax.access.dataapi.api.SqlRequest;
 import com.info.baymax.common.queryapi.page.IPage;
+
+import javax.validation.Valid;
 
 /**
  * @Author: guofeng.wu
@@ -46,5 +49,14 @@ public interface PullService {
      * @return SQL预览
      */
     String pullAggsSql(AggRequest request, String hosts);
+
+    /**
+     * 根据sql模板查询
+     *
+     * @param request sql模板查询信息
+     * @param hosts   配置主机
+     * @return 查询结果
+     */
+    IPage<MapEntity> pullBySql(@Valid SqlRequest request, String hosts);
 
 }

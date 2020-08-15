@@ -6,11 +6,9 @@ import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * 一个查询条件包装对象
@@ -19,10 +17,8 @@ import lombok.ToString;
  * @date 2019年9月6日 下午12:17:52
  */
 @ApiModel
-@Setter
 @Getter
-@EqualsAndHashCode(callSuper = true)
-@ToString(doNotUseGetters = true)
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Field extends FieldItem {
@@ -44,7 +40,7 @@ public class Field extends FieldItem {
     private Operator oper = Operator.EQUAL;
 
     @ApiModelProperty(//
-        "属性值数组:"//
+            "属性值数组:"//
             + "1）单值比较时数组长度为1，如：EQUAL, NOT_EQUAL, LIKE, NOT_LIKE, GREATER_THAN, GREATER_THAN_OR_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL；"//
             + "2）多值比较时数组长度为实际长度，如： BETWEEN, NOT_BETWEEN, IN, NOT_IN；"//
             + "3）判断字段是否为空时该值可为空，如： NULL, NOT_NULL。"//

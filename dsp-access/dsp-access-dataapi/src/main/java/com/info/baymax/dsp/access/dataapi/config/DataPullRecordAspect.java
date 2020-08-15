@@ -49,7 +49,7 @@ public class DataPullRecordAspect {
     @Autowired
     private DataCustAppService dataCustAppService;
     @Autowired
-    private DataServiceService dataServiceEntityService;
+    private DataServiceService dataServiceService;
     @Autowired
     private DataResourceService dataResourceService;
     @Autowired
@@ -100,7 +100,7 @@ public class DataPullRecordAspect {
                 return;
             }
 
-            DataService dataService = dataServiceEntityService.selectByPrimaryKey(dataServiceId);
+            DataService dataService = dataServiceService.selectByPrimaryKey(dataServiceId);
             if (dataService == null) {
                 return;
             }

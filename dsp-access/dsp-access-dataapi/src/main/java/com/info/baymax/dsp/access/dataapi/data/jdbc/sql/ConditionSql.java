@@ -6,16 +6,14 @@ import com.info.baymax.common.queryapi.query.field.FieldItem;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
 import com.info.baymax.common.utils.ICollections;
-import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 @ToString
-public class ConditionSql implements Serializable {
-    private static final long serialVersionUID = 7871946632377823592L;
+public class ConditionSql extends NamingSql {
     private FieldGroup fieldGroup;
 
     private int i = 0;
@@ -25,80 +23,10 @@ public class ConditionSql implements Serializable {
     }
 
     public static ConditionSql build(FieldGroup fieldGroup) {
-        return new ConditionSql(fieldGroup).parse();
-    }
-
-    /**
-     * 命名条件sql
-     */
-    @Getter
-    private String namingSql;
-
-    /**
-     * 有占位符的sql
-     */
-    @Getter
-    private String placeholderSql;
-
-    /**
-     * 参数名称列表
-     */
-    @Getter
-    private String[] paramNames;
-
-    /**
-     * 参数值列表
-     */
-    @Getter
-    private Object[] paramValues;
-
-    /**
-     * 参数名称与值映射
-     */
-    @Getter
-    private Map<String, Object> paramMap = new HashMap<String, Object>();
-
-    /**
-     * 分析命名SQL语句获取抽象NSQl实例；java(JDBC)提供SQL语句命名参数而是通过?标识参数位置， 通过此对象可以命名参数方式使用SQL语句，命名参数以?开始后跟名称?name。 例如：SELECT * FROM
-     * table WHERE name = ?name AND email = ?email;
-     */
-    private ConditionSql parse() {
-        namingSql = trimAndOr(where(fieldGroup));
-        char c;
-        List<String> names = new ArrayList<String>();
-        StringBuilder sql_builder = new StringBuilder();
-        StringBuilder name_builder = new StringBuilder();
-        for (int index = 0; index < namingSql.length(); index++) {
-            c = namingSql.charAt(index);
-            sql_builder.append(c);
-            if ('?' == c) {
-                while (++index < namingSql.length()) {
-                    c = namingSql.charAt(index);
-                    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || (c >= '0' && c <= '9')) {
-                        name_builder.append(c);
-                    } else {
-                        sql_builder.append(c);
-                        break;
-                    }
-                }
-                names.add(name_builder.toString());
-                name_builder.setLength(0);
-            }
-        }
-        placeholderSql = sql_builder.toString();
-        if (names != null && names.size() > 0) {
-            paramNames = names.toArray(paramNames = new String[names.size()]);
-            int mapSize = paramMap.size();
-            if (names.size() != mapSize) {
-                throw new IllegalArgumentException(
-                    "Wrong number of parameters: expected " + names.size() + ", was given " + mapSize);
-            }
-            paramValues = new Object[mapSize];
-            for (int i = 0; i < paramValues.length; i++) {
-                paramValues[i] = paramMap.get(names.get(i));
-            }
-        }
-        return this;
+        ConditionSql conditionSql = new ConditionSql(fieldGroup);
+        String wherSql = conditionSql.where(fieldGroup);
+        conditionSql.parse(wherSql, conditionSql.getParamMap());
+        return conditionSql;
     }
 
     private String where(FieldGroup fieldGroup) {
@@ -110,7 +38,7 @@ public class ConditionSql implements Serializable {
                     if (item instanceof FieldGroup) {
                         FieldGroup group = (FieldGroup) item;
                         buf.append(" ").append(group.getAndOr().name().toLowerCase()).append(" (")
-                            .append(trimAndOr(where(group))).append(")");
+                                .append(trimAndOr(where(group))).append(")");
                     } else {
                         Field field = (Field) item;
                         buf.append(field(field));
@@ -204,7 +132,7 @@ public class ConditionSql implements Serializable {
         String paramName = paramName();
         paramMap.put(paramName, value);
         return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(operator)
-            .append(" ?").append(paramName).toString();
+                .append(" ?").append(paramName).toString();
     }
 
     private String andCondition(String property, String operator, Object value) {
@@ -222,7 +150,7 @@ public class ConditionSql implements Serializable {
         paramMap.put(paramName2, value2);
         StringBuffer buf = new StringBuffer();
         buf.append(" ").append(andOr).append(" ").append(property).append(" ").append(not).append(" ")
-            .append("BETWEEN ?").append(paramName1).append(" AND ?").append(paramName2);
+                .append("BETWEEN ?").append(paramName1).append(" AND ?").append(paramName2);
         return buf.toString();
     }
 
@@ -230,11 +158,7 @@ public class ConditionSql implements Serializable {
         String paramName = paramName();
         paramMap.put(paramName, StringUtils.join(values, ","));
         return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(not)
-            .append("IN (?").append(paramName).append(")").toString();
-    }
-
-    private String trimAndOr(String sql) {
-        return StringUtils.stripStart(StringUtils.stripStart(StringUtils.trim(sql), "AND"), "OR").trim();
+                .append("IN (?").append(paramName).append(")").toString();
     }
 
     private String andIsNull(String property) {
@@ -348,4 +272,13 @@ public class ConditionSql implements Serializable {
     private String orNotLike(String property, Object value) {
         return orCondition(property, "NOT LIKE", value);
     }
+
+    public static void main(String[] args) {
+        FieldGroup fieldGroup = FieldGroup.builder().andEqualTo("name", "zhangsan").andLike("name", "%li%")
+                .orGreaterThan("age", 12);
+        ConditionSql build = ConditionSql.build(fieldGroup);
+        System.out.println(build.placeholderSql);
+        System.out.println(Arrays.toString(build.paramValues));
+    }
+
 }

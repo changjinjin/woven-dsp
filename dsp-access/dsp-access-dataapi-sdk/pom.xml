@@ -9,8 +9,8 @@
         <artifactId>dsp-access</artifactId>
         <version>0.1.2</version>
     </parent>
-    <artifactId>dsp-access-dataapi-client</artifactId>
-    <name>dsp-access-dataapi-client</name>
+    <artifactId>dsp-access-dataapi-sdk</artifactId>
+    <name>dsp-access-dataapi-sdk</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

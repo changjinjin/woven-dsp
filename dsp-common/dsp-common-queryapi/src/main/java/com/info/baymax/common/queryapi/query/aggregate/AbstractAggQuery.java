@@ -10,8 +10,6 @@ import com.info.baymax.common.queryapi.query.record.AbstractQuery;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -50,12 +48,10 @@ import java.util.List;
  * @date 2020年6月24日 上午11:13:02
  */
 @ApiModel
-@Setter
 @Getter
-@ToString
 @SuppressWarnings("unchecked")
 public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends AbstractQuery<AbstractAggQuery<T>>
-		implements AggFieldQueryBuilder<T>, GroupFieldQueryBuilder<T>, HavingFieldGroupQueryBuilder<T> {
+        implements AggFieldQueryBuilder<T>, GroupByFieldQueryBuilder<T>, HavingFieldGroupQueryBuilder<T> {
 	private static final long serialVersionUID = 4850854513242762929L;
 
 	@ApiModelProperty("聚合条件")
