@@ -72,7 +72,7 @@ public class PullServiceImpl implements PullService {
     @Override
     public IPage<MapEntity> pullRecords(RecordRequest request, String hosts) {
         try {
-            DatasetQueryConf queryConf = (DatasetQueryConf) doQuery(request, hosts);
+            DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             RecordQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
             return dataReader.readRecord(StorageConf.from(queryConf.getConf()), query);
@@ -85,7 +85,7 @@ public class PullServiceImpl implements PullService {
     @Override
     public IPage<MapEntity> pullAggs(AggRequest request, String hosts) {
         try {
-            DatasetQueryConf queryConf = (DatasetQueryConf) doQuery(request, hosts);
+            DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             AggQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
             return dataReader.readAgg(StorageConf.from(queryConf.getConf()), query);
@@ -98,7 +98,7 @@ public class PullServiceImpl implements PullService {
     @Override
     public String pullRecordsSql(RecordRequest request, String hosts) {
         try {
-            DatasetQueryConf queryConf = (DatasetQueryConf) doQuery(request, hosts);
+            DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             RecordQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
             return RecordQuerySql.builder(query.table(queryConf.getDataServiceName())).getExecuteSql();
@@ -111,7 +111,7 @@ public class PullServiceImpl implements PullService {
     @Override
     public String pullAggsSql(AggRequest request, String hosts) {
         try {
-            DatasetQueryConf queryConf = (DatasetQueryConf) doQuery(request, hosts);
+            DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             AggQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
             return AggQuerySql.builder(query.table(queryConf.getDataServiceName())).getExecuteSql();
@@ -238,7 +238,7 @@ public class PullServiceImpl implements PullService {
         return true;
     }
 
-    private QueryConf<?> doQuery(DataRequest<?> request, String hosts) {
+    private QueryConf<?> parseRequest(DataRequest<?> request, String hosts) {
         try {
             Long dataServiceId = request.getDataServiceId();
             String requestKey = request.getAccessKey();
@@ -318,7 +318,7 @@ public class PullServiceImpl implements PullService {
     @Override
     public IPage<MapEntity> pullBySql(SqlRequest request, String hosts) {
         try {
-            DataSourceQueryConf queryConf = (DataSourceQueryConf) doQuery(request, hosts);
+            DataSourceQueryConf queryConf = (DataSourceQueryConf) parseRequest(request, hosts);
             SqlQuery query = request.getQuery();
             // validate(queryConf.getOtherConf(), query);
             return defaultJdbcDbDataReader.readBySql(StorageConf.from(queryConf.getConf()), query);
