@@ -6,11 +6,9 @@ import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcStorageConf;
 import com.info.baymax.dsp.data.consumer.beans.source.DBType;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Setter
 @Getter
-@ToString(callSuper = true, doNotUseGetters = true)
 public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
     private static final long serialVersionUID = -187465371872121001L;
 

@@ -3,7 +3,7 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc;
 import com.google.common.collect.Lists;
 import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.query.parameters.SqlQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.DataReadException;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;

@@ -10,7 +10,6 @@ import com.info.baymax.common.utils.JsonUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.io.IOException;
 
@@ -22,7 +21,6 @@ import java.io.IOException;
  */
 @ApiModel
 @Getter
-@ToString
 public class JdbcQuery extends RecordQuery {
     private static final long serialVersionUID = 5616355016961992353L;
 

@@ -9,7 +9,6 @@ import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.Sort;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
-import lombok.ToString;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@ToString(callSuper = true)
 public class OracleAggQuerySql extends AggQuerySql {
     private static final long serialVersionUID = 9076946654365840665L;
 

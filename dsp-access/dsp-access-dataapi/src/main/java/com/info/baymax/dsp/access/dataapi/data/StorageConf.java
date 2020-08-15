@@ -15,7 +15,7 @@ import java.util.Map;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storage", visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value = JdbcStorageConf.class, name = "JDBC"),
-    @JsonSubTypes.Type(value = ElasticSearchStorageConf.class, name = "ElasticSearch")})
+        @JsonSubTypes.Type(value = ElasticSearchStorageConf.class, name = "ElasticSearch")})
 @Slf4j
 @Setter
 @Getter
@@ -36,10 +36,5 @@ public class StorageConf implements Serializable {
             log.error(e.getMessage(), e);
         }
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "StorageConf [storage=" + storage + "]";
     }
 }

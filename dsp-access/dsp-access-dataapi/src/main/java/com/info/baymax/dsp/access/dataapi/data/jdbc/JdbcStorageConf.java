@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Setter
 @Getter
-@ToString(callSuper = true, doNotUseGetters = true)
 public class JdbcStorageConf extends StorageConf {
     private static final long serialVersionUID = 106952647390719639L;
 

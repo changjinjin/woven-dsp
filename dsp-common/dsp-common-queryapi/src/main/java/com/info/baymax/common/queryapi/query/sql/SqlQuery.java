@@ -1,4 +1,4 @@
-package com.info.baymax.common.queryapi.query.parameters;
+package com.info.baymax.common.queryapi.query.sql;
 
 import com.info.baymax.common.queryapi.query.record.PageableQuery;
 import com.info.baymax.common.queryapi.query.record.QueryBuilder;
@@ -14,7 +14,7 @@ import java.util.Map;
 @ApiModel
 @Getter
 public final class SqlQuery extends PageableQuery<SqlQuery>
-        implements ParametersQueryBuilder<SqlQuery>, QueryBuilder<SqlQuery> {
+        implements SqlQueryBuilder<SqlQuery>, QueryBuilder<SqlQuery> {
 
     @ApiModelProperty(value = "SQL模板", hidden = true)
     private String sqlTemplate;

@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
 
-import com.info.baymax.common.queryapi.query.parameters.SqlQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;

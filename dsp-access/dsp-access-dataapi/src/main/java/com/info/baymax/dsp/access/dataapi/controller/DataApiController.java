@@ -74,7 +74,7 @@ public class DataApiController implements Serializable {
         return Response.ok(pullService.pullAggsSql(request, hosts));
     }
 
-    @ApiOperation(value = "数据源SQL模板凡是查询")
+    @ApiOperation(value = "数据源SQL模板方式查询")
     @PostMapping("/pullBySql")
     public Response<IPage<MapEntity>> pullBySql(
             @ApiParam(value = "聚合请求信息", required = true) @RequestBody @Valid SqlRequest request,

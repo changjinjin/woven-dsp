@@ -1,6 +1,7 @@
 package com.info.baymax.access.dataapi.api;
 
-import com.info.baymax.common.queryapi.query.parameters.SqlQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
+
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

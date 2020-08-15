@@ -2,7 +2,7 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
 import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.query.parameters.SqlQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.Supported;
 

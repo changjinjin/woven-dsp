@@ -3,12 +3,10 @@ package com.info.baymax.dsp.access.dataapi.data.elasticsearch;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @Getter
-@ToString(callSuper = true, doNotUseGetters = true)
 public class ElasticSearchStorageConf extends StorageConf {
     private static final long serialVersionUID = -187465371872121001L;
 

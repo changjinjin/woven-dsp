@@ -1,9 +1,9 @@
-package com.info.baymax.common.queryapi.query.parameters;
+package com.info.baymax.common.queryapi.query.sql;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public interface ParametersQueryBuilder<B extends ParametersQueryBuilder<B>> {
+public interface SqlQueryBuilder<B extends SqlQueryBuilder<B>> {
 
     /**
      * 设置SQL查询模板
