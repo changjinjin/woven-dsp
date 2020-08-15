@@ -1,11 +1,10 @@
-package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
+package com.info.baymax.common.queryapi.sql;
 
 import com.info.baymax.common.queryapi.query.field.Field;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.FieldItem;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
-import com.info.baymax.common.utils.ICollections;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -25,7 +24,7 @@ public class ConditionSql extends NamingSql {
         StringBuffer buf = new StringBuffer("");
         if (fieldGroup != null) {
             List<FieldItem> ordItems = fieldGroup.reIndex().ordItems();
-            if (ICollections.hasElements(ordItems)) {
+            if (ordItems != null && !ordItems.isEmpty()) {
                 for (FieldItem item : ordItems) {
                     if (item instanceof FieldGroup) {
                         FieldGroup group = (FieldGroup) item;

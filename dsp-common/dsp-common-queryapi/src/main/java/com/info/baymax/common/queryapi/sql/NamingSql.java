@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
+package com.info.baymax.common.queryapi.sql;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

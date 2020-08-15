@@ -2,20 +2,21 @@ package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.sql.AggQuerySql;
+import com.info.baymax.common.queryapi.sql.RecordQuerySql;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.RecordQuerySql;
 
-public class JdbcQueryParser implements QueryParser<JdbcStorageConf, JdbcQuery, RecordQuerySql, AggQuery, AggQuerySql> {
+public class JdbcQueryParser
+        implements QueryParser<JdbcStorageConf, RecordQuery, RecordQuerySql, AggQuery, AggQuerySql> {
 
     @Override
-    public RecordQuerySql parseRecordQuery(JdbcStorageConf storageConf, RecordQuery query) throws Exception {
-        return RecordQuerySql.builder(convertRecordQuery(storageConf, query));
+    public RecordQuerySql parseRecordQuery(JdbcStorageConf conf, RecordQuery query) throws Exception {
+        return RecordQuerySql.builder(convertRecordQuery(conf, query));
     }
 
     @Override
-    public JdbcQuery convertRecordQuery(JdbcStorageConf storageConf, RecordQuery query) throws Exception {
-        return JdbcQuery.from(query).table(storageConf.getTable());
+    public RecordQuery convertRecordQuery(JdbcStorageConf conf, RecordQuery query) throws Exception {
+        return query.table(conf.getTable());
     }
 
     @Override
@@ -27,5 +28,4 @@ public class JdbcQueryParser implements QueryParser<JdbcStorageConf, JdbcQuery, 
     public AggQuery convertAggQuery(JdbcStorageConf conf, AggQuery query) throws Exception {
         return query.table(conf.getTable());
     }
-
 }

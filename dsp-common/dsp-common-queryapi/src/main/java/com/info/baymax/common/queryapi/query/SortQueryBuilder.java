@@ -1,4 +1,4 @@
-package com.info.baymax.common.queryapi.query.record;
+package com.info.baymax.common.queryapi.query;
 
 import java.util.Arrays;
 import java.util.Collection;

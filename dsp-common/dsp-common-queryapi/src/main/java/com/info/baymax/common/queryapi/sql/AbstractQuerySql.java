@@ -1,25 +1,19 @@
-package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
+package com.info.baymax.common.queryapi.sql;
 
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.Sort;
-import com.info.baymax.common.utils.ICollections;
-import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
-public abstract class AbstractQuerySql<Q> implements Serializable {
-    private static final long serialVersionUID = 9076946654365840665L;
+public abstract class AbstractQuerySql<Q> {
 
     protected AbstractQuerySql(Q query) {
         build(query);
@@ -94,12 +88,12 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
     protected String selectfromTableWhere(String table, FieldGroup fieldGroup) {
         // select column1,column2,column3... from table
         return new StringBuffer().append("SELECT ").append(" %s ").append(from(table)).append(where(fieldGroup))
-            .toString();
+                .toString();
     }
 
     protected String orderBy(LinkedHashSet<Sort> sorts) {
         StringBuffer buf = new StringBuffer();
-        if (ICollections.hasElements(sorts)) {
+        if (sorts != null && !sorts.isEmpty()) {
             buf.append(" ORDER BY ");
             for (Sort sort : sorts) {
                 buf.append(sort.getName()).append(" ").append(sort.getOrder()).append(", ");
@@ -116,7 +110,6 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
             System.arraycopy(values, 0, newValues, paramValues.length, values.length);
             this.paramValues = newValues;
         }
-        log.debug("add param: " + Arrays.toString(values) + ",paramValues:" + Arrays.toString(paramValues));
     }
 
     public String getCountSql() {
@@ -148,7 +141,7 @@ public abstract class AbstractQuerySql<Q> implements Serializable {
         Class<?> clazz = obj.getClass();
         List<String> list = null;
         if (clazz.isArray()) {
-            list = Lists.newArrayList();
+            list = new ArrayList<>();
             for (int i = 0; i < Array.getLength(obj); i++) {
                 list.add(parseObjectType(Array.get(obj, i)));
             }

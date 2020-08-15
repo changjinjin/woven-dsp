@@ -1,4 +1,4 @@
-package com.info.baymax.common.queryapi.query.record;
+package com.info.baymax.common.queryapi.query;
 
 import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.common.queryapi.query.field.Field;
@@ -25,8 +25,11 @@ import java.util.List;
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class AbstractQuery<T extends AbstractQuery<T>> extends PageableQuery<AbstractQuery<T>>
-        implements FieldGroupQueryBuilder<T>, SortQueryBuilder<T>, QueryBuilder<T>, Serializable {
+        implements FieldGroupQueryBuilder<T>, SortQueryBuilder<T>, TableQueryBuilder<T>, QueryBuilder<T>, Serializable {
     private static final long serialVersionUID = 4850854513242762929L;
+
+    @ApiModelProperty(value = "表名称", hidden = true)
+    private String table;
 
     @ApiModelProperty("条件规则，多个组合条件的组合")
     protected FieldGroup fieldGroup;
@@ -36,6 +39,17 @@ public abstract class AbstractQuery<T extends AbstractQuery<T>> extends Pageable
 
     public AbstractQuery() {
         super();
+    }
+
+    public T table(String table) {
+        this.table = table;
+        return (T) this;
+    }
+
+    @Override
+    public T clearTable() {
+        this.table = null;
+        return (T) this;
     }
 
     @Override
@@ -117,6 +131,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T>> extends Pageable
 
     @Override
     public T clear() {
+        clearTable();
         clearPageable();
         clearFieldGroup();
         clearSorts();

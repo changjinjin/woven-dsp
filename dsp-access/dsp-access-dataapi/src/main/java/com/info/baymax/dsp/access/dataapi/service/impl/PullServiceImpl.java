@@ -14,14 +14,13 @@ import com.info.baymax.common.queryapi.query.field.Sort;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.sql.AggQuerySql;
+import com.info.baymax.common.queryapi.sql.RecordQuerySql;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.DataReader;
 import com.info.baymax.dsp.access.dataapi.data.Engine;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.DefaultJdbcDbDataReader;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.JdbcQuery;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.RecordQuerySql;
 import com.info.baymax.dsp.access.dataapi.service.PullService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;
@@ -102,7 +101,7 @@ public class PullServiceImpl implements PullService {
             DatasetQueryConf queryConf = (DatasetQueryConf) doQuery(request, hosts);
             RecordQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
-            return RecordQuerySql.builder(JdbcQuery.from(query).table(queryConf.getDataServiceName())).getExecuteSql();
+            return RecordQuerySql.builder(query.table(queryConf.getDataServiceName())).getExecuteSql();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);

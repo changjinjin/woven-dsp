@@ -1,7 +1,8 @@
 package com.info.baymax.common.queryapi.query.sql;
 
-import com.info.baymax.common.queryapi.query.record.PageableQuery;
-import com.info.baymax.common.queryapi.query.record.QueryBuilder;
+import com.info.baymax.common.queryapi.query.PageableQuery;
+import com.info.baymax.common.queryapi.query.QueryBuilder;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

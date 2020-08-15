@@ -1,18 +1,13 @@
-package com.info.baymax.dsp.access.dataapi.data.jdbc.sql;
+package com.info.baymax.common.queryapi.sql;
 
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
-import com.info.baymax.common.utils.ICollections;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-@Slf4j
 public class AggQuerySql extends AbstractQuerySql<AggQuery> {
-    private static final long serialVersionUID = 9076946654365840665L;
 
     protected AggQuerySql(AggQuery query) {
         super(query);
@@ -36,12 +31,9 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
             String sql = buf.toString();
             this.placeholderCountSql = String.format(sql, count());
             this.placeholderSql = String.format(new StringBuffer()//
-                .append(sql)//
-                .append(orderBy(query.getOrdSort()))// order by 条件
-                .toString(), properties(query));
-            log.debug("\n\nmake placeholderCountSql:" + placeholderCountSql);
-            log.debug("make placeholderSql:" + placeholderSql);
-            log.debug("make paramValues:" + Arrays.toString(paramValues) + "\n\n");
+                    .append(sql)//
+                    .append(orderBy(query.getOrdSort()))// order by 条件
+                    .toString(), properties(query));
         }
     }
 
@@ -56,7 +48,7 @@ public class AggQuerySql extends AbstractQuerySql<AggQuery> {
     }
 
     protected String groupBy(LinkedHashSet<String> groupFields) {
-        if (ICollections.hasElements(groupFields)) {
+        if (groupFields != null && !groupFields.isEmpty()) {
             return new StringBuffer().append(" GROUP BY ").append(StringUtils.join(groupFields, ", ")).toString();
         }
         return "";

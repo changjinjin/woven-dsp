@@ -21,53 +21,53 @@ import lombok.Getter;
 @ApiModel
 @Getter
 public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements Serializable {
-	private static final long serialVersionUID = 5616355016961992353L;
+    private static final long serialVersionUID = 5616355016961992353L;
 
-	@ApiModelProperty(value = "所有的字段列表", hidden = true)
-	private LinkedHashSet<String> allProperties;
+    @ApiModelProperty(value = "所有的字段列表", hidden = true)
+    private LinkedHashSet<String> allProperties;
 
-	public static RecordQuery builder() {
-		return new RecordQuery();
-	}
+    public static RecordQuery builder() {
+        return new RecordQuery();
+    }
 
-	public static RecordQuery builder(RecordQuery query) {
-		return query == null ? new RecordQuery() : query;
-	}
+    public static RecordQuery builder(RecordQuery query) {
+        return query == null ? new RecordQuery() : query;
+    }
 
-	public RecordQuery allProperties(Collection<String> allProperties) {
-		if (this.allProperties == null) {
-			this.allProperties = new LinkedHashSet<>();
-		}
-		this.allProperties.addAll(allProperties);
-		return this;
-	}
+    public RecordQuery allProperties(Collection<String> allProperties) {
+        if (this.allProperties == null) {
+            this.allProperties = new LinkedHashSet<>();
+        }
+        this.allProperties.addAll(allProperties);
+        return this;
+    }
 
-	public RecordQuery allProperties(String... allProperties) {
-		return allProperties(Arrays.asList(allProperties));
-	}
+    public RecordQuery allProperties(String... allProperties) {
+        return allProperties(Arrays.asList(allProperties));
+    }
 
-	@Override
-	public List<String> getFinalSelectProperties() {
-		Set<String> select = new LinkedHashSet<>();
-		if (allProperties != null && !allProperties.isEmpty()) {
-			Set<String> all = new LinkedHashSet<>(allProperties);
-			if (excludeProperties != null && !excludeProperties.isEmpty()) {
-				Set<String> exclude = new LinkedHashSet<>(excludeProperties);
-				all.removeAll(exclude);
-			}
-			if (selectProperties != null && !selectProperties.isEmpty()) {
-				select = new LinkedHashSet<>(selectProperties);
-				select.retainAll(all);
-			} else {
-				select.addAll(all);
-			}
-		} else {
-			select.addAll(selectProperties);
-		}
-		if (select == null || select.isEmpty()) {
-			throw new RuntimeException("no suitable fields for query with allProperties:" + allProperties
-					+ ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
-		}
-		return new ArrayList<String>(select);
-	}
+    @Override
+    public List<String> getFinalSelectProperties() {
+        Set<String> select = new LinkedHashSet<>();
+        if (allProperties != null && !allProperties.isEmpty()) {
+            Set<String> all = new LinkedHashSet<>(allProperties);
+            if (excludeProperties != null && !excludeProperties.isEmpty()) {
+                Set<String> exclude = new LinkedHashSet<>(excludeProperties);
+                all.removeAll(exclude);
+            }
+            if (selectProperties != null && !selectProperties.isEmpty()) {
+                select = new LinkedHashSet<>(selectProperties);
+                select.retainAll(all);
+            } else {
+                select.addAll(all);
+            }
+        } else {
+            select.addAll(selectProperties);
+        }
+        if (select == null || select.isEmpty()) {
+            throw new RuntimeException("no suitable fields for query with allProperties:" + allProperties
+                    + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
+        }
+        return new ArrayList<String>(select);
+    }
 }

@@ -8,7 +8,7 @@ import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import org.junit.Test;
 
-public class PullClientDemo {
+public class PullClientTest {
 
     // 服务地址
     private final String baseUrl = "http://10.34.93.25:8000/";

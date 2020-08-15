@@ -7,8 +7,8 @@ import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.field.Field;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.Sort;
+import com.info.baymax.common.queryapi.sql.AggQuerySql;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.sql.AggQuerySql;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OracleAggQuerySql extends AggQuerySql {
-    private static final long serialVersionUID = 9076946654365840665L;
 
     protected OracleAggQuerySql(AggQuery query) {
         super(query);
