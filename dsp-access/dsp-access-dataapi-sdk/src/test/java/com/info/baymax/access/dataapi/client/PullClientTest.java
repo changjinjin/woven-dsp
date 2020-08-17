@@ -37,7 +37,7 @@ public class PullClientTest {
 
     /**
      * <pre>
-     * 预期SQL语句：
+     * <b>预期SQL语句：</b>
      *  SELECT
      *  	STATUS, RELATESUBSYSTEMKEY, SYSTEMKEY, DESCRIPTION, PKEY, UPDATE_TIME, NAME
      *  FROM
@@ -50,238 +50,213 @@ public class PullClientTest {
      *  ORDER BY
      *  	PKEY, UPDATE_TIME
      *  LIMIT
-     *   0,20
+     *      0,20
      * </pre>
-     */
-
-    /**
+     *
      * <pre>
-     * 请求报文：
-     * {
-     "accessKey": "08aa0825-feff-4784-aff6-537aab6ff997",
-     "dataServiceId": 743311142591397900,
-     "timestamp": 1597392592510,
-     "encrypted": true,
-     "query": {
-     "selectProperties": [
-     "STATUS",
-     "RELATESUBSYSTEMKEY",
-     "SYSTEMKEY",
-     "DESCRIPTION",
-     "PKEY",
-     "UPDATE_TIME",
-     "NAME"
-     ],
-     "fieldGroup": {
-     "counter": 4,
-     "andOr": "AND",
-     "fields": [
-     {
-     "andOr": "AND",
-     "name": "STATUS",
-     "oper": "EQUAL",
-     "value": [
-     "0"
-     ],
-     "index": 1,
-     "group": false
-     },
-     {
-     "andOr": "AND",
-     "name": "PKEY",
-     "oper": "GREATER_THAN",
-     "value": [
-     "1"
-     ],
-     "index": 2,
-     "group": false
-     },
-     {
-     "andOr": "AND",
-     "name": "PKEY",
-     "oper": "IN",
-     "value": [
-     "2",
-     "4",
-     "6",
-     "8",
-     "10",
-     "12",
-     "14",
-     "16",
-     "18",
-     "20",
-     "22"
-     ],
-     "index": 4,
-     "group": false
-     }
-     ],
-     "fieldGroups": [
-     {
-     "counter": 2,
-     "andOr": "AND",
-     "fields": [
-     {
-     "andOr": "AND",
-     "name": "PKEY",
-     "oper": "BETWEEN",
-     "value": [
-     "10",
-     "30"
-     ],
-     "index": 1,
-     "group": false
-     },
-     {
-     "andOr": "OR",
-     "name": "SYSTEMKEY",
-     "oper": "EQUAL",
-     "value": [
-     "2"
-     ],
-     "index": 2,
-     "group": false
-     }
-     ],
-     "index": 3,
-     "group": false
-     }
-     ],
-     "index": 0,
-     "group": false
-     },
-     "ordSort": [
-     {
-     "name": "PKEY",
-     "order": "ASC"
-     },
-     {
-     "name": "UPDATE_TIME",
-     "order": "ASC"
-     }
-     ],
-     "pageable": {
-     "pageable": true,
-     "pageNum": 1,
-     "pageSize": 20
-     }
-     }
-     }
+     * <b>请求报文：</b>
+     *  {
+     *      "accessKey": "08aa0825-feff-4784-aff6-537aab6ff997",
+     *      "dataServiceId": 743311142591397900,
+     *      "timestamp": 1597392592510,
+     *      "encrypted": true,
+     *      "query": {
+     *          "selectProperties": [
+     *              "STATUS",
+     *              "RELATESUBSYSTEMKEY",
+     *              "SYSTEMKEY",
+     *              "DESCRIPTION",
+     *              "PKEY",
+     *              "UPDATE_TIME",
+     *              "NAME"
+     *          ],
+     *          "fieldGroup": {
+     *              "counter": 4,
+     *              "andOr": "AND",
+     *              "fields": [
+     *                  {
+     *                      "andOr": "AND",
+     *                      "name": "STATUS",
+     *                      "oper": "EQUAL",
+     *                      "value": [ "0" ],
+     *                      "index": 1,
+     *                      "group": false
+     *                  },
+     *                  {
+     *                      "andOr": "AND",
+     *                      "name": "PKEY",
+     *                      "oper": "GREATER_THAN",
+     *                      "value": [ "1" ],
+     *                      "index": 2,
+     *                      "group": false
+     *                  },
+     *                  {
+     *                      "andOr": "AND",
+     *                      "name": "PKEY",
+     *                      "oper": "IN",
+     *                      "value": [ "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22" ],
+     *                      "index": 4,
+     *                      "group": false
+     *                  }
+     *              ],
+     *              "fieldGroups": [
+     *                  {
+     *                      "counter": 2,
+     *                      "andOr": "AND",
+     *                      "fields": [
+     *                          {
+     *                              "andOr": "AND",
+     *                              "name": "PKEY",
+     *                              "oper": "BETWEEN",
+     *                              "value": [ "10", "30" ],
+     *                              "index": 1,
+     *                              "group": false
+     *                          },
+     *                          {
+     *                              "andOr": "OR",
+     *                              "name": "SYSTEMKEY",
+     *                              "oper": "EQUAL",
+     *                              "value": ["2"],
+     *                              "index": 2,
+     *                              "group": false
+     *                          }
+     *                      ],
+     *                      "index": 3,
+     *                      "group": false
+     *                  }
+     *              ],
+     *              "index": 0,
+     *              "group": false
+     *          },
+     *          "ordSort": [
+     *              {
+     *                  "name": "PKEY",
+     *                  "order": "ASC"
+     *              },
+     *              {
+     *                  "name": "UPDATE_TIME",
+     *                  "order": "ASC"
+     *              }
+     *          ],
+     *          "pageable": {
+     *              "pageable": true,
+     *              "pageNum": 1,
+     *              "pageSize": 20
+     *          }
+     *      }
+     *  }
      * </pre>
-     */
-
-    /**
+     *
      * <pre>
-     * 响应报文：
-     * {
-     *  "ok": true,
-     * 	"status": 0,
-     * 	"message": "Request successfully.",
-     * 	"details": "",
-     * 	"content": {
-     * 	    "pageable": true,
-     * 	    "pageNum": 1,
-     * 	    "pageSize": 10,
-     * 	    "totalCount": "126",
-     * 	    "totalPage": 13,
-     * 	    "list": [
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "61",
-     * 	            "SYSTEMKEY": "1",
-     * 	            "DESCRIPTION": "",
-     * 	            "PKEY": "2",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "PSCADA"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "62",
-     * 	            "SYSTEMKEY": "1",
-     * 	            "DESCRIPTION": "1500V",
-     * 	            "PKEY": "4",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "1500V"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "60",
-     * 	            "SYSTEMKEY": "1",
-     * 	            "DESCRIPTION": "33KV",
-     * 	            "PKEY": "6",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "33KV"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "61",
-     * 	            "SYSTEMKEY": "1",
-     * 	            "DESCRIPTION": "400V",
-     * 	            "PKEY": "8",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "400V"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "60",
-     * 	            "SYSTEMKEY": "1",
-     * 	            "DESCRIPTION": "高压系统",
-     * 	            "PKEY": "10",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "36KV"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "60",
-     * 	            "SYSTEMKEY": "1",
-     * 	            "DESCRIPTION": "110KV",
-     * 	            "PKEY": "12",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "110KV"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "5",
-     * 	            "SYSTEMKEY": "2",
-     * 	            "DESCRIPTION": "",
-     * 	            "PKEY": "14",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "BAS"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "48",
-     * 	            "SYSTEMKEY": "2",
-     * 	            "DESCRIPTION": "隧道系统",
-     * 	            "PKEY": "16",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "TVS"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "48",
-     * 	            "SYSTEMKEY": "2",
-     * 	            "DESCRIPTION": "隧道系统模式",
-     * 	            "PKEY": "18",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "TVS"
-     *            },
-     *            {
-     * 	            "STATUS": "0",
-     * 	            "RELATESUBSYSTEMKEY": "159",
-     * 	            "SYSTEMKEY": "2",
-     * 	            "DESCRIPTION": "大系统",
-     * 	            "PKEY": "20",
-     * 	            "UPDATE_TIME": "2019-08-16 14:08:36",
-     * 	            "NAME": "ACN"
-     *            }
-     * 	    ],
-     * 	    "nextPage": true,
-     * 	    "prevPage": false,
-     * 	    "offset": "0"
-     *     }
-     *    }
+     * <b>响应报文：</b>
+     *  {
+     *      "ok": true,
+     *      "status": 0,
+     *      "message": "Request successfully.",
+     *      "details": "",
+     *      "content": {
+     *          "pageable": true,
+     *          "pageNum": 1,
+     *          "pageSize": 10,
+     *          "totalCount": "126",
+     *          "totalPage": 13,
+     *          "list": [
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "61",
+     *                  "SYSTEMKEY": "1",
+     *                  "DESCRIPTION": "",
+     *                  "PKEY": "2",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "PSCADA"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "62",
+     *                  "SYSTEMKEY": "1",
+     *                  "DESCRIPTION": "1500V",
+     *                  "PKEY": "4",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "1500V"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "60",
+     *                  "SYSTEMKEY": "1",
+     *                  "DESCRIPTION": "33KV",
+     *                  "PKEY": "6",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "33KV"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "61",
+     *                  "SYSTEMKEY": "1",
+     *                  "DESCRIPTION": "400V",
+     *                  "PKEY": "8",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "400V"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "60",
+     *                  "SYSTEMKEY": "1",
+     *                  "DESCRIPTION": "高压系统",
+     *                  "PKEY": "10",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "36KV"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "60",
+     *                  "SYSTEMKEY": "1",
+     *                  "DESCRIPTION": "110KV",
+     *                  "PKEY": "12",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "110KV"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "5",
+     *                  "SYSTEMKEY": "2",
+     *                  "DESCRIPTION": "",
+     *                  "PKEY": "14",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "BAS"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "48",
+     *                  "SYSTEMKEY": "2",
+     *                  "DESCRIPTION": "隧道系统",
+     *                  "PKEY": "16",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "TVS"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "48",
+     *                  "SYSTEMKEY": "2",
+     *                  "DESCRIPTION": "隧道系统模式",
+     *                  "PKEY": "18",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "TVS"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "RELATESUBSYSTEMKEY": "159",
+     *                  "SYSTEMKEY": "2",
+     *                  "DESCRIPTION": "大系统",
+     *                  "PKEY": "20",
+     *                  "UPDATE_TIME": "2019-08-16 14:08:36",
+     *                  "NAME": "ACN"
+     *              }
+     *          ],
+     *          "nextPage": true,
+     *          "prevPage": false,
+     *          "offset": "0"
+     *      }
+     *  }
      * </pre>
      */
     @Test
@@ -316,7 +291,7 @@ public class PullClientTest {
 
     /**
      * <pre>
-     * 预期SQL语句：
+     * <b>预期SQL语句：</b>
      *  SELECT
      *  	SYSTEMKEY, STATUS, COUNT(PKEY) count_pkey, MAX(PKEY) max_pkey,MIN(PKEY) min_pkey
      *  FROM
@@ -333,157 +308,175 @@ public class PullClientTest {
      *  ORDER BY
      *  	SYSTEMKEY, count_pkey
      *  LIMIT
-     *   0,20
+     *      0,20
      * </pre>
-     */
-
-    /**
+     *
      * <pre>
-     * 请求报文：
+     * <b>请求报文：</b>
      * {
-     * "accessKey": "08aa0825-feff-4784-aff6-537aab6ff997",
-     * "dataServiceId": 743311142591397900,
-     * "timestamp": 1597392737530,
-     * "encrypted": true,
-     * "query": {
-     * "aggFields": [
-     * {
-     * "name": "PKEY",
-     * "alias": "count_pkey",
-     * "aggType": "COUNT",
-     * "distinct": false
-     * },
-     * {
-     * "name": "PKEY",
-     * "alias": "max_pkey",
-     * "aggType": "MAX",
-     * "distinct": false
-     * },
-     * {
-     * "name": "PKEY",
-     * "alias": "min_pkey",
-     * "aggType": "MIN",
-     * "distinct": false
+     *     "accessKey": "08aa0825-feff-4784-aff6-537aab6ff997",
+     *     "dataServiceId": 743311142591397900,
+     *     "timestamp": 1597392737530,
+     *     "encrypted": true,
+     *     "query": {
+     *         "aggFields": [
+     *             {
+     *                 "name": "PKEY",
+     *                 "alias": "count_pkey",
+     *                 "aggType": "COUNT",
+     *                 "distinct": false
+     *             },
+     *             {
+     *                 "name": "PKEY",
+     *                 "alias": "max_pkey",
+     *                 "aggType": "MAX",
+     *                 "distinct": false
+     *             },
+     *             {
+     *                 "name": "PKEY",
+     *                 "alias": "min_pkey",
+     *                 "aggType": "MIN",
+     *                 "distinct": false
+     *             }
+     *         ],
+     *         "groupFields": [
+     *             "SYSTEMKEY",
+     *             "STATUS"
+     *         ],
+     *         "havingFieldGroup": {
+     *             "counter": 1,
+     *             "andOr": "AND",
+     *             "fields": [
+     *                 {
+     *                     "andOr": "AND",
+     *                     "name": "count_pkey",
+     *                     "oper": "GREATER_THAN",
+     *                     "value": ["1"],
+     *                     "index": 1,
+     *                     "group": false
+     *                 }
+     *             ],
+     *             "index": 0,
+     *             "group": false
+     *         },
+     *         "fieldGroup": {
+     *             "counter": 4,
+     *             "andOr": "AND",
+     *             "fields": [
+     *                 {
+     *                     "andOr": "AND",
+     *                     "name": "STATUS",
+     *                     "oper": "EQUAL",
+     *                     "value": ["0"],
+     *                     "index": 1,
+     *                     "group": false
+     *                 },
+     *                 {
+     *                     "andOr": "AND",
+     *                     "name": "PKEY",
+     *                     "oper": "GREATER_THAN",
+     *                     "value": ["1"],
+     *                     "index": 2,
+     *                     "group": false
+     *                 },
+     *                 {
+     *                     "andOr": "AND",
+     *                     "name": "PKEY",
+     *                     "oper": "IN",
+     *                     "value": ["2","4","6","8","10","12","14","16","18","20","22"],
+     *                     "index": 4,
+     *                     "group": false
+     *                 }
+     *             ],
+     *             "fieldGroups": [
+     *                 {
+     *                     "counter": 2,
+     *                     "andOr": "AND",
+     *                     "fields": [
+     *                         {
+     *                             "andOr": "AND",
+     *                             "name": "PKEY",
+     *                             "oper": "BETWEEN",
+     *                             "value": ["10","30"],
+     *                             "index": 1,
+     *                             "group": false
+     *                         },
+     *                         {
+     *                             "andOr": "OR",
+     *                             "name": "SYSTEMKEY",
+     *                             "oper": "EQUAL",
+     *                             "value": ["2"],
+     *                             "index": 2,
+     *                             "group": false
+     *                         }
+     *                     ],
+     *                     "index": 3,
+     *                     "group": false
+     *                 }
+     *             ],
+     *             "index": 0,
+     *             "group": false
+     *         },
+     *         "ordSort": [
+     *             {
+     *                 "name": "SYSTEMKEY",
+     *                 "order": "ASC"
+     *             },
+     *             {
+     *                 "name": "count_pkey",
+     *                 "order": "ASC"
+     *             }
+     *         ],
+     *         "pageable": {
+     *             "pageable": true,
+     *             "pageNum": 1,
+     *             "pageSize": 20
+     *         }
+     *     }
      * }
-     * ],
-     * "groupFields": [
-     * "SYSTEMKEY",
-     * "STATUS"
-     * ],
-     * "havingFieldGroup": {
-     * "counter": 1,
-     * "andOr": "AND",
-     * "fields": [
-     * {
-     * "andOr": "AND",
-     * "name": "count_pkey",
-     * "oper": "GREATER_THAN",
-     * "value": [
-     * "1"
-     * ],
-     * "index": 1,
-     * "group": false
-     * }
-     * ],
-     * "index": 0,
-     * "group": false
-     * },
-     * "fieldGroup": {
-     * "counter": 4,
-     * "andOr": "AND",
-     * "fields": [
-     * {
-     * "andOr": "AND",
-     * "name": "STATUS",
-     * "oper": "EQUAL",
-     * "value": [
-     * "0"
-     * ],
-     * "index": 1,
-     * "group": false
-     * },
-     * {
-     * "andOr": "AND",
-     * "name": "PKEY",
-     * "oper": "GREATER_THAN",
-     * "value": [
-     * "1"
-     * ],
-     * "index": 2,
-     * "group": false
-     * },
-     * {
-     * "andOr": "AND",
-     * "name": "PKEY",
-     * "oper": "IN",
-     * "value": [
-     * "2",
-     * "4",
-     * "6",
-     * "8",
-     * "10",
-     * "12",
-     * "14",
-     * "16",
-     * "18",
-     * "20",
-     * "22"
-     * ],
-     * "index": 4,
-     * "group": false
-     * }
-     * ],
-     * "fieldGroups": [
-     * {
-     * "counter": 2,
-     * "andOr": "AND",
-     * "fields": [
-     * {
-     * "andOr": "AND",
-     * "name": "PKEY",
-     * "oper": "BETWEEN",
-     * "value": [
-     * "10",
-     * "30"
-     * ],
-     * "index": 1,
-     * "group": false
-     * },
-     * {
-     * "andOr": "OR",
-     * "name": "SYSTEMKEY",
-     * "oper": "EQUAL",
-     * "value": [
-     * "2"
-     * ],
-     * "index": 2,
-     * "group": false
-     * }
-     * ],
-     * "index": 3,
-     * "group": false
-     * }
-     * ],
-     * "index": 0,
-     * "group": false
-     * },
-     * "ordSort": [
-     * {
-     * "name": "SYSTEMKEY",
-     * "order": "ASC"
-     * },
-     * {
-     * "name": "count_pkey",
-     * "order": "ASC"
-     * }
-     * ],
-     * "pageable": {
-     * "pageable": true,
-     * "pageNum": 1,
-     * "pageSize": 20
-     * }
-     * }
-     * }
+     * </pre>
+     *
+     * <pre>
+     * <b>响应报文:</b>
+     *  {
+     *      "ok": true,
+     *      "status": 0,
+     *      "message": "Request successfully.",
+     *      "details": "",
+     *      "content": {
+     *          "pageable": true,
+     *          "pageNum": 1,
+     *          "pageSize": 10,
+     *          "totalCount": "3",
+     *          "totalPage": 1,
+     *          "list": [
+     *              {
+     *                  "STATUS": "0",
+     *                  "SYSTEMKEY": "1",
+     *                  "count_pkey": "20",
+     *                  "max_pkey": "30",
+     *                  "min_pkey": "2"
+     *              },
+     *              {
+     *                  "STATUS": "0",
+     *                  "SYSTEMKEY": "2",
+     *                  "count_pkey": "13",
+     *                  "max_pkey": "22",
+     *                  "min_pkey": "6"
+     *              },
+     *              {
+     *                  "STATUS": "1",
+     *                  "SYSTEMKEY": "4",
+     *                  "count_pkey": "3",
+     *                  "max_pkey": "20",
+     *                  "min_pkey": "2"
+     *              }
+     *          ],
+     *          "nextPage": true,
+     *          "prevPage": false,
+     *          "offset": "0"
+     *      }
+     *  }
      * </pre>
      */
     @Test
