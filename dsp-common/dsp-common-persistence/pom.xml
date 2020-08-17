@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<!-- common support -->
 		<dependency>
 			<groupId>com.info.baymax</groupId>
 			<artifactId>dsp-common-tools</artifactId>
@@ -26,6 +27,8 @@
 			<artifactId>dsp-common-queryapi</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- mybatis support -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
@@ -58,6 +61,8 @@
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper</artifactId>
 		</dependency>
+
+		<!-- jpa support -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -84,6 +89,8 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
+
+		<!-- cache support -->
 		<dependency>
 			<groupId>org.mybatis.caches</groupId>
 			<artifactId>mybatis-ehcache</artifactId>
@@ -113,6 +120,21 @@
 			<artifactId>commons-pool2</artifactId>
 		</dependency>
 
+		<!-- sql helper -->
+		<dependency>
+			<groupId>com.github.fangjinuo.sqlhelper</groupId>
+			<artifactId>sqlhelper-dbutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.fangjinuo.sqlhelper</groupId>
+			<artifactId>sqlhelper-jsqlparser</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.fangjinuo.easyjson</groupId>
+			<artifactId>easyjson-jackson</artifactId>
+		</dependency>
+
+		<!-- spring support -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>

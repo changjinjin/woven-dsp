@@ -1,22 +1,22 @@
 package com.info.baymax.dsp.data.platform.mybatis.type;
 
 import com.info.baymax.common.mybatis.type.varchar.AbstractVarcharTypeHandler;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.utils.JsonUtils;
-import com.info.baymax.dsp.data.platform.entity.SqlConf;
 import org.apache.commons.lang3.StringUtils;
 
-public class SqlConfTypeHandler extends AbstractVarcharTypeHandler<SqlConf> {
+public class SqlQueryTypeHandler extends AbstractVarcharTypeHandler<SqlQuery> {
 
     @Override
-    public String translate2Str(SqlConf t) {
+    public String translate2Str(SqlQuery t) {
         return JsonUtils.toJson(t);
     }
 
     @Override
-    public SqlConf translate2Bean(String result) {
+    public SqlQuery translate2Bean(String result) {
         if (StringUtils.isEmpty(result)) {
             return null;
         }
-        return JsonUtils.fromJson(result, SqlConf.class);
+        return JsonUtils.fromJson(result, SqlQuery.class);
     }
 }

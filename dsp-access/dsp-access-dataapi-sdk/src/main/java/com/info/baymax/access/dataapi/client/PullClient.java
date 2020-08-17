@@ -1,9 +1,9 @@
 package com.info.baymax.access.dataapi.client;
 
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.result.MapEntity;
 
 public interface PullClient {
 

@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
 import com.info.baymax.access.dataapi.api.AggRequest;
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.access.dataapi.api.RecordRequest;
 import com.info.baymax.access.dataapi.api.SqlRequest;
 import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.result.MapEntity;
 
 import javax.validation.Valid;
 

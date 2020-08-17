@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.controller;
 
 import com.info.baymax.access.dataapi.api.AggRequest;
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.access.dataapi.api.RecordRequest;
 import com.info.baymax.access.dataapi.api.SqlRequest;
 import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.access.dataapi.config.PullLog;
 import com.info.baymax.dsp.access.dataapi.service.PullService;

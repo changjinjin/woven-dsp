@@ -4,6 +4,8 @@ import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.field.Field;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
+import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
@@ -30,7 +32,7 @@ public class DataSourceController {
     @Autowired
     private DataSourceService dataSourceService;
 
-    @ApiOperation(value = "分页查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
+    @ApiOperation(value = "数据源分页查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
     @PostMapping("/page")
     public Response<IPage<DataSource>> page(
         @ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
@@ -62,24 +64,33 @@ public class DataSourceController {
         return new String[]{rootId};
     }
 
-    @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
+    @ApiOperation(value = "数据源详情", notes = "根据ID查询单条数据的详情，ID不能为空")
     @GetMapping("/infoById")
     public Response<DataSource> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam String id) {
         return Response.ok(dataSourceService.selectByPrimaryKey(id));
     }
 
-    @ApiOperation(value = "查询数据源的所有表名", notes = "根据ID查询数据源中包含的表名")
+    @ApiOperation(value = "查询所有表", notes = "根据ID查询数据源中包含的表名")
     @GetMapping("/{dataSourceId}/tables")
     public Response<List<String>> tableList(
         @ApiParam(value = "数据源ID", required = true) @PathVariable("dataSourceId") String dataSourceId) {
         return Response.ok(dataSourceService.fetchTableList(dataSourceId));
     }
 
-    @ApiOperation(value = "查询数据源的所有表名", notes = "根据ID查询数据源中包含的表名")
+    @ApiOperation(value = "表中列查询", notes = "根据数据源ID和表名查询表中的字段")
     @GetMapping("/{dataSourceId}/{table}/columns")
     public Response<List<String>> columnList(
         @ApiParam(value = "数据源ID", required = true) @PathVariable("dataSourceId") String dataSourceId,
         @ApiParam(value = "表名", required = true) @PathVariable("table") String table) {
         return Response.ok(dataSourceService.fetchTableColumns(dataSourceId, table));
     }
+
+    @ApiOperation(value = "表数据预览", notes = "根据sql模板和参数预览数据")
+    @PostMapping("/{dataSourceId}/previewBySql")
+    public Response<IPage<MapEntity>> previewBySql(
+        @ApiParam(value = "数据源ID", required = true) @PathVariable("dataSourceId") String dataSourceId,
+        @ApiParam(value = "SQL查询参数", required = true) @RequestBody SqlQuery query) {
+        return Response.ok(dataSourceService.previewBySql(dataSourceId, query));
+    }
+
 }

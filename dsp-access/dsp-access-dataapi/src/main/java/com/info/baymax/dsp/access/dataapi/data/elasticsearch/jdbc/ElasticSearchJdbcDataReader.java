@@ -1,12 +1,13 @@
 package com.info.baymax.dsp.access.dataapi.data.elasticsearch.jdbc;
 
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.sql.AbstractQuerySql;
-import com.info.baymax.common.utils.DataBaseUtil;
+import com.info.baymax.common.sqlhelper.SqlQueryHelper;
+import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.elasticsearch.ElasticSearchStorageConf;
@@ -17,7 +18,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -51,46 +51,30 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
     }
 
     @Override
-    protected IPage<MapEntity> executeQuery(StorageConf conf, IPageable pageable, AbstractQuerySql<?> selectSql)
+    protected IPage<MapEntity> executeQuery(JdbcStorageConf conf, IPageable pageable, AbstractQuerySql<?> selectSql)
         throws Exception {
-        Connection conn = null;
-        try {
-            if (selectSql.isValid()) {
-                conn = getConn((JdbcStorageConf) conf);
-                if (conn != null) {
-                    String countSql = selectSql.getPlaceholderCountSql();
-                    long totalCount = runner
-                        .query(conn, countSql, new ScalarHandler<Integer>(1), selectSql.getParamValues())
-                        .longValue();
-                    if (totalCount > 0) {
-                        List<MapEntity> list = runner.query(conn, selectSql.getPlaceholderSql() + " limit "
-                            + pageable.getOffset() + "," + pageable.getPageSize(), rsh, selectSql.getParamValues());
-                        return IPage.<MapEntity>of(pageable, totalCount, trimeKeyword(list));
-                    }
-                }
-            }
-        } finally {
-            if (conn != null) {
-                conn.close();
-            }
+        // 附加参数
+        Properties properties = new Properties();
+        properties.put("hostnameVerification", "false");
+        properties.put("user", conf.getUsername());
+        properties.put("password", conf.getPassword());
+
+        // do query
+        IPage<MapEntity> page = SqlQueryHelper.executeQuery(conf.getDriver(), conf.getUrl(), conf.getUsername(),
+            conf.getPassword(), properties, null, selectSql, pageable, new ScalarHandler<Integer>(1),
+            "limit " + pageable.getOffset() + "," + pageable.getPageSize());
+
+        // 处理keyword后缀
+        if (page != null && ICollections.hasElements(page.getList())) {
+            page.setList(trimeKeyword(page.getList()));
         }
-        return IPage.<MapEntity>of(pageable, 0, null);
+        return page;
     }
 
     // 优先级要高（低）于ElasticSearchDataReader
     @Override
     public int getOrder() {
         return -1;
-    }
-
-    @Override
-    public Connection getConn(JdbcStorageConf conf) throws Exception {
-        Properties properties = new Properties();
-        properties.put("hostnameVerification", "false");
-        properties.put("user", conf.getUsername());
-        properties.put("password", conf.getPassword());
-        return DataBaseUtil.getConnection(conf.getDriver(), conf.getUrl(), conf.getUsername(), conf.getPassword(),
-            properties, null);
     }
 
     private List<MapEntity> trimeKeyword(List<MapEntity> entitys) {

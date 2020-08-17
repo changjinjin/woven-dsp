@@ -1,11 +1,12 @@
 package com.info.baymax.access.dataapi.client;
 
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.aggregate.AggType;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.result.MapEntity;
+
 import org.junit.Test;
 
 public class PullClientTest {

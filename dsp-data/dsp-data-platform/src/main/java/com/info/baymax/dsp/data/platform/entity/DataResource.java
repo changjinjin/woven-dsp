@@ -4,10 +4,11 @@ import com.info.baymax.common.entity.base.BaseEntity;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.clob.ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsIntegerArrayTypeHandler;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
 import com.info.baymax.dsp.data.platform.mybatis.type.SourceTypeTypeHandler;
-import com.info.baymax.dsp.data.platform.mybatis.type.SqlConfTypeHandler;
+import com.info.baymax.dsp.data.platform.mybatis.type.SqlQueryTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -181,6 +182,6 @@ public class DataResource extends BaseEntity {
     @Comment("sql查询配置信息")
     @Convert(converter = ObjectToStringConverter.class)
     @Column(length = 500)
-    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = SqlConfTypeHandler.class)
-    private SqlConf sqlConf;
+    @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = SqlQueryTypeHandler.class)
+    private SqlQuery query;
 }

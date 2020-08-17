@@ -63,7 +63,7 @@ public class DataSource extends Maintable implements ResourceId, CryptoBean {
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String resourceId;
-    
+
     @ApiModelProperty("是否关联过：0-未关联，1-已经关联")
     @Comment("是否关联过：0-未关联，1-已经关联")
     @Column(length = 11)
@@ -108,5 +108,4 @@ public class DataSource extends Maintable implements ResourceId, CryptoBean {
             }
         }
     }
-
 }

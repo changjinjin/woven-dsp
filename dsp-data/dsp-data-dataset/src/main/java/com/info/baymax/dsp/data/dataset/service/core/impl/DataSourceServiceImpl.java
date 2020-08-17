@@ -3,8 +3,16 @@ package com.info.baymax.dsp.data.dataset.service.core.impl;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.queryapi.exception.ServiceException;
+import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
+import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.result.MapEntity;
+import com.info.baymax.common.queryapi.sql.SqlQuerySql;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.sqlhelper.JdbcConf;
+import com.info.baymax.common.sqlhelper.SqlQueryHelper;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.core.DataSource;
@@ -146,5 +154,22 @@ public class DataSourceServiceImpl extends QueryObjectByResourceOrProjectService
             log.error("get column list error: ", e);
         }
         return list;
+    }
+
+    @Override
+    public IPage<MapEntity> previewBySql(String dataSourceId, SqlQuery query) {
+        try {
+            DataSource dataSource = selectByPrimaryKey(dataSourceId);
+            if (dataSource == null) {
+                throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
+                    String.format("The data source with ID %s does not exist.", dataSourceId));
+            }
+            JdbcConf conf = JdbcConf.from(dataSource.getAttributes());
+            conf.setJarPath(null);
+            return SqlQueryHelper.executeQuery(conf, SqlQuerySql.builder(query), query.getPageable());
+        } catch (Throwable e) {
+            log.error(e.getMessage(), e);
+            throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
+        }
     }
 }

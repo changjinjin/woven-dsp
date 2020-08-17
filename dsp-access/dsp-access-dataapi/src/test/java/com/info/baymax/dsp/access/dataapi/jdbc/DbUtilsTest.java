@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.dataapi.jdbc;
 
-import com.info.baymax.access.dataapi.api.MapEntity;
+import com.info.baymax.common.queryapi.result.MapEntity;
+import com.info.baymax.common.sqlhelper.MapEntityListHandler;
 import com.info.baymax.common.utils.DataBaseUtil;
-import com.info.baymax.dsp.access.dataapi.data.jdbc.MapEntityListHandler;
 import com.jn.langx.util.collection.Collects;
 import com.jn.sqlhelper.apachedbutils.QueryRunner;
 import com.jn.sqlhelper.dialect.pagination.PagingRequest;

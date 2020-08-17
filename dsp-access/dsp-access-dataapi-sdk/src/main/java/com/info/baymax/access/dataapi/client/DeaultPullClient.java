@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.info.baymax.access.dataapi.api.AggRequest;
 import com.info.baymax.access.dataapi.api.DataRequest;
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.access.dataapi.api.RecordRequest;
 import com.info.baymax.access.dataapi.utils.AESUtil;
 import com.info.baymax.access.dataapi.utils.HttpUtils;
@@ -15,6 +14,7 @@ import com.info.baymax.access.dataapi.utils.RSAGenerater;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.result.Response;
 
 public class DeaultPullClient implements PullClient {

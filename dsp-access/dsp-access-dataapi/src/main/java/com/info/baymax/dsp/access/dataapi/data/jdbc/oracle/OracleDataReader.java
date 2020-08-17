@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc.oracle;
 
-import com.info.baymax.access.dataapi.api.MapEntity;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
+import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import com.info.baymax.dsp.access.dataapi.data.jdbc.AbstractJdbcDataReader;
@@ -18,7 +18,7 @@ public class OracleDataReader extends AbstractJdbcDataReader {
 
     @Override
     public IPage<MapEntity> readAgg(StorageConf conf, AggQuery query) throws Exception {
-        return executeQuery(conf, query.getPageable(),
+        return executeQuery((JdbcStorageConf) conf, query.getPageable(),
             QueryParser.getInstance(OracleJdbcQueryParser.class).parseAggQuery((JdbcStorageConf) conf, query));
     }
 }

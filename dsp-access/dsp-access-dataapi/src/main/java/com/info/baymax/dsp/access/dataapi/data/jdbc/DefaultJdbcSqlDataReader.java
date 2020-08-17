@@ -1,11 +1,12 @@
-package com.info.baymax.dsp.access.dataapi.data;
+package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
 import com.google.common.collect.Lists;
 import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
-import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.dsp.access.dataapi.data.DataReadException;
+import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
@@ -16,15 +17,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-@Component("dataReader")
 @Slf4j
-public class DefaultDataReader implements DataReader<MapEntity, MapEntity>, ApplicationContextAware {
-    private final List<MapEntityDataReader> readers = Lists.newArrayList();
+@Component
+public class DefaultJdbcSqlDataReader implements JdbcSqlDataReader, ApplicationContextAware {
+    private final List<JdbcSqlDataReader> readers = Lists.newArrayList();
 
     @Override
     public void setApplicationContext(ApplicationContext context) {
-        Map<String, MapEntityDataReader> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(context,
-            MapEntityDataReader.class, true, false);
+        Map<String, JdbcSqlDataReader> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(context,
+            JdbcSqlDataReader.class, true, false);
         this.readers.addAll(beans.values());
         AnnotationAwareOrderComparator.sort(this.readers);
     }
@@ -35,28 +36,13 @@ public class DefaultDataReader implements DataReader<MapEntity, MapEntity>, Appl
     }
 
     @Override
-    public IPage<MapEntity> readRecord(StorageConf conf, RecordQuery query) throws Exception {
-        try {
-            return findSuitableReader(conf).readRecord(conf, query);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new DataReadException(e.getMessage(), e);
-        }
+    public IPage<MapEntity> readBySql(StorageConf conf, SqlQuery query) throws Exception {
+        return findSuitableReader(conf).readBySql(conf, query);
     }
 
-    @Override
-    public IPage<MapEntity> readAgg(StorageConf conf, AggQuery query) throws Exception {
-        try {
-            return findSuitableReader(conf).readAgg(conf, query);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new DataReadException(e.getMessage(), e);
-        }
-    }
-
-    private MapEntityDataReader findSuitableReader(StorageConf conf) {
+    private JdbcSqlDataReader findSuitableReader(StorageConf conf) {
         if (conf != null && ICollections.hasElements(readers)) {
-            for (MapEntityDataReader reader : readers) {
+            for (JdbcSqlDataReader reader : readers) {
                 boolean supports = reader.supports(conf);
                 log.debug("DataReader:" + reader.getClass().getName() + ", StorageConf:" + conf.getClass().getName()
                     + ", supports:" + supports);

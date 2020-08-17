@@ -15,9 +15,9 @@ import java.util.Map;
 @ApiModel
 @Getter
 public final class SqlQuery extends PageableQuery<SqlQuery>
-        implements SqlQueryBuilder<SqlQuery>, QueryBuilder<SqlQuery> {
+    implements SqlQueryBuilder<SqlQuery>, QueryBuilder<SqlQuery> {
 
-    @ApiModelProperty(value = "SQL模板", hidden = true)
+    @ApiModelProperty(value = "SQL模板", hidden = false)
     private String sqlTemplate;
 
     @ApiModelProperty(value = "参数列表", hidden = true)
