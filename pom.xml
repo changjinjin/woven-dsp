@@ -108,13 +108,13 @@
 
 	<modules>
 		<module>dsp-common</module>
+		<module>dsp-data</module>
+		<module>dsp-gateway</module>
 		<module>dsp-auth</module>
 		<module>dsp-access</module>
 		<module>dsp-job</module>
-		<module>dsp-data</module>
-		<module>dsp-gateway</module>
-		<module>dsp-distribution</module>
 		<module>dsp-sentinel-dashboard</module>
+		<module>dsp-distribution</module>
 	</modules>
 
 	<dependencyManagement>

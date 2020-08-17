@@ -19,12 +19,12 @@
     </properties>
     <modules>
         <module>dsp-common-tools</module>
+        <module>dsp-common-queryapi</module>
         <module>dsp-common-persistence</module>
         <module>dsp-common-swagger</module>
         <module>dsp-common-jdbc</module>
         <module>dsp-common-comp</module>
         <module>dsp-common-webflux</module>
         <module>dsp-common-webmvc</module>
-        <module>dsp-common-queryapi</module>
     </modules>
 </project>

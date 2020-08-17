@@ -19,9 +19,9 @@
     <dependencies>
     </dependencies>
     <modules>
+        <module>dsp-access-dataapi-sdk</module>
         <module>dsp-access-dataapi</module>
         <module>dsp-access-consumer</module>
         <module>dsp-access-platform</module>
-        <module>dsp-access-dataapi-sdk</module>
     </modules>
 </project>
