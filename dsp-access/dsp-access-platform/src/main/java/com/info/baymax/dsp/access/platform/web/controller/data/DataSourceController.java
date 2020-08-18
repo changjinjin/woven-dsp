@@ -47,8 +47,7 @@ public class DataSourceController {
                 }
             }
         }
-        fieldGroup.andEqualTo("type", "DB").andEqualTo("tenantId", SaasContext.getCurrentTenantId())
-            .andEqualTo("isHide", 0);
+        fieldGroup.andEqualTo("type", "DB").andEqualTo("tenantId", SaasContext.getCurrentTenantId());
         return Response.ok(dataSourceService.selectPage(query));
     }
 

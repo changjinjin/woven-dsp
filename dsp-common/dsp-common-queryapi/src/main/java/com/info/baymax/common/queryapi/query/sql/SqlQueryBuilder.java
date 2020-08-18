@@ -26,7 +26,7 @@ public interface SqlQueryBuilder<B extends SqlQueryBuilder<B>> {
      * @param sql 查询列表
      * @return this builder
      */
-    B parameters(Collection<Object> parameters);
+    B parameters(Collection<Parameter> parameters);
 
     /**
      * 添加参数数组
@@ -34,7 +34,7 @@ public interface SqlQueryBuilder<B extends SqlQueryBuilder<B>> {
      * @param parameters 参数数组
      * @return this builder
      */
-    default B parameters(Object... parameters) {
+    default B parameters(Parameter... parameters) {
         return parameters(Arrays.asList(parameters));
     }
 
@@ -44,7 +44,7 @@ public interface SqlQueryBuilder<B extends SqlQueryBuilder<B>> {
      * @param parameters 参数值
      * @return this builder
      */
-    default B parameter(String parameter) {
+    default B parameter(Parameter parameter) {
         return parameters(parameter);
     }
 

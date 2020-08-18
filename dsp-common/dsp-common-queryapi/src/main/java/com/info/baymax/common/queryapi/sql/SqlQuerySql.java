@@ -16,7 +16,8 @@ public class SqlQuerySql extends AbstractQuerySql<SqlQuery> {
 
     protected void build(SqlQuery query) {
         if (valid(query)) {
-            NamingSql namingSql = new NamingSql(query.getSqlTemplate(), query.getParametersMap());
+            String sqlTemplate = query.getSqlTemplate();
+            NamingSql namingSql = new NamingSql(sqlTemplate.replaceAll("#", "?"), query.getParametersMap());
             this.placeholderCountSql = "select count(1) from (" + namingSql.getPlaceholderSql() + ")";
             this.placeholderSql = namingSql.getPlaceholderSql();
             this.paramValues = namingSql.getParamValues();
