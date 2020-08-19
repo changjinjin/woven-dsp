@@ -88,7 +88,7 @@ public abstract class AbstractQuerySql<Q> {
     protected String selectfromTableWhere(String table, FieldGroup fieldGroup) {
         // select column1,column2,column3... from table
         return new StringBuffer().append("SELECT ").append(" %s ").append(from(table)).append(where(fieldGroup))
-                .toString();
+            .toString();
     }
 
     protected String orderBy(LinkedHashSet<Sort> sorts) {
@@ -153,6 +153,9 @@ public abstract class AbstractQuerySql<Q> {
     }
 
     private String parseObjectType(Object obj) {
+        if (obj == null) {
+            return null;
+        }
         if (isArrayType(obj)) {
             parseArrayValue(obj);
         } else if (isNumberType(obj)) {

@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 分析命名SQL语句获取抽象NSQl实例；java(JDBC)提供SQL语句命名参数而是通过?标识参数位置，
- * 通过此对象可以命名参数方式使用SQL语句，命名参数以?开始后跟名称?name
+ * 分析命名SQL语句获取抽象NSQl实例；java(JDBC)提供SQL语句命名参数而是通过?标识参数位置， 通过此对象可以命名参数方式使用SQL语句，命名参数以?开始后跟名称?name
  *
  * <pre>
  * SQL:
@@ -24,6 +23,7 @@ public class NamingSql {
     public NamingSql(String namingSql, Map<String, Object> paramMap) {
         this.namingSql = namingSql;
         this.paramMap = paramMap;
+        parse(namingSql, paramMap);
     }
 
     /**
@@ -115,7 +115,7 @@ public class NamingSql {
             int mapSize = paramMap.size();
             if (names.size() != mapSize) {
                 throw new IllegalArgumentException(
-                        "Wrong number of parameters: expected " + names.size() + ", was given " + mapSize);
+                    "Wrong number of parameters: expected " + names.size() + ", was given " + mapSize);
             }
             paramValues = new Object[mapSize];
             for (int i = 0; i < paramValues.length; i++) {
@@ -126,6 +126,6 @@ public class NamingSql {
 
     protected String trimAndOr(String sql) {
         return StringUtils.removeStartIgnoreCase(StringUtils.removeStartIgnoreCase(StringUtils.trim(sql), "AND "),
-                "OR ");
+            "OR ");
     }
 }

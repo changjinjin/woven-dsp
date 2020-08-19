@@ -3,6 +3,7 @@ package com.info.baymax.common.sqlhelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.info.baymax.common.utils.JsonUtils;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Properties;
@@ -34,9 +35,13 @@ public final class JdbcConf {
     private String url;// "jdbc:mysql:192.168.1.85:3306/test"
     private String user;// "merce"
     private String username;// "merce"
-    private Properties properties;// "merce"
+    private Properties props;// "merce"
 
     public static JdbcConf from(HashMap<String, Object> attributes) {
         return JsonUtils.fromObject(attributes, JdbcConf.class);
+    }
+
+    public String getUsername() {
+        return StringUtils.defaultIfEmpty(username, user);
     }
 }

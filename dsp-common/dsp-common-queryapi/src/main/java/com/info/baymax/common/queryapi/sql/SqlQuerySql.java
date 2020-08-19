@@ -1,6 +1,7 @@
 package com.info.baymax.common.queryapi.sql;
 
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
+import com.info.baymax.common.queryapi.utils.SqlParser;
 
 import java.util.List;
 
@@ -16,11 +17,13 @@ public class SqlQuerySql extends AbstractQuerySql<SqlQuery> {
 
     protected void build(SqlQuery query) {
         if (valid(query)) {
-            String sqlTemplate = query.getSqlTemplate();
-            NamingSql namingSql = new NamingSql(sqlTemplate.replaceAll("#", "?"), query.getParametersMap());
+            String sqlTemplate = SqlParser.replaceParameters(SqlParser.trim(query.getSqlTemplate()), "?");
+            NamingSql namingSql = new NamingSql(sqlTemplate, query.getParametersMap());
             this.placeholderCountSql = "select count(1) from (" + namingSql.getPlaceholderSql() + ")";
             this.placeholderSql = namingSql.getPlaceholderSql();
-            this.paramValues = namingSql.getParamValues();
+            if (namingSql.getParamValues() != null) {
+                this.paramValues = namingSql.getParamValues();
+            }
         }
     }
 

@@ -24,7 +24,7 @@ public class SqlQueryHelper {
     private static final MapEntityListHandler rsh = new MapEntityListHandler();
 
     public static Connection getConn(JdbcConf conf) throws Exception {
-        return getConn(conf.getDriver(), conf.getUrl(), conf.getUsername(), conf.getPassword(), conf.getProperties(),
+        return getConn(conf.getDriver(), conf.getUrl(), conf.getUsername(), conf.getPassword(), conf.getProps(),
             conf.getJarPath());
     }
 
