@@ -171,4 +171,11 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String auditMind;
 
+    @ApiModelProperty("数据类型:DATASET, DATASOURCE")
+    @Comment("数据类型:DATASET, DATASOURCE")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @ColumnDefault("'DATASET'")
+    private String sourceType;
+
 }

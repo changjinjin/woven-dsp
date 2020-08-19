@@ -1,13 +1,14 @@
 package com.info.baymax.access.dataapi.client;
 
+import org.junit.Test;
+
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.aggregate.AggType;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.queryapi.result.MapEntity;
-
-import org.junit.Test;
 
 public class PullClientTest {
 
@@ -513,6 +514,99 @@ public class PullClientTest {
             IPage<MapEntity> pullRecords = client.pullAggs(accessKey, publicKey, dataServiceId, encrypted, hosts,
                 query);
             System.out.println(pullRecords);
+        } catch (PullClientException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * <pre>
+     * <b>预期SQL语句：</b>
+     *  SELECT
+     *  	id,name,age
+     *  FROM
+     *  	#{dataServiceId}
+     *  WHERE
+     *  	name = #{name}
+     *  	AND age > #{age}
+     *  LIMIT
+     *      0,10
+     * </pre>
+     *
+     * <pre>
+     * <b>请求报文：</b>
+     * {
+     *     "accessKey": "08aa0825-feff-4784-aff6-537aab6ff997",
+     *     "dataServiceId": 743311142591397900,
+     *     "timestamp": 1597392737530,
+     *     "encrypted": true,
+     *     "query": {
+     *         "aggFields": [
+     *             {
+     *                 "name": "name",
+     *                 "alias": "zhangsan"
+     *             },
+     *             {
+     *                 "name": "age",
+     *                 "value": 20
+     *             }
+     *         ],
+     *         "pageable": {
+     *             "pageable": true,
+     *             "pageNum": 1,
+     *             "pageSize": 10
+     *         }
+     *     }
+     * }
+     * </pre>
+     *
+     * <pre>
+     * <b>响应报文:</b>
+     *  {
+     *      "ok": true,
+     *      "status": 0,
+     *      "message": "Request successfully.",
+     *      "details": "",
+     *      "content": {
+     *          "pageable": true,
+     *          "pageNum": 1,
+     *          "pageSize": 10,
+     *          "totalCount": "3",
+     *          "totalPage": 1,
+     *          "list": [
+     *              {
+     *                  "id": 1,
+     *                  "name": "zhangsan",
+     *                  "age": "21"
+     *              },
+     *              {
+     *                  "id": 12,
+     *                  "name": "zhangsan",
+     *                  "age": "22"
+     *              },
+     *              {
+     *                  "id": 16,
+     *                  "name": "zhangsan",
+     *                  "age": "28"
+     *              }
+     *          ],
+     *          "nextPage": true,
+     *          "prevPage": false,
+     *          "offset": "0"
+     *      }
+     *  }
+     * </pre>
+     */
+    @Test
+    public void pullBySql() {
+        try {
+            SqlQuery query = SqlQuery.builder()//
+                .parameter("name", "zhangsan")//
+                .parameter("age", 20)//
+                .page(1, 20)// 分页
+                ;
+            IPage<MapEntity> pullBySql = client.pullBySql(accessKey, publicKey, dataServiceId, encrypted, hosts, query);
+            System.out.println(pullBySql);
         } catch (PullClientException e) {
             e.printStackTrace();
         }

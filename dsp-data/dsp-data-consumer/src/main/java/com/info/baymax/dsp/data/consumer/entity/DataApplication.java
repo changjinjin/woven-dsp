@@ -6,6 +6,7 @@ import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -129,4 +130,11 @@ public class DataApplication extends BaseEntity {
     @Column(length = 255)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private String auditMind;
+    
+    @ApiModelProperty("数据类型:DATASET, DATASOURCE")
+    @Comment("数据类型:DATASET, DATASOURCE")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @ColumnDefault("'DATASET'")
+    private String sourceType;
 }

@@ -1,21 +1,23 @@
 package com.info.baymax.access.dataapi.client;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.info.baymax.access.dataapi.api.AggRequest;
 import com.info.baymax.access.dataapi.api.DataRequest;
 import com.info.baymax.access.dataapi.api.RecordRequest;
+import com.info.baymax.access.dataapi.api.SqlRequest;
 import com.info.baymax.access.dataapi.utils.AESUtil;
 import com.info.baymax.access.dataapi.utils.HttpUtils;
 import com.info.baymax.access.dataapi.utils.RSAGenerater;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.result.Response;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DeaultPullClient implements PullClient {
     private final String baseUrl;
@@ -62,6 +64,13 @@ public class DeaultPullClient implements PullClient {
                                      String hosts, AggQuery query) throws PullClientException {
         return pullData("pullAggs", accessKey, publicKey, encrypted, hosts,
             new AggRequest(accessKey, dataServiceId, System.currentTimeMillis(), encrypted, query));
+    }
+
+    @Override
+    public IPage<MapEntity> pullBySql(String accessKey, String publicKey, Long dataServiceId, boolean encrypted,
+                                      String hosts, SqlQuery query) throws PullClientException {
+        return pullData("pullBySql", accessKey, publicKey, encrypted, hosts,
+            new SqlRequest(accessKey, dataServiceId, System.currentTimeMillis(), encrypted, query));
     }
 
     private IPage<MapEntity> pullData(String queryName, String accessKey, String publicKey, boolean encrypted,

@@ -39,14 +39,20 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
 
     @Override
     public DataResource save(DataResource t) {
-        // 检查数据集数据是否存在并修改数据集的关联状态
-        Dataset dataset = datasetService.selectByPrimaryKey(t.getDatasetId());
-        if (dataset == null) {
-            throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "绑定的数据集记录不存在或者已经过期。");
+        switch (t.getSourceType()) {
+            case DATASOURCE:
+                // TODO nothing
+                break;
+            default:
+                // 检查数据集数据是否存在并修改数据集的关联状态
+                Dataset dataset = datasetService.selectByPrimaryKey(t.getDatasetId());
+                if (dataset == null) {
+                    throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "绑定的数据集记录不存在或者已经过期。");
+                }
+                dataset.setIsRelated(YesNoType.YES.getValue());
+                datasetService.updateByPrimaryKeySelective(dataset);
+                break;
         }
-        dataset.setIsRelated(YesNoType.YES.getValue());
-        datasetService.updateByPrimaryKeySelective(dataset);
-
         return DataResourceService.super.save(t);
     }
 

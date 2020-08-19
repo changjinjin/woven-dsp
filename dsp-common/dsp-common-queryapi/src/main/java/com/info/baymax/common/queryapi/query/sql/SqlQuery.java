@@ -12,6 +12,7 @@ import com.info.baymax.common.queryapi.query.QueryBuilder;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,14 @@ public final class SqlQuery extends PageableQuery<SqlQuery>
 
     @ApiModelProperty(value = "参数列表")
     private List<Parameter> parameters;
+
+    public static SqlQuery builder() {
+        return new SqlQuery();
+    }
+
+    public static SqlQuery builder(SqlQuery query) {
+        return query == null ? builder() : query;
+    }
 
     @Override
     public SqlQuery sqlTemplate(String sqlTemplate) {
@@ -79,6 +88,7 @@ public final class SqlQuery extends PageableQuery<SqlQuery>
 @ApiModel
 @Setter
 @Getter
+@Builder
 class Parameter implements Serializable {
     private static final long serialVersionUID = -2410834598362893279L;
 

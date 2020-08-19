@@ -31,7 +31,7 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
     }
 
     public static RecordQuery builder(RecordQuery query) {
-        return query == null ? new RecordQuery() : query;
+        return query == null ? builder() : query;
     }
 
     public RecordQuery allProperties(Collection<String> allProperties) {
@@ -66,7 +66,7 @@ public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements
         }
         if (select == null || select.isEmpty()) {
             throw new RuntimeException("no suitable fields for query with allProperties:" + allProperties
-                    + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
+                + ", selectProperties:" + selectProperties + ",excludeProperties:" + excludeProperties);
         }
         return new ArrayList<String>(select);
     }
