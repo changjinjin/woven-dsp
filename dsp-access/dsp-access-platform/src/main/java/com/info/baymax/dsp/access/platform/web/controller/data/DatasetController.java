@@ -32,6 +32,16 @@ public class DatasetController {
     @Autowired
     private DatasetService datasetService;
 
+    @ApiOperation(value = "资源目录查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
+    @PostMapping("/resDirTree")
+    public Response<List<ResourceDesc>> resourceDirTree() {
+        ExampleQuery query = ExampleQuery.builder(ResourceDesc.class)//
+            .unpaged()// 不分页，查所有
+            .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", SaasContext.getCurrentTenantId())
+                .andEqualTo("resType", "dataset_dir"));
+        return Response.ok(resourceDescService.fetchTree(resourceDescService.selectList(query)));
+    }
+
     @ApiOperation(value = "分页查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
     @PostMapping("/page")
     public Response<IPage<Dataset>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
