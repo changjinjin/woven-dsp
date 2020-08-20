@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @Getter
@@ -30,5 +31,9 @@ public class JdbcStorageConf extends StorageConf {
     private String url;// "jdbc:mysql:192.168.1.85:3306/test"
     private String user;// "merce"
     private String username;// "merce"
+
+    public String getUsername() {
+        return StringUtils.defaultIfEmpty(username, user);
+    }
 
 }

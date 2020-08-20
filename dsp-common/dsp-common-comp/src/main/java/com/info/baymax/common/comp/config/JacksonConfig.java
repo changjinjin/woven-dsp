@@ -31,6 +31,7 @@ public class JacksonConfig {
         }
         m.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
         m.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         // m.setSerializationInclusion(Include.NON_NULL);
 
         SimpleModule simpleModule = new SimpleModule();

@@ -110,10 +110,6 @@ public class DataResource extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     private Long categoryId;
 
-    @ApiModelProperty(value = "存储目录")
-    @Transient
-    private DataCategory category;
-
     @ApiModelProperty(value = "数据集对应的编码,默认utf8")
     @Comment("数据集对应的编码,默认utf8")
     @Column(length = 255, nullable = true)

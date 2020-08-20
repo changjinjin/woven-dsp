@@ -1,20 +1,13 @@
 package com.info.baymax.common.queryapi.query.sql;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.info.baymax.common.queryapi.query.PageableQuery;
 import com.info.baymax.common.queryapi.query.QueryBuilder;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.*;
 
 @ApiModel
 @Getter
@@ -88,6 +81,8 @@ public final class SqlQuery extends PageableQuery<SqlQuery>
 @ApiModel
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 class Parameter implements Serializable {
     private static final long serialVersionUID = -2410834598362893279L;
