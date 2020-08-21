@@ -55,7 +55,7 @@
 
 		<!-- copy dataapi client -->
 		<fileSet>
-            <directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-sdk/target/lib/</directory>
+			<directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-sdk/target/lib/</directory>
 			<outputDirectory>dsp-access-dataapi-client/lib</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
@@ -66,7 +66,7 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
-            <directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-sdk/target/</directory>
+			<directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi-sdk/target/</directory>
 			<outputDirectory>dsp-access-dataapi-client/lib</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
@@ -77,7 +77,7 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
-            <directory>
+			<directory>
                 ${project.parent.basedir}/dsp-access/dsp-access-dataapi-sdk/src/test/java/com/info/baymax/access/dataapi/client/
             </directory>
 			<outputDirectory>dsp-access-dataapi-client/demo</outputDirectory>
@@ -99,12 +99,34 @@
 			<directory>${project.parent.basedir}/dsp-access/dsp-access-dataapi/target/lib/</directory>
 			<outputDirectory>libs/access-dataapi</outputDirectory>
 			<fileMode>666</fileMode>
+			<excludes>
+				<exclude>elasticsearch-6.8.6.jar</exclude>
+			</excludes>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>./lib</directory>
+			<outputDirectory>libs/access-dataapi</outputDirectory>
+			<fileMode>666</fileMode>
 			<includes>
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
 		<fileSet>
 			<directory>${project.parent.basedir}/dsp-access/dsp-access-platform/target/lib/</directory>
+			<outputDirectory>libs/access-platform</outputDirectory>
+			<fileMode>666</fileMode>
+			<excludes>
+				<exclude>elasticsearch-6.8.6.jar</exclude>
+			</excludes>
+			<includes>
+				<include>*.jar</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>./lib</directory>
 			<outputDirectory>libs/access-platform</outputDirectory>
 			<fileMode>666</fileMode>
 			<includes>
