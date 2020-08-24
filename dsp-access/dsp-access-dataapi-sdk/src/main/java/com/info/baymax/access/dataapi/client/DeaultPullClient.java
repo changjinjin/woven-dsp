@@ -91,7 +91,12 @@ public class DeaultPullClient implements PullClient {
             if (response.isOk()) {
                 Object object = response.getContent();
                 if (object != null) {
-                    String content = object.toString();
+                    String content = null;
+                    if (!(object instanceof String)) {
+                        content = gson.toJson(object);
+                    } else {
+                        content = (String) object;
+                    }
                     if (content != null && !content.isEmpty()) {
                         if (encrypted) {
                             content = AESUtil.decrypt(content, secertkey);
