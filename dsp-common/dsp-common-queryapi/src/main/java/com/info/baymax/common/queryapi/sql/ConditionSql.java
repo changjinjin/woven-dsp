@@ -29,7 +29,7 @@ public class ConditionSql extends NamingSql {
                     if (item instanceof FieldGroup) {
                         FieldGroup group = (FieldGroup) item;
                         buf.append(" ").append(group.getAndOr().name().toLowerCase()).append(" (")
-                                .append(trimAndOr(where(group))).append(")");
+                            .append(trimAndOr(where(group))).append(")");
                     } else {
                         Field field = (Field) item;
                         buf.append(field(field));
@@ -45,6 +45,14 @@ public class ConditionSql extends NamingSql {
         String property = field.getName();
         Operator oper = field.getOper();
         Object[] values = field.getValue();
+        if (property == null || property.length() == 0) {
+            return "";
+            // throw new BizException(ErrType.BAD_REQUEST, "Error query field: empty property name.");
+        }
+        if (oper == null) {
+            return "";
+            // throw new BizException(ErrType.BAD_REQUEST, "Error query field: empty property oper.");
+        }
         switch (andOr) {
             case OR:
                 switch (oper) {
@@ -123,7 +131,7 @@ public class ConditionSql extends NamingSql {
         String paramName = paramName();
         paramMap.put(paramName, value);
         return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(operator)
-                .append(" ?").append(paramName).toString();
+            .append(" ?").append(paramName).toString();
     }
 
     private String andCondition(String property, String operator, Object value) {
@@ -141,7 +149,7 @@ public class ConditionSql extends NamingSql {
         paramMap.put(paramName2, value2);
         StringBuffer buf = new StringBuffer();
         buf.append(" ").append(andOr).append(" ").append(property).append(" ").append(not).append(" ")
-                .append("BETWEEN ?").append(paramName1).append(" AND ?").append(paramName2);
+            .append("BETWEEN ?").append(paramName1).append(" AND ?").append(paramName2);
         return buf.toString();
     }
 
@@ -149,7 +157,7 @@ public class ConditionSql extends NamingSql {
         String paramName = paramName();
         paramMap.put(paramName, StringUtils.join(values, ","));
         return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(not)
-                .append("IN (?").append(paramName).append(")").toString();
+            .append("IN (?").append(paramName).append(")").toString();
     }
 
     private String andIsNull(String property) {
@@ -266,7 +274,7 @@ public class ConditionSql extends NamingSql {
 
     public static void main(String[] args) {
         FieldGroup fieldGroup = FieldGroup.builder().andEqualTo("name", "zhangsan").andLike("name", "%li%")
-                .orGreaterThan("age", 12);
+            .orGreaterThan("age", 12);
         ConditionSql build = ConditionSql.build(fieldGroup);
         System.out.println(build.placeholderSql);
         System.out.println(Arrays.toString(build.paramValues));
