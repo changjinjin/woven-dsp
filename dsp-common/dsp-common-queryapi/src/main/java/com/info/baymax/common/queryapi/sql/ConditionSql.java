@@ -154,10 +154,17 @@ public class ConditionSql extends NamingSql {
     }
 
     private String inCondition(String andOr, String property, String not, Iterable<?> values) {
-        String paramName = paramName();
-        paramMap.put(paramName, StringUtils.join(values, ","));
-        return new StringBuffer().append(" ").append(andOr).append(" ").append(property).append(" ").append(not)
-            .append("IN (?").append(paramName).append(")").toString();
+        // String paramName = paramName();
+        // paramMap.put(paramName, StringUtils.join(values, ","));
+        StringBuffer buff = new StringBuffer();
+        buff.append(" ").append(andOr).append(" ").append(property).append(" ").append(not).append("IN (");
+        for (Object object : values) {
+            String paramName = paramName();
+            paramMap.put(paramName, object);
+            buff.append("?").append(paramName).append(",");
+        }
+        buff = buff.replace(buff.length() - 1, buff.length(), "");
+        return buff.append(")").toString();
     }
 
     private String andIsNull(String property) {
@@ -273,11 +280,15 @@ public class ConditionSql extends NamingSql {
     }
 
     public static void main(String[] args) {
-        FieldGroup fieldGroup = FieldGroup.builder().andEqualTo("name", "zhangsan").andLike("name", "%li%")
-            .orGreaterThan("age", 12);
-        ConditionSql build = ConditionSql.build(fieldGroup);
-        System.out.println(build.placeholderSql);
-        System.out.println(Arrays.toString(build.paramValues));
+        // FieldGroup fieldGroup = FieldGroup.builder().andEqualTo("name", "zhangsan").andLike("name", "%li%")
+        // .orGreaterThan("age", 12);
+        // ConditionSql build = ConditionSql.build(fieldGroup);
+        // System.out.println(build.placeholderSql);
+        // System.out.println(Arrays.toString(build.paramValues));
+        StringBuffer buff = new StringBuffer();
+        buff.append("sdhdoieoijerojreoi").append(",");
+        buff = buff.replace(buff.length() - 1, buff.length(), "");
+        System.out.println(buff.toString());
     }
 
 }
