@@ -1,7 +1,11 @@
 package com.info.baymax.dsp.access.dataapi.service.impl;
 
 import com.google.common.collect.Maps;
-import com.info.baymax.access.dataapi.api.*;
+import com.google.common.collect.Sets;
+import com.info.baymax.access.dataapi.api.AggRequest;
+import com.info.baymax.access.dataapi.api.DataRequest;
+import com.info.baymax.access.dataapi.api.RecordRequest;
+import com.info.baymax.access.dataapi.api.SqlRequest;
 import com.info.baymax.common.queryapi.exception.ControllerException;
 import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
@@ -35,7 +39,6 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.entity.SourceType;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceService;
-import com.inforefiner.repackaged.com.google.common.collect.Sets;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
