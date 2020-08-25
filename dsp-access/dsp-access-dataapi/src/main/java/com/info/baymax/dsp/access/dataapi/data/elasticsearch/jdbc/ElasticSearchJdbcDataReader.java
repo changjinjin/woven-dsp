@@ -85,7 +85,7 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
         final MapEntity newEntity = MapEntity.build();
         entity.forEach((k, v) -> {
             if (k.endsWith(".keyword")) {
-                newEntity.put(StringUtils.stripEnd(k, ".keyword"), v);
+                newEntity.put(StringUtils.removeEnd(k, ".keyword"), v);
             } else {
                 newEntity.put(k, v);
             }

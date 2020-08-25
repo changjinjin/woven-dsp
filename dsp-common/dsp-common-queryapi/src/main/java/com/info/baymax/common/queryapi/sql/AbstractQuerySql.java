@@ -98,7 +98,7 @@ public abstract class AbstractQuerySql<Q> {
             for (Sort sort : sorts) {
                 buf.append(sort.getName()).append(" ").append(sort.getOrder()).append(", ");
             }
-            return " " + StringUtils.stripEnd(buf.toString().trim(), ",");
+            return " " + StringUtils.removeEnd(buf.toString().trim(), ",");
         }
         return "";
     }

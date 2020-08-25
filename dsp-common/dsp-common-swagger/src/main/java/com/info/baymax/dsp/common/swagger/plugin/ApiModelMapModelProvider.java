@@ -145,8 +145,8 @@ public class ApiModelMapModelProvider implements OperationModelsProviderPlugin {
     }
 
     public String genClassName(String rmp, String modelName) {
-        rmp = StringUtils.stripStart(rmp, "/");
-        rmp = StringUtils.stripEnd(rmp, "/");
+        rmp = StringUtils.removeStart(rmp, "/");
+        rmp = StringUtils.removeEnd(rmp, "/");
         rmp = StringUtils.replaceChars(rmp, "{", "");
         rmp = StringUtils.replaceChars(rmp, "}", "");
         rmp = StringUtils.replaceChars(rmp, "/", "_");
