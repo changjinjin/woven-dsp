@@ -56,12 +56,12 @@ public class SqlQueryHelper {
 
     public static IPage<MapEntity> executeQuery(Connection conn, AbstractQuerySql<?> selectSql, IPageable pageable)
         throws Exception {
+        PagingRequest<?, MapEntity> request = null;
         try {
             log.debug("===>>start a sql query <<=== ");
             debug(selectSql, pageable);
             if (selectSql.isValid() && conn != null) {
-                PagingRequest<?, MapEntity> request = SqlPaginations.preparePagination(pageable.getPageNum(),
-                    pageable.getPageSize());
+                request = SqlPaginations.preparePagination(pageable.getPageNum(), pageable.getPageSize());
                 List<MapEntity> list = runner.query(conn, selectSql.getPlaceholderSql(), rsh,
                     selectSql.getParamValues());
                 log.debug("===>>query result size:" + list.size());
@@ -77,6 +77,9 @@ public class SqlQueryHelper {
         } finally {
             if (conn != null) {
                 conn.close();
+            }
+            if (request != null) {
+                request.clear(true);
             }
         }
         return IPage.<MapEntity>of(pageable, 0, null);
