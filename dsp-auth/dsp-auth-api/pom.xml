@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>dsp-auth</artifactId>
-        <version>0.1.2</version>
+        <version>${baymax-dsp.version}</version>
     </parent>
     <artifactId>dsp-auth-api</artifactId>
     <name>dsp-auth-api</name>

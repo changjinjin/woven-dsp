@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>dsp-access</artifactId>
-        <version>0.1.2</version>
+        <version>${baymax-dsp.version}</version>
     </parent>
     <artifactId>dsp-access-dataapi</artifactId>
     <name>dsp-access-dataapi</name>
@@ -158,6 +158,45 @@
             <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
             <artifactId>opendistro-sql-jdbc</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>${hbase.version}</version>
+            <!-- <scope>provided</scope> -->
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>protobuf-java</artifactId>
+                    <groupId>com.google.protobuf</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+                <!-- <exclusion> <artifactId>hadoop-common</artifactId> <groupId>org.apache.hadoop</groupId>
+                    </exclusion> -->
+                <exclusion>
+                    <artifactId>hadoop-auth</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hadoop-mapreduce-client-core</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>io.netty</artifactId>
+                    <groupId>netty-all</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

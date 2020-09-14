@@ -6,7 +6,7 @@
 
 	<groupId>com.info.baymax</groupId>
 	<artifactId>baymax-dsp</artifactId>
-	<version>0.1.2</version>
+	<version>${baymax-dsp.version}</version>
 	<packaging>pom</packaging>
 
 	<name>baymax-dsp</name>
@@ -103,6 +103,7 @@
 
 		<micrometer-core.version>1.1.4</micrometer-core.version>
 
+		<baymax-dsp.version>0.1.2</baymax-dsp.version>
 		<baymax.version>3.1</baymax.version>
 	</properties>
 
