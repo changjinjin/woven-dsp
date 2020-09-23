@@ -11,9 +11,9 @@ import java.util.Set;
 
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.type.JdbcType;
+import org.joda.time.DateTime;
 
 import com.info.baymax.common.queryapi.query.field.FieldItem;
-import com.jn.langx.util.jodatime.DateTime;
 
 import lombok.Getter;
 import lombok.Setter;
