@@ -3,14 +3,17 @@ package com.info.baymax.common.mybatis.mapper.example;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.type.JdbcType;
 
 import com.info.baymax.common.queryapi.query.field.FieldItem;
+import com.jn.langx.util.jodatime.DateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -349,6 +352,30 @@ public class Example implements IDynamicTableName {
             }
         }
 
+        private Class<?> javaType(String property) {
+            if (propertyMap.containsKey(property)) {
+                EntityColumn entityColumn = propertyMap.get(property);
+                Class<?> javaType = entityColumn.getJavaType();
+                if (javaType == null) {
+                    JdbcType jdbcType = entityColumn.getJdbcType();
+                    if (jdbcType != null) {
+                        switch (jdbcType) {
+                            case DATE:
+                            case TIMESTAMP:
+                                return Date.class;
+                            default:
+                        }
+                    }
+                }
+                return javaType;
+            } else if (exists) {
+                throw new MapperException(
+                    "The current entity class does not contain a property named '" + property + "'.");
+            } else {
+                return null;
+            }
+        }
+
         protected void addCriterion(Criterion criterion) {
             if (criterion != null) {
                 counter(criterion);
@@ -431,6 +458,29 @@ public class Example implements IDynamicTableName {
             addCriterion(new Criterion(condition, value, true));
         }
 
+        /**
+         * 将传进来的值转换成实际需要的类型，避免mybatis处理出错
+         *
+         * @param property 属性名
+         * @param value    参数值
+         * @return 转化后的结果
+         */
+        private Object evalValue(String property, Object value) {
+            try {
+                Class<?> javaType = javaType(property);
+                if (javaType != null && javaType.isAssignableFrom(Date.class)) {
+                    if (value instanceof String) {
+                        value = DateTime.parse((String) value).toDate();
+                    } else if (value instanceof Long) {
+                        value = new Date((long) value);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return value;
+        }
+
         protected void addOrCriterion(String condition, Object value1, Object value2, String property) {
             if (value1 == null || value2 == null) {
                 if (notNull) {
@@ -456,32 +506,32 @@ public class Example implements IDynamicTableName {
         }
 
         public Criteria andEqualTo(String property, Object value) {
-            addCriterion(column(property) + " =", value, property(property));
+            addCriterion(column(property) + " =", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria andNotEqualTo(String property, Object value) {
-            addCriterion(column(property) + " <>", value, property(property));
+            addCriterion(column(property) + " <>", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria andGreaterThan(String property, Object value) {
-            addCriterion(column(property) + " >", value, property(property));
+            addCriterion(column(property) + " >", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria andGreaterThanOrEqualTo(String property, Object value) {
-            addCriterion(column(property) + " >=", value, property(property));
+            addCriterion(column(property) + " >=", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria andLessThan(String property, Object value) {
-            addCriterion(column(property) + " <", value, property(property));
+            addCriterion(column(property) + " <", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria andLessThanOrEqualTo(String property, Object value) {
-            addCriterion(column(property) + " <=", value, property(property));
+            addCriterion(column(property) + " <=", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
@@ -496,12 +546,14 @@ public class Example implements IDynamicTableName {
         }
 
         public Criteria andBetween(String property, Object value1, Object value2) {
-            addCriterion(column(property) + " between", value1, value2, property(property));
+            addCriterion(column(property) + " between", evalValue(property, value1), evalValue(property, value2),
+                property(property));
             return (Criteria) this;
         }
 
         public Criteria andNotBetween(String property, Object value1, Object value2) {
-            addCriterion(column(property) + " not between", value1, value2, property(property));
+            addCriterion(column(property) + " not between", evalValue(property, value1), evalValue(property, value2),
+                property(property));
             return (Criteria) this;
         }
 
@@ -598,32 +650,32 @@ public class Example implements IDynamicTableName {
         }
 
         public Criteria orEqualTo(String property, Object value) {
-            addOrCriterion(column(property) + " =", value, property(property));
+            addOrCriterion(column(property) + " =", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria orNotEqualTo(String property, Object value) {
-            addOrCriterion(column(property) + " <>", value, property(property));
+            addOrCriterion(column(property) + " <>", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria orGreaterThan(String property, Object value) {
-            addOrCriterion(column(property) + " >", value, property(property));
+            addOrCriterion(column(property) + " >", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria orGreaterThanOrEqualTo(String property, Object value) {
-            addOrCriterion(column(property) + " >=", value, property(property));
+            addOrCriterion(column(property) + " >=", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria orLessThan(String property, Object value) {
-            addOrCriterion(column(property) + " <", value, property(property));
+            addOrCriterion(column(property) + " <", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
         public Criteria orLessThanOrEqualTo(String property, Object value) {
-            addOrCriterion(column(property) + " <=", value, property(property));
+            addOrCriterion(column(property) + " <=", evalValue(property, value), property(property));
             return (Criteria) this;
         }
 
@@ -638,12 +690,14 @@ public class Example implements IDynamicTableName {
         }
 
         public Criteria orBetween(String property, Object value1, Object value2) {
-            addOrCriterion(column(property) + " between", value1, value2, property(property));
+            addOrCriterion(column(property) + " between", evalValue(property, value1), evalValue(property, value2),
+                property(property));
             return (Criteria) this;
         }
 
         public Criteria orNotBetween(String property, Object value1, Object value2) {
-            addOrCriterion(column(property) + " not between", value1, value2, property(property));
+            addOrCriterion(column(property) + " not between", evalValue(property, value1), evalValue(property, value2),
+                property(property));
             return (Criteria) this;
         }
 
