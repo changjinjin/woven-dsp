@@ -8,104 +8,307 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.*;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
 
 public class JsonUtils {
 
-	private static final ObjectMapper mapper = buildObjectMapper(false);
+    private static final ObjectMapper mapper = buildObjectMapper(false);
 
-	private JsonUtils() {
-	}
+    private JsonUtils() {
+    }
 
-	public static String toJson(Object obj) {
-		return toJson(obj, false);
-	}
+    public static ObjectMapper buildObjectMapper(boolean prettyJson) {
+        ObjectMapper m = new ObjectMapper();
+        if (prettyJson) {
+            m.enable(SerializationFeature.INDENT_OUTPUT);
+        }
+        m.setSerializationInclusion(Include.NON_NULL);
+        m.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
+        m.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        m.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+        return m;
+    }
 
-	public static String toJson(Object obj, boolean pretty) {
-		try {
-			if (pretty) {
-				mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			}
-			return mapper.writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @SuppressWarnings("rawtypes")
+    public static <C extends Collection, V> JavaType contructCollectionType(Class<C> collectionClass,
+                                                                            Class<V> elementClass) {
+        return mapper.getTypeFactory().constructCollectionType(collectionClass, elementClass);
+    }
 
-	public static <T> T fromJson(String json, Class<T> typeClass) {
-		if (json == null) {
-			throw new IllegalArgumentException("json string should not be null");
-		}
-		try {
-			return mapper.readValue(json, typeClass);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @SuppressWarnings("rawtypes")
+    public static <M extends Map, K, V> JavaType contructMapType(Class<M> mapClass, Class<K> keyClass,
+                                                                 Class<V> valueClass) {
+        return mapper.getTypeFactory().constructMapType(mapClass, keyClass, valueClass);
+    }
 
-	public static <T> T fromJson(String json, JavaType valueType) {
-		if (json == null) {
-			throw new IllegalArgumentException("json string should not be null");
-		}
-		try {
-			return mapper.readValue(json, valueType);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public static JavaType constructParametricType(Class<?> parametrized, Class<?>... parameterClasses) {
+        return mapper.getTypeFactory().constructParametricType(parametrized, parameterClasses);
+    }
 
-	public static <T> T fromJson(String json, TypeReference<T> typeReference) {
-		if (json == null) {
-			throw new IllegalArgumentException("json string should not be null");
-		}
-		try {
-			return mapper.readValue(json, typeReference);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public static <T> T fromJson(String src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static <M extends Map<K, V>, K, V> M fromJson(String json, Class<M> mCkass, Class<K> kClass,
-			Class<V> vClass) {
-		return fromJson(json, contructMapType(mCkass, kClass, vClass));
-	}
+    public static <T> T fromJson(String src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static <C extends Collection<O>, O> C fromJson(String json, Class<C> cClass, Class<O> oClass) {
-		return fromJson(json, contructCollectionType(cClass, oClass));
-	}
+    public static <T> T fromJson(String src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@SuppressWarnings("rawtypes")
-	public static JavaType contructCollectionType(Class<? extends Collection> collectionClass, Class<?> elementClass) {
-		return mapper.getTypeFactory().constructCollectionType(collectionClass, elementClass);
-	}
+    public static <T> T fromJson(URL src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@SuppressWarnings("rawtypes")
-	public static JavaType contructMapType(Class<? extends Map> mapClass, Class<?> keyClass, Class<?> valueClass) {
-		return mapper.getTypeFactory().constructMapType(mapClass, keyClass, valueClass);
-	}
+    public static <T> T fromJson(URL src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static JavaType constructParametricType(Class<?> parametrized, Class<?>... parameterClasses) {
-		return mapper.getTypeFactory().constructParametricType(parametrized, parameterClasses);
-	}
+    public static <T> T fromJson(URL src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static <T> T fromObject(Object obj, Class<T> typeClass) {
-		return fromJson(toJson(obj), typeClass);
-	}
+    public static <T> T fromJson(File src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static <T> T fromObject(Object obj, TypeReference<T> typeReference) {
-		return fromJson(toJson(obj), typeReference);
-	}
+    public static <T> T fromJson(File src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static ObjectMapper buildObjectMapper(boolean prettyJson) {
-		ObjectMapper m = new ObjectMapper();
-		if (prettyJson) {
-			m.enable(SerializationFeature.INDENT_OUTPUT);
-		}
-		m.setSerializationInclusion(Include.NON_NULL);
-		m.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
-		m.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		m.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-		return m;
-	}
+    public static <T> T fromJson(File src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(Reader src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(Reader src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(Reader src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(InputStream src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(InputStream src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(InputStream src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(byte[] src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(byte[] src, int offset, int len, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, offset, len, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(byte[] src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(byte[] src, int offset, int len, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, offset, len, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(byte[] src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(byte[] src, int offset, int len, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, offset, len, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(DataInput src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromJson(DataInput src, JavaType valueType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.readValue(src, valueType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromObject(Object obj, Class<T> typeClass) {
+        return fromJson(toJson(obj), typeClass);
+    }
+
+    public static <T> T fromObject(Object obj, TypeReference<T> typeReference) {
+        return fromJson(toJson(obj), typeReference);
+    }
+
+    public static void write(File dest, Object value) {
+        Assert.notNull(dest, "dest should not be null");
+        try {
+            mapper.writeValue(dest, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void write(OutputStream dest, Object value) {
+        Assert.notNull(dest, "dest should not be null");
+        try {
+            mapper.writeValue(dest, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void write(DataOutput dest, Object value) {
+        Assert.notNull(dest, "dest should not be null");
+        try {
+            mapper.writeValue(dest, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String toJson(Object value) {
+        return toJson(value, false);
+    }
+
+    public static String toJson(Object value, boolean pretty) {
+        try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            return mapper.writeValueAsString(value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static byte[] toByte(Object value) {
+        try {
+            mapper.disable(SerializationFeature.INDENT_OUTPUT);
+            return mapper.writeValueAsBytes(value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
