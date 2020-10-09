@@ -48,6 +48,15 @@ public class JsonUtils {
         return mapper.getTypeFactory().constructParametricType(parametrized, parameterClasses);
     }
 
+    public static <M extends Map<K, V>, K, V> M fromJson(String json, Class<M> mCkass, Class<K> kClass,
+                                                         Class<V> vClass) {
+        return fromJson(json, contructMapType(mCkass, kClass, vClass));
+    }
+
+    public static <C extends Collection<O>, O> C fromJson(String json, Class<C> cClass, Class<O> oClass) {
+        return fromJson(json, contructCollectionType(cClass, oClass));
+    }
+
     public static <T> T fromJson(String src, Class<T> typeClass) {
         Assert.notNull(src, "src should not be null");
         try {
