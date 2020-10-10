@@ -1,0 +1,27 @@
+security:
+  cas:
+    serverUrl: http://172.25.21.205:8989/cas
+    serviceUrl: http://localhost:8080
+    indexUrl: http://localhost:8080/
+    loginPath: /cas/login
+    logoutPath: /cas/logout
+    whiteList: /, /cas/tickets, /**.html, /**.js, /**.css, /**.ico
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: woven-security-demo
+  resources:
+    static-locations:
+    - classpath:/webapp/
+    - classpath:/META-INF/resources/
+    - classpath:/resources/
+    - classpath:/static/
+    - classpath:/public/
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    encoding: UTF-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html

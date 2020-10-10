@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="20 seconds"
+	debug="false">
+	<contextName>dsp</contextName>
+	<property name="LOG_PATH"
+		value="${WOVEN_LOGS_DIR:-/logs}/${WOVEN_COM_NAME}" />
+	<property name="LOG_NAME" value="${WOVEN_COM_NAME:-log}" />
+	<property name="LOG_PATTERN"
+		value=".%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n" />
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>
+		<encoder>
+			<Pattern>
+				${LOG_PATTERN}
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<File>${LOG_PATH}/${LOG_NAME}.log</File>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${LOG_PATH}/${LOG_NAME}.%d{yyyy-MM-dd}.%i.log
+			</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>1024MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>20</maxHistory>
+		</rollingPolicy>
+		<append>true</append>
+		<encoder>
+			<Pattern>
+				${LOG_PATTERN}
+			</Pattern>
+		</encoder>
+	</appender>
+	<logger name="org.springframework" level="INFO" />
+	<logger name="com.suntek.spring.cas" level="DEBUG" />
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<!-- <appender-ref ref="FILE" /> -->
+	</root>
+</configuration>

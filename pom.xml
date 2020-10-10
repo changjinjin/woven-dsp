@@ -115,6 +115,8 @@
 		<module>dsp-access</module>
 		<module>dsp-job</module>
 		<module>dsp-sentinel-dashboard</module>
+		<module>dsp-cas-security</module>
+		<module>dsp-cas-gateway</module>
 		<module>dsp-distribution</module>
 	</modules>
 
@@ -366,7 +368,14 @@
 	<repositories>
 		<repository>
 			<id>aliyun</id>
+            <layout>default</layout>
 			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
 		</repository>
 		<repository>
 			<id>inforefiner</id>
@@ -428,6 +437,19 @@
 	</reporting>
 
 	<profiles>
+		<profile>
+			<id>localrepo</id>
+			<repositories>
+				<repository>
+					<id>merce</id>
+					<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
+				</repository>
+			</repositories>
+			<properties>
+				<profileActive>hadoop2</profileActive>
+				<hadoop.version>2.7.3</hadoop.version>
+			</properties>
+		</profile>
 		<profile>
 			<id>hadoop2.7</id>
 			<properties>
