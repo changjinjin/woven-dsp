@@ -1,5 +1,15 @@
 package com.info.baymax.common.utils;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,11 +17,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import java.io.*;
-import java.net.URL;
-import java.util.Collection;
-import java.util.Map;
 
 public class JsonUtils {
 
