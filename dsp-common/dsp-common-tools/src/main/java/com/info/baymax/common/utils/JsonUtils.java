@@ -264,12 +264,31 @@ public class JsonUtils {
         }
     }
 
-    public static <T> T fromObject(Object obj, Class<T> typeClass) {
-        return fromJson(toJson(obj), typeClass);
+    public static <T> T fromObject(Object src, Class<T> typeClass) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.convertValue(src, typeClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static <T> T fromObject(Object obj, TypeReference<T> typeReference) {
-        return fromJson(toJson(obj), typeReference);
+    public static <T> T fromObject(Object src, TypeReference<T> typeReference) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.convertValue(src, typeReference);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T fromObject(Object src, JavaType javaType) {
+        Assert.notNull(src, "src should not be null");
+        try {
+            return mapper.convertValue(src, javaType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void write(File dest, Object value) {
