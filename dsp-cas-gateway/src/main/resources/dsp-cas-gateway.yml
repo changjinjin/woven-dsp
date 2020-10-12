@@ -1,6 +1,6 @@
 server:
   address: 192.168.2.145
-  port: 8000
+  port: 8008
   reactive:
     context-path: /
   compression:
@@ -9,7 +9,7 @@ server:
     min-response-size: 2048
 spring:
   application:
-    name: dsp-gateway
+    name: dsp-cas-gateway
   resources:
     add-mappings: true
     static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
@@ -82,14 +82,6 @@ spring:
       default-filters:
       - SetResponseHeader=X-Frame-Options, DENY
       routes:
-      - id: auth-server
-        uri: lb://dsp-auth-server
-        order: 2
-        predicates:
-        - Path=/api/auth/**
-        filters:
-        - PreserveHostHeader
-        - RemoveRequestHeader=Expect
       - id: access-platform
         uri: lb://dsp-access-platform
         order: 2
@@ -127,14 +119,14 @@ spring:
 #        jwt:
 #          jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
         opaquetoken:
-          client-id: dsp-gateway
+          client-id: dsp-cas-gateway
           client-secret: 123456
           introspection-uri: http://localhost:8004/api/auth/oauth/userinfo
       client:
         registration:
           dsp-gateway:
-            client-id: dsp-gateway
-            client-name: dsp-gateway
+            client-id: dsp-cas-gateway
+            client-name: dsp-cas-gateway
             client-secret: 123456
             client-authentication-method: Basic
             authorization-grant-type: authorization_code
@@ -148,6 +140,13 @@ spring:
             user-info-uri: http://localhost:8004/api/auth/oauth/userinfo
 #            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
             user-info-authentication-method: Basic
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dialect: mysql
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.82:3306/merce_83?characterEncoding=utf8&useSSL=false&autoReconnect=true&failOverReadOnly=false&autoReconnectForPools=true&failOverReadOnly=false&allowMultiQueries=true&serverTimezone=GMT&&queryTimeout=4800
+    username: merce
+    password: merce
 management:
   metrics:
     binders:
@@ -228,6 +227,17 @@ security:
       - /api/dsp/dataapi/**
       - /api/auth/v2/api-docs
       - /api/*/*/v2/api-docs
+  cas:
+    mode: remote
+    server: http://172.25.21.205:8989/cas
+    #    server: http://172.25.22.176:8989/cas
+    platformServer: http://172.25.21.205:30098
+    #    platformServer: http://172.25.22.176:30098
+    baseUrl: http://192.168.1.36:8515
+    service: ${security.cas.baseUrl}/cas/login
+    firstPage: ${security.cas.baseUrl}/cas/login
+    whiteList: /, /cas/tickets,/static/**,/*.html,/*.js,/*.icon
+
 swagger2:
   enabled: true
   resources:

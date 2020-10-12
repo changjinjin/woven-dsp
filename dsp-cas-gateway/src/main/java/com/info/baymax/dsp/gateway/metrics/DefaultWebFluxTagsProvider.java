@@ -42,7 +42,7 @@ public class DefaultWebFluxTagsProvider implements WebFluxTagsProvider {
                 WebFluxTags.outcome(exchange),
                 WebFluxTags.clientIp(exchange),
                 Tag.of("sid", UUID.randomUUID().toString()),
-                Tag.of("instance", "dsp-gateway"),
+                Tag.of("instance", "dsp-cas-gateway"),
                 Tag.of("write_time", Long.toString(new Date().getTime())),
                 Tag.of("tenantId", StringUtils.defaultString(SaasContext.getCurrentTenantId(), "default")),
                 Tag.of("tenantName", StringUtils.defaultString(SaasContext.getCurrentTenantName(), "default")),
