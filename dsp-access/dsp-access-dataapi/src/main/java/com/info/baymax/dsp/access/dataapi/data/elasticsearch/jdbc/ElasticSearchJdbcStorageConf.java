@@ -35,7 +35,6 @@ public class ElasticSearchJdbcStorageConf extends JdbcStorageConf {
 
     @Override
     public String getDriver() {
-        // return "com.amazon.opendistroforelasticsearch.jdbc.ElasticsearchDriver";
         return "com.amazon.opendistroforelasticsearch.jdbc.Driver";
     }
 

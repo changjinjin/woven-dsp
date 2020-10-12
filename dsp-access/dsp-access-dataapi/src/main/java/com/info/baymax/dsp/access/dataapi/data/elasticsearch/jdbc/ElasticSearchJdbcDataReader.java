@@ -71,7 +71,6 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
         return page;
     }
 
-    // 优先级要高（低）于ElasticSearchDataReader
     @Override
     public int getOrder() {
         return -1;
@@ -81,6 +80,8 @@ public class ElasticSearchJdbcDataReader extends AbstractJdbcDataReader {
         return entitys.stream().map(t -> trimeKeyword(t)).collect(Collectors.toList());
     }
 
+    
+    //XXX SQL查询通过keyword过滤的字段返回的字段名称会带上 ".keyowrd"后缀，这里将后缀去掉
     private MapEntity trimeKeyword(MapEntity entity) {
         final MapEntity newEntity = MapEntity.build();
         entity.forEach((k, v) -> {
