@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.cas.authentication.CasAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import reactor.core.publisher.Mono;
 
 import com.info.baymax.common.saas.SaasContext;
+import com.merce.woven.cas.client.reactive.config.CasServiceProperties;
 
 /**
  * 处理当前租户和登录用户信息到上下文中
@@ -25,28 +26,33 @@ import com.info.baymax.common.saas.SaasContext;
 public class SaasContextWebFilter implements WebFilter, Ordered {
     @Autowired
     private SaasContextHandler saasContextHandler;
+    @Autowired
+    private CasServiceProperties casServiceProperties;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        return exchange.getPrincipal()//
-                .cast(Authentication.class)//
-                .flatMap(authentication -> authorizedClient(exchange, authentication))//
-                .map(context -> withAuthHeaders(exchange, context))//
-                .defaultIfEmpty(exchange).flatMap(chain::filter);
+        if(exchange.getRequest().getPath().value().startsWith("/cas") || exchange.getRequest().getPath().value().startsWith("/api")){
+            return ReactiveSecurityContextHolder.getContext()//
+                    .flatMap(context -> authorizedClient(exchange, context.getAuthentication()))//
+                    .map(context -> withAuthHeaders(exchange, context))//
+                    .defaultIfEmpty(exchange).flatMap(chain::filter);
+        }
+
+        return chain.filter(exchange);
     }
 
-    private Mono<SaasContext> authorizedClient(ServerWebExchange exchange, Authentication authentication) {
+    public Mono<SaasContext> authorizedClient(ServerWebExchange exchange, Authentication authentication) {
         if (authentication instanceof CasAuthenticationToken) {
             saasContextHandler.handle(exchange, (CasAuthenticationToken) authentication);
         }
         return Mono.just(SaasContext.getCurrentSaasContext());
     }
 
-    private ServerWebExchange withAuthHeaders(ServerWebExchange exchange, SaasContext saasContext) {
+    public ServerWebExchange withAuthHeaders(ServerWebExchange exchange, SaasContext saasContext) {
         return exchange.mutate().request(r -> r.headers(headers -> addAuthHeaders(saasContext, headers))).build();
     }
 
-    public void addAuthHeaders(SaasContext saasContext, HttpHeaders headers) {
+    private void addAuthHeaders(SaasContext saasContext, HttpHeaders headers) {
         // 调用Baymax时候需要以下信息
         if (SaasContext.getCurrentUserId() == null) {
             headers.add("temp", "true");
@@ -70,4 +76,5 @@ public class SaasContextWebFilter implements WebFilter, Ordered {
     public int getOrder() {
         return -200;
     }
+
 }

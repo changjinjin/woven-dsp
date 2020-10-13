@@ -24,7 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.security.cas.ServiceProperties;
 import org.springframework.security.cas.reactive.authentication.CasReactiveAuthenticationManager;
-import org.springframework.security.cas.reactive.utils.CommonUtils;
 import org.springframework.security.cas.reactive.web.CasServerAuthenticationConverter;
 import org.springframework.security.cas.reactive.web.CasServerAuthenticationSuccessHandler;
 import org.springframework.security.core.Authentication;
@@ -37,15 +36,12 @@ import org.springframework.security.web.server.authentication.logout.SecurityCon
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
-import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import org.springframework.security.web.server.savedrequest.ServerRequestCache;
 import org.springframework.security.web.server.savedrequest.WebSessionServerRequestCache;
 import org.springframework.security.web.server.util.matcher.AndServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
-import org.springframework.util.StringUtils;
-
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -112,18 +108,14 @@ public class CasBeanConfig {
         return casRedirectStrategy;
     }
 
-    @Bean
-    public ServerSecurityContextRepository serverSecurityContextRepository() {
-        return new WebSessionServerSecurityContextRepository();
-    }
+//    @Bean
+//    public ServerSecurityContextRepository serverSecurityContextRepository() {
+//        return new WebSessionServerSecurityContextRepository();
+//    }
 
     @Bean
     public ServerAuthenticationFailureHandler casAuthenticationFailureHandler(
         ServerAuthenticationEntryPoint serverAuthenticationEntryPoint) {
-        // RedirectServerAuthenticationFailureHandler failureHandler = new
-        // RedirectServerAuthenticationFailureHandler("");
-        // failureHandler.setRedirectStrategy(new CasRedirectStrategy());
-        // return new CasAuthenticationFailureHandler(failureHandler);
         return new ServerAuthenticationEntryPointFailureHandler(serverAuthenticationEntryPoint);
     }
 
@@ -211,18 +203,6 @@ public class CasBeanConfig {
         return logoutWebFilter;
     }
 
-    // @Bean
-    // public SingleSignOutFilter singleSignOutFilter() {
-    // final SingleSignOutFilter singleSignOutFilter = new SingleSignOutFilter();
-    // singleSignOutFilter.setCasServerUrlPrefix(this.serverUrl);
-    // singleSignOutFilter.setIgnoreInitConfiguration(true);
-    // return singleSignOutFilter;
-    // }
-
-    // @EventListener
-    // public SingleSignOutHttpSessionListener
-    // singleSignOutHttpSessionListener(final HttpSessionEvent event) {
-    // return new SingleSignOutHttpSessionListener();
-    // }
-
 }
+
+

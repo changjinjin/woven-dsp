@@ -46,34 +46,6 @@ public class LoginController {
         return Mono.justOrEmpty(ResponseEntity.ok(loginService.restLogin(dto, exchange)));
     }
 
-//    @PostMapping("/cas/user")
-//    public Mono<ResponseEntity<JSONObject>> getLogin(ServerWebExchange exchange) {
-//        return ReactiveSecurityContextHolder.getContext().map(context -> {
-//            Authentication authentication = context.getAuthentication();
-//            if (authentication != null) {
-//                User principal = (User)authentication.getPrincipal();
-//                String username = principal.getUsername();
-//                List<GrantedAuthority> authorities = (List<GrantedAuthority>)authentication.getAuthorities();
-//                List<String> auths = new LinkedList<>();
-//                boolean admin = false;
-//                for(GrantedAuthority auth : authorities){
-//                    auths.add(auth.getAuthority());
-//                    if(auth.getAuthority().equalsIgnoreCase("ROLE_ADMIN") || auth.getAuthority().equalsIgnoreCase("SYSTEM")){
-//                        admin = true;
-//                    }
-//                }
-//
-//                JSONObject map = new JSONObject();
-//                map.put("username", username);
-//                map.put("admin", admin);
-//                map.put("authorities", auths);
-//
-//                return ResponseEntity.ok(map);
-//            }
-//            return null;
-//        }).defaultIfEmpty(ResponseEntity.ok(null));
-//    }
-
     @PostMapping("/cas/platform")
     public Mono<ResponseEntity<JSONObject>> toPlatform(ServerWebExchange exchange) {
         JSONObject map = new JSONObject();
