@@ -97,6 +97,10 @@
 				</dependency>
 				<dependency>
 					<groupId>com.info.baymax</groupId>
+					<artifactId>dsp-cas-gateway</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>com.info.baymax</groupId>
 					<artifactId>dsp-job-exec</artifactId>
 				</dependency>
 				<dependency>
