@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.job.exec.message.sender;
 
-import com.info.baymax.common.comp.feign.FeignClientConfiguration;
+import com.info.baymax.common.feign.FeignClientConfiguration;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.core.FlowSchedulerDesc;
 import org.springframework.cloud.openfeign.FeignClient;

@@ -5,7 +5,6 @@ import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.FieldItem;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;

@@ -30,6 +30,17 @@
 		</dependency>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
+			<artifactId>dsp-common-feign</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.info.baymax</groupId>
+					<artifactId>dsp-common-tools</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
 			<artifactId>dsp-data-sys</artifactId>
 			<version>${project.version}</version>
 		</dependency>

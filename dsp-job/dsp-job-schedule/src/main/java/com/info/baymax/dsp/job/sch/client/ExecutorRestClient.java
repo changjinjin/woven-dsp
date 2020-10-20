@@ -1,13 +1,12 @@
 package com.info.baymax.dsp.job.sch.client;
 
-import java.util.Map;
-
+import com.info.baymax.common.feign.FeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.info.baymax.common.comp.feign.FeignClientConfiguration;
+import java.util.Map;
 
 @FeignClient(qualifier = "executorRestClient", name = "dsp-job-exec", configuration = FeignClientConfiguration.class)
 public interface ExecutorRestClient {

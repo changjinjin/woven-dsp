@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.feign;
+package com.info.baymax.common.feign;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
