@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>dsp-data</artifactId>
-        <version>${baymax-dsp.version}</version>
+        <version>0.1.2</version>
     </parent>
     <artifactId>dsp-data-elasticsearch</artifactId>
     <name>dsp-data-elasticsearch</name>

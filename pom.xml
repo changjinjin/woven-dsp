@@ -6,7 +6,7 @@
 
 	<groupId>com.info.baymax</groupId>
 	<artifactId>baymax-dsp</artifactId>
-	<version>${baymax-dsp.version}</version>
+	<version>0.1.2</version>
 	<packaging>pom</packaging>
 
 	<name>baymax-dsp</name>
