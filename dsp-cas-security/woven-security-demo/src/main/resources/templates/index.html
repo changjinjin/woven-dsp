@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<title>Insert title here</title>
+<script src="jquery.js"></script>
+<script type="text/javascript">
+	function login() {
+		// 		$.post("/cas/security_check", {
+		// 			"username" : "admin",
+		// 			"password" : "suntek"
+		// 		}, function(result) {
+		// 			if (result.opCode == 0) {
+		// 				window.location.href = result.tgtUrl
+		// 						+ "?service=http://localhost:8080/cas/login/cas"
+		// 			}
+		// 		});
+
+		$.ajax({
+			type : "post",
+			url : "/cas/tickets",
+			headers : {
+				"Accept" : "application/json; charset=utf-8",
+			},
+			data : {
+				"username" : "admin",
+				"password" : "suntek"
+			},
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			dataType : "json",
+			success : function(data) {
+				if (data.opCode == 0) {
+					window.location.href = data.tgtUrl + "?service="
+							+ data.service
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+
+	function ok() {
+		$.post("/test/ok", {
+			"username" : "admin",
+			"password" : "suntek"
+		}, function(result) {
+			$("div").html(result);
+		});
+	}
+</script>
+</head>
+<body>
+	<b>返回结果：</b>
+	<div></div>
+	<input type="button" value="login" onclick="login()">
+	<br />
+	<input type="button" value="ok" onclick="ok()">
+	<br />
+</body>
+</html>
