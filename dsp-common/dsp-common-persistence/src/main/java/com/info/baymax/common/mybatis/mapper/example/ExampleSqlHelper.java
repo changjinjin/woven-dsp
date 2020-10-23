@@ -135,15 +135,20 @@ public class ExampleSqlHelper {
         return sql.toString();
     }
 
+    public static String exampleWhereClause(String record) {
+        return "<if test=\"_parameter != null\"><where>"
+            + "${@com.info.baymax.common.mybatis.mapper.example.OGNL@andNotLogicDelete(_parameter)}"
+            + "<trim prefixOverrides=\"and|or\">"
+            + loop(0, 9, record) + "</trim></where></if>";
+    }
+
     /**
      * Example查询中的where结构，用于只有一个Example参数时
      *
      * @return
      */
     public static String exampleWhereClause() {
-        return "<if test=\"_parameter != null\"><where><trim prefixOverrides=\"and|or\">"
-            + "${@com.info.baymax.common.mybatis.mapper.example.OGNL@andNotLogicDelete(_parameter)}"
-            + loop(0, 9, null) + "</trim></where></if>";
+        return exampleWhereClause(null);
     }
 
     /**
@@ -152,9 +157,7 @@ public class ExampleSqlHelper {
      * @return
      */
     public static String updateByExampleWhereClause() {
-        return "<if test=\"_parameter != null \"><where><trim prefixOverrides=\"and|or\" >"
-            + "${@com.info.baymax.common.mybatis.mapper.example.OGNL@andNotLogicDelete(_parameter)}"
-            + loop(0, 9, "example") + "</trim></where></if>";
+        return exampleWhereClause("example");
     }
 
     private static String loop(int index, int max, String entityName) {

@@ -24,13 +24,7 @@
 
 package com.info.baymax.common.mybatis.mapper.example;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.info.baymax.common.utils.ICollections;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.annotation.LogicDelete;
 import tk.mybatis.mapper.entity.EntityColumn;
@@ -38,6 +32,9 @@ import tk.mybatis.mapper.entity.IDynamicTableName;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
 import tk.mybatis.mapper.mapperhelper.SqlHelper;
 import tk.mybatis.mapper.util.StringUtil;
+
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * OGNL静态方法
@@ -251,8 +248,8 @@ public abstract class OGNL {
 
                     // 如果Example中有条件，则拼接" and "，
                     // 如果是空的oredCriteria，则where中只有逻辑删除注解的未删除条件
-                    if (example.getCriteria() != null) {
-                        result += " and ";
+					if (example.getCriteria() != null&&ICollections.hasElements(example.getCriteria().getCriterions())) {
+                    	result += " and ";
                     }
                 }
             }
