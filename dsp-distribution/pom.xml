@@ -47,6 +47,11 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>dsp-cas-gateway</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>dsp-job-exec</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -94,6 +99,10 @@
 				<dependency>
 					<groupId>com.info.baymax</groupId>
 					<artifactId>dsp-gateway</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>com.info.baymax</groupId>
+					<artifactId>dsp-cas-gateway</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>com.info.baymax</groupId>
