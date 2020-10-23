@@ -329,7 +329,9 @@ public class JsonUtils {
 
     public static String toJson(Object value, boolean pretty) {
         try {
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        	if (pretty) {
+        		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			}
             return mapper.writeValueAsString(value);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -338,7 +340,6 @@ public class JsonUtils {
 
     public static byte[] toByte(Object value) {
         try {
-            mapper.disable(SerializationFeature.INDENT_OUTPUT);
             return mapper.writeValueAsBytes(value);
         } catch (Exception e) {
             throw new RuntimeException(e);
