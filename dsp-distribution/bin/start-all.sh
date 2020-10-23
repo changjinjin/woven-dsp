@@ -13,7 +13,7 @@ WOVEN_CONF=${WOVEN_CONF:-${WOVEN_HOME}/conf}
 
 cd ${WOVEN_HOME}
 
-for component in access-platform access-dataapi access-consumer auth-server dsp-gateway job-exec job-schedule;
+for component in access-platform access-dataapi access-consumer auth-server dsp-gateway cas-gateway job-exec job-schedule;
 do
     # start  component if it is present
     if [ -f "${WOVEN_HOME}"/bin/${component}.sh ];
