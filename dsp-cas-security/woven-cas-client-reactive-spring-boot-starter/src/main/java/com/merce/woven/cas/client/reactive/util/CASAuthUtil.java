@@ -64,7 +64,7 @@ public class CASAuthUtil {
 
     public static void removeAuthenticatedCookie(ServerHttpResponse response) {
         response.addCookie(ResponseCookie.from("authenticated", "").maxAge(Duration.ZERO).path("/").build());
-        response.addCookie(ResponseCookie.from("SESSION", "").maxAge(Duration.ZERO).path("/").build());
+        response.addCookie(ResponseCookie.from("X-SESSION-ID", "").maxAge(Duration.ZERO).path("/").build());
     }
 
     public static String getServerBaseURL(ServerHttpRequest request) {

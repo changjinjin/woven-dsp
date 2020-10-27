@@ -39,6 +39,9 @@ import org.springframework.security.web.server.util.matcher.AndServerWebExchange
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
+import org.springframework.session.ReactiveMapSessionRepository;
+import org.springframework.session.ReactiveSessionRepository;
+import org.springframework.session.config.annotation.web.server.EnableSpringWebSession;
 import org.springframework.web.server.session.CookieWebSessionIdResolver;
 import org.springframework.web.server.session.WebSessionIdResolver;
 import reactor.core.publisher.Mono;
@@ -46,8 +49,10 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
+@EnableSpringWebSession
 public class CasBeanConfig {
     @Autowired
     private CasServiceProperties casServiceProperties;
@@ -114,11 +119,16 @@ public class CasBeanConfig {
     // return new WebSessionServerSecurityContextRepository();
     // }
 
+    @Bean
+    public ReactiveSessionRepository<?> sessionRepository() {
+        return new ReactiveMapSessionRepository(new ConcurrentHashMap<>());
+    }
+
     @Primary
     @Bean
     public WebSessionIdResolver webSessionIdResolver() {
         CookieWebSessionIdResolver resolver = new CookieWebSessionIdResolver();
-        resolver.setCookieName("JSESSIONID");
+        resolver.setCookieName("X-SESSION-ID");
         resolver.addCookieInitializer((builder) -> builder.path("/"));
         resolver.addCookieInitializer((builder) -> builder.sameSite("Strict"));
 
