@@ -8,9 +8,8 @@
 		<artifactId>baymax-dsp</artifactId>
 		<version>0.1.2</version>
 	</parent>
-
 	<artifactId>dsp-cas-security</artifactId>
-	<version>${baymax-dsp.version}</version>
+	<version>0.1.2</version>
 	<packaging>pom</packaging>
 
 	<name>dsp-cas-security</name>

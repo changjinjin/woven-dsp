@@ -1,5 +1,6 @@
 package com.merce.woven.cas.client.reactive.config;
 
+import cn.hutool.json.JSONObject;
 import com.merce.woven.cas.client.reactive.userdetails.CasSamlUserDetailsService;
 import com.merce.woven.cas.client.reactive.util.CASAuthUtil;
 import com.merce.woven.cas.client.reactive.web.authentication.CASAuthConverter;
@@ -8,10 +9,6 @@ import com.merce.woven.cas.client.reactive.web.authentication.CasRedirectStrateg
 import com.merce.woven.cas.client.reactive.web.authentication.validation.Saml11TicketValidator;
 import com.merce.woven.cas.client.reactive.web.authorization.CasAuthorizationDecisionHandler;
 import com.merce.woven.cas.client.reactive.web.authorization.CasAuthorizationManager;
-
-import cn.hutool.json.JSONObject;
-import java.nio.charset.Charset;
-import java.time.Duration;
 import org.jasig.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,8 +29,8 @@ import org.springframework.security.web.server.ServerRedirectStrategy;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.*;
 import org.springframework.security.web.server.authentication.logout.LogoutWebFilter;
-import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
+import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
 import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.security.web.server.savedrequest.ServerRequestCache;
@@ -42,8 +39,12 @@ import org.springframework.security.web.server.util.matcher.AndServerWebExchange
 import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
+import org.springframework.web.server.session.CookieWebSessionIdResolver;
+import org.springframework.web.server.session.WebSessionIdResolver;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.Arrays;
 
 @Configuration
@@ -108,10 +109,23 @@ public class CasBeanConfig {
         return casRedirectStrategy;
     }
 
-//    @Bean
-//    public ServerSecurityContextRepository serverSecurityContextRepository() {
-//        return new WebSessionServerSecurityContextRepository();
-//    }
+    // @Bean
+    // public ServerSecurityContextRepository serverSecurityContextRepository() {
+    // return new WebSessionServerSecurityContextRepository();
+    // }
+
+    @Primary
+    @Bean
+    public WebSessionIdResolver webSessionIdResolver() {
+        CookieWebSessionIdResolver resolver = new CookieWebSessionIdResolver();
+        resolver.setCookieName("JSESSIONID");
+        resolver.addCookieInitializer((builder) -> builder.path("/"));
+        resolver.addCookieInitializer((builder) -> builder.sameSite("Strict"));
+
+        // HeaderWebSessionIdResolver resolver = new HeaderWebSessionIdResolver();
+        // resolver.setHeaderName("JSESSIONID");
+        return resolver;
+    }
 
     @Bean
     public ServerAuthenticationFailureHandler casAuthenticationFailureHandler(
@@ -151,13 +165,14 @@ public class CasBeanConfig {
     }
 
     @Bean
-    public SecurityContextServerLogoutHandler securityContextServerLogoutHandler(CasServiceProperties casServiceProperties) {
+    public SecurityContextServerLogoutHandler securityContextServerLogoutHandler(
+        CasServiceProperties casServiceProperties) {
         return new SecurityContextServerLogoutHandler() {
             @Override
             public Mono<Void> logout(WebFilterExchange exchange, Authentication authentication) {
                 super.logout(exchange, authentication);
                 CASAuthUtil.removeAuthenticatedCookie(exchange.getExchange().getResponse());
-                exchange.getExchange().getSession().map(t-> {
+                exchange.getExchange().getSession().map(t -> {
                     t.setMaxIdleTime(Duration.ZERO);
                     return Mono.<Void>empty();
                 });
@@ -167,16 +182,19 @@ public class CasBeanConfig {
     }
 
     @Bean
-    public RedirectServerLogoutSuccessHandler securityContextServerLogoutSuccessHandler(CasServiceProperties casServiceProperties) {
+    public RedirectServerLogoutSuccessHandler securityContextServerLogoutSuccessHandler(
+        CasServiceProperties casServiceProperties) {
         return new RedirectServerLogoutSuccessHandler() {
             @Override
             public Mono<Void> onLogoutSuccess(WebFilterExchange exchange, Authentication authentication) {
                 String loginUrl = casServiceProperties.getPlatformServer() + "/login";
-                String redirectUrl = casServiceProperties.getServer()+"/logout?service=" + loginUrl;
+                String redirectUrl = casServiceProperties.getServer() + "/logout?service=" + loginUrl;
 
                 exchange.getExchange().getResponse().setStatusCode(HttpStatus.OK);
                 exchange.getExchange().getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                exchange.getExchange().getSession().map(t->{return t.invalidate();});
+                exchange.getExchange().getSession().map(t -> {
+                    return t.invalidate();
+                });
                 try {
                     JSONObject map = new JSONObject();
                     map.put("status", 1);
@@ -184,8 +202,10 @@ public class CasBeanConfig {
                     map.put("message", "退出系统。");
                     map.put("redirectUrl", redirectUrl);
                     String stringPretty = map.toStringPretty();
-                    DataBuffer buffer = exchange.getExchange().getResponse().bufferFactory().wrap(stringPretty.getBytes(Charset.defaultCharset()));
-                    return exchange.getExchange().getResponse().writeWith(Mono.just(buffer)).doOnError(error -> DataBufferUtils.release(buffer));
+                    DataBuffer buffer = exchange.getExchange().getResponse().bufferFactory()
+                        .wrap(stringPretty.getBytes(Charset.defaultCharset()));
+                    return exchange.getExchange().getResponse().writeWith(Mono.just(buffer))
+                        .doOnError(error -> DataBufferUtils.release(buffer));
                 } catch (Exception e) {
                 }
                 return Mono.<Void>empty();
@@ -194,7 +214,8 @@ public class CasBeanConfig {
     }
 
     @Bean
-    public LogoutWebFilter logoutWebFilter(SecurityContextServerLogoutHandler securityContextServerLogoutHandler, RedirectServerLogoutSuccessHandler securityContextServerLogoutSuccessHandler) {
+    public LogoutWebFilter logoutWebFilter(SecurityContextServerLogoutHandler securityContextServerLogoutHandler,
+                                           RedirectServerLogoutSuccessHandler securityContextServerLogoutSuccessHandler) {
         LogoutWebFilter logoutWebFilter = new LogoutWebFilter();
         logoutWebFilter
             .setRequiresLogoutMatcher(ServerWebExchangeMatchers.pathMatchers(casServiceProperties.getLogoutPath()));
@@ -204,5 +225,3 @@ public class CasBeanConfig {
     }
 
 }
-
-

@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>dsp-cas-security</artifactId>
-        <version>${baymax-dsp.version}</version>
+        <version>0.1.2</version>
     </parent>
     <artifactId>woven-cas-client-reactive-spring-boot-starter</artifactId>
     <name>woven-cas-client-reactive-spring-boot-starter</name>
