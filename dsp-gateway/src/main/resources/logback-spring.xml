@@ -85,10 +85,10 @@
     <logger name="sun" level="ERROR"/>
     <logger name="org.apache.tomcat" level="ERROR"/>
 
-    <logger name="com.netflix" level="INFO"/>
-    <logger name="org.springframework" level="ERROR"/>
-    <logger name="org.springframework.cloud.consul" level="ERROR"/>
+    <logger name="com.netflix" level="WARN"/>
+    <logger name="org.springframework" level="DEBUG"/>
     <logger name="com.info.baymax" level="DEBUG"/>
+    <logger name="com.info.baymax.dsp.gateway.feign" level="ERROR"/>
     <logger name="java.sql" level="DEBUG"/>
 
     <root level="INFO">

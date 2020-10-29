@@ -1,0 +1,34 @@
+1.Server端证书生成步骤
+ 1.1 生成服务端dspServer.p12文件
+ 
+ 	keytool -genkey -v -alias dspServer -keyalg RSA -storetype PKCS12 -keystore dspServer.p12
+
+ 1.2 导出服务端公钥dspServer.cer 文件
+ 
+ 	keytool -keystore dspServer.p12 -export -alias dspServer -file dspServer.cer
+ 
+2.Client端证书生成步骤（双向认证需要操作此步骤）
+ 2.1 生成客户端dspClient.p12文件
+	
+	keytool -genkey -v -alias dspClient -keyalg RSA -storetype PKCS12 -keystore dspClient.p12
+
+ 2.2 导出客户端公钥dspClient.cer 文件
+    
+    keytool -keystore dspClient.p12 -export -alias dspClient -file dspClient.cer
+
+3.将Client端和Server端的公钥文件（.cer文件）导入双方系统的jre运行环境的cacerts证书库（双向认证需要操作此步骤）
+ 3.1 将客户端公钥导入的服务端jdk信任库
+	
+	keytool -import -alias dspClient -file dspClient.cer -keystore "%JAVA_HOME%\jre\lib\security\cacerts" –v
+
+ 3.2 将服务端公钥导入到客户端的jdk信任库
+	
+	keytool -import -alias dspServer -file dspServer.cer -keystore "%JAVA_HOME%\jre\lib\security\cacerts" –v
+
+ 3.3 将客户端公钥导入到服务端Server.p12证书库
+	
+	keytool -import -alias dspClient -v -file dspClient.cer -keystore dspServer.p12
+	
+ 3.3 将客户端公钥导入到服务端Client.p12证书库
+	
+	keytool -import -alias dspServer -v -file dspServer.cer -keystore dspClient.p12
