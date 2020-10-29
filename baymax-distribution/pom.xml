@@ -35,7 +35,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>baymax-dsp-oauth-server</artifactId>
+                <artifactId>baymax-security-oauth-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -92,7 +92,7 @@
                 </dependency>
                 <dependency>
                     <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-dsp-oauth-server</artifactId>
+                    <artifactId>baymax-security-oauth-server</artifactId>
                 </dependency>
                 <dependency>
                     <groupId>com.info.baymax</groupId>
@@ -176,7 +176,7 @@
             <dependencies>
                 <dependency>
                     <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-dsp-oauth-server</artifactId>
+                    <artifactId>baymax-security-oauth-server</artifactId>
                 </dependency>
             </dependencies>
         </profile>
