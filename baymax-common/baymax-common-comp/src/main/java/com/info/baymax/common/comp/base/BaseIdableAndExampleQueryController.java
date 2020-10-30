@@ -1,5 +1,6 @@
 package com.info.baymax.common.comp.base;
 
+import com.info.baymax.common.comp.base.crud.BaseCrudController;
 import com.info.baymax.common.entity.id.Idable;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.Response;
@@ -13,7 +14,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+/**
+ * @deprecated 该类以弃用，参考：{@link BaseCrudController}
+ */
 @RestController
+@Deprecated
 public interface BaseIdableAndExampleQueryController<ID extends Serializable, T extends Idable<ID>> {
 
     BaseIdableAndExampleQueryService<ID, T> getBaseIdableAndExampleQueryService();

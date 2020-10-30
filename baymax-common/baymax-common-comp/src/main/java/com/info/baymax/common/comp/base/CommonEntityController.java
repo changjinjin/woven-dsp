@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 
 @RestController
+@Deprecated
 public interface CommonEntityController<ID extends Serializable, T extends CommonEntity<ID>>
     extends BaseIdableAndExampleQueryController<ID, T> {
 
