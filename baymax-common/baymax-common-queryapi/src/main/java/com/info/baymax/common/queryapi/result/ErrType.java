@@ -1,11 +1,16 @@
 package com.info.baymax.common.queryapi.result;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 业务异常枚举类
  *
  * @author: jingwei.yang
  * @date: 2019年4月23日 下午2:54:23
  */
+@Getter
+@AllArgsConstructor
 public enum ErrType implements ErrMsg {
 
     /*********************** 基础错误 ********************** */
@@ -54,40 +59,9 @@ public enum ErrType implements ErrMsg {
     private final Integer status;
     private final String message;
 
-    private ErrType(Integer status, String message) {
-        this.status = status;
-        this.message = message;
-    }
-
     @Override
-    public Integer getStatus() {
-        return status;
+    public String getCode() {
+        return name();
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public static ErrType valueOf(Integer status) {
-        if (status != null) {
-            for (ErrType type : values()) {
-                if (type.getStatus().intValue() == status.intValue()) {
-                    return type;
-                }
-            }
-        }
-        return ErrType.FAILED;
-    }
-
-    public static String getMessageByStatus(Integer status) {
-        if (status != null) {
-            for (ErrType type : values()) {
-                if (type.getStatus().intValue() == status.intValue()) {
-                    return type.getMessage();
-                }
-            }
-        }
-        return null;
-    }
 }

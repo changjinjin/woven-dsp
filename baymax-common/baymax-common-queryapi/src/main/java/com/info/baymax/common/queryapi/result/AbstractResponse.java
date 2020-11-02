@@ -10,7 +10,7 @@ import java.io.Serializable;
 @ApiModel
 @Getter
 @ToString
-public abstract class AbstractResponse<T> implements ErrMsg, Serializable {
+public abstract class AbstractResponse<T> implements ErrResult, Serializable {
     private static final long serialVersionUID = -5597707689816894840L;
 
     /**

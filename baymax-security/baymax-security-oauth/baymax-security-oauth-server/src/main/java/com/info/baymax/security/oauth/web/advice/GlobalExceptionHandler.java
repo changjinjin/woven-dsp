@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrMsg;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.security.oauth.api.exception.CustomOauth2Exception;
@@ -43,7 +44,8 @@ public class GlobalExceptionHandler {
             if (e instanceof BizException || BizException.class.isAssignableFrom(e.getClass())) {
                 BizException e1 = (BizException) e;
                 String message = e1.getMessage();
-                result = Response.error(e1.getStatus(), message != null ? message : "未知错误，错误代码：" + e1.getStatus()).build();
+                ErrMsg errMsg = e1.getErrMsg();
+                result = Response.error(errMsg.getStatus(), message != null ? message : "未知错误，错误代码：" + errMsg.getStatus()).build();
             } else if (e instanceof NoHandlerFoundException) {
                 result = Response.error(ErrType.NOT_FOUND).build();
             } else if (e instanceof AuthenticationException
