@@ -1,7 +1,7 @@
 package com.info.baymax.security.oauth.config.swagger.handle;
 
 import com.google.common.collect.Lists;
-import com.info.baymax.dsp.common.swagger.handle.SwaggerHandler;
+import com.info.baymax.common.swagger.handle.SwaggerHandler;
 import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
 import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
 import io.swagger.models.HttpMethod;
