@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.config;
+package com.info.baymax.common.swagger.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;

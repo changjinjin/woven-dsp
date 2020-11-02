@@ -1,4 +1,26 @@
-package com.info.baymax.dsp.common.swagger.plugin;
+package com.info.baymax.common.swagger.plugin;
+
+import com.fasterxml.classmate.TypeResolver;
+import com.google.common.collect.Sets;
+import com.info.baymax.common.swagger.annotation.ApiModelFields;
+import com.info.baymax.common.swagger.utils.ClassUtils;
+import io.swagger.annotations.ApiModelProperty;
+import javassist.*;
+import javassist.bytecode.AnnotationsAttribute;
+import javassist.bytecode.ConstPool;
+import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.annotation.BooleanMemberValue;
+import javassist.bytecode.annotation.StringMemberValue;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.ResolvedMethodParameter;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.ParameterBuilderPlugin;
+import springfox.documentation.spi.service.contexts.ParameterContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -7,34 +29,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.classmate.TypeResolver;
-import com.google.common.collect.Sets;
-import com.info.baymax.dsp.common.swagger.annotation.ApiModelFields;
-import com.info.baymax.dsp.common.swagger.utils.ClassUtils;
-
-import io.swagger.annotations.ApiModelProperty;
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
-import javassist.NotFoundException;
-import javassist.bytecode.AnnotationsAttribute;
-import javassist.bytecode.ConstPool;
-import javassist.bytecode.annotation.Annotation;
-import javassist.bytecode.annotation.BooleanMemberValue;
-import javassist.bytecode.annotation.StringMemberValue;
-import lombok.extern.slf4j.Slf4j;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.ResolvedMethodParameter;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.ParameterBuilderPlugin;
-import springfox.documentation.spi.service.contexts.ParameterContext;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)

@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.utils;
+package com.info.baymax.common.swagger.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

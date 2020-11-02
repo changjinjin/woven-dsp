@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.annotation;
+package com.info.baymax.common.swagger.annotation;
 
 import io.swagger.annotations.ApiModelProperty;
 

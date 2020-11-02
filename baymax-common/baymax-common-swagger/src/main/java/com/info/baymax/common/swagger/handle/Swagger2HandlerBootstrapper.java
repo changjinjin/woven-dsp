@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.handle;
+package com.info.baymax.common.swagger.handle;
 
 import com.fasterxml.classmate.TypeResolver;
 import io.swagger.models.Swagger;
@@ -45,7 +45,7 @@ public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBoo
 
     @Value("${swagger2.handler.auto-startup:true}")
     private boolean autoStartup;
-    @Value("${swagger2.handler.auto-execute:false}")
+    @Value("${swagger2.handler.auto-execute:true}")
     private boolean autoExecute;
 
     private final DocumentationCache documentationCache;

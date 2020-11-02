@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.handle;
+package com.info.baymax.common.swagger.handle;
 
 import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;

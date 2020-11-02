@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.binding;
+package com.info.baymax.common.swagger.binding;
 
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
