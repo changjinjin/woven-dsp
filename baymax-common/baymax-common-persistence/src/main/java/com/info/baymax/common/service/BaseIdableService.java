@@ -55,16 +55,30 @@ public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>
     /**
      * 插入或者更新：当ID值为空时插入新的数据，否则更新记录
      *
-     * @param t 操作数据
+     * @param t           保存的数据
+     * @param checkRecord 是否检查数据库中记录是否存在，需要查数据库
      * @return 结果
      */
-    default T saveOrUpdate(T t) {
+    default T saveOrUpdate(T t, boolean checkRecord) {
         if (t.getId() == null || t.getId().toString().trim().equals("")) {
             t.setId(null);
             return save(t);
         } else {
+            if (checkRecord && !existsWithPrimaryKey(t.getId())) {
+                return save(t);
+            }
             return update(t);
         }
+    }
+
+    /**
+     * 插入或者更新：当ID值为空时插入新的数据，否则更新记录
+     *
+     * @param t 操作数据
+     * @return 结果
+     */
+    default T saveOrUpdate(T t) {
+        return saveOrUpdate(t, false);
     }
 
     /**
@@ -93,56 +107,48 @@ public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>
         return 0;
     }
 
-    
     @Override
     default int insertListWithPrimaryKey(List<T> recordList) {
         preInsert(recordList);
         return getMyIdableMapper().insertListWithPrimaryKey(recordList);
     }
 
-    
     @Override
     default int insertUseGeneratedKeys(T record) {
         preInsert(record);
         return getMyIdableMapper().insertUseGeneratedKeys(record);
     }
 
-    
     @Override
     default int replace(T record) {
         preInsert(record);
         return getMyIdableMapper().replace(record);
     }
 
-    
     @Override
     default int replaceListWithPrimaryKey(List<T> recordList) {
         preInsert(recordList);
         return getMyIdableMapper().replaceListWithPrimaryKey(recordList);
     }
 
-    
     @Override
     default int updateByPrimaryKey(T record) {
         preUpdate(record);
         return getMyIdableMapper().updateByPrimaryKey(record);
     }
 
-    
     @Override
     default int updateByPrimaryKeySelective(T record) {
         preUpdate(record);
         return getMyIdableMapper().updateByPrimaryKeySelective(record);
     }
 
-    
     @Override
     default int updateListByPrimaryKey(List<T> recordList) {
         preUpdate(recordList);
         return getMyIdableMapper().updateListByPrimaryKey(recordList);
     }
 
-    
     @Override
     default int updateListByPrimaryKeySelective(List<T> recordList) {
         preUpdate(recordList);
