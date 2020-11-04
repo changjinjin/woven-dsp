@@ -5,7 +5,7 @@ import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.SmartLifecycle;
@@ -40,13 +40,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 @Component
 @Conditional(SpringIntegrationPluginNotPresentInClassPathCondition.class)
+@EnableConfigurationProperties(SwaggerHandleProperties.class)
 public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBootstrapper
     implements SmartLifecycle, ApplicationContextAware {
 
-    @Value("${swagger2.handler.auto-startup:true}")
-    private boolean autoStartup;
-    @Value("${swagger2.handler.auto-execute:true}")
-    private boolean autoExecute;
+    @Autowired
+    private SwaggerHandleProperties properties;
 
     private final DocumentationCache documentationCache;
     private final ServiceModelToSwagger2Mapper mapper;
@@ -75,7 +74,7 @@ public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBoo
 
     @Override
     public boolean isAutoStartup() {
-        return autoStartup;
+        return properties.isAutoStartup();
     }
 
     @Override
@@ -118,7 +117,7 @@ public class Swagger2HandlerBootstrapper extends AbstractDocumentationPluginsBoo
             super.bootstrapDocumentationPlugins();
         }
 
-        if (!autoExecute) {
+        if (!properties.isAutoExecute()) {
             log.debug("skip swagger handlers auto execute.");
             return;
         }
