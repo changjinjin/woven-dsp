@@ -23,11 +23,6 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-dsp-data-sys</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
