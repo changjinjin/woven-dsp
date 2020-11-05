@@ -33,6 +33,7 @@ import org.springframework.security.web.server.authentication.logout.RedirectSer
 import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
 import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import org.springframework.security.web.server.savedrequest.ServerRequestCache;
 import org.springframework.security.web.server.savedrequest.WebSessionServerRequestCache;
 import org.springframework.security.web.server.util.matcher.AndServerWebExchangeMatcher;
@@ -114,10 +115,10 @@ public class CasBeanConfig {
         return casRedirectStrategy;
     }
 
-    // @Bean
-    // public ServerSecurityContextRepository serverSecurityContextRepository() {
-    // return new WebSessionServerSecurityContextRepository();
-    // }
+     @Bean
+     public ServerSecurityContextRepository serverSecurityContextRepository() {
+     return new WebSessionServerSecurityContextRepository();
+     }
 
     @Bean
     public ReactiveSessionRepository<?> sessionRepository() {

@@ -1,6 +1,6 @@
 server:
   address: 192.168.1.82
-  port: 8009
+  port: 8008
   reactive:
     context-path: /
   compression:
@@ -9,7 +9,7 @@ server:
     min-response-size: 2048
 spring:
   application:
-    name: dsp-gateway
+    name: dsp-cas-gateway
   devtools:
     restart:
       enabled: false
