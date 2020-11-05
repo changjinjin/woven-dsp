@@ -38,8 +38,8 @@
         <commons-beanutils.version>1.9.1</commons-beanutils.version>
         <commons-collections.version>3.2.1</commons-collections.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
-        <sqlhelper.version>3.1.0</sqlhelper.version>
-        <easyjson.version>3.0.0</easyjson.version>
+        <sqlhelper.version>3.2.4</sqlhelper.version>
+        <easyjson.version>3.0.4</easyjson.version>
 
         <!-- mybatis dependencies -->
         <mybatis.version>3.5.4</mybatis.version>
