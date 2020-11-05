@@ -1,6 +1,8 @@
 package com.info.baymax.common.queryapi.exception;
 
-import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.queryapi.result.ErrMsg;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 定义业务异常
@@ -8,60 +10,64 @@ import com.info.baymax.common.queryapi.result.ErrType;
  * @author: jingwei.yang
  * @date: 2019年4月23日 下午2:55:39
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class BizException extends RuntimeException {
+    private static final long serialVersionUID = -6187335538554881851L;
 
-	private static final long serialVersionUID = 1L;
+    /**
+     * 错误类型
+     */
+    private ErrMsg errMsg;
 
-	/**
-	 * 状态码
-	 */
-	private Integer status;
+    /**
+     * 提示参数列表
+     */
+    private Object[] args;
 
-	/**
-	 * 异常信息
-	 */
-	private String message;
+    /**
+     * 自定义异常信息
+     */
+    private String customMessage;
 
-	public BizException() {
-	}
+    public BizException(ErrMsg errMsg) {
+        this(errMsg, "");
+    }
 
-	public BizException(Integer status) {
-		this(status, ErrType.getMessageByStatus(status));
-	}
+    public BizException(ErrMsg errMsg, Throwable cause) {
+        super(errMsg.getMessage(), cause);
+        this.errMsg = errMsg;
+    }
 
-	public BizException(Integer status, String message) {
-		this.status = status;
-		this.message = message;
-	}
+    public BizException(ErrMsg errMsg, String customMessage) {
+        super(errMsg.getMessage());
+        this.errMsg = errMsg;
+        this.customMessage = customMessage;
+    }
 
-	public BizException(ErrType type) {
-		this(type.getStatus(), type.getMessage());
-	}
+    public BizException(ErrMsg errMsg, String customMessage, Throwable cause) {
+        this(errMsg, cause);
+        this.errMsg = errMsg;
+        this.customMessage = customMessage;
+    }
 
-	public BizException(ErrType type, String message) {
-		this(type.getStatus(), message);
-	}
+    public BizException(ErrMsg errMsg, Object[] args) {
+        super(errMsg.getMessage());
+        this.errMsg = errMsg;
+        this.args = args;
+    }
 
-	public BizException(Integer status, String message, Throwable cause) {
-		super(message, cause);
-		this.status = status;
-		this.message = message;
-	}
+    public BizException(ErrMsg errMsg, String customMessage, Object[] args) {
+        super(errMsg.getMessage());
+        this.errMsg = errMsg;
+        this.args = args;
+        this.customMessage = customMessage;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String msg) {
-		this.message = msg;
-	}
+    public BizException(ErrMsg errMsg, String customMessage, Object[] args, Throwable cause) {
+        this(errMsg, cause);
+        this.args = args;
+        this.customMessage = customMessage;
+    }
 
 }

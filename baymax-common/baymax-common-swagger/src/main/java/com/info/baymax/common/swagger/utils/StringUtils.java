@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.utils;
+package com.info.baymax.common.swagger.utils;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringEscapeUtils;

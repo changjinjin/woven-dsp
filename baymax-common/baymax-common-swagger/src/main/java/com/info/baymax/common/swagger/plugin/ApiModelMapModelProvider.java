@@ -1,9 +1,9 @@
-package com.info.baymax.dsp.common.swagger.plugin;
+package com.info.baymax.common.swagger.plugin;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.collect.Lists;
-import com.info.baymax.dsp.common.swagger.annotation.ApiModelMap;
-import com.info.baymax.dsp.common.swagger.utils.StringUtils;
+import com.info.baymax.common.swagger.annotation.ApiModelMap;
+import com.info.baymax.common.swagger.utils.StringUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import javassist.*;

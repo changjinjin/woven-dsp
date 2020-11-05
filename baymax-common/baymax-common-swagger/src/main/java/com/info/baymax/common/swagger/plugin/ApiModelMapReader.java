@@ -1,8 +1,8 @@
-package com.info.baymax.dsp.common.swagger.plugin;
+package com.info.baymax.common.swagger.plugin;
 
 import com.fasterxml.classmate.ResolvedType;
-import com.info.baymax.dsp.common.swagger.annotation.ApiModelMap;
-import com.info.baymax.dsp.common.swagger.utils.StringUtils;
+import com.info.baymax.common.swagger.annotation.ApiModelMap;
+import com.info.baymax.common.swagger.utils.StringUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;

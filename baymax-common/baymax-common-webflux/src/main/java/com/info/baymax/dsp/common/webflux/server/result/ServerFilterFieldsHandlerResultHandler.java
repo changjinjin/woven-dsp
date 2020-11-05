@@ -81,7 +81,7 @@ public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWrite
                 methodParameter, exchange);
         } catch (Exception e) {
             log.error("Message serialization failed", e);
-            throw new BizException(ErrType.INTERNAL_SERVER_ERROR.getStatus(), "Message serialization failed", e);
+            throw new BizException(ErrType.INTERNAL_SERVER_ERROR, "Message serialization failed", e);
         }
     }
 

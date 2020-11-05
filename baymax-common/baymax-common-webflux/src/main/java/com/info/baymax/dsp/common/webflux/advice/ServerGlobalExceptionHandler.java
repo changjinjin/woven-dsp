@@ -1,11 +1,13 @@
 package com.info.baymax.dsp.common.webflux.advice;
 
 import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrMsg;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebExchange;
 
+import javax.annotation.Nullable;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -31,6 +34,10 @@ import java.util.Set;
 @RestControllerAdvice
 @Slf4j
 public class ServerGlobalExceptionHandler {
+
+    @Autowired
+    @Nullable
+    private MessageSourceAccessor messageSourceAccessor;
 
     /**
      * 没有捕获处理的异常
@@ -61,20 +68,31 @@ public class ServerGlobalExceptionHandler {
     public Response<?> bizExceptionHandler(BizException e) {
         log.error(e.getMessage(), e);
         Response<?> result = null;
+
         Throwable cause = e.getCause();
+        ErrMsg errMsg = e.getErrMsg();
+        String customMessage = e.getCustomMessage();
+
+        String message = null;
+        if (messageSourceAccessor != null) {
+            message = messageSourceAccessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
+        }
+
+        message = StringUtils.defaultIfEmpty(message, customMessage);
         if (cause != null) {
             if (cause instanceof BizException) {
                 BizException c = (BizException) cause;
                 result = Response
-                    .error(c.getStatus(),
-                        StringUtils.defaultIfEmpty(c.getMessage(), "UNKNOWN ERROR:" + c.getStatus()))
+                    .error(errMsg.getStatus(),
+                        StringUtils.defaultIfEmpty(message, "UNKNOWN ERROR:" + errMsg.getStatus()))
                     .details(c.toString()).build();
             } else {
-                result = Response.error(e.getStatus(), cause.getMessage()).details(cause.toString()).build();
+                result = Response.error(errMsg.getStatus(), cause.getMessage()).details(cause.toString()).build();
             }
         } else {
             result = Response
-                .error(e.getStatus(), StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus()))
+                .error(errMsg.getStatus(),
+                    StringUtils.defaultIfEmpty(message, "UNKNOWN ERROR:" + errMsg.getStatus()))
                 .details(e.toString()).build();
         }
         if (result != null) {

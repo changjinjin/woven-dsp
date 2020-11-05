@@ -6,7 +6,7 @@ import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.dsp.common.swagger.annotation.ApiModelFields;
+import com.info.baymax.common.swagger.annotation.ApiModelFields;
 import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;

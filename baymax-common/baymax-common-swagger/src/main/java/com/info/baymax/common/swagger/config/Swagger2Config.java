@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.swagger.config;
+package com.info.baymax.common.swagger.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(Swagger2Properties.class)
 // @Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config {
@@ -136,7 +136,16 @@ public class Swagger2Config {
             return new SwaggerResourcesProvider() {
                 @Override
                 public List<SwaggerResource> get() {
-                    return properties.getResources();
+                    List<SwaggerResource> resources = properties.getResources();
+                    if (resources != null && resources.size() > 0) {
+                        return resources;
+                    }
+
+                    SwaggerResource resource = new SwaggerResource();
+                    resource.setName("default");
+                    resource.setUrl("/v2/api-docs");
+                    resource.setSwaggerVersion("1.0");
+                    return Arrays.asList(resource);
                 }
             };
         }

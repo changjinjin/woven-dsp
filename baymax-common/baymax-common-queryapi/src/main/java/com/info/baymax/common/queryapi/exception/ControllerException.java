@@ -1,38 +1,41 @@
 package com.info.baymax.common.queryapi.exception;
 
-import com.info.baymax.common.queryapi.result.ErrType;
-
+import com.info.baymax.common.queryapi.result.ErrMsg;
 
 /**
- *  Controller层异常
+ * Controller层异常
+ *
  * @author: jingwei.yang
- * @date:   2019年4月23日 下午2:55:00
+ * @date: 2019年4月23日 下午2:55:00
  */
 public class ControllerException extends BizException {
-	private static final long serialVersionUID = -7428495813034319173L;
+    private static final long serialVersionUID = -7428495813034319173L;
 
-	public ControllerException(Integer status) {
-		super(status);
-	}
+    public ControllerException(ErrMsg errMsg) {
+        super(errMsg);
+    }
 
-	public ControllerException(Integer status, String message) {
-		super(status, message);
-	}
+    public ControllerException(ErrMsg errMsg, Throwable cause) {
+        super(errMsg, cause);
+    }
 
-	public ControllerException(ErrType type) {
-		this(type.getStatus(), type.getMessage());
-	}
+    public ControllerException(ErrMsg errMsg, String customMessage) {
+        super(errMsg, customMessage);
+    }
 
-	public ControllerException(ErrType type, String message) {
-		this(type.getStatus(), message);
-	}
+    public ControllerException(ErrMsg errMsg, String customMessage, Throwable cause) {
+        super(errMsg, customMessage, cause);
+    }
 
-	public ControllerException(Integer status, String message, Throwable cause) {
-		super(status, message, cause);
-	}
+    protected ControllerException(ErrMsg errMsg, String customMessage, Object[] args) {
+        super(errMsg, customMessage, args);
+    }
 
-	public ControllerException(ServiceException e) {
-		super(e.getStatus(), e.getMessage(), e.getCause());
-	}
+    public ControllerException(ErrMsg errMsg, Object[] args) {
+        super(errMsg, args);
+    }
 
+    protected ControllerException(ErrMsg errMsg, String customMessage, Object[] args, Throwable cause) {
+        super(errMsg, customMessage, args, cause);
+    }
 }

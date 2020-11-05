@@ -1,11 +1,13 @@
 package com.info.baymax.dsp.common.webmvc.advice;
 
 import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrMsg;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -28,6 +31,10 @@ import java.util.Set;
 @RestControllerAdvice
 @Slf4j
 public class ServletGlobalExceptionHandler {
+
+    @Autowired
+    @Nullable
+    private MessageSourceAccessor messageSourceAccessor;
 
     /**
      * 没有捕获处理的异常
@@ -55,14 +62,38 @@ public class ServletGlobalExceptionHandler {
     @Order(-3)
     public Response<?> bizExceptionHandler(HttpServletResponse response, BizException e) {
         log.error(e.getMessage(), e);
-        Response<?> result = Response.error(e.getStatus(),
-                StringUtils.defaultIfEmpty(e.getMessage(), "UNKNOWN ERROR:" + e.getStatus())).build();
+        Response<?> result = null;
+
+        Throwable cause = e.getCause();
+        ErrMsg errMsg = e.getErrMsg();
+        String customMessage = e.getCustomMessage();
+
+        String message = null;
+        if (messageSourceAccessor != null) {
+            message = messageSourceAccessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
+        }
+
+        message = StringUtils.defaultIfEmpty(message, customMessage);
+        if (cause != null) {
+            if (cause instanceof BizException) {
+                BizException c = (BizException) cause;
+                result = Response
+                    .error(errMsg.getStatus(),
+                        StringUtils.defaultIfEmpty(message, "UNKNOWN ERROR:" + errMsg.getStatus()))
+                    .details(c.toString()).build();
+            } else {
+                result = Response.error(errMsg.getStatus(), cause.getMessage()).details(cause.toString()).build();
+            }
+        } else {
+            result = Response
+                .error(errMsg.getStatus(),
+                    StringUtils.defaultIfEmpty(message, "UNKNOWN ERROR:" + errMsg.getStatus()))
+                .details(e.toString()).build();
+        }
         if (result != null) {
-            response.setStatus(HttpStatus.OK.value());
             return result;
         }
-        response.setStatus(HttpStatus.OK.value());
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).build();
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
     }
 
     /**
