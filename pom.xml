@@ -374,6 +374,11 @@
                 <artifactId>javacsv</artifactId>
                 <version>${javacsv.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.passay</groupId>
+                <artifactId>passay</artifactId>
+                <version>${passay.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
