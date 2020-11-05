@@ -5,6 +5,7 @@ import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper;
 import com.info.baymax.common.jpa.criteria.query.QueryObject;
 import com.info.baymax.common.jpa.criteria.query.SortObject;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.queryapi.utils.MapUtils;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.service.criteria.example.JoinSql;
 import com.info.baymax.common.service.entity.EntityClassServiceImpl;
@@ -12,13 +13,13 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceType;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;
-import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends ResourceId> extends EntityClassServiceImpl<T>
@@ -50,7 +51,8 @@ public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends Resour
 					continue;
 				}
 				if ("tenant".equals(next.getFieldName())) {
-					String tenantId = ((Tenant) fieldValue).getId();
+					Map<String, Object> tenantMap = MapUtils.transBean2Map(fieldValue);
+					String tenantId = tenantMap.getOrDefault("id", "").toString();
 					if (StringUtils.isEmpty(tenantId)) {
 						continue;
 					}
@@ -190,7 +192,8 @@ public abstract class QueryObjectByResourceOrProjectServiceImpl<T extends Resour
 					return null;
 				}
 				if ("tenant".equals(fieldName)) {
-					String tenantId = ((Tenant) fieldValue).getId();
+					Map<String, Object> tenantMap = MapUtils.transBean2Map(fieldValue);
+					String tenantId = tenantMap.getOrDefault("id", "").toString();
 					if (StringUtils.isEmpty(tenantId)) {
 						continue;
 					}
