@@ -32,6 +32,11 @@
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-sys</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-platform</artifactId>
             <version>${project.version}</version>
         </dependency>
