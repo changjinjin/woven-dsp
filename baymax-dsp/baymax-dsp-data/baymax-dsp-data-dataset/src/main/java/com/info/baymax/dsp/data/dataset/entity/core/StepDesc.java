@@ -4,53 +4,36 @@ import com.google.common.collect.Lists;
 import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
-import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
+import com.merce.woven.common.ConfigObject;
+import com.merce.woven.common.StepFieldGroup;
+import com.merce.woven.step.StepMiniDesc;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * step完整的描述信息，包含前端参数
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel
-public class StepDesc implements Cloneable, Serializable, CryptoBean {
-    private static final long serialVersionUID = -598721136723181311L;
+public class StepDesc extends StepMiniDesc implements CryptoBean {
+	private static final long serialVersionUID = 9136912998458831599L;
 
-    @ApiModelProperty("流程ID")
+	@ApiModelProperty("流程ID")
     private String flowId;
-
-    @ApiModelProperty("节点ID")
-    private String id;
-
-    @ApiModelProperty("名称")
-    private String name;
-
-    @ApiModelProperty("类型")
-    private String type;
 
     @ApiModelProperty("X轴坐标")
     private int x = 0;
 
     @ApiModelProperty("Y轴坐标")
     private int y = 0;
-
-    @ApiModelProperty("额外配置信息")
-    private ConfigObject otherConfigurations;
-
-    @ApiModelProperty("输入配置信息")
-    private StepFieldGroup inputConfigurations = new StepFieldGroup();
-
-    @ApiModelProperty("输出配置信息")
-    private StepFieldGroup outputConfigurations = new StepFieldGroup();
-
-    @ApiModelProperty("库信息")
-    private List<String> libs;
 
     @ApiModelProperty("继承信息")
     private String implementation;
@@ -64,30 +47,31 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
 
     public StepDesc(String id, String name, String type, ConfigObject otherConfigurations,
                     StepFieldGroup inputConfigurations, StepFieldGroup outputConfigurations, int x, int y) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.otherConfigurations = otherConfigurations;
-        this.inputConfigurations = inputConfigurations;
-        this.outputConfigurations = outputConfigurations;
+        this.setId(id);
+        this.setName(name);
+        this.setType(type);
+        this.setOtherConfigurations(otherConfigurations);
+        this.setInputConfigurations(inputConfigurations);
+        this.setOutputConfigurations(outputConfigurations);
         this.x = x;
         this.y = y;
     }
 
     public StepDesc(String id, String name, StepDesc stepDef, ConfigObject otherConfigurations,
                     StepFieldGroup inputConfigurations, StepFieldGroup outputConfigurations) {
-        this.id = id;
-        this.name = name;
-        this.type = stepDef.getType();
+        this.setId(id);
+        this.setName(name);
+        this.setType(stepDef.getType());
+        this.setLibs(stepDef.getLibs());
+        this.setOtherConfigurations(otherConfigurations);
+        this.setInputConfigurations(inputConfigurations);
+        this.setOutputConfigurations(outputConfigurations);
         this.implementation = stepDef.getImplementation();
-        this.libs = stepDef.getLibs();
-        this.otherConfigurations = otherConfigurations;
-        this.inputConfigurations = inputConfigurations;
-        this.outputConfigurations = outputConfigurations;
     }
 
-    @Override
-    public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+	@Override
+	public void encrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+        ConfigObject otherConfigurations = this.getOtherConfigurations();
         if (otherConfigurations != null && !otherConfigurations.isEmpty()) {
             switch (cryptoType) {
                 case BASE64:
@@ -105,42 +89,47 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+	@SuppressWarnings("unchecked")
+	@Override
+	public void decrypt(String secretKey, boolean wrapped, CryptoType cryptoType, CryptorDelegater cryptorDelegater) {
+        ConfigObject otherConfigurations = this.getOtherConfigurations();
+        String type = this.getType();
         if (otherConfigurations != null && !otherConfigurations.isEmpty()) {
             switch (type) {
                 case "sql":
                 case "sqlsource":
                     Object sql = otherConfigurations.get("sql");
                     if (sql != null) {
-                        otherConfigurations.replace("sql",
-                            plaintext(sql.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
+                        otherConfigurations.replace("sql", plaintext(sql.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                     }
                     break;
                 case "filter":
                 case "split":
                     Object condition = otherConfigurations.get("condition");
                     if (condition != null) {
-                        otherConfigurations.replace("condition",
-                            plaintext(condition.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
+                        otherConfigurations.replace("condition", plaintext(condition.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                     }
                     break;
                 case "transform":
                     Object expressionsObj = otherConfigurations.get("expressions");
                     if (expressionsObj != null) {
                         Class<? extends Object> clazz = expressionsObj.getClass();
-                        List<String> newExpressions = Lists.newArrayList();
+                        List<Map<String, Object>> newExpressions = Lists.newArrayList();
                         if (Iterable.class.isAssignableFrom(clazz)) {
                             Iterator<?> iterator = ((Iterable<?>) expressionsObj).iterator();
                             iterator.forEachRemaining(exp -> {
-                                newExpressions
-                                    .add(plaintext(exp.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
+                                Map<String, Object> map = (Map<String, Object>) exp;
+                                map.replace("value",
+                                        plaintext(map.getOrDefault("value", "").toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
+                                newExpressions.add(map);
+
                             });
                         } else if (clazz.isArray()) {
                             for (int i = 0; i < Array.getLength(expressionsObj); i++) {
-                                newExpressions.add(plaintext(Array.get(expressionsObj, i).toString(), secretKey, wrapped,
-                                    cryptoType, cryptorDelegater));
+                                Map<String, Object> map = (Map<String, Object>)Array.get(expressionsObj, i);
+                                map.replace("value",
+                                        plaintext(map.getOrDefault("value", "").toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
+                                newExpressions.add(map);
                             }
                         }
                         otherConfigurations.replace("expressions", newExpressions);
@@ -155,15 +144,15 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
                             Iterator<?> iterator = ((Iterable<?>) validationRulesObj).iterator();
                             iterator.forEachRemaining(exp -> {
                                 Map<String, Object> map = (Map<String, Object>) exp;
-                                map.replace("expression", plaintext(map.getOrDefault("expression", "").toString(),
-                                    secretKey, wrapped, cryptoType, cryptorDelegater));
+                                map.replace("expression",
+                                    plaintext(map.getOrDefault("expression", "").toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                                 newValidationRules.add(map);
                             });
                         } else if (clazz.isArray()) {
                             for (int i = 0; i < Array.getLength(validationRulesObj); i++) {
                                 Map<String, Object> map = (Map<String, Object>) Array.get(validationRulesObj, i);
-                                map.replace("expression", plaintext(map.getOrDefault("expression", "").toString(),
-                                    secretKey, wrapped, cryptoType, cryptorDelegater));
+                                map.replace("expression",
+                                    plaintext(map.getOrDefault("expression", "").toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
                                 newValidationRules.add(map);
                             }
                         }
@@ -177,9 +166,11 @@ public class StepDesc implements Cloneable, Serializable, CryptoBean {
             // 密码都需要解密
             Object password = otherConfigurations.get("password");
             if (password != null) {
-                otherConfigurations.replace("password",
-                    plaintext(password.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
+                otherConfigurations.replace("password", plaintext(password.toString(), secretKey, wrapped, cryptoType, cryptorDelegater));
             }
         }
     }
+ 
+    
+    
 }

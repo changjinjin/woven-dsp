@@ -9,13 +9,14 @@ import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListLinkDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListParameterDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListStepDescTypeHandler;
+import com.merce.woven.common.LinkDesc;
+import com.merce.woven.common.ParameterDesc;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;

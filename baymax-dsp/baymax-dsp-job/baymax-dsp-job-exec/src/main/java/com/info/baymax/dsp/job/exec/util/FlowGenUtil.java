@@ -8,7 +8,6 @@ import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.bean.TransformRule;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
-import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
 import com.info.baymax.dsp.data.dataset.entity.core.*;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
@@ -21,6 +20,9 @@ import com.info.baymax.dsp.data.dataset.utils.Flows;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
+import com.merce.woven.common.ConfigObject;
+import com.merce.woven.common.FieldDesc;
+import com.merce.woven.common.ParameterDesc;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -62,7 +64,7 @@ public class FlowGenUtil {
         Schema s = schemaService.selectByPrimaryKey(schemaId);
         List<FlowField> result = new ArrayList<>();
         for (int i = 0; i < s.getFields().size(); i++) {
-            DataField schField = s.getFields().get(i);
+        	FieldDesc schField = s.getFields().get(i);
             FlowField flowField = new FlowField(schField.getName(), schField.getType(), "", schField.getDescription());
             result.add(flowField);
         }
@@ -329,14 +331,14 @@ public class FlowGenUtil {
     }
 
     public Schema createSchema(DataService dataService, List<FlowField> inputFields, String schemaName){
-        Schema schema = new Schema(schemaName, new ArrayList<DataField>());
+        Schema schema = new Schema(schemaName, new ArrayList<FieldDesc>());
         schema.setId(UUID.randomUUID().toString());
         schema.setCreateTime(new Date());
         schema.setLastModifiedTime(schema.getCreateTime());
         ResourceDesc schema_resource = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_SCHEMA);// 暂时放在schemas根目录下
         schema.setResource(schema_resource);
         for(FlowField flowField : inputFields){
-            DataField dataField = new DataField(flowField.getColumn(),flowField.getType(),flowField.getAlias(),flowField.getDescription());
+        	FieldDesc dataField = new FieldDesc(flowField.getColumn(),flowField.getType(),flowField.getAlias(),flowField.getDescription());
             String fieldName = dataField.getName();
             if (StringUtils.isNotEmpty(dataField.getAlias())) {
                 dataField.setName(dataField.getAlias());

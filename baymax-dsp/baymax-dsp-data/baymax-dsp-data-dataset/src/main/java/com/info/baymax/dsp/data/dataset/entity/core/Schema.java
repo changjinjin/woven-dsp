@@ -1,19 +1,19 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
 import com.info.baymax.common.entity.base.Maintable;
-import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsListStringTypeHandler;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
-import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListDataFieldTypeHandler;
+import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceId;
+import com.merce.woven.common.FieldDesc;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -40,8 +40,8 @@ public class Schema extends Maintable implements ResourceId,Cloneable {
     @Comment("字段列表")
     @Lob
     @Convert(converter = ObjectToStringConverter.class)
-    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListDataFieldTypeHandler.class)
-    private List<DataField> fields;
+    @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsListFieldDescTypeHandler.class)
+    private List<FieldDesc> fields;
 
     @ApiModelProperty("模型")
     @Comment("模型")
@@ -87,7 +87,7 @@ public class Schema extends Maintable implements ResourceId,Cloneable {
     public Schema() {
     }
 
-    public Schema(String name, List<DataField> fields) {
+    public Schema(String name, List<FieldDesc> fields) {
         this.name = name;
         this.fields = fields;
     }

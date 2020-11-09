@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.data.dataset.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.merce.woven.common.ConfigObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

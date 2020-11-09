@@ -110,7 +110,7 @@
         <passay.version>1.4.0</passay.version>
 
         <baymax-dsp.version>0.1.3</baymax-dsp.version>
-        <baymax.version>3.1</baymax.version>
+        <baymax-woven.version>3.1</baymax-woven.version>
     </properties>
 
     <modules>
@@ -148,7 +148,12 @@
             <dependency>
                 <groupId>com.merce.woven</groupId>
                 <artifactId>woven-metrics</artifactId>
-                <version>${baymax.version}</version>
+                <version>${baymax-woven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.merce.woven</groupId>
+                <artifactId>woven-dataflow-step-sdk</artifactId>
+                <version>${baymax-woven.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.javassist</groupId>

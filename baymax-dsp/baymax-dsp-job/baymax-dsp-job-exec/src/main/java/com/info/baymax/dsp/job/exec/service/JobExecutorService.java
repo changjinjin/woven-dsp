@@ -34,6 +34,7 @@ import com.info.baymax.dsp.job.exec.constant.ExecutorFlowConf;
 import com.info.baymax.dsp.job.exec.message.sender.PlatformServerRestClient;
 import com.info.baymax.dsp.job.exec.util.FlowGenUtil;
 import com.info.baymax.dsp.job.exec.util.HdfsUtil;
+import com.merce.woven.common.FieldDesc;
 import com.merce.woven.metrics.report.MetricsReporter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

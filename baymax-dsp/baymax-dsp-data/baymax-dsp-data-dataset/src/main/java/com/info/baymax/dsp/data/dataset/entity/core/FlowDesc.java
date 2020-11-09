@@ -5,7 +5,6 @@ import com.info.baymax.common.crypto.CryptoBean;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.entity.base.Maintable;
-import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListLinkDescTypeHandler;
@@ -13,11 +12,14 @@ import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListPara
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListStepDescTypeHandler;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceId;
 import com.info.baymax.dsp.data.dataset.utils.ValueBind;
+import com.merce.woven.common.LinkDesc;
+import com.merce.woven.common.ParameterDesc;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
 

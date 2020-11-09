@@ -1,8 +1,10 @@
 package com.info.baymax.dsp.data.dataset.utils;
 
 import com.info.baymax.dsp.data.dataset.bean.InputOutputField;
-import com.info.baymax.dsp.data.dataset.entity.ConfigObject;
-import com.info.baymax.dsp.data.dataset.entity.core.*;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowDesc;
+import com.info.baymax.dsp.data.dataset.entity.core.FlowField;
+import com.info.baymax.dsp.data.dataset.entity.core.StepDesc;
+import com.merce.woven.common.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
