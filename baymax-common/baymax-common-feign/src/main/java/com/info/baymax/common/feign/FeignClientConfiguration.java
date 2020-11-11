@@ -46,7 +46,7 @@ public class FeignClientConfiguration {
     }
 
     @Bean
-    public TransmitTokenFeighClientIntercepter TransmitTokenFeighClientIntercepter() {
+    public TransmitTokenFeighClientIntercepter transmitTokenFeighClientIntercepter() {
         return new TransmitTokenFeighClientIntercepter();
     }
 }
