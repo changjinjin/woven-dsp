@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.config;
+package com.info.baymax.common.comp.init;
 
 import com.info.baymax.common.utils.ICollections;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class InitializerConfig implements CommandLineRunner, ApplicationContextAware {
+public class InitializersRunner implements CommandLineRunner, ApplicationContextAware {
 
     private List<Initializer> initializers = new ArrayList<Initializer>();
 

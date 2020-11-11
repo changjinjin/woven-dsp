@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.config;
+package com.info.baymax.common.comp.init;
 
 /**
  * 信息初始化信息执行器
