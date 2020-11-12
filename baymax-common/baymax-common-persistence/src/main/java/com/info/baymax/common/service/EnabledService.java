@@ -1,5 +1,6 @@
 package com.info.baymax.common.service;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.google.common.collect.ImmutableMap;
 import com.info.baymax.common.entity.gene.Enabled;
 import com.info.baymax.common.entity.gene.Idable;
@@ -10,6 +11,7 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.utils.JsonUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +36,11 @@ public interface EnabledService<ID extends Serializable, E extends Serializable,
     }
 
     default int updateEnabled(List<ID> ids, E enabled) {
-        if (ICollections.hasElements(ids)) {
+        if (ICollections.hasNoElements(ids)) {
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, "Entity ids could not be null or empty.");
         }
-        List<ImmutableMap<String, Object>> list = ids.stream().map(id -> ImmutableMap.of("id", ids, "enabled", enabled))
-            .collect(Collectors.toList());
-        return updateByPrimaryKeySelective(
-            JsonUtils.fromObject(list, JsonUtils.contructCollectionType(List.class, getEntityClass())));
+        return updateListByPrimaryKey(ids.stream()
+            .map(id -> JsonUtils.fromObject(ImmutableMap.of("id", id, "enabled", enabled), getEntityClass()))
+            .collect(Collectors.toList()));
     }
 }

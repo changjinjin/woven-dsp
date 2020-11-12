@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public interface EnabledController<ID extends Serializable, E extends Serializab
     }
 
     @ApiOperation(value = "批量修改启用状态", notes = "根据ID集合和enabled值批量修改启用停用状态")
-    @PostMapping("/enabled/")
+    @PostMapping("/enabled/{enabled}")
     default Response<?> updateEnabled(@ApiParam(value = "启用停用状态值", required = true) @PathVariable("enabled") E enabled,
-                                      @ApiParam(value = "记录ID集合", required = true) @RequestBody List<ID> ids) {
+                                      @ApiParam(value = "记录ID集合", required = true) @RequestBody @NotEmpty(message = "Entity ids could not be null or empty.") List<ID> ids) {
         getEnabledService().updateEnabled(ids, enabled);
         return Response.ok().build();
     }
