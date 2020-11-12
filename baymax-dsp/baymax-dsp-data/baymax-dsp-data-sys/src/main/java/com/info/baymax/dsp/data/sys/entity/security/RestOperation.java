@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Idable;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringListTypeHandler;
 import com.info.baymax.common.utils.HashUtil;

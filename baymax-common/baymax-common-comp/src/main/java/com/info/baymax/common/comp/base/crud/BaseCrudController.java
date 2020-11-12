@@ -1,6 +1,6 @@
 package com.info.baymax.common.comp.base.crud;
 
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Idable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;

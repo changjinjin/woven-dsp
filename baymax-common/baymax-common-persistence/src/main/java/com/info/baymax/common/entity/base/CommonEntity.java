@@ -1,35 +1,26 @@
 package com.info.baymax.common.entity.base;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.type.JdbcType;
-
-import org.hibernate.annotations.Comment;
-
-import org.hibernate.annotations.ColumnDefault;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Enabled;
+import com.info.baymax.common.entity.gene.Idable;
 import com.info.baymax.common.entity.preprocess.PreEntity;
 import com.info.baymax.common.entity.validation.MustIn;
 import com.info.baymax.common.saas.SaasContext;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -37,7 +28,8 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" }, ignoreUnknown = true)
-public abstract class CommonEntity<ID extends Serializable> implements Idable<ID>, PreEntity, Serializable {
+public abstract class CommonEntity<ID extends Serializable>
+		implements Idable<ID>, Enabled<Integer>, PreEntity, Serializable {
 	private static final long serialVersionUID = 4394421573081538612L;
 
 	@ApiModelProperty(value = "名称", required = true)

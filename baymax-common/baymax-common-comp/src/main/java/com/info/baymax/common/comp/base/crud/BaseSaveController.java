@@ -1,6 +1,6 @@
 package com.info.baymax.common.comp.base.crud;
 
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Idable;
 import com.info.baymax.common.queryapi.result.Response;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

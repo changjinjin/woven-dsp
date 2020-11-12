@@ -1,6 +1,6 @@
 package com.info.baymax.common.service.tree.id;
 
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Idable;
 import com.info.baymax.common.service.tree.code.TreeCodeable;
 
 import java.io.Serializable;

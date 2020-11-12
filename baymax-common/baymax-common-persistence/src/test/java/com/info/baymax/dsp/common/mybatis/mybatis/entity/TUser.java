@@ -1,7 +1,8 @@
 package com.info.baymax.dsp.common.mybatis.mybatis.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Idable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import tk.mybatis.mapper.annotation.ColumnType;

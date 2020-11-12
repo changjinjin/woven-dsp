@@ -1,16 +1,17 @@
 package com.info.baymax.common.entity.base;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.info.baymax.common.entity.preprocess.PreEntityService;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
+import com.info.baymax.common.service.EnabledService;
 import com.info.baymax.common.service.criteria.example.ExampleQuery;
 
+import java.io.Serializable;
+import java.util.List;
+
 public interface CommonEntityService<ID extends Serializable, T extends CommonEntity<ID>>
-		extends BaseIdableAndExampleQueryService<ID, T>, PreEntityService<T> {
+		extends BaseIdableAndExampleQueryService<ID, T>, EnabledService<ID, Integer, T>, PreEntityService<T> {
 
 	public static final String PROPERTY_ID = "id";
 	public static final String PROPERTY_NAME = "name";

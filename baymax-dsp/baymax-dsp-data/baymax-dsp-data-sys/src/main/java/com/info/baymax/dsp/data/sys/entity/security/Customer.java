@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -35,6 +36,7 @@ public class Customer extends Maintable implements CryptoBean {
     @Comment("用户名")
     @Column(length = 50)
     @ColumnType(jdbcType = JdbcType.VARCHAR)
+    @NotBlank(message = "Username could not be blank.")
     private String username;
 
     @ApiModelProperty(value = "用户密码", required = false)

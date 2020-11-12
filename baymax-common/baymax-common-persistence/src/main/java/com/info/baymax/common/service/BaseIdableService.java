@@ -1,6 +1,6 @@
 package com.info.baymax.common.service;
 
-import com.info.baymax.common.entity.id.Idable;
+import com.info.baymax.common.entity.gene.Idable;
 import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
 import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;

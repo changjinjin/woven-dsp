@@ -1,4 +1,4 @@
-package com.info.baymax.common.entity.id;
+package com.info.baymax.common.entity.gene;
 
 import java.io.Serializable;
 
