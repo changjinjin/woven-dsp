@@ -39,7 +39,7 @@ public interface EnabledService<ID extends Serializable, E extends Serializable,
         if (ICollections.hasNoElements(ids)) {
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, "Entity ids could not be null or empty.");
         }
-        return updateListByPrimaryKey(ids.stream()
+        return updateListByPrimaryKeySelective(ids.stream()
             .map(id -> JsonUtils.fromObject(ImmutableMap.of("id", id, "enabled", enabled), getEntityClass()))
             .collect(Collectors.toList()));
     }

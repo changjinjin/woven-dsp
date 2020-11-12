@@ -97,7 +97,7 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
                 // 子集非空，递归调用给子层查找子集，直到子集没有找到子集
                 if (ICollections.hasElements(children)) {
                     fetchTree(children, notRoots);
-                }
+				}
             }
         }
         return roots;

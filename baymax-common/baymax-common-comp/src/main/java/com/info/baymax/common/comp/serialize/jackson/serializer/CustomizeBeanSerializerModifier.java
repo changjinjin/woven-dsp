@@ -24,7 +24,6 @@ public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
             BeanPropertyWriter writer = (BeanPropertyWriter) beanProperty;
             // 判断字段的类型，如果是array，list，set则注册nullSerializer
             if (isArrayType(writer)) {
-                // 给writer注册一个自己的nullSerializer
                 writer.assignNullSerializer(nullArrayJsonSerializer);
             } else if (isStringType(writer)) {
                 writer.assignNullSerializer(nullStringJsonSerializer);

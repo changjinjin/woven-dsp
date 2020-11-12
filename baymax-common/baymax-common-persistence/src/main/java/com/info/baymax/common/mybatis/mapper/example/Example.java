@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.type.JdbcType;
@@ -173,7 +174,7 @@ public class Example implements IDynamicTableName {
                     this.excludeColumns.add(propertyMap.get(property).getColumn());
                 } else {
                     throw new MapperException(
-                        "类 " + entityClass.getSimpleName() + " 不包含属性 \'" + property + "\'，或该属性被@Transient注释！");
+                        "Class " + entityClass.getSimpleName() + " does not contain an attribute \'" + property + "\'，Or the attribute is annotated by @Transient.");
                 }
             }
         }
@@ -196,7 +197,7 @@ public class Example implements IDynamicTableName {
                     this.selectColumns.add(propertyMap.get(property).getColumn());
                 } else {
                     throw new MapperException(
-                        "类 " + entityClass.getSimpleName() + " 不包含属性 \'" + property + "\'，或该属性被@Transient注释！");
+                        "Class " + entityClass.getSimpleName() + " does not contain an attribute \'" + property + "\'，Or the attribute is annotated by @Transient.");
                 }
             }
         }
@@ -254,11 +255,11 @@ public class Example implements IDynamicTableName {
 
         private String property(String property) {
             if (StringUtil.isEmpty(property) || StringUtil.isEmpty(property.trim())) {
-                throw new MapperException("接收的property为空！");
+                throw new MapperException("Empty property.");
             }
             property = property.trim();
             if (!propertyMap.containsKey(property)) {
-                throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                throw new MapperException("The current entity class does not contain an attribute named " + property);
             }
             return propertyMap.get(property).getColumn();
         }
@@ -336,7 +337,7 @@ public class Example implements IDynamicTableName {
             if (propertyMap.containsKey(property)) {
                 return propertyMap.get(property).getColumn();
             } else if (exists) {
-                throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                throw new MapperException("Current entity class does not contain an attribute named " + property);
             } else {
                 return null;
             }
@@ -346,7 +347,7 @@ public class Example implements IDynamicTableName {
             if (propertyMap.containsKey(property)) {
                 return property;
             } else if (exists) {
-                throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                throw new MapperException("Current entity class does not contain an attribute named " + property);
             } else {
                 return null;
             }
@@ -370,7 +371,7 @@ public class Example implements IDynamicTableName {
                 return javaType;
             } else if (exists) {
                 throw new MapperException(
-                    "The current entity class does not contain a property named '" + property + "'.");
+                    "Current entity class does not contain a property named '" + property + "'.");
             } else {
                 return null;
             }
@@ -481,6 +482,13 @@ public class Example implements IDynamicTableName {
             return value;
         }
 
+        private boolean legalLikeValue(String value) {
+            if (Pattern.compile("^[%_]+$").matcher(value).matches()) {
+                throw new MapperException("Illegal like value:" + value);
+            }
+            return true;
+        }
+
         protected void addOrCriterion(String condition, Object value1, Object value2, String property) {
             if (value1 == null || value2 == null) {
                 if (notNull) {
@@ -558,12 +566,16 @@ public class Example implements IDynamicTableName {
         }
 
         public Criteria andLike(String property, String value) {
-            addCriterion(column(property) + "  like", value, property(property));
+            if (legalLikeValue(value)) {
+                addCriterion(column(property) + "  like", value, property(property));
+            }
             return (Criteria) this;
         }
 
         public Criteria andNotLike(String property, String value) {
-            addCriterion(column(property) + "  not like", value, property(property));
+            if (legalLikeValue(value)) {
+                addCriterion(column(property) + "  not like", value, property(property));
+            }
             return (Criteria) this;
         }
 
@@ -702,12 +714,16 @@ public class Example implements IDynamicTableName {
         }
 
         public Criteria orLike(String property, String value) {
-            addOrCriterion(column(property) + "  like", value, property(property));
+            if (legalLikeValue(value)) {
+                addOrCriterion(column(property) + "  like", value, property(property));
+            }
             return (Criteria) this;
         }
 
         public Criteria orNotLike(String property, String value) {
-            addOrCriterion(column(property) + "  not like", value, property(property));
+            if (legalLikeValue(value)) {
+                addOrCriterion(column(property) + "  not like", value, property(property));
+            }
             return (Criteria) this;
         }
 
@@ -799,7 +815,7 @@ public class Example implements IDynamicTableName {
 
         public Criteria up() {
             if (this.parent == null) {
-                throw new MapperException("当前条件为最顶级条件，没有父级条件了，不能使用up()方法");
+                throw new MapperException("Top-level condition cannot call up() method");
             }
             return this.parent;
         }
@@ -984,7 +1000,7 @@ public class Example implements IDynamicTableName {
                     if (this.propertyMap.containsKey(property)) {
                         this.selectColumns.add(propertyMap.get(property).getColumn());
                     } else {
-                        throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                        throw new MapperException("Current entity class does not contain an attribute named "+property);
                     }
                 }
             }
@@ -1000,7 +1016,7 @@ public class Example implements IDynamicTableName {
                     if (propertyMap.containsKey(property)) {
                         this.excludeColumns.add(propertyMap.get(property).getColumn());
                     } else {
-                        throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                        throw new MapperException("Current entity class does not contain an attribute named "+property);
                     }
                 }
             }
@@ -1142,7 +1158,7 @@ public class Example implements IDynamicTableName {
             if (propertyMap.containsKey(property)) {
                 return property;
             } else if (exists) {
-                throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                throw new MapperException("Current entity class does not contain an attribute named "+property);
             } else {
                 return null;
             }
@@ -1150,11 +1166,11 @@ public class Example implements IDynamicTableName {
 
         private String propertyforOderBy(String property) {
             if (StringUtil.isEmpty(property) || StringUtil.isEmpty(property.trim())) {
-                throw new MapperException("接收的property为空！");
+                throw new MapperException("Empty property.");
             }
             property = property.trim();
             if (!propertyMap.containsKey(property)) {
-                throw new MapperException("当前实体类不包含名为" + property + "的属性!");
+                throw new MapperException("Current entity class does not contain an attribute named "+property);
             }
             return propertyMap.get(property).getColumn();
         }
