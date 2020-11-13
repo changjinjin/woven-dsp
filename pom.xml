@@ -147,6 +147,11 @@
             </dependency>
             <dependency>
                 <groupId>com.merce.woven</groupId>
+                <artifactId>woven-common</artifactId>
+                <version>${baymax-woven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.merce.woven</groupId>
                 <artifactId>woven-metrics</artifactId>
                 <version>${baymax-woven.version}</version>
             </dependency>

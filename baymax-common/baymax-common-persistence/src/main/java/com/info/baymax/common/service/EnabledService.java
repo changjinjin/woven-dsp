@@ -1,6 +1,5 @@
 package com.info.baymax.common.service;
 
-import com.fasterxml.jackson.databind.JavaType;
 import com.google.common.collect.ImmutableMap;
 import com.info.baymax.common.entity.gene.Enabled;
 import com.info.baymax.common.entity.gene.Idable;
@@ -11,7 +10,6 @@ import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.utils.JsonUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
