@@ -15,7 +15,7 @@ public interface BaseDeleteByIdController<ID extends Serializable, T extends Ida
 
     @ApiOperation(value = "根据ID删除", notes = "根据ID删除记录")
     @DeleteMapping(value = "/{id}")
-    default Response<?> deleteByIds(@ApiParam(value = "记录ID集合", required = true) @PathVariable("id") ID id) {
+    default Response<?> deleteById(@ApiParam(value = "记录ID集合", required = true) @PathVariable("id") ID id) {
         getBaseIdableAndExampleQueryService().deleteById(id);
         return Response.ok().build();
     }
