@@ -392,9 +392,16 @@
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
+        <snapshotRepository>
+            <id>inforefiner-snapshot</id>
+            <name>Inforefiner Porject Snapshot</name>
+            <url>http://192.168.1.171:8081/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
         <repository>
-            <id>thirdparty</id>
-            <url>${thirdparty.repository.url}</url>
+            <id>inforefiner-release</id>
+            <name>Inforefiner Porject Release</name>
+            <url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
 
