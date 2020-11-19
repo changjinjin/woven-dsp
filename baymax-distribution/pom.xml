@@ -307,19 +307,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <executions>
                     <execution>
-                        <id>changelog</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>
-                                ${project.parent.basedir}/gitlog.sh
-                            </executable>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>uncompress</id>
+                        <id>package</id>
                         <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
