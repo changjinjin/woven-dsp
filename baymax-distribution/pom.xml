@@ -314,7 +314,7 @@
                         </goals>
                         <configuration>
                             <executable>
-                                ${project.basedir}/gitlog.sh
+                                ${project.parent.basedir}/gitlog.sh
                             </executable>
                         </configuration>
                     </execution>
