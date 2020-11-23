@@ -42,7 +42,7 @@ public class DataCategoryController implements BaseEntityController<DataCategory
 
     @ApiOperation(value = "根据ID批量删除", hidden = true)
     @Override
-    public Response<?> deleteByIds(Long[] ids) {
+    public Response<?> deleteByIds(List<Long> ids) {
         throw new ControllerException(ErrType.GONE);
     }
 

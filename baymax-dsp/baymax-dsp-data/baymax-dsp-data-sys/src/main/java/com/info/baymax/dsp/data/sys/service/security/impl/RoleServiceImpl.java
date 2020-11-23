@@ -118,7 +118,7 @@ public class RoleServiceImpl extends EntityClassServiceImpl<Role> implements Rol
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Override
-    public int deleteByIds(String[] ids) {
+    public int deleteByIds(List<String> ids) {
         return RoleService.super.deleteByIds(ids);
     }
 

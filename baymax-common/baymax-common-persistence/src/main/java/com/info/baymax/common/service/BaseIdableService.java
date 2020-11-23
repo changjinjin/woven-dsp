@@ -97,12 +97,12 @@ public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>
      * @param ids 删除的ID集合
      * @return 删除结果
      */
-    default int deleteByIds(ID[] ids) {
-        if (ids != null && ids.length > 0) {
+    default int deleteByIds(List<ID> ids) {
+        if (ICollections.hasElements(ids)) {
             for (ID id : ids) {
                 deleteById(id);
             }
-            return ids.length;
+            return ids.size();
         }
         return 0;
     }

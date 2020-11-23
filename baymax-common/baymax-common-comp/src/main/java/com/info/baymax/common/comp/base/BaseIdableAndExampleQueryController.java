@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @deprecated 该类以弃用，参考：{@link BaseCrudController}
@@ -46,7 +47,7 @@ public interface BaseIdableAndExampleQueryController<ID extends Serializable, T 
 
     @ApiOperation(value = "批量删除", notes = "根据ID批量删除数据，数据集不能为空")
     @GetMapping("/deleteByIds")
-    default Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam @NotEmpty ID[] ids) {
+    default Response<?> deleteByIds(@ApiParam(value = "ID列表", required = true) @RequestParam @NotEmpty List<ID> ids) {
         getBaseIdableAndExampleQueryService().deleteByIds(ids);
         return Response.ok().build();
     }
