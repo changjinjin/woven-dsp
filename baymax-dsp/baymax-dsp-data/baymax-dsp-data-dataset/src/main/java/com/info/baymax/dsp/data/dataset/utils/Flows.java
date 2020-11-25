@@ -153,6 +153,10 @@ public class Flows {
     public static FlowBuilder streamflow(String name) {
         return new FlowBuilder(name, "streamflow");
     }
+    
+    public static FlowBuilder rtcflow(String name) {
+    	return new FlowBuilder(name, "rtcflow");
+    }
 
     public static StepBuilder step(String type, String id, String name) {
         return new StepBuilder(type, id, name);

@@ -634,17 +634,32 @@
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <generateBackupPoms>false</generateBackupPoms>
-                    <newVersion>0.1.0</newVersion>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.12</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <generateReleasePoms>false</generateReleasePoms>
+                    <arguments>-DskipTests -DuseReleaseProfile=false</arguments>
+                    <allowReleasePluginSnapshot>true</allowReleasePluginSnapshot>
+                    <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+                    <checkModificationExcludes>
+                        <checkModificationExclude>.project</checkModificationExclude>
+                        <checkModificationExclude>.settings</checkModificationExclude>
+                        <checkModificationExclude>.classpath</checkModificationExclude>
+                        <checkModificationExclude>.md</checkModificationExclude>
+                        <checkModificationExclude>.sh</checkModificationExclude>
+                        <checkModificationExclude>**\.project</checkModificationExclude>
+                        <checkModificationExclude>**\.settings</checkModificationExclude>
+                        <checkModificationExclude>**\.classpath</checkModificationExclude>
+                        <checkModificationExclude>**\*.md</checkModificationExclude>
+                        <checkModificationExclude>**\*.sh</checkModificationExclude>
+                    </checkModificationExcludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
