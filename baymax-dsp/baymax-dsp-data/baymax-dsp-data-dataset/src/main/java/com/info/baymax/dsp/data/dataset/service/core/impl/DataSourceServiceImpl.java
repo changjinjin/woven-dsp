@@ -39,7 +39,7 @@ public class DataSourceServiceImpl extends QueryObjectByResourceOrProjectService
         .expireAfterWrite(10, TimeUnit.MINUTES).build();
 
     @Autowired
-    private DataSourceMapper dataSourceMapper;
+    protected DataSourceMapper dataSourceMapper;
 
     @Override
     public MyIdableMapper<DataSource> getMyIdableMapper() {

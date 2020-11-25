@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class ProcessConfigServiceImpl extends EntityClassServiceImpl<ProcessConfig> implements ProcessConfigService {
     @Autowired
-    private ProcessConfigMapper processConfigMapper;
+    protected ProcessConfigMapper processConfigMapper;
 
     @Override
     public MyIdableMapper<ProcessConfig> getMyIdableMapper() {

@@ -18,7 +18,7 @@ import java.util.Map;
 public class FlowExecutionServiceImpl extends EntityClassServiceImpl<FlowExecution> implements FlowExecutionService {
 
 	@Autowired
-	private FlowExecutionMapper flowExecutionMapper;
+	protected FlowExecutionMapper flowExecutionMapper;
 
 	@Override
 	public MyIdableMapper<FlowExecution> getMyIdableMapper() {

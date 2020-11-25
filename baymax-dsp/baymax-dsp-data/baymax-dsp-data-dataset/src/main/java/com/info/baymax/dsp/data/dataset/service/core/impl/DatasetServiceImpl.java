@@ -11,6 +11,7 @@ import com.info.baymax.dsp.data.dataset.entity.core.Schema;
 import com.info.baymax.dsp.data.dataset.mybatis.mapper.core.DatasetMapper;
 import com.info.baymax.dsp.data.dataset.mybatis.mapper.core.SchemaMapper;
 import com.info.baymax.dsp.data.dataset.service.core.DatasetService;
+import com.info.baymax.dsp.data.dataset.service.core.SchemaService;
 import com.info.baymax.dsp.data.dataset.service.resource.QueryObjectByResourceOrProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
 public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImpl<Dataset> implements DatasetService {
 
 	@Autowired
-	private DatasetMapper datasetMapper;
+	protected DatasetMapper datasetMapper;
 	@Autowired
-	private SchemaMapper schemaMapper;
+	protected SchemaService schemaService;
 
 	@Override
 	public MyIdableMapper<Dataset> getMyIdableMapper() {
@@ -81,7 +82,7 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 				return datasets;
 			}
 
-			List<Schema> schemas = schemaMapper.selectByPrimaryKeys(schemaIds);
+			List<Schema> schemas = schemaService.selectByPrimaryKeys(schemaIds);
 			if (ICollections.hasElements(schemas)) {
 				for (Dataset dataset : datasets) {
 					for (Schema schema : schemas) {
@@ -101,7 +102,7 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 		}
 		String schemaId = dataset.getSchemaId();
 		if (dataset != null && schemaId != null && dataset.getSchema() == null) {
-			Schema schema = schemaMapper.selectByPrimaryKey(schemaId);
+			Schema schema = schemaService.selectByPrimaryKey(schemaId);
 			if (schema != null) {
 				dataset.setSchema(schema);
 			}

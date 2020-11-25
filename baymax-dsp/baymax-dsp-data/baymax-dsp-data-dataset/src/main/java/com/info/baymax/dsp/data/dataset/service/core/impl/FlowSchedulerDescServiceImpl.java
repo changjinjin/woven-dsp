@@ -19,7 +19,7 @@ public class FlowSchedulerDescServiceImpl extends EntityClassServiceImpl<FlowSch
 		implements FlowSchedulerDescService {
 
 	@Autowired
-	private FlowSchedulerDescMapper flowSchedulerDescMapper;
+	protected FlowSchedulerDescMapper flowSchedulerDescMapper;
 
 	@Override
 	public MyIdableMapper<FlowSchedulerDesc> getMyIdableMapper() {

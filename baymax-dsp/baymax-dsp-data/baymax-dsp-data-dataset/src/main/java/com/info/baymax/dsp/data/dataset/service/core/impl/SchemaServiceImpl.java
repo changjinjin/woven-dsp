@@ -16,7 +16,7 @@ import java.util.List;
 public class SchemaServiceImpl extends QueryObjectByResourceOrProjectServiceImpl<Schema> implements SchemaService {
 
     @Autowired
-    private SchemaMapper schemaMapper;
+    protected SchemaMapper schemaMapper;
 
     @Override
     public MyIdableMapper<Schema> getMyIdableMapper() {

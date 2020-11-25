@@ -16,7 +16,7 @@ import java.util.List;
 public class FlowHistDescServiceImpl extends EntityClassServiceImpl<FlowHistDesc> implements FlowHistDescService {
 
 	@Autowired
-	private FlowHistDescMapper flowHistDescMapper;
+	protected FlowHistDescMapper flowHistDescMapper;
 
 	@Override
 	public MyIdableMapper<FlowHistDesc> getMyIdableMapper() {

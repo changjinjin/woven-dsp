@@ -17,7 +17,7 @@ public class FlowDescServiceImpl extends QueryObjectByResourceOrProjectServiceIm
 		implements FlowDescService {
 
 	@Autowired
-	private FlowDescMapper flowDescMapper;
+	protected FlowDescMapper flowDescMapper;
 
 	@Override
 	public MyIdableMapper<FlowDesc> getMyIdableMapper() {
