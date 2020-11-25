@@ -37,8 +37,8 @@ public class Flows {
             for (int i = 0; i < fields.size(); i++) {
                 inputOutputFields.add(new InputOutputField(fields.get(i), alias.get(i)));
             }
-            step.getInputConfigurations().put("input",
-                inputOutputFields.stream().map(t -> new FieldDesc(t.getColumn(), t.getAlias())).collect(Collectors.toList()));
+            step.getInputConfigurations().put("input", inputOutputFields.stream()
+                .map(t -> new FieldDesc(t.getColumn(), t.getAlias())).collect(Collectors.toList()));
             return this;
         }
 
@@ -59,8 +59,8 @@ public class Flows {
             for (int i = 0; i < fields.size(); i++) {
                 inputOutputFields.add(new InputOutputField(fields.get(i), alias.get(i)));
             }
-            step.getOutputConfigurations().put("output",
-                inputOutputFields.stream().map(t -> new FieldDesc(t.getColumn(), t.getAlias())).collect(Collectors.toList()));
+            step.getOutputConfigurations().put("output", inputOutputFields.stream()
+                .map(t -> new FieldDesc(t.getColumn(), t.getAlias())).collect(Collectors.toList()));
             return this;
         }
 
@@ -72,6 +72,21 @@ public class Flows {
         public StepBuilder withPosition(int x, int y) {
             step.setX(x);
             step.setY(y);
+            return this;
+        }
+
+        public StepBuilder inputConfigurations(StepFieldGroup inputConfigurations) {
+            step.setInputConfigurations(inputConfigurations);
+            return this;
+        }
+
+        public StepBuilder outputConfigurations(StepFieldGroup outputConfigurations) {
+            step.setOutputConfigurations(outputConfigurations);
+            return this;
+        }
+
+        public StepBuilder otherConfigurations(ConfigObject otherConfigurations) {
+            step.setOtherConfigurations(otherConfigurations);
             return this;
         }
 

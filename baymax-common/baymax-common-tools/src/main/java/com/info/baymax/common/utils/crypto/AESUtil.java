@@ -150,7 +150,7 @@ public class AESUtil {
         System.out.println("加密密钥和解密密钥：" + KEY);
         String encrypt = encrypt(content, KEY);
         encrypt = "0be8361ca73b1598caaf81b1f542116a";
-        encrypt = "6bcf7bc2ab6b56ae7bcd80037f6852e0";
+        encrypt = "bd149a1dd0f45beaf4dcf976ac66720848d1144f4813e55d5c0807dae20acd80";
         System.out.println("加密后：" + encrypt);
         String decrypt = decrypt(encrypt, KEY);
         System.out.println("解密后：" + decrypt);
