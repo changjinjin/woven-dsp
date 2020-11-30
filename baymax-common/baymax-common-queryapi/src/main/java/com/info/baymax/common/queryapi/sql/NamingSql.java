@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+import com.info.baymax.common.queryapi.query.sql.SqlQuery;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,8 +80,7 @@ public class NamingSql {
      * 参数值列表
      *
      * <pre>
-     * 如：
-     *  ["%zhang%", 12, "M"]
+     * 如：  ["%zhang%", 12, "M"]
      * </pre>
      */
     @Getter
@@ -112,12 +113,7 @@ public class NamingSql {
         placeholderSql = sql_builder.toString();
         if (names != null && names.size() > 0) {
             paramNames = names.toArray(paramNames = new String[names.size()]);
-            int mapSize = paramMap.size();
-            if (names.size() != mapSize) {
-                throw new IllegalArgumentException(
-                    "Wrong number of parameters: expected " + names.size() + ", was given " + mapSize);
-            }
-            paramValues = new Object[mapSize];
+            paramValues = new Object[names.size()];
             for (int i = 0; i < paramValues.length; i++) {
                 paramValues[i] = paramMap.get(names.get(i));
             }
@@ -127,5 +123,16 @@ public class NamingSql {
     protected String trimAndOr(String sql) {
         return StringUtils.removeStartIgnoreCase(StringUtils.removeStartIgnoreCase(StringUtils.trim(sql), "AND "),
             "OR ");
+    }
+
+    public void testNaming() {
+        SqlQuery query = SqlQuery.builder()
+            .sqlTemplate("select #{name} from test_t where length(trim(#{name})) > 3 and id > #{id}")
+            .parameter("name", "name").parameter("id", 1);
+        SqlQuerySql builder = SqlQuerySql.builder(query);
+        System.out.println(builder.getCountSql());
+        System.out.println(builder.getExecuteSql());
+        System.out.println(builder.getPlaceholderCountSql());
+        System.out.println(builder.getPlaceholderSql());
     }
 }
