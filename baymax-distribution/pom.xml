@@ -247,6 +247,7 @@
     </profiles>
 
     <build>
+    	<finalName>${release.finalName}-${project.version}-${timestamp}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -295,7 +296,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/binaries/</outputDirectory>
-                            <finalName>${release.finalName}-${project.version}-${timestamp}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <descriptors>
                                 <descriptor>release-${release.finalName}.xml</descriptor>
