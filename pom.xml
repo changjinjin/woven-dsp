@@ -87,9 +87,6 @@
         <orc.hive-exec.verion>1.2.1.spark2</orc.hive-exec.verion>
         <spark-redis.version>2.3.0</spark-redis.version>
         <rocketmq-spring-boot.version>2.1.0</rocketmq-spring-boot.version>
-
-        <thirdparty.repository.url>http://192.168.1.171:8081/nexus/content/repositories/thirdparty
-        </thirdparty.repository.url>
         <fast-classpath-scanner.version>3.1.13</fast-classpath-scanner.version>
 
         <javax-interceptor.version>1.2</javax-interceptor.version>
@@ -141,7 +138,7 @@
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2.2.0.RELEASE</version>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -391,70 +388,62 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <distributionManagement>
+        <repository>
+            <id>inforefiner-release</id>
+            <name>Inforefiner Porject Release</name>
+            <url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
+        </repository>
         <snapshotRepository>
             <id>inforefiner-snapshot</id>
             <name>Inforefiner Porject Snapshot</name>
             <url>http://192.168.1.171:8081/nexus/content/repositories/snapshots/</url>
             <uniqueVersion>true</uniqueVersion>
         </snapshotRepository>
-        <repository>
-            <id>inforefiner-release</id>
-            <name>Inforefiner Porject Release</name>
-            <url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
-        </repository>
     </distributionManagement>
-
     <repositories>
         <repository>
             <id>aliyun</id>
-            <layout>default</layout>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <url>https://maven.aliyun.com/repository/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>inforefiner</id>
             <url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-        <repository>
-            <id>clojars.org</id>
-            <url>http://clojars.org/repo</url>
-        </repository>
-        <repository>
-            <id>hortonworks</id>
-            <url>http://repo.hortonworks.com/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <id>jcenter</id>
-            <url>http://jcenter.bintray.com</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
-
     <pluginRepositories>
         <pluginRepository>
             <id>aliyun</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
         <pluginRepository>
             <id>inforefiner</id>
             <url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>jcenter</id>
-            <url>http://jcenter.bintray.com</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
@@ -477,19 +466,6 @@
     </reporting>
 
     <profiles>
-        <profile>
-            <id>localrepo</id>
-            <repositories>
-                <repository>
-                    <id>merce</id>
-                    <url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-                </repository>
-            </repositories>
-            <properties>
-                <profileActive>hadoop2</profileActive>
-                <hadoop.version>2.7.3</hadoop.version>
-            </properties>
-        </profile>
         <profile>
             <id>hadoop2.7</id>
             <properties>
