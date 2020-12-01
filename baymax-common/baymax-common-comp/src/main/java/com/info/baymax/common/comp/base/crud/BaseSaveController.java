@@ -16,7 +16,7 @@ import java.io.Serializable;
 public interface BaseSaveController<ID extends Serializable, T extends Idable<ID>> extends BaseController<ID, T> {
 
     @ApiOperation(value = "添加记录", notes = "新建数据记录，新建时主键为空值")
-    @PostMapping("/")
+    @PostMapping
     default Response<?> save(@ApiParam(value = "待新建记录", required = true) @RequestBody @NotNull @Valid T t) {
         getBaseIdableAndExampleQueryService().saveOrUpdate(t);
         return Response.ok(t.getId());
