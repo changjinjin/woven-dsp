@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.info.baymax</groupId>
 		<artifactId>baymax-dsp-access</artifactId>
-		<version>0.1.3</version>
+		<version>0.1.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>baymax-dsp-access-platform</artifactId>
 
