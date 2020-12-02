@@ -4,7 +4,7 @@
 
     <groupId>com.info.baymax</groupId>
     <artifactId>baymax-parent</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>baymax-parent</name>
@@ -389,7 +389,7 @@
     <scm>
         <connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
         <developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-      <tag>v0.1.3</tag>
+      <tag>HEAD</tag>
   </scm>
     <distributionManagement>
         <repository>
