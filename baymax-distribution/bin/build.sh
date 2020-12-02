@@ -41,3 +41,7 @@ do
  fi
  done
 echo ">>>link jars end"
+
+##archive to tar.gz
+cd $work_dir;cd ../
+tar -zvcf $work_dir "$work_dir.tar.gz"
