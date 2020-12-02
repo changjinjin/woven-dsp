@@ -14,10 +14,10 @@ import java.util.*;
 public final class SqlQuery extends PageableQuery<SqlQuery>
     implements SqlQueryBuilder<SqlQuery>, QueryBuilder<SqlQuery> {
 
-    @ApiModelProperty(value = "SQL模板")
+    @ApiModelProperty(value = "SQL模板", required = true)
     private String sqlTemplate;
 
-    @ApiModelProperty(value = "参数列表")
+    @ApiModelProperty(value = "参数列表", required = false)
     private List<Parameter> parameters;
 
     public static SqlQuery builder() {

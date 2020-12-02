@@ -24,22 +24,22 @@ import java.io.Serializable;
 public class DataRequest<T> implements Serializable {
     public static final long serialVersionUID = 1837415801984192215L;
 
-    @ApiModelProperty("消费者应用accessKey")
+    @ApiModelProperty(value = "消费者应用accessKey", required = true)
     @NotBlank
     protected String accessKey;
 
-    @ApiModelProperty("服务ID")
+    @ApiModelProperty(value = "服务ID", required = true)
     @NotNull
     protected Long dataServiceId;
 
-    @ApiModelProperty("接口请求的时间戳")
+    @ApiModelProperty(value = "接口请求的时间戳", required = false)
     @Positive
     protected long timestamp;
 
-    @ApiModelProperty("是否使用加密，如果使用这返回报文需要加密处理")
+    @ApiModelProperty(value = "是否使用加密，如果使用这返回报文需要加密处理", required = false)
     protected boolean encrypted;
 
-    @ApiModelProperty("查询条件")
+    @ApiModelProperty(value = "查询条件", required = true)
     @NotNull
     protected T query;
 }

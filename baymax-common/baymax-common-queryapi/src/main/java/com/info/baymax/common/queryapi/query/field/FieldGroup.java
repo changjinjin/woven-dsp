@@ -23,13 +23,13 @@ public class FieldGroup extends FieldItem implements FieldGroupBuilder<FieldGrou
     @ApiModelProperty(hidden = true)
     protected int counter = 0;
 
-    @ApiModelProperty(value = "条件关联类型：AND或OR，默认：AND", allowableValues = "AND,OR")
+    @ApiModelProperty(value = "条件关联类型：AND或OR，默认：AND", allowableValues = "AND,OR", required = false)
     protected AndOr andOr;
 
-    @ApiModelProperty("简单条件集合")
+    @ApiModelProperty(value = "简单条件集合", required = false)
     protected List<Field> fields;
 
-    @ApiModelProperty("条件分组集合")
+    @ApiModelProperty(value = "条件分组集合", required = false)
     protected List<FieldGroup> fieldGroups;
 
     /************************* 建造器 ******************************/

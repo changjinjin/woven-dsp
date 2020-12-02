@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public abstract class PageableQuery<T extends PageableQuery<T>> implements PageableQueryBuilder<T> {
 
-    @ApiModelProperty("分页信息，默认不设置分页")
+    @ApiModelProperty(value = "分页信息，默认不设置分页",required = true)
     protected IPageable pageable = new IPageable(false);
 
     @Override

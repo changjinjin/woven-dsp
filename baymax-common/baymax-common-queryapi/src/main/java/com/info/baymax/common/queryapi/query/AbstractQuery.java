@@ -28,13 +28,13 @@ public abstract class AbstractQuery<T extends AbstractQuery<T>> extends Pageable
         implements FieldGroupQueryBuilder<T>, SortQueryBuilder<T>, TableQueryBuilder<T>, QueryBuilder<T>, Serializable {
     private static final long serialVersionUID = 4850854513242762929L;
 
-    @ApiModelProperty(value = "表名称", hidden = true)
+    @ApiModelProperty(value = "表名称", hidden = true,required = false)
     private String table;
 
-    @ApiModelProperty("条件规则，多个组合条件的组合")
+    @ApiModelProperty(value = "条件规则，多个组合条件的组合",required = false)
     protected FieldGroup fieldGroup;
 
-    @ApiModelProperty("排序属性信息")
+    @ApiModelProperty(value = "排序属性信息",required = false)
     protected LinkedHashSet<Sort> ordSort;
 
     public AbstractQuery() {

@@ -23,7 +23,7 @@ import lombok.Getter;
 public class RecordQuery extends AbstractPropertiesQuery<RecordQuery> implements Serializable {
     private static final long serialVersionUID = 5616355016961992353L;
 
-    @ApiModelProperty(value = "所有的字段列表", hidden = true)
+    @ApiModelProperty(value = "所有的字段列表", hidden = true, required = false)
     private LinkedHashSet<String> allProperties;
 
     public static RecordQuery builder() {

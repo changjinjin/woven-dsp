@@ -54,13 +54,13 @@ public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends Ab
         implements AggFieldQueryBuilder<T>, GroupByFieldQueryBuilder<T>, HavingFieldGroupQueryBuilder<T> {
     private static final long serialVersionUID = 4850854513242762929L;
 
-    @ApiModelProperty("聚合条件")
+    @ApiModelProperty(value = "聚合条件",required = true)
     protected LinkedHashSet<AggField> aggFields;
 
-    @ApiModelProperty("分组字段")
+    @ApiModelProperty(value = "分组字段",required = true)
     protected LinkedHashSet<String> groupFields;
 
-    @ApiModelProperty("having查询条件")
+    @ApiModelProperty(value = "having查询条件",required = false)
     protected FieldGroup havingFieldGroup;
 
     public AbstractAggQuery() {

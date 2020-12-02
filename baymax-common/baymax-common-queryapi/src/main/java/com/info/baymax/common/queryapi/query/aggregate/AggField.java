@@ -15,16 +15,16 @@ import java.io.Serializable;
 public class AggField implements Serializable {
     private static final long serialVersionUID = -878572549536122362L;
 
-    @ApiModelProperty("聚合字段名称")
+    @ApiModelProperty(value = "聚合字段名称",required = true)
     private String name;
 
-    @ApiModelProperty("聚合后别名")
+    @ApiModelProperty(value = "聚合后别名",required = false)
     private String alias;
 
-    @ApiModelProperty("聚合类型")
+    @ApiModelProperty(value = "聚合类型",required = true)
     private AggType aggType;
 
-    @ApiModelProperty("是否去重")
+    @ApiModelProperty(value = "是否去重",required = false)
     private boolean distinct;
 
     public String getAlias() {

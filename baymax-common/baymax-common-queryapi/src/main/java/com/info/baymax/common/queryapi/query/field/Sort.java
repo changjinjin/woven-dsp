@@ -28,13 +28,13 @@ public class Sort implements Serializable {
     /**
      * 排序的属性名称
      */
-    @ApiModelProperty("排序的属性名称")
+    @ApiModelProperty(value = "排序的属性名称",required = true)
     private String name;
 
     /**
      * 排序类型：ASC或DESC，默认ASC
      */
-    @ApiModelProperty("排序类型：ASC或DESC，默认ASC")
+    @ApiModelProperty(value = "排序类型：ASC或DESC，默认ASC",required = false)
     private OrderType order = OrderType.ASC;
 
     public Sort(String fieldName) {

@@ -22,13 +22,13 @@ import java.util.LinkedHashSet;
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class AbstractPropertiesQuery<T extends AbstractPropertiesQuery<T>>
-        extends AbstractQuery<AbstractPropertiesQuery<T>> implements PropertiesQueryBuilder<T> {
+    extends AbstractQuery<AbstractPropertiesQuery<T>> implements PropertiesQueryBuilder<T> {
     private static final long serialVersionUID = 4850854513242762929L;
 
-    @ApiModelProperty("查询的字段列表")
+    @ApiModelProperty(value = "查询的字段列表", required = false)
     protected LinkedHashSet<String> selectProperties;
 
-    @ApiModelProperty("排除的字段列表")
+    @ApiModelProperty(value = "排除的字段列表", required = false)
     protected LinkedHashSet<String> excludeProperties;
 
     public AbstractPropertiesQuery() {
