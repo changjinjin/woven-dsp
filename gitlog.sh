@@ -90,7 +90,7 @@ function checkDate()
     echo "## "$curDate >> CHANGELOG.md
 }
 
-commitMessageList=`git log --date=format:'%Y-%m-%d' --pretty=format:'%cd%n%s'`
+commitMessageList=`git log --no-merges --date=format:'%Y-%m-%d' --pretty=format:'%cd%n%s'`
 
 index=0
 
