@@ -1,5 +1,6 @@
 package com.info.baymax.common.jpa.criteria.query;
 
+import com.google.common.collect.Sets;
 import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper.ComparatorOperator;
 import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper.OrderDirection;
 import io.swagger.annotations.ApiModel;
@@ -11,10 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 查询参数包装类
@@ -25,7 +23,6 @@ import java.util.Map;
 @Getter
 @Setter
 @ApiModel
-@Deprecated
 public class QueryObject implements Serializable {
 	private static final long serialVersionUID = -6814906254023484410L;
 
@@ -156,6 +153,30 @@ public class QueryObject implements Serializable {
 	public QueryObject removeField(FieldObject fieldObject) {
 		if (fieldList != null) {
 			fieldList.remove(fieldObject);
+		}
+		return this;
+	}
+	public QueryObject removeFields(FieldObject... fieldObjects) {
+		if (fieldList != null) {
+			fieldList.removeAll(Sets.newHashSet(fieldObjects));
+		}
+		return this;
+	}
+	
+	public QueryObject removeField(String fieldName) {
+		return removeFields(fieldName);
+	}
+	
+	public QueryObject removeFields(String... fieldNames) {
+		if (fieldList != null) {
+			HashSet<String> set = Sets.newHashSet(fieldNames);
+			Iterator<FieldObject> iterator = fieldList.iterator();
+			while (iterator.hasNext()) {
+				FieldObject next = iterator.next();
+				if (set.contains(next.getFieldName())) {
+					iterator.remove();
+				}
+			}
 		}
 		return this;
 	}
