@@ -1,6 +1,6 @@
 package com.info.baymax.common.comp.crypto;
 
-import com.info.baymax.common.crypto.delegater.DefaultCryptorDelegater;
+import com.info.baymax.common.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.crypto.method.AbstractCryptoMethodInvoker;
 import com.info.baymax.common.jpa.page.Page;
 import com.info.baymax.common.queryapi.page.IPage;
@@ -15,8 +15,8 @@ import com.info.baymax.common.queryapi.result.Response;
 @SuppressWarnings("deprecation")
 public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
 
-    public CustomCryptoMethodInvoker(String secretKey) {
-        super(secretKey, new DefaultCryptorDelegater());
+    public CustomCryptoMethodInvoker(String secretKey, CryptorDelegater cryptorDelegater) {
+        super(secretKey, cryptorDelegater);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
         return result;
     }
 
-    @SuppressWarnings({"unchecked", "resource", "deprecation"})
+    @SuppressWarnings({"unchecked", "resource"})
     @Override
     public Object beforeHandleResult(Object result) {
         // 拿到返回报文对象的能够处理的层级
