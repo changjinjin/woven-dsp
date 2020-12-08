@@ -1,14 +1,13 @@
 package com.info.baymax.common.service;
 
 import com.github.pagehelper.Page;
-
-
 import com.info.baymax.common.mybatis.mapper.aggregation.AggregateCondition;
 import com.info.baymax.common.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.mybatis.mapper.example.Example;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.page.IPageable;
-
+import com.info.baymax.common.service.criteria.example.ExampleHelper;
+import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import org.apache.ibatis.session.RowBounds;
 
 import javax.transaction.Transactional;
@@ -166,5 +165,8 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
     default List<T> selectAggregationByExample(Example example, AggregateCondition aggregateCondition) {
         return getBaseExampleMapper().selectAggregationByExample(example, aggregateCondition);
     }
-
+    
+    default List<T> selectAggregationByExample(ExampleQuery query, AggregateCondition aggregateCondition) {
+    	return getBaseExampleMapper().selectAggregationByExample(ExampleHelper.createExample(query), aggregateCondition);
+    }
 }
