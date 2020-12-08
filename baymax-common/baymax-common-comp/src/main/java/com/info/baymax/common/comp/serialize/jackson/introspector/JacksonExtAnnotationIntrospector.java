@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.util.VersionUtil;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.info.baymax.common.comp.serialize.annotation.NumberFormat;
+import com.info.baymax.common.annotation.NumberFormat;
 import com.info.baymax.common.comp.serialize.jackson.serializer.NumberFormatDeserializer;
 import com.info.baymax.common.comp.serialize.jackson.serializer.NumberFormatSerializer;
 
