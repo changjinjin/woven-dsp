@@ -1,5 +1,8 @@
 package com.info.baymax.common.entity.validation;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
+
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -8,6 +11,10 @@ import java.lang.annotation.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -18,63 +25,117 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = EnumValue.Validator.class)
 public @interface EnumValue {
 
-    String message() default "{javax.validation.constraints.EnumValue.message}";
+    String message() default "Invalid enum type,it must be in {values}.";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    Class<? extends Enum<?>> enumClass();
+    /**
+     * 枚举类型
+     *
+     * @return 枚举类
+     */
+    Class<? extends Enum<?>> value();
 
-    String enumMethod();
+    /**
+     * 取值方法名称，为空的话默认取name()
+     *
+     * @return 取值方法名称
+     */
+    String valueMethod() default "";
+
+    /**
+     * 校验方法名称，默认返回bealean类型值，为空的话不执行，优先级高于valueMethod()
+     *
+     * @return 校验方法名称
+     */
+    String checkMethod() default "";
 
     @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
     @Retention(RUNTIME)
     @Documented
     @interface List {
-
         EnumValue[] value();
     }
 
     class Validator implements ConstraintValidator<EnumValue, Object> {
         private Class<? extends Enum<?>> enumClass;
-        private String enumMethod;
+        private String valueMethod;
+
+        private String checkMethod;
 
         @Override
         public void initialize(EnumValue enumValue) {
-            enumMethod = enumValue.enumMethod();
-            enumClass = enumValue.enumClass();
+            enumClass = enumValue.value();
+            valueMethod = enumValue.valueMethod();
+            checkMethod = enumValue.checkMethod();
         }
 
         @Override
         public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
             if (value == null) {
-                return Boolean.TRUE;
+                return true;
             }
-            if (enumClass == null || enumMethod == null) {
-                return Boolean.TRUE;
-            }
-            Class<?> valueClass = value.getClass();
-            try {
-                Method method = enumClass.getMethod(enumMethod, valueClass);
-                if (!Boolean.TYPE.equals(method.getReturnType()) && !Boolean.class.equals(method.getReturnType())) {
-                    throw new RuntimeException(String.format("%s method return is not boolean type in the %s class",
-                        enumMethod, enumClass));
-                }
+            Enum<?>[] enumConstants = enumClass.getEnumConstants();
 
-                if (!Modifier.isStatic(method.getModifiers())) {
-                    throw new RuntimeException(
-                        String.format("%s method is not static method in the %s class", enumMethod, enumClass));
-                }
+            if (StringUtils.isEmpty(checkMethod)) {
+                Set<String> valueSet = null;
+                if (StringUtils.isEmpty(valueMethod)) {
+                    valueSet = Arrays.stream(enumConstants).map(t -> t.name()).collect(Collectors.toSet());
+                } else {
+                    valueSet = new HashSet<String>(enumConstants.length);
 
-                Boolean result = (Boolean) method.invoke(null, value);
-                return result == null ? false : result;
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchMethodException | SecurityException e) {
-                throw new RuntimeException(
-                    String.format("This %s(%s) method does not exist in the %s", enumMethod, valueClass, enumClass),
-                    e);
+                    Method method;
+                    try {
+                        method = enumClass.getMethod(valueMethod);
+                    } catch (NoSuchMethodException e) {
+                        throw new RuntimeException(
+                            String.format("%s method is not in the %s class", valueMethod, enumClass), e);
+                    } catch (SecurityException e) {
+                        throw new RuntimeException(String.format("%s method is not accessible method in the %s class",
+                            valueMethod, enumClass), e);
+                    }
+
+                    Object invoke = null;
+                    for (Enum<?> enum1 : enumConstants) {
+                        try {
+                            invoke = method.invoke(enum1);
+                        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        }
+                        if (invoke != null) {
+                            valueSet.add(invoke.toString());
+                        }
+                    }
+                }
+                if (constraintValidatorContext instanceof HibernateConstraintValidatorContext) {
+                    constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class)
+                        .addMessageParameter("values", valueSet.toString());
+                }
+                return valueSet.contains(value);
+            } else {
+                Class<?> valueClass = value.getClass();
+                try {
+                    Method method = enumClass.getMethod(checkMethod, valueClass);
+                    if (!Boolean.TYPE.equals(method.getReturnType()) && !Boolean.class.equals(method.getReturnType())) {
+                        throw new RuntimeException(String.format("%s method return is not boolean type in the %s class",
+                            checkMethod, enumClass));
+                    }
+
+                    if (!Modifier.isStatic(method.getModifiers())) {
+                        throw new RuntimeException(String.format("%s method is not static method in the %s class",
+                            checkMethod, enumClass));
+                    }
+
+                    Boolean result = (Boolean) method.invoke(null, value);
+                    return result == null ? false : result;
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (NoSuchMethodException | SecurityException e) {
+                    throw new RuntimeException(String.format("This %s(%s) method does not exist in the %s",
+                        checkMethod, valueClass, enumClass), e);
+                }
             }
         }
     }

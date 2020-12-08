@@ -1,4 +1,4 @@
-package com.info.baymax.common.comp.serialize.annotation;
+package com.info.baymax.common.annotation;
 
 import java.lang.annotation.*;
 

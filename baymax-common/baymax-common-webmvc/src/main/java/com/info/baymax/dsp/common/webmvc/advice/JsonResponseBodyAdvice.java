@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.common.webmvc.advice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
+import com.info.baymax.common.annotation.JsonBodys;
 import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;

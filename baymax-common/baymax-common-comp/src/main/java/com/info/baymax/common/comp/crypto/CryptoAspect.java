@@ -8,10 +8,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 
 /**
@@ -25,15 +24,8 @@ import java.lang.reflect.Method;
 @Slf4j
 public class CryptoAspect {
 
-    @Value("${crypto.secretKey:infoaeskey123456}")
-    private String secretKey;
-
-    private CryptoMethodInvoker cryptoMethodInvoker;
-
-    @PostConstruct
-    public void init() {
-        cryptoMethodInvoker = new CustomCryptoMethodInvoker(secretKey);
-    }
+	@Autowired
+	private CryptoMethodInvoker cryptoMethodInvoker;
 
     @Pointcut("execution(* com.info.baymax..*(..)) && @annotation(com.info.baymax.common.crypto.annotation.Cryptoable)")
     public void joinPointExpression() {
