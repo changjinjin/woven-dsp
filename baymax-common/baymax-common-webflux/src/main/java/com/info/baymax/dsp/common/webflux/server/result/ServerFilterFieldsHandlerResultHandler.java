@@ -17,8 +17,8 @@ import org.springframework.web.reactive.result.method.annotation.AbstractMessage
 import org.springframework.web.server.ServerWebExchange;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.comp.serialize.annotation.JsonBody;
-import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
+import com.info.baymax.common.annotation.JsonBody;
+import com.info.baymax.common.annotation.JsonBodys;
 import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
 import com.info.baymax.common.queryapi.exception.BizException;
 import com.info.baymax.common.queryapi.result.ErrType;
