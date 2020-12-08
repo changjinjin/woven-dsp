@@ -1,6 +1,7 @@
 package com.info.baymax.common.entity.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.info.baymax.common.entity.gene.Idable;
 import com.info.baymax.common.mybatis.genid.UuidGenId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +13,6 @@ import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @ApiModel
 @Data
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
-public class UuidEntity implements Serializable {
+public class UuidEntity implements Idable<String> {
     private static final long serialVersionUID = 8199030533526416114L;
 
     @ApiModelProperty("主键")
