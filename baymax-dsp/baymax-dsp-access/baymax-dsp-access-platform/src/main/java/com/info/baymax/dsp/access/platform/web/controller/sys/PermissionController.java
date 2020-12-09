@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.comp.serialize.annotation.JsonBody;
-import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
+import com.info.baymax.common.annotation.JsonBody;
+import com.info.baymax.common.annotation.JsonBodys;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.utils.ICollections;

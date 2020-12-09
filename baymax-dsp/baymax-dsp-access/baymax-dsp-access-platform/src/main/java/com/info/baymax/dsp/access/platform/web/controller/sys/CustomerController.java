@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
+import com.info.baymax.common.annotation.JsonBody;
+import com.info.baymax.common.annotation.JsonBodys;
 import com.info.baymax.common.comp.base.MainTableController;
-import com.info.baymax.common.comp.serialize.annotation.JsonBody;
-import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.entity.base.BaseMaintableService;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.Response;
@@ -18,9 +18,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Api(tags = "系统管理：消费者管理", description = "消费者管理")
 @RestController
