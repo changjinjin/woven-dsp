@@ -404,11 +404,14 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
+                            <excludeArtifactIds>
+                                lombok,spring-boot-devtools,spring-boot-configuration-processor
+                            </excludeArtifactIds>
+                            <includeScope>compile</includeScope>
                             <outputDirectory>target/lib</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
-                            <includeScope>compile</includeScope>
                         </configuration>
                     </execution>
                 </executions>
