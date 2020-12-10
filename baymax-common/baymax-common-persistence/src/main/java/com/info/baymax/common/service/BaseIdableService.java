@@ -78,7 +78,7 @@ public interface BaseIdableService<ID extends Serializable, T extends Idable<ID>
      * @return 结果
      */
     default T saveOrUpdate(T t) {
-        return saveOrUpdate(t, false);
+        return saveOrUpdate(t, true);
     }
 
     /**
