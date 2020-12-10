@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.info.baymax</groupId>
@@ -216,11 +218,14 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
+                            <excludeArtifactIds>
+                                lombok,spring-boot-devtools,spring-boot-configuration-processor
+                            </excludeArtifactIds>
+                            <includeScope>compile</includeScope>
                             <outputDirectory>target/lib</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
-                            <includeScope>compile</includeScope>
                         </configuration>
                     </execution>
                 </executions>
@@ -236,7 +241,7 @@
                             <addClasspath>false</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path />
+                            <Class-Path/>
                         </manifestEntries>
                     </archive>
                     <excludes>
@@ -328,10 +333,10 @@
                         <doctype>book</doctype>
                         <toc>left</toc>
                         <toclevels>3</toclevels>
-                        <numbered />
-                        <hardbreaks />
-                        <sectlinks />
-                        <sectanchors />
+                        <numbered/>
+                        <hardbreaks/>
+                        <sectlinks/>
+                        <sectanchors/>
                         <generated>${generated.asciidoc.directory}</generated>
                     </attributes>
                 </configuration>
