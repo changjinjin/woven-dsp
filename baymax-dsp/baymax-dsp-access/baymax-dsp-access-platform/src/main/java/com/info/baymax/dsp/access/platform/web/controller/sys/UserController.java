@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
+import com.info.baymax.common.annotation.JsonBody;
+import com.info.baymax.common.annotation.JsonBodys;
 import com.info.baymax.common.comp.base.MainTableController;
-import com.info.baymax.common.comp.serialize.annotation.JsonBody;
-import com.info.baymax.common.comp.serialize.annotation.JsonBodys;
 import com.info.baymax.common.crypto.CryptoOperation;
 import com.info.baymax.common.crypto.CryptoType;
 import com.info.baymax.common.crypto.annotation.Cryptoable;
