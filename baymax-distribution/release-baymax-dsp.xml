@@ -52,6 +52,15 @@
 				<include>*.txt</include>
 			</includes>
 		</fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/</directory>
+            <outputDirectory>./</outputDirectory>
+            <directoryMode>644</directoryMode>
+            <fileMode>644</fileMode>
+            <includes>
+                <include>*.properties</include>
+            </includes>
+        </fileSet>
 
 		<!-- copy dataapi client -->
 		<fileSet>
