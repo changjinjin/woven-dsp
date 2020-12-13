@@ -54,8 +54,18 @@
 				<include>NOTICE</include>
 				<include>LICENSE</include>
 				<include>*.md</include>
-			</includes>
-		</fileSet>
+                <include>*.txt</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/</directory>
+            <outputDirectory>./</outputDirectory>
+            <directoryMode>644</directoryMode>
+            <fileMode>644</fileMode>
+            <includes>
+                <include>*.properties</include>
+            </includes>
+        </fileSet>
 	</fileSets>
 
 	<files>
