@@ -148,7 +148,27 @@
             </dependency>
             <dependency>
                 <groupId>com.merce.woven</groupId>
+                <artifactId>woven-data</artifactId>
+                <version>${baymax-woven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.merce.woven</groupId>
+                <artifactId>woven-rpc</artifactId>
+                <version>${baymax-woven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.merce.woven</groupId>
+                <artifactId>woven-client</artifactId>
+                <version>${baymax-woven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.merce.woven</groupId>
                 <artifactId>woven-metrics</artifactId>
+                <version>${baymax-woven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.merce.woven</groupId>
+                <artifactId>woven-dataflow-spark</artifactId>
                 <version>${baymax-woven.version}</version>
             </dependency>
             <dependency>
