@@ -27,7 +27,7 @@ public class CryptoAspect {
 	@Autowired
 	private CryptoMethodInvoker cryptoMethodInvoker;
 
-    @Pointcut("execution(* com.info.baymax..*(..)) && @annotation(com.info.baymax.common.crypto.annotation.Cryptoable)")
+    @Pointcut("execution(* com.info..*(..)) && @annotation(com.info.baymax.common.crypto.annotation.Cryptoable)")
     public void joinPointExpression() {
     }
 
