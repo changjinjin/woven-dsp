@@ -1,7 +1,14 @@
 
 package com.info.baymax.common.utils.io;
 
+import com.info.baymax.common.utils.ICollections;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 说明： 文件数据流操作，文件复制，文件路径创建，文件重命名等. <br>
@@ -82,7 +89,7 @@ public class IoUtils {
             new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset)));
         out.write(in);
         out.flush();
-        out.close();
+        IOUtils.closeQuietly(out);
     }
 
     /**
@@ -188,57 +195,21 @@ public class IoUtils {
         makdirs(new File(dir));
     }
 
-    // /**
-    // * 创建一个空文件目录
-    // *
-    // * @param dir
-    // * 目录路径
-    // */
-    // public static void makdirLoopDir(File rootdir, String subDir) {
-    // String[] dirs = subDir.replaceAll("//", "/").split("/");
-    // for (int i = 0; i < dirs.length; i++) {
-    // rootdir = new File(rootdir, dirs[i]);
-    // makdir(rootdir);
-    // }
-    // }
-    //
-    // /**
-    // * 创建一个空文件目录
-    // *
-    // * @param dir
-    // * 目录路径
-    // */
-    // public static void makdirLoopDir(String rootdir, String subDir) {
-    // makdirLoopDir(new File(rootdir), subDir);
-    // }
-    //
-    // /**
-    // * 创建指定的目录
-    // *
-    // * @param directory
-    // * 父文件路径
-    // * @param subDirectory
-    // * 子文件路径
-    // * @throws Exception
-    // */
-    // public static void createDirectory(String directory, String subDirectory)
-    // {
-    // File fl = new File(directory);
-    // String[] dir;
-    // if (!fl.exists()) {
-    // fl.mkdir();
-    // }
-    // File subFile = null;
-    // if (subDirectory != "") {
-    // dir = subDirectory.replace('\\', '/').split("/");
-    // for (int i = 0; i < dir.length; i++) {
-    // subFile = new File(directory + File.separator + dir[i]);
-    // if (!subFile.exists()) {
-    // subFile.mkdir();
-    // }
-    // }
-    // }
-    // }
+    public static void createFileSafely(File file) throws IOException {
+        if (file.exists()) {
+            return;
+        }
+        File parentFile = file.getParentFile();
+        if (!parentFile.exists()) {
+            makdirs(parentFile);
+        }
+        file.createNewFile();
+
+    }
+
+    public static void createFile(String filePath) throws IOException {
+        createFileSafely(new File(filePath));
+    }
 
     /**
      * 重命名文件
@@ -314,6 +285,111 @@ public class IoUtils {
      */
     public static boolean delete(File file) {
         return delete(file, true);
+    }
+
+    /* * Object 操作方法 **/
+    public static void writeObject(Object obj, ObjectOutputStream oos) throws IOException {
+        oos.writeObject(obj);
+        IOUtils.closeQuietly(oos);
+    }
+
+    public static void writeObject(Object obj, OutputStream outputStream) throws IOException {
+        writeObject(obj, new ObjectOutputStream(outputStream));
+        IOUtils.closeQuietly(outputStream);
+    }
+
+    public static void writeObject(Object obj, File file) throws IOException {
+        createFileSafely(file);
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        writeObject(obj, new ObjectOutputStream(fileOutputStream));
+        IOUtils.closeQuietly(fileOutputStream);
+    }
+
+    public static void writeObject(Object obj, String filePath) throws IOException {
+        writeObject(obj, new File(filePath));
+    }
+
+    public static Object readObject(ObjectInputStream objectInputStream) throws ClassNotFoundException, IOException {
+        Object obj = objectInputStream.readObject();
+        IOUtils.closeQuietly(objectInputStream);
+        return obj;
+    }
+
+    public static Object readObject(InputStream inputStream) throws ClassNotFoundException, IOException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        Object obj = objectInputStream.readObject();
+        IOUtils.closeQuietly(objectInputStream);
+        return obj;
+    }
+
+    public static Object readObject(File file) throws ClassNotFoundException, IOException {
+        createFileSafely(file);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        Object obj = readObject(fileInputStream);
+        IOUtils.closeQuietly(fileInputStream);
+        return obj;
+    }
+
+    public static Object readObject(String filePath) throws ClassNotFoundException, IOException {
+        return readObject(new File(filePath));
+    }
+
+    public static String readlines(InputStream input) throws IOException {
+        List<String> readLines = IOUtils.readLines(input);
+        String allLine = "";
+        if (ICollections.hasElements(readLines)) {
+            for (String line : readLines) {
+                allLine += line;
+            }
+            return allLine;
+        }
+        IOUtils.closeQuietly(input);
+        return null;
+    }
+
+    public static String readlines(File file) throws IOException {
+        FileInputStream input = new FileInputStream(file);
+        IOUtils.closeQuietly(input);
+        return readlines(input);
+    }
+
+    public static String readlines(String filePath) throws IOException {
+        return readlines(new File(filePath));
+    }
+
+    public static void writeLines(Collection<?> lines, String lineEnding, OutputStream output, String encoding)
+        throws IOException {
+        IOUtils.writeLines(lines, lineEnding, output, encoding);
+    }
+
+    public static void writeLines(Collection<?> lines, String lineEnding, File file, String encoding)
+        throws IOException {
+        createFileSafely(file);
+        FileOutputStream output = new FileOutputStream(file);
+        writeLines(lines, lineEnding, output, encoding);
+        IOUtils.closeQuietly(output);
+    }
+
+    public static void writeLines(Collection<?> lines, String lineEnding, String filePath, String encoding)
+        throws IOException {
+        writeLines(lines, lineEnding, new File(filePath), encoding);
+    }
+
+    public static void writeLines(Collection<?> lines, OutputStream output) throws IOException {
+        IOUtils.writeLines(lines, null, output, Charsets.UTF_8.name());
+    }
+
+    public static void writeLines(Collection<?> lines, File file) throws IOException {
+        createFileSafely(file);
+        writeLines(lines, null, file, Charsets.UTF_8.name());
+    }
+
+    public static void writeLines(Collection<?> lines, String filePath) throws IOException {
+        writeLines(lines, new File(filePath));
+    }
+
+    public static void writeLines(String filePath, String... lines) throws IOException {
+        writeLines(Arrays.asList(lines), new File(filePath));
     }
 
     // public static void main(String[] args) {
