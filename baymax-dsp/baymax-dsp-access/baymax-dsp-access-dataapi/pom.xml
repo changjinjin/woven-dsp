@@ -26,7 +26,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-webflux</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
@@ -164,7 +163,6 @@
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
             <version>${hbase.version}</version>
-            <!-- <scope>provided</scope> -->
             <exclusions>
                 <exclusion>
                     <artifactId>guava</artifactId>
@@ -178,8 +176,6 @@
                     <artifactId>commons-logging</artifactId>
                     <groupId>commons-logging</groupId>
                 </exclusion>
-                <!-- <exclusion> <artifactId>hadoop-common</artifactId> <groupId>org.apache.hadoop</groupId>
-                    </exclusion> -->
                 <exclusion>
                     <artifactId>hadoop-auth</artifactId>
                     <groupId>org.apache.hadoop</groupId>
@@ -214,6 +210,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-staticdocs</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.validation</groupId>
+                    <artifactId>validation-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.github.swagger2markup</groupId>

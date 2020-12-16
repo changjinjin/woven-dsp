@@ -349,8 +349,9 @@ public class IoUtils {
 
     public static String readlines(File file) throws IOException {
         FileInputStream input = new FileInputStream(file);
+        String readlines = readlines(input);
         IOUtils.closeQuietly(input);
-        return readlines(input);
+        return readlines;
     }
 
     public static String readlines(String filePath) throws IOException {

@@ -35,12 +35,10 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-tools</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-queryapi</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
