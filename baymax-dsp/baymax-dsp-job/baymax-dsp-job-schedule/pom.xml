@@ -18,7 +18,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-webflux</artifactId>
-            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.info.baymax</groupId>
@@ -29,7 +28,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-feign</artifactId>
-            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.info.baymax</groupId>

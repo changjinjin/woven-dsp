@@ -17,12 +17,10 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-persistence</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-dataset</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
