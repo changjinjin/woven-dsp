@@ -42,9 +42,7 @@
 		<dependency>
 			<groupId>com.inforefiner.snowball</groupId>
 			<artifactId>snowball-jdbc</artifactId>
-			<version>1.1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/snowball-jdbc-1.1.0.jar</systemPath>
+            <version>${snowball.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
