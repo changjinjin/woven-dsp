@@ -314,7 +314,11 @@
                 <artifactId>ojdbc7</artifactId>
                 <version>${oracle.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.inforefiner.snowball</groupId>
+                <artifactId>snowball-jdbc</artifactId>
+                <version>${snowball.version}</version>
+            </dependency>
             <dependency>
                 <artifactId>commons-io</artifactId>
                 <groupId>commons-io</groupId>

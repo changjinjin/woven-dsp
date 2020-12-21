@@ -42,7 +42,6 @@
 		<dependency>
 			<groupId>com.inforefiner.snowball</groupId>
 			<artifactId>snowball-jdbc</artifactId>
-            <version>${snowball.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
