@@ -14,6 +14,7 @@ import com.info.baymax.security.cas.reactive.web.CasServerAuthenticationConverte
 import com.info.baymax.security.cas.reactive.web.CasServerAuthenticationSuccessHandler;
 import org.jasig.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -115,10 +116,11 @@ public class CasBeanConfig {
         return casRedirectStrategy;
     }
 
-     @Bean
-     public ServerSecurityContextRepository serverSecurityContextRepository() {
-     return new WebSessionServerSecurityContextRepository();
-     }
+    @Bean
+    @ConditionalOnMissingBean(value = ServerSecurityContextRepository.class)
+    public ServerSecurityContextRepository serverSecurityContextRepository() {
+        return new WebSessionServerSecurityContextRepository();
+    }
 
     @Bean
     public ReactiveSessionRepository<?> sessionRepository() {

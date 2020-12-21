@@ -17,7 +17,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-security-cas-reactive-client-starter</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
@@ -150,7 +149,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-swagger</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

@@ -236,6 +236,26 @@
                 <artifactId>baymax-dsp-data-dataset</artifactId>
                 <version>${baymax-common.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.info.baymax</groupId>
+                <artifactId>baymax-security-oauth-api</artifactId>
+                <version>${baymax-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.info.baymax</groupId>
+                <artifactId>baymax-security-cas-reactive</artifactId>
+                <version>${baymax-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.info.baymax</groupId>
+                <artifactId>baymax-security-cas-reactive-client-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.info.baymax</groupId>
+                <artifactId>baymax-security-cas-reactive-client-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.javassist</groupId>
@@ -486,7 +506,7 @@
     <scm>
         <connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
         <developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-  </scm>
+    </scm>
     <distributionManagement>
         <repository>
             <id>inforefiner-release</id>
