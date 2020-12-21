@@ -110,7 +110,9 @@ public class FlowGenUtil {
         List<FlowField> result = new ArrayList<>();
         for (int i = 0; i < outputFields.size(); i++) {
             FlowField outputField = outputFields.get(i);
-            FlowField flowField = new FlowField(StringUtils.isNotEmpty(outputField.getAlias())? outputField.getAlias() : outputField.getColumn(), outputField.getType(), "", outputField.getDescription());
+            FlowField flowField = new FlowField(
+                StringUtils.isNotEmpty(outputField.getAlias()) ? outputField.getAlias() : outputField.getColumn(),
+                outputField.getType(), "", outputField.getDescription());
             result.add(flowField);
         }
         return result;
@@ -123,12 +125,13 @@ public class FlowGenUtil {
      * @param fieldMappings
      * @return
      */
-    public List<FlowField> getOutputFields(List<FlowField> inputFields, Map<String,String> fieldMappings) {
+    public List<FlowField> getOutputFields(List<FlowField> inputFields, Map<String, String> fieldMappings) {
         List<FlowField> result = new ArrayList<>();
-        if(fieldMappings == null || fieldMappings.size() == 0){
+        if (fieldMappings == null || fieldMappings.size() == 0) {
             for (int i = 0; i < inputFields.size(); i++) {
                 FlowField inputField = inputFields.get(i);
-                FlowField flowField = new FlowField(inputField.getAlias(), inputField.getType(), fieldMappings.get(inputField.getColumn()),inputField.getDescription());
+                FlowField flowField = new FlowField(inputField.getAlias(), inputField.getType(),
+                    fieldMappings.get(inputField.getColumn()), inputField.getDescription());
                 result.add(flowField);
             }
             return inputFields;
@@ -136,22 +139,25 @@ public class FlowGenUtil {
 
         for (int i = 0; i < inputFields.size(); i++) {
             FlowField inputField = inputFields.get(i);
-            if(fieldMappings.containsKey(inputField.getColumn())) {
-                FlowField flowField = new FlowField(inputField.getColumn(), inputField.getType(), fieldMappings.get(inputField.getColumn()),inputField.getDescription());
+            if (fieldMappings.containsKey(inputField.getColumn())) {
+                FlowField flowField = new FlowField(inputField.getColumn(), inputField.getType(),
+                    fieldMappings.get(inputField.getColumn()), inputField.getDescription());
                 result.add(flowField);
             }
         }
         return result;
     }
 
-
-    private StepDesc getSourceStep(String stepId, Dataset cdo, List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception {
+    private StepDesc getSourceStep(String stepId, Dataset cdo, List<FlowField> outputFields,
+                                   ConfigObject uiConfigurations) throws Exception {
         Flows.StepBuilder sourceStep = null;
         sourceStep = Flows.step("source", stepId, stepId);
 
-        Object ignoreMissingPath = cdo.getStorageConfigurations().get("ignoreMissingPath")!=null ? cdo.getStorageConfigurations().get("ignoreMissingPath") : false;
-        Map<String,Object> datasetInfo = new HashMap<>();
-        List<Map<String,Object>> datasetList = new ArrayList<>();
+        Object ignoreMissingPath = cdo.getStorageConfigurations().get("ignoreMissingPath") != null
+            ? cdo.getStorageConfigurations().get("ignoreMissingPath")
+            : false;
+        Map<String, Object> datasetInfo = new HashMap<>();
+        List<Map<String, Object>> datasetList = new ArrayList<>();
         datasetInfo.put("rule", "set_1");
         datasetInfo.put("dataset", cdo.getName());
         datasetInfo.put("datasetId", cdo.getId());
@@ -159,11 +165,10 @@ public class FlowGenUtil {
         datasetInfo.put("storage", cdo.getStorage());
         datasetList.add(datasetInfo);
 
-        StepDesc step = sourceStep
-                .config("schema", cdo.getSchema().getName()).config("schemaId", cdo.getSchema().getId())
-                .config("dataset", datasetList)
-                .config("sessionCache","").config("ignoreMissingPath", ignoreMissingPath).config("interceptor", "")
-                .withPosition(100, 200).output(outputFields).uiConfigurations(uiConfigurations).build();
+        StepDesc step = sourceStep.config("schema", cdo.getSchema().getName())
+            .config("schemaId", cdo.getSchema().getId()).config("dataset", datasetList).config("sessionCache", "")
+            .config("ignoreMissingPath", ignoreMissingPath).config("interceptor", "").withPosition(100, 200)
+            .output(outputFields).uiConfigurations(uiConfigurations).build();
         step.setInputConfigurations(null);// steps规范:(左）无input （右）多个output
 
         return step;
@@ -174,171 +179,180 @@ public class FlowGenUtil {
         return df.format(new Date());
     }
 
-    private StepDesc getFilterStep(String stepId, List<FlowField> inputFields, List<FlowField> outputFields, String condition, ConfigObject uiConfigurations) throws Exception {
+    private StepDesc getFilterStep(String stepId, List<FlowField> inputFields, List<FlowField> outputFields,
+                                   String condition, ConfigObject uiConfigurations) throws Exception {
         Flows.StepBuilder filterStep = Flows.step("filter", stepId, stepId);
-        StepDesc step = filterStep.config("condition", condition)
-                .config("sessionCache","").config("interceptor", "")
-                .withPosition(300, 200).input(inputFields).output(outputFields)
-                .uiConfigurations(uiConfigurations)
-                .build();
+        StepDesc step = filterStep.config("condition", condition).config("sessionCache", "").config("interceptor", "")
+            .withPosition(300, 200).input(inputFields).output(outputFields).uiConfigurations(uiConfigurations)
+            .build();
         return step;
     }
 
-    private StepDesc getTransformStep(String stepId, DataService dataService, List<FlowField> inputFields, List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception{
+    private StepDesc getTransformStep(String stepId, DataService dataService, List<FlowField> inputFields,
+                                      List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception {
         Flows.StepBuilder transStep = Flows.step("transform", stepId, stepId);
 
-        List<Map<String,String>> expressions = new ArrayList<>();
+        List<Map<String, String>> expressions = new ArrayList<>();
         List<FieldMapping> fieldConfiguration = dataService.getFieldMappings();
-        Map<String,FieldMapping> fieldMap = new HashMap<>();
-        for(FieldMapping mapping : fieldConfiguration){
+        Map<String, FieldMapping> fieldMap = new HashMap<>();
+        for (FieldMapping mapping : fieldConfiguration) {
             fieldMap.put(mapping.getSourceField(), mapping);
         }
 
-        Map<String,String> transformFields = new HashMap<>();
-        for(FlowField field : inputFields){
-            if(fieldMap.containsKey(field.getColumn())){
+        Map<String, String> transformFields = new HashMap<>();
+        for (FlowField field : inputFields) {
+            if (fieldMap.containsKey(field.getColumn())) {
                 FieldMapping fieldMapping1 = fieldMap.get(field.getColumn());
-                if(StringUtils.isNotEmpty(fieldMapping1.getEncrypt()) && fieldMapping1.getTransformRule() != null && StringUtils.isNotEmpty(fieldMapping1.getTransformRule().getExpression())){
+                if (StringUtils.isNotEmpty(fieldMapping1.getEncrypt()) && fieldMapping1.getTransformRule() != null
+                    && StringUtils.isNotEmpty(fieldMapping1.getTransformRule().getExpression())) {
                     TransformRule rule = fieldMapping1.getTransformRule();
-                    Map<String,String> exp = new HashMap<>();
+                    Map<String, String> exp = new HashMap<>();
                     exp.put("value", rule.getExpression());
                     expressions.add(exp);
                     int index = rule.getExpression().indexOf(" as ");
-                    if(index == -1){
+                    if (index == -1) {
                         index = rule.getExpression().indexOf(" AS ");
                     }
-                    String newField = rule.getExpression().substring(index+4).trim();
+                    String newField = rule.getExpression().substring(index + 4).trim();
                     transformFields.put(field.getColumn(), newField);
                 }
             }
         }
-        if(expressions.size() > 0){
+        if (expressions.size() > 0) {
             transStep.config("expressions", expressions);
-        }else{
+        } else {
             return null;
         }
 
-        for(FlowField field : inputFields){
-            if(transformFields.containsKey(field.getColumn())){
-                FlowField output = new FlowField(transformFields.get(field.getColumn()),"string","",field.getDescription());
+        for (FlowField field : inputFields) {
+            if (transformFields.containsKey(field.getColumn())) {
+                FlowField output = new FlowField(transformFields.get(field.getColumn()), "string", "",
+                    field.getDescription());
                 outputFields.add(output);
-            }else{
+            } else {
                 outputFields.add(field);
             }
         }
 
-        StepDesc step = transStep
-                .config("sessionCache","").config("interceptor", "")
-                .withPosition(500, 200).input(inputFields).output(outputFields).uiConfigurations(uiConfigurations).build();
+        StepDesc step = transStep.config("sessionCache", "").config("interceptor", "").withPosition(500, 200)
+            .input(inputFields).output(outputFields).uiConfigurations(uiConfigurations).build();
 
         return step;
     }
 
-    private String getDatasetType(String datasourceType){
+    private String getDatasetType(String datasourceType) {
         DataSourceType dataSourceType = null;
-        try{
+        try {
             dataSourceType = DataSourceType.valueOf(datasourceType.toUpperCase());
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("DataSourceType can't convert to dataset type: " + datasourceType);
             return "JDBC";
         }
-        if(dataSourceType == DataSourceType.DB){
+        if (dataSourceType == DataSourceType.DB) {
             return "JDBC";
-        }else if(dataSourceType == DataSourceType.FTP){
+        } else if (dataSourceType == DataSourceType.FTP) {
             return "FTP";
-        }else if(dataSourceType == DataSourceType.SFTP){
+        } else if (dataSourceType == DataSourceType.SFTP) {
             return "SFTP";
-        }else if(dataSourceType == DataSourceType.ES){
+        } else if (dataSourceType == DataSourceType.ES) {
             return "ElasticSearch";
-        }else if(dataSourceType == DataSourceType.KAFKA){
+        } else if (dataSourceType == DataSourceType.KAFKA) {
             return "KAFKA";
-        }else if(dataSourceType == DataSourceType.HDFS){
+        } else if (dataSourceType == DataSourceType.HDFS) {
             return "HDFS";
         }
         return datasourceType.toUpperCase();
     }
 
-    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix, ConfigObject uiConfigurations) throws Exception{
-        CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
-        if(!DataSourceType.contains(custDataSource.getType())){
-            logger.error("DataSource type not support : "+ custDataSource.getType());
-            throw new RuntimeException("DataSource type not support : "+ custDataSource.getType());
+    private StepDesc getSinkStep(String stepId, DataService dataService, List<FlowField> inputFields, String timeSuffix,
+                                 ConfigObject uiConfigurations) throws Exception {
+        CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),
+            dataService.getApplyConfiguration().getCustDataSourceId());
+        if (!DataSourceType.contains(custDataSource.getType())) {
+            logger.error("DataSource type not support : " + custDataSource.getType());
+            throw new RuntimeException("DataSource type not support : " + custDataSource.getType());
         }
 
         String storage = getDatasetType(custDataSource.getType());
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
-        Iterator<Map.Entry<String,Object>> iter = custDataSource.getAttributes().entrySet().iterator();
-        while (iter.hasNext()){
-            Map.Entry<String,Object> entry = iter.next();
+        Iterator<Map.Entry<String, Object>> iter = custDataSource.getAttributes().entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, Object> entry = iter.next();
             String key = entry.getKey();
             Object val = entry.getValue();
             stepBuilder.config(key, val);
         }
-        if(!custDataSource.getAttributes().containsKey("mode")){
+        if (!custDataSource.getAttributes().containsKey("mode")) {
             stepBuilder.config("mode", "append");
         }
-        if(dataService.getApplyConfiguration() != null && StringUtils.isNotEmpty(dataService.getApplyConfiguration().getCustTableName())){
+        if (dataService.getApplyConfiguration() != null
+            && StringUtils.isNotEmpty(dataService.getApplyConfiguration().getCustTableName())) {
             stepBuilder.config("table", dataService.getApplyConfiguration().getCustTableName());
         }
-        //add type propreties
+        // add type propreties
         stepBuilder.config("type", storage);
 
-
         List<FieldMapping> fieldMappings = dataService.getFieldMappings();
-        Map<String,FieldMapping> fieldMap = new HashMap<>();
-        for(FieldMapping mapping : fieldMappings){
-            if(StringUtils.isNotEmpty(mapping.getSourceField()) && StringUtils.isNotEmpty(mapping.getTargetField())) {
+        Map<String, FieldMapping> fieldMap = new HashMap<>();
+        for (FieldMapping mapping : fieldMappings) {
+            if (StringUtils.isNotEmpty(mapping.getSourceField()) && StringUtils.isNotEmpty(mapping.getTargetField())) {
                 fieldMap.put(mapping.getSourceField(), mapping);
             }
         }
         List<FlowField> targetFields = new ArrayList<>();
-        for(FlowField flowField : inputFields){
-            if(fieldMap.containsKey(flowField.getColumn())){
-                FlowField field = new FlowField(flowField.getColumn(),fieldMap.get(flowField.getColumn()).getTargetType(),fieldMap.get(flowField.getColumn()).getTargetField(),flowField.getDescription());
+        for (FlowField flowField : inputFields) {
+            if (fieldMap.containsKey(flowField.getColumn())) {
+                FlowField field = new FlowField(flowField.getColumn(),
+                    fieldMap.get(flowField.getColumn()).getTargetType(),
+                    fieldMap.get(flowField.getColumn()).getTargetField(), flowField.getDescription());
                 targetFields.add(field);
             }
         }
-        if(targetFields.size() == 0){
+        if (targetFields.size() == 0) {
             targetFields.addAll(inputFields);
         }
 
-        String schemaName = ExecutorFlowConf.schema_sink_prefix +dataService.getId() + "_" + timeSuffix;
-        String datasetName = ExecutorFlowConf.dataset_sink_prefix +dataService.getId() + "_" + timeSuffix;
+        String schemaName = ExecutorFlowConf.schema_sink_prefix + dataService.getId() + "_" + timeSuffix;
+        String datasetName = ExecutorFlowConf.dataset_sink_prefix + dataService.getId() + "_" + timeSuffix;
         Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
         Dataset dataset = datasetService.findOneByName(dataService.getTenantId(), datasetName);
         String schemaId = "";
         String datasetId = "";
-        if(schema == null){
-            //新建schema, 此时输出字段都已经知道了
+        if (schema == null) {
+            // 新建schema, 此时输出字段都已经知道了
             schema = createSchema(dataService, targetFields, schemaName);
         }
         schemaId = schema.getId();
 
-        if(dataset == null) {
+        if (dataset == null) {
             dataset = createDataset(schema, dataService, custDataSource, datasetName, storage);
         }
         datasetId = dataset.getId();
 
-        if(StringUtils.isNotEmpty(schemaId) && StringUtils.isNotEmpty(datasetId)){
-            stepBuilder.config("autoSchema","false");
-        }else{
-            stepBuilder.config("autoSchema","true");
+        if (StringUtils.isNotEmpty(schemaId) && StringUtils.isNotEmpty(datasetId)) {
+            stepBuilder.config("autoSchema", "false");
+        } else {
+            stepBuilder.config("autoSchema", "true");
         }
 
-        stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
-        StepDesc step = stepBuilder.withPosition(800, 100).input(targetFields).uiConfigurations(uiConfigurations).build();
+        stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId)
+            .config("dataset", datasetName);
+        StepDesc step = stepBuilder.withPosition(800, 100).input(targetFields).uiConfigurations(uiConfigurations)
+            .build();
         return step;
     }
 
-    public Schema createSchema(DataService dataService, List<FlowField> inputFields, String schemaName){
+    public Schema createSchema(DataService dataService, List<FlowField> inputFields, String schemaName) {
         Schema schema = new Schema(schemaName, new ArrayList<FieldDesc>());
         schema.setId(UUID.randomUUID().toString());
         schema.setCreateTime(new Date());
         schema.setLastModifiedTime(schema.getCreateTime());
-        ResourceDesc schema_resource = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_SCHEMA);// 暂时放在schemas根目录下
+        ResourceDesc schema_resource = resourceDescService.findRootsByName(dataService.getTenantId(),
+            ConstantInfo.RESOURCE_DIR_ROOT_SCHEMA);// 暂时放在schemas根目录下
         schema.setResource(schema_resource);
-        for(FlowField flowField : inputFields){
-        	FieldDesc dataField = new FieldDesc(flowField.getColumn(),flowField.getType(),flowField.getAlias(),flowField.getDescription());
+        for (FlowField flowField : inputFields) {
+            FieldDesc dataField = new FieldDesc(flowField.getColumn(), flowField.getType(), flowField.getAlias(),
+                flowField.getDescription());
             String fieldName = dataField.getName();
             if (StringUtils.isNotEmpty(dataField.getAlias())) {
                 dataField.setName(dataField.getAlias());
@@ -359,7 +373,8 @@ public class FlowGenUtil {
         return schema;
     }
 
-    public Dataset createDataset(Schema schema, DataService dataService, CustDataSource custDataSource, String datasetName, String storage){
+    public Dataset createDataset(Schema schema, DataService dataService, CustDataSource custDataSource,
+                                 String datasetName, String storage) {
         Dataset dataset = new Dataset();
         dataset.setId(UUID.randomUUID().toString());
         dataset.setName(datasetName);
@@ -367,14 +382,15 @@ public class FlowGenUtil {
         dataset.setSchemaId(schema.getId());
         dataset.setSchemaVersion(schema.getVersion());
 
-        ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
+        ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(),
+            ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
         dataset.setResource(resourceDesc);
         dataset.setResourceId(resourceDesc.getId());
 
-        Map<String,Object> storageConfigurations = Maps.newHashMap(custDataSource.getAttributes());
+        Map<String, Object> storageConfigurations = Maps.newHashMap(custDataSource.getAttributes());
         // 删除schema属性,防止和jdbc的跨用户的schema冲突
         if (storageConfigurations.get("schema") != null
-                && storageConfigurations.get("schema").toString().equals(schema.getName())) {
+            && storageConfigurations.get("schema").toString().equals(schema.getName())) {
             storageConfigurations.remove("schema");
         }
         if (storageConfigurations.containsKey("schemaId")) {
@@ -386,7 +402,7 @@ public class FlowGenUtil {
         if (storageConfigurations.containsKey("datasetId")) {
             storageConfigurations.remove("datasetId");
         }
-        if("JDBC".equals(storage)) {
+        if ("JDBC".equals(storage)) {
             storageConfigurations.put("table", dataService.getApplyConfiguration().getCustTableName());
         }
 
@@ -405,22 +421,23 @@ public class FlowGenUtil {
         dataset.setExpiredPeriod(0L);
         try {
             dataset = datasetService.save(dataset);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
         return dataset;
     }
 
-    private StepDesc getSQLStep(String stepId, DataResource dataResource, List<FlowField> inputFields, List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception{
+    private StepDesc getSQLStep(String stepId, DataResource dataResource, List<FlowField> inputFields,
+                                List<FlowField> outputFields, ConfigObject uiConfigurations) throws Exception {
         StepDesc step = null;
-        for(FlowField field : inputFields){
-            if(field.getColumn().equals(dataResource.getIncrementField())){
+        for (FlowField field : inputFields) {
+            if (field.getColumn().equals(dataResource.getIncrementField())) {
                 Flows.StepBuilder stepBuilder = Flows.step("sql", stepId, stepId);
-                stepBuilder
-                        .config("sessionCache","").config("interceptor", "")
-                        .config("sql","select max("+dataResource.getIncrementField()+") as cursorVal from input");
-                outputFields.add(new FlowField("cursorVal","string","", ""));
-                step = stepBuilder.withPosition(700,300).input(inputFields).output(outputFields).uiConfigurations(uiConfigurations).build();
+                stepBuilder.config("sessionCache", "").config("interceptor", "").config("sql",
+                    "select max(" + dataResource.getIncrementField() + ") as cursorVal from input");
+                outputFields.add(new FlowField("cursorVal", "string", "", ""));
+                step = stepBuilder.withPosition(700, 300).input(inputFields).output(outputFields)
+                    .uiConfigurations(uiConfigurations).build();
                 return step;
             }
         }
@@ -429,34 +446,36 @@ public class FlowGenUtil {
         return null;
     }
 
-    private StepDesc getSqlSinkStep(String stepId, DataService dataService,List<FlowField> inputFields, String timeSuffix, ConfigObject uiConfigurations){
+    private StepDesc getSqlSinkStep(String stepId, DataService dataService, List<FlowField> inputFields,
+                                    String timeSuffix, ConfigObject uiConfigurations) {
         Flows.StepBuilder stepBuilder = Flows.step("sink", stepId, stepId);
         String schemaName = ExecutorFlowConf.schema_cursor_name;
         String datasetName = ExecutorFlowConf.dataset_cursor_prefix + dataService.getId() + "_" + timeSuffix;
         Schema schema = schemaService.findOneByName(dataService.getTenantId(), schemaName);
         Dataset dataset = datasetService.findOneByName(dataService.getTenantId(), datasetName);
-        //没有则创建
+        // 没有则创建
         String schemaId = "";
         String datasetId = "";
-        if(schema != null){
+        if (schema != null) {
             schemaId = schema.getId();
-        }else{
-            //新建schema, 此时输出字段都已经知道了
+        } else {
+            // 新建schema, 此时输出字段都已经知道了
             schema = createSchema(dataService, inputFields, schemaName);
             schemaId = schema.getId();
         }
-        Map<String,Object> storageConfiguration = null;
+        Map<String, Object> storageConfiguration = null;
 
-        if(dataset != null){
+        if (dataset != null) {
             datasetId = dataset.getId();
             storageConfiguration = dataset.getStorageConfigurations();
-        }else{
+        } else {
             storageConfiguration = initSqlSinkConfiguration(dataset, schema, dataService);
             dataset = new Dataset(datasetName, schema, "HDFS", storageConfiguration);
             dataset.setId(UUID.randomUUID().toString());
             dataset.setSchemaId(schema.getId());
             dataset.setSchemaVersion(schema.getVersion());
-            ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
+            ResourceDesc resourceDesc = resourceDescService.findRootsByName(dataService.getTenantId(),
+                ConstantInfo.RESOURCE_DIR_ROOT_DATASET);
             dataset.setResource(resourceDesc);
             dataset.setResourceId(resourceDesc.getId());
             dataset.setStorageConfigurations(storageConfiguration);
@@ -473,62 +492,59 @@ public class FlowGenUtil {
             dataset.setIsHide(1);
             try {
                 dataset = datasetService.save(dataset);
-            }catch (Exception e){
+            } catch (Exception e) {
             }
 
             datasetId = dataset.getId();
         }
 
         stepBuilder.config("mode", "overwrite");
-        stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId).config("dataset", datasetName);
-        Iterator<Map.Entry<String,Object>> iterator = storageConfiguration.entrySet().iterator();
-        while (iterator.hasNext()){
-            Map.Entry<String,Object> entry = iterator.next();
+        stepBuilder.config("schemaId", schemaId).config("schema", schemaName).config("datasetId", datasetId)
+            .config("dataset", datasetName);
+        Iterator<Map.Entry<String, Object>> iterator = storageConfiguration.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
             String key = entry.getKey();
             Object val = entry.getValue();
             stepBuilder.config(key, val);
         }
-        stepBuilder.config("schemaVersion", schema.getVersion())
-                .config("sliceTimeColumn", "")
-                .config("description", "")
-                .config("maxFileSize", "")
-                .config("type", "HDFS")
-                .config("maxFileNumber", "")
-                .config("nullValue", "")
-                .config("expiredTime", "0")
-                .config("countWrittenRecord", "")
-                .config("sliceType", "");
+        stepBuilder.config("schemaVersion", schema.getVersion()).config("sliceTimeColumn", "").config("description", "")
+            .config("maxFileSize", "").config("type", "HDFS").config("maxFileNumber", "").config("nullValue", "")
+            .config("expiredTime", "0").config("countWrittenRecord", "").config("sliceType", "");
 
-        StepDesc step = stepBuilder.withPosition(900, 300).input(inputFields).uiConfigurations(uiConfigurations).build();
+        StepDesc step = stepBuilder.withPosition(900, 300).input(inputFields).uiConfigurations(uiConfigurations)
+            .build();
         return step;
     }
 
-    private Map<String,Object> initSqlSinkConfiguration(Dataset dataset, Schema schema, DataService dataService){
-        Map<String,Object> storageConfiguration = new HashMap<String,Object>();
-        storageConfiguration.put("path", ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
-        storageConfiguration.put("relativePath", ExecutorFlowConf.dataset_cursor_tmp_dir + "/"+  dataService.getId() + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
+    private Map<String, Object> initSqlSinkConfiguration(Dataset dataset, Schema schema, DataService dataService) {
+        Map<String, Object> storageConfiguration = new HashMap<String, Object>();
+        storageConfiguration.put("path", ExecutorFlowConf.dataset_cursor_tmp_dir + "/" + dataService.getId() + "/"
+            + ExecutorFlowConf.dataset_cursor_file_dir);
+        storageConfiguration.put("relativePath", ExecutorFlowConf.dataset_cursor_tmp_dir + "/" + dataService.getId()
+            + "/" + ExecutorFlowConf.dataset_cursor_file_dir);
         storageConfiguration.put("quoteChar", "\"");
         storageConfiguration.put("escapeChar", "\\");
         storageConfiguration.put("format", "csv");
         storageConfiguration.put("separator", ",");
         storageConfiguration.put("pathMode", "exact");
-        storageConfiguration.put("header","false");
+        storageConfiguration.put("header", "false");
 
         return storageConfiguration;
     }
 
-    public FlowDesc generateDataServiceFlow(DataService dataService, DataResource dataResource, CustDataSource custDataSource)
-        throws Exception {
-//        final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
-//        final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
-//        final String flowType = "dataflow";
+    public FlowDesc generateDataServiceFlow(DataService dataService, DataResource dataResource,
+                                            CustDataSource custDataSource) throws Exception {
+        // final String schema_current = ConstantInfo.QA_ANALYSIS_SCHEMA_CURRENT;
+        // final String schema_dir = ConstantInfo.DS_SCHEMA_DIR;
+        // final String flowType = "dataflow";
         String timestamp = getDateStr("yyyyMMddHHmmss");
 
         String flowName = "dataservice_" + dataService.getId() + "_" + timestamp;
         Dataset sourceDataset = null;
         try {
             sourceDataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("", e);
         }
 
@@ -542,15 +558,15 @@ public class FlowGenUtil {
             sourceDataset.setSchema(schemaService.selectByPrimaryKey(sourceDataset.getSchemaId()));
         }
 
-        //Source step input
+        // Source step input
         List<FlowField> sourceInputs = getSchemaFiled(sourceDataset.getSchemaId());
-        //source step output
+        // source step output
         List<FlowField> sourceOutputs = getSourceOutputFields(sourceInputs, dataResource.getFieldMappings());
-        //filter step input
+        // filter step input
         List<FlowField> filterInputs = getInputFields(sourceOutputs);
-        //filter step output
+        // filter step output
         List<FlowField> filterOutputs = filterInputs;
-        //transform step input
+        // transform step input
         List<FlowField> transInputFields = filterOutputs;
 
         // 获取source step,赋值datasetId,schemaId
@@ -583,87 +599,93 @@ public class FlowGenUtil {
         // 构建sql step和sink step 2
         StepDesc sqlStep = null;
         StepDesc sinkStep_2 = null;
-        if(dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode && getIncrementFieldType(dataResource.getIncrementField(), outputFields) != null){
+        if (dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode
+            && getIncrementFieldType(dataResource.getIncrementField(), outputFields) != null) {
             List<FlowField> sqlOutFields = new ArrayList<>();
 
-            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields,
-                new ConfigObject().withConfig("input", new String[]{"input"}).withConfig("output", new String[]{"output"}));
+            sqlStep = getSQLStep("sql_5", dataResource, outputFields, sqlOutFields, new ConfigObject()
+                .withConfig("input", new String[]{"input"}).withConfig("output", new String[]{"output"}));
             if (sqlStep != null) {
-                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp, new ConfigObject()
-                    .withConfig("input", new String[]{"input"}));
+                sinkStep_2 = getSqlSinkStep("sink_6", dataService, sqlOutFields, timestamp,
+                    new ConfigObject().withConfig("input", new String[]{"input"}));
             }
         }
 
         Flows.FlowBuilder flowBuilder = Flows.dataflow(flowName);
         FlowDesc flow = null;
         try {
-            if(sqlStep != null){
+            if (sqlStep != null) {
                 if (transStep != null) {
-                    flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).step(sqlStep).step(sinkStep_2)
-                            .connect("source_1", "filter_2").connect("filter_2", "transform_3").connect("transform_3", "sink_4")
-                            .connect("transform_3", "sql_5").connect("sql_5", "sink_6");
+                    flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).step(sqlStep)
+                        .step(sinkStep_2).connect("source_1", "filter_2").connect("filter_2", "transform_3")
+                        .connect("transform_3", "sink_4").connect("transform_3", "sql_5")
+                        .connect("sql_5", "sink_6");
                 } else {
                     flowBuilder.step(sourceStep).step(filterStep).step(sinkStep).step(sqlStep).step(sinkStep_2)
-                            .connect("source_1", "filter_2").connect("filter_2", "sink_4")
-                            .connect("filter_2", "sql_5").connect("sql_5", "sink_6");
+                        .connect("source_1", "filter_2").connect("filter_2", "sink_4").connect("filter_2", "sql_5")
+                        .connect("sql_5", "sink_6");
                 }
-            }else{
+            } else {
                 if (transStep != null) {
-                    flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep).connect("source_1", "filter_2")
-                            .connect("filter_2", "transform_3").connect("transform_3", "sink_4");
+                    flowBuilder.step(sourceStep).step(filterStep).step(transStep).step(sinkStep)
+                        .connect("source_1", "filter_2").connect("filter_2", "transform_3")
+                        .connect("transform_3", "sink_4");
                 } else {
                     flowBuilder.step(sourceStep).step(filterStep).step(sinkStep).connect("source_1", "filter_2")
-                            .connect("filter_2", "sink_4");
+                        .connect("filter_2", "sink_4");
                 }
             }
 
             flow = flowBuilder.build();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("build flow exception: ", e);
         }
         flow.setSource("dsflow");// 代表flow类型，生成的execution里携带这个属性
-        //添加对源数据集的依赖
-        if(sourceDataset.getStorage().equals("JDBC")){
-            if(sourceDataset.getStorageConfigurations()!=null && StringUtils.isNotEmpty((String)sourceDataset.getStorageConfigurations().get("jarPath"))){
+        // 添加对源数据集的依赖
+        if (sourceDataset.getStorage().equals("JDBC")) {
+            if (sourceDataset.getStorageConfigurations() != null
+                && StringUtils.isNotEmpty((String) sourceDataset.getStorageConfigurations().get("jarPath"))) {
                 ParameterDesc param = new ParameterDesc();
-                param.setName((String)sourceDataset.getStorageConfigurations().get("jarPath"));
+                param.setName((String) sourceDataset.getStorageConfigurations().get("jarPath"));
                 param.setCategory("ref");
-                if(flow.getDependencies() != null){
+                if (flow.getDependencies() != null) {
                     flow.getDependencies().add(param);
-                }else {
+                } else {
                     List<ParameterDesc> depenList = new ArrayList<>();
                     depenList.add(param);
                     flow.setDependencies(depenList);
                 }
-            }else{
-                logger.error("not found jarPath for Jdbc dataset: "+ sourceDataset.getName());
-                throw new RuntimeException("not found jarPath for Jdbc dataset: "+ sourceDataset.getName());
+            } else {
+                logger.error("not found jarPath for Jdbc dataset: " + sourceDataset.getName());
+                throw new RuntimeException("not found jarPath for Jdbc dataset: " + sourceDataset.getName());
             }
 
         }
-        //添加对sink jdbc数据集的依赖
-        if(custDataSource.getType().equalsIgnoreCase("DB")){
-            if(StringUtils.isNotEmpty(custDataSource.getAttributes().getOrDefault("jarPath","").toString())){
+        // 添加对sink jdbc数据集的依赖
+        if (custDataSource.getType().equalsIgnoreCase("DB")) {
+            if (StringUtils.isNotEmpty(custDataSource.getAttributes().getOrDefault("jarPath", "").toString())) {
                 ParameterDesc param = new ParameterDesc();
-                param.setName(custDataSource.getAttributes().getOrDefault("jarPath","").toString());
+                param.setName(custDataSource.getAttributes().getOrDefault("jarPath", "").toString());
                 param.setCategory("ref");
-                if(flow.getDependencies() != null){
+                if (flow.getDependencies() != null) {
                     flow.getDependencies().add(param);
-                }else {
+                } else {
                     List<ParameterDesc> depenList = new ArrayList<>();
                     depenList.add(param);
                     flow.setDependencies(depenList);
                 }
-            }else{
-                logger.error("not found jarPath for custDataSource : "+ custDataSource.getName());
-                throw new RuntimeException("not found jarPath for custDataSource : "+ custDataSource.getName());
+            } else {
+                logger.error("not found jarPath for custDataSource : " + custDataSource.getName());
+                throw new RuntimeException("not found jarPath for custDataSource : " + custDataSource.getName());
             }
         }
 
-        //dataservice flow都放在Flows/ds_flow目录下
+        // dataservice flow都放在Flows/ds_flow目录下
         ResourceDesc flowResource = null;
-        flowResource = resourceDescService.findRootsByName(dataService.getTenantId(), ConstantInfo.RESOURCE_DIR_ROOT_FLOW);
-        ResourceDesc dataserviceFlowRes = resourceDescService.findByNameAndParent(dataService.getTenantId(), ConstantInfo.DS_OUTPUT_FLOW_DIR, flowResource.getId());
+        flowResource = resourceDescService.findRootsByName(dataService.getTenantId(),
+            ConstantInfo.RESOURCE_DIR_ROOT_FLOW);
+        ResourceDesc dataserviceFlowRes = resourceDescService.findByNameAndParent(dataService.getTenantId(),
+            ConstantInfo.DS_OUTPUT_FLOW_DIR, flowResource.getId());
 
         if (dataserviceFlowRes == null) {
             ResourceDesc dsResDesc = new ResourceDesc();
@@ -694,35 +716,37 @@ public class FlowGenUtil {
         flow.setIsHide(1);// qa flow不显示在Flows目录下
         flow.setVersion(1);
 
-//        logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
+        // logger.info("begin to save ds flow: " + JsonBuilder.getInstance().toJson(flow));
         FlowDesc flowCreated = flowDescService.saveOrUpdate(flow);
-//        logger.info("save ds flow success : id=" + flowCreated.getId());
+        // logger.info("save ds flow success : id=" + flowCreated.getId());
 
         // flow创建成功，关联拷贝一份history记录
-//        logger.info("copy history flow begin ...");
+        // logger.info("copy history flow begin ...");
         FlowHistDesc fh = copyToHistory(flowCreated);
-//        logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
+        // logger.info("copy history flow success: " + JsonBuilder.getInstance().toJson(fh));
 
         return flowCreated;
     }
 
-    public String getCondition(DataResource dataResource, DataService dataService, List<FlowField> filterInputs){
+    public String getCondition(DataResource dataResource, DataService dataService, List<FlowField> filterInputs) {
         String condition = "1 == 1";
 
-        if(dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
+        if (dataService.getApplyConfiguration().getServiceMode() == DataServiceMode.increment_mode) {
             String filterType = getIncrementFieldType(dataResource.getIncrementField(), filterInputs);
-            if(filterType != null) {//有type说明有增量字段
+            if (filterType != null) {// 有type说明有增量字段
                 if (StringUtils.isNotEmpty(dataService.getCursorVal())) {
                     String filterCol = dataResource.getIncrementField();
                     if (filterType.equals("int") || filterType.equals("short") || filterType.equals("bigint")
-                            || filterType.equals("float") || filterType.equals("double") || filterType.startsWith("decimal")) {
+                        || filterType.equals("float") || filterType.equals("double")
+                        || filterType.startsWith("decimal")) {
                         condition = filterCol + " > " + dataService.getCursorVal();
                     } else if (filterType.equals("date")) {
-                        condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd格式字符串,已测试
+                        condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";// 支持yyyy-mm-dd格式字符串,已测试
                     } else if (filterType.equals("timestamp")) {
-                        condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";//支持yyyy-mm-dd HH:MM:SS格式字符串
-                    }else{
-                        log.error("you have selected error increment field {} and type is {}",filterCol, filterType);
+                        condition = filterCol + " > to_timestamp('" + dataService.getCursorVal() + "')";// 支持yyyy-mm-dd
+                        // HH:MM:SS格式字符串
+                    } else {
+                        log.error("you have selected error increment field {} and type is {}", filterCol, filterType);
                     }
                 } else {
                     String filterCol = dataResource.getIncrementField();
@@ -733,10 +757,10 @@ public class FlowGenUtil {
         return condition;
     }
 
-    private String getIncrementFieldType(String fieldName, List<FlowField> inputFields){
-        if(StringUtils.isNotEmpty(fieldName)){
-            for(FlowField flowField : inputFields){
-                if(flowField.getColumn().equals(fieldName)){
+    private String getIncrementFieldType(String fieldName, List<FlowField> inputFields) {
+        if (StringUtils.isNotEmpty(fieldName)) {
+            for (FlowField flowField : inputFields) {
+                if (flowField.getColumn().equals(fieldName)) {
                     return flowField.getType();
                 }
             }
@@ -762,20 +786,21 @@ public class FlowGenUtil {
         return fh;
     }
 
-    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc, List<ConfigItem> runtime_properties){
+    public FlowSchedulerDesc generateScheduler(DataService dataService, FlowDesc flowDesc,
+                                               List<ConfigItem> runtime_properties) {
         String schedulerName = "dataservice_" + dataService.getId() + "_" + getDateStr("yyyyMMddHHmmss");
         ConfigObject configurations = new ConfigObject();
         configurations.put("properties", runtime_properties);
         Long startTime = System.currentTimeMillis();
         try {
             startTime = Long.parseLong(dataService.getServiceConfiguration().get("startTime"));
-        } catch (NumberFormatException ex) {
-            log.error("NumberFormatException: For input string : {}", dataService.getServiceConfiguration().get("startTime"));
+        } catch (Exception e) {
+            log.warn(e.getMessage(), e);
         }
         configurations.put("startTime", startTime);
-        if(flowDesc.getDependencies()!=null && flowDesc.getDependencies().size()>0){
-            Map<String,String> jars = new HashMap<>();
-            for(ParameterDesc param : flowDesc.getDependencies()){
+        if (flowDesc.getDependencies() != null && flowDesc.getDependencies().size() > 0) {
+            Map<String, String> jars = new HashMap<>();
+            for (ParameterDesc param : flowDesc.getDependencies()) {
                 jars.put(param.getName(), "");
             }
             configurations.put("dependencies", jars.keySet().stream().collect(Collectors.joining(",")));
@@ -794,7 +819,8 @@ public class FlowGenUtil {
         scheduler.setTenantId(dataService.getTenantId());
         scheduler.setOwner(dataService.getOwner());
 
-//        logger.info("generate dataservice {} scheduler success : {}", dataService.getId(), JsonBuilder.getInstance().toJson(scheduler) );
+        // logger.info("generate dataservice {} scheduler success : {}", dataService.getId(),
+        // JsonBuilder.getInstance().toJson(scheduler) );
 
         return scheduler;
     }
