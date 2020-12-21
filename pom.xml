@@ -33,8 +33,16 @@
         <commons-codec.version>1.11</commons-codec.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-beanutils.version>1.9.1</commons-beanutils.version>
-        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-compress.version>1.4.1</commons-compress.version>
+        <commons-configuration.version>1.8</commons-configuration.version>
+        <commons-daemon.version>1.0.13</commons-daemon.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
+        <commons-digester.version>1.8.1</commons-digester.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <commons-net.version>3.1</commons-net.version>
+        <commons-validator.version>1.6</commons-validator.version>
         <sqlhelper.version>3.2.4</sqlhelper.version>
         <easyjson.version>3.0.4</easyjson.version>
 
@@ -316,6 +324,16 @@
                 <artifactId>commons-beanutils</artifactId>
                 <groupId>commons-beanutils</groupId>
                 <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>commons-collections</artifactId>
+                <groupId>commons-collections</groupId>
+                <version>${commons-collections.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>commons-compress</artifactId>
+                <groupId>commons-compress</groupId>
+                <version>${commons-compress.version}</version>
             </dependency>
             <dependency>
                 <artifactId>commons-logging</artifactId>

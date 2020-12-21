@@ -262,9 +262,11 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
                                                String datasetId, long start, long end, int pageNum, int pageSize) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(termQuery("name", TYPE_NAME));
         if (StringUtils.isNotEmpty(keyword)) {
-            queryBuilder.must(QueryBuilders.boolQuery().should(matchQuery("datasetName", keyword))
-                .should(matchQuery("custName", keyword)).should(matchQuery("custAppName", keyword))
-                .should(matchQuery("dataServiceName", keyword)));
+            String wildcardKeyword = "*" + keyword + "*";
+            queryBuilder.must(QueryBuilders.boolQuery().should(wildcardQuery("datasetName", wildcardKeyword))
+                .should(wildcardQuery("custName", wildcardKeyword))
+                .should(wildcardQuery("custAppName", wildcardKeyword))
+                .should(wildcardQuery("dataServiceName", wildcardKeyword)));
         }
         if (StringUtils.isNotEmpty(transferType)) {
             queryBuilder.must(termQuery("transferType.keyword", transferType));
