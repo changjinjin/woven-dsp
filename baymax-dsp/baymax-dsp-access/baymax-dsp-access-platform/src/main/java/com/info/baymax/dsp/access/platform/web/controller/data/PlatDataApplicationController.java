@@ -83,6 +83,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 dataService.setOwner(SaasContext.getCurrentUserId());//不能存customer的id,存管理员id
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
                 dataService.setDataResId(dataApplication.getDataResId());
+                dataService.setScheduleType(dataApplication.getOtherConfiguration().getOrDefault("scheduleType", "once"));
 
                 List<DataService> records = dataServiceEntityService.findAllByTenantIdAndName(dataService.getTenantId(), dataApplication.getName());
                 if(records != null && records.size() > 0) {
