@@ -1,7 +1,6 @@
 package com.info.baymax.dsp.data.platform.entity;
 
 import com.info.baymax.common.entity.base.BaseEntity;
-import org.hibernate.annotations.ColumnDefault;
 import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
@@ -10,14 +9,13 @@ import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
 import com.info.baymax.dsp.data.platform.bean.JobInfo;
 import com.info.baymax.dsp.data.platform.mybatis.type.ClobVsApplyConfigTypeHandler;
 import com.info.baymax.dsp.data.platform.mybatis.type.ClobVsJobInfoTypeHandler;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;
@@ -83,13 +81,6 @@ public class DataService extends BaseEntity {
     @Convert(converter = ObjectToStringConverter.class)
     @ColumnType(jdbcType = JdbcType.CLOB, typeHandler = GZBase64ClobVsMapStringKeyStringValueTypeHandler.class)
     private Map<String, String> serviceConfiguration;
-
-    @ApiModelProperty("总的执行次数,一个服务可能被重复部署多次")
-    @Comment("总的执行次数,一个服务可能被重复部署多次")
-    @Column(length = 11)
-    @ColumnType(jdbcType = JdbcType.INTEGER)
-    @ColumnDefault("0")
-    private Integer totalExecuted;
 
     @ApiModelProperty("该服务总共执行的次数")
     @Comment("该服务总共执行的次数")
