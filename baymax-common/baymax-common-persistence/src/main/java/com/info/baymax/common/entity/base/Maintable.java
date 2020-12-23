@@ -23,7 +23,7 @@ import java.util.Date;
 public class Maintable extends CommonEntity<String> implements Cloneable {
     private static final long serialVersionUID = -2286814072741496025L;
     // 9999-12-31
-    protected static final Long MAX_DATE_TIME = 253402214400L;
+    public static final Long MAX_DATE_TIME = 253402214400L;
 
     @ApiModelProperty("主键")
     @Comment("主键")
