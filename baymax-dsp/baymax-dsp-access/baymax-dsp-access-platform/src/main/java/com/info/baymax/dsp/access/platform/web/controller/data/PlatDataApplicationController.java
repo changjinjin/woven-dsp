@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: haijun
@@ -65,7 +66,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
 
         if (status == 1) {
             try {
-                //审批通过把DataApplication中的pull/push配置信息写入DataService
+                // 审批通过把DataApplication中的pull/push配置信息写入DataService
                 ApplyConfiguration applyConfiguration = new ApplyConfiguration();
                 applyConfiguration.setCustAppId(dataApplication.getCustAppId());
                 applyConfiguration.setCustDataSourceId(dataApplication.getCustDataSourceId());
@@ -83,10 +84,15 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 dataService.setOwner(SaasContext.getCurrentUserId());//不能存customer的id,存管理员id
                 dataService.setFieldMappings(dataApplication.getFieldMappings());
                 dataService.setDataResId(dataApplication.getDataResId());
-                dataService.setScheduleType(dataApplication.getOtherConfiguration().getOrDefault("scheduleType", "once"));
 
-                List<DataService> records = dataServiceEntityService.findAllByTenantIdAndName(dataService.getTenantId(), dataApplication.getName());
-                if(records != null && records.size() > 0) {
+                Map<String, String> otherConfiguration = dataApplication.getOtherConfiguration();
+                if (otherConfiguration != null && otherConfiguration.get("scheduleType") != null) {
+                    dataService.setScheduleType(otherConfiguration.get("scheduleType"));
+                }
+
+                List<DataService> records = dataServiceEntityService.findAllByTenantIdAndName(dataService.getTenantId(),
+                    dataApplication.getName());
+                if (records != null && records.size() > 0) {
                     dataService.setName(dataApplication.getName() + "_" + getDateStr("yyyyMMddHHmmss"));
                 }
                 dataServiceEntityService.saveOrUpdate(dataService);
