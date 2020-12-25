@@ -106,16 +106,4 @@ public class WebFluxExtConfig {
             return chain.filter(ctx);
         };
     }
-
-    /*
-     * @Configuration
-     *
-     * @Primary class WebFluxRegistrationsConfig implements WebFluxRegistrations {
-     *
-     * @Override public RequestMappingHandlerMapping getRequestMappingHandlerMapping() { return new
-     * PathTweakingRequestMappingHandlerMapping(); }
-     *
-     * }
-     */
-
 }
