@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.dataapi;
 
+import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
+@EnableElasticMetricsExport
 @EnableCaching
 @SpringCloudApplication
 @EnableAutoConfiguration

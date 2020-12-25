@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.gateway;
 
 import com.info.baymax.dsp.gateway.config.YamlPropertySourceFactory;
+import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -9,6 +10,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
+@EnableElasticMetricsExport
 @SpringCloudApplication
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableAutoConfiguration

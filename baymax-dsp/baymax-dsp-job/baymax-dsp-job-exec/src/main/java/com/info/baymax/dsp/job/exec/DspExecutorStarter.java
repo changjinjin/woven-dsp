@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.job.exec;
 
+import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,15 +13,15 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import tk.mybatis.spring.annotation.MapperScan;
 
-
 /**
  * @Author: haijun
  * @Date: 2019/12/19 14:29
  */
+@EnableElasticMetricsExport
 @SpringCloudApplication
 @EnableAutoConfiguration
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.exec"})
-@ComponentScan(basePackages = {"com.info.baymax", "com.merce.woven"})
+@ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
 @PropertySource({"classpath:dsp-common.properties", "classpath:dsp-job-exec.properties"})
@@ -28,12 +29,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class DspExecutorStarter {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder()
-                .bannerMode(Banner.Mode.OFF)
-                .properties()
-                .sources(DspExecutorStarter.class)
-                .web(WebApplicationType.REACTIVE)
-                .run(args);
+        new SpringApplicationBuilder().bannerMode(Banner.Mode.OFF).properties().sources(DspExecutorStarter.class)
+            .web(WebApplicationType.REACTIVE).run(args);
     }
 
 }
