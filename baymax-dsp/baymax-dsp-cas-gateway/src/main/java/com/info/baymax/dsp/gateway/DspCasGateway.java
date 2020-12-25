@@ -8,16 +8,18 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import tk.mybatis.spring.annotation.MapperScan;
 
-@EnableElasticMetricsExport
 @SpringCloudApplication
+@EnableCasClientWebflux
+@EnableElasticMetricsExport
 @ComponentScan(basePackages = {"com.info.baymax"})
+@EnableFeignClients(basePackages = "com.info.baymax.dsp.gateway.feign")
 @MapperScan(basePackages = {"com.info.baymax.dsp.data.**.mapper"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
-@EnableCasClientWebflux
 @PropertySource(value = {"classpath:/dsp-cas-gateway.yml"}, factory = YamlPropertySourceFactory.class)
 public class DspCasGateway {
     public static void main(String[] args) {

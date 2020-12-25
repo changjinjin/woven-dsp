@@ -1,10 +1,9 @@
 package com.info.baymax.dsp.gateway.feign;
 
 import com.alibaba.fastjson.JSONObject;
+import com.info.baymax.common.feign.FeignClientConfiguration;
 import com.info.baymax.dsp.gateway.web.method.RestOperation;
-
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.cloud.openfeign.FeignClientProperties.FeignClientConfiguration;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
