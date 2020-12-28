@@ -86,6 +86,7 @@ public class PlatDataApplicationController implements BaseEntityController<DataA
                 dataService.setDataResId(dataApplication.getDataResId());
 
                 Map<String, String> otherConfiguration = dataApplication.getOtherConfiguration();
+                dataService.setServiceConfiguration(otherConfiguration);
                 if (otherConfiguration != null && otherConfiguration.get("scheduleType") != null) {
                     dataService.setScheduleType(otherConfiguration.get("scheduleType"));
                 }
