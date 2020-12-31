@@ -4,7 +4,7 @@
 
     <groupId>com.info.baymax</groupId>
     <artifactId>baymax-parent</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>baymax-parent</name>
@@ -120,7 +120,7 @@
         <javacsv.version>2.0</javacsv.version>
         <passay.version>1.4.0</passay.version>
 
-        <baymax-common.version>0.1.4</baymax-common.version>
+        <baymax-common.version>0.1.5-SNAPSHOT</baymax-common.version>
         <baymax-woven.version>3.1</baymax-woven.version>
     </properties>
 
@@ -599,7 +599,7 @@
     <scm>
         <connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
         <developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-      <tag>v0.1.4</tag>
+      <tag>HEAD</tag>
   </scm>
     <distributionManagement>
         <repository>
