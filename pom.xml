@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.info.baymax</groupId>
     <artifactId>baymax-parent</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.1.4</version>
     <packaging>pom</packaging>
 
     <name>baymax-parent</name>
@@ -122,7 +120,7 @@
         <javacsv.version>2.0</javacsv.version>
         <passay.version>1.4.0</passay.version>
 
-        <baymax-common.version>0.1.4-SNAPSHOT</baymax-common.version>
+        <baymax-common.version>0.1.4</baymax-common.version>
         <baymax-woven.version>3.1</baymax-woven.version>
     </properties>
 
@@ -601,7 +599,8 @@
     <scm>
         <connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
         <developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-    </scm>
+      <tag>v0.1.4</tag>
+  </scm>
     <distributionManagement>
         <repository>
             <id>inforefiner-release</id>
