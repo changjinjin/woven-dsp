@@ -732,50 +732,65 @@
 
     <profiles>
         <profile>
-            <id>hadoop2.7-es5.5</id>
+            <id>hadoop2-es5</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
-                <profileActive>hadoop2.7-es5.5</profileActive>
+                <profileActive>hadoop2-es5</profileActive>
                 <hadoop.version>2.7.3</hadoop.version>
                 <elasticsearch.version>5.5.3</elasticsearch.version>
             </properties>
         </profile>
         <profile>
-            <id>hadoop2.7-es6.8</id>
+            <id>hadoop2-es6</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <profileActive>hadoop2.7-es6.8</profileActive>
+                <profileActive>hadoop2-es6</profileActive>
                 <hadoop.version>2.7.3</hadoop.version>
                 <elasticsearch.version>6.8.13</elasticsearch.version>
             </properties>
         </profile>
         <profile>
-            <id>hadoop2.7-es7.10</id>
+            <id>hadoop2-es7</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <properties>
-                <profileActive>hadoop2.7-es7.10</profileActive>
+                <profileActive>hadoop2-es7</profileActive>
                 <hadoop.version>2.7.3</hadoop.version>
                 <elasticsearch.version>7.10.1</elasticsearch.version>
             </properties>
         </profile>
         <profile>
-            <id>hadoop3.1-es5.5</id>
+            <id>hadoop3-es5</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <properties>
-                <profileActive>hadoop3.1-es5.5</profileActive>
+                <profileActive>hadoop3-es5</profileActive>
                 <hadoop.version>3.1.1</hadoop.version>
                 <elasticsearch.version>5.5.3</elasticsearch.version>
             </properties>
         </profile>
         <profile>
-            <id>hadoop3.1-es6.8</id>
+            <id>hadoop3-es6</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <properties>
-                <profileActive>hadoop3.1-es6.8</profileActive>
+                <profileActive>hadoop3-es6</profileActive>
                 <hadoop.version>3.1.1</hadoop.version>
                 <elasticsearch.version>6.8.13</elasticsearch.version>
             </properties>
         </profile>
         <profile>
-            <id>hadoop3.1-es7.10</id>
+            <id>hadoop3-es7</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <properties>
                 <profileActive>hadoop3.1-es7.10</profileActive>
                 <hadoop.version>3.1.1</hadoop.version>
