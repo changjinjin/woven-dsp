@@ -1,12 +1,13 @@
 package com.info.baymax.dsp.access.dataapi.client;
 
-import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.aggregate.AggType;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.access.dataapi.api.AggRequest;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;
+
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class DataPullClientTest {
             .expectStatus().isOk()//
             .expectBody()//
             .consumeWith(t -> {
-                System.out.println(JSON.toJSONString(t));
+                System.out.println(JsonUtils.toJson(t));
             });
     }
 
@@ -127,7 +128,7 @@ public class DataPullClientTest {
 
         long dataServiceId = 727202723199451136L;
         RecordRequest request = new RecordRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
-        System.out.println("request:" + JSON.toJSONString(request));
+        System.out.println("request:" + JsonUtils.toJson(request));
         webTestClient//
             .post().uri("/data/pullRecords")//
             .header("hosts", "183.6.116.33")//
@@ -164,7 +165,7 @@ public class DataPullClientTest {
 
         long dataServiceId = 727202723199451136L;
         AggRequest request = new AggRequest(accessKey, dataServiceId, System.currentTimeMillis(), false, query);
-        System.out.println("request:" + JSON.toJSONString(request));
+        System.out.println("request:" + JsonUtils.toJson(request));
         webTestClient//
             .post().uri("/data/pullAggs")//
             .header("hosts", "183.6.116.33")//

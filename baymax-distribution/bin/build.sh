@@ -44,7 +44,8 @@ echo ">>>link jars end"
 
 ##archive to tar.gz
 cd $work_dir;cd ../
-dirname=$(basename $work_dir)
+dirname=$(basename $(pwd))
 echo "dir name $dirname"
+cd ../
 tar -czvf "${dirname}.tar.gz" $dirname 
 

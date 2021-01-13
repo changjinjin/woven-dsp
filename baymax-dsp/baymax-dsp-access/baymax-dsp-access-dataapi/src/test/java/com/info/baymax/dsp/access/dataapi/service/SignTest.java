@@ -1,11 +1,11 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
-import com.alibaba.fastjson.JSON;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.result.Response;
+import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;
 import com.info.baymax.dsp.access.dataapi.utils.EncryptUtils;
@@ -42,7 +42,7 @@ public class SignTest extends AbstractBootTest {
             RecordRequest request = new RecordRequest(accessKey, null, System.currentTimeMillis(), false, query);
             IPage<MapEntity> page = pullService.pullRecords(request, null);
             Response<?> encrypt = Response.ok(EncryptUtils.encrypt(page, request.isEncrypted(), signKeyIfExist));
-            System.out.println(JSON.toJSONString(encrypt));
+            System.out.println(JsonUtils.toJson(encrypt));
         } catch (Exception e) {
             e.printStackTrace();
         }

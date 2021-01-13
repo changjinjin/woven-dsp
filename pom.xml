@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.info.baymax</groupId>
@@ -20,9 +22,9 @@
         <skipApiDocs>true</skipApiDocs>
 
         <!-- spring boot -->
-        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
-        <spring-cloud-alibaba.version>2.2.0.RELEASE</spring-cloud-alibaba.version>
+        <spring-boot.version>2.2.12.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
 
         <!-- commons dependencies -->
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -56,10 +58,10 @@
         <easyjson.version>3.0.4</easyjson.version>
 
         <!-- mybatis dependencies -->
-        <mybatis.version>3.5.4</mybatis.version>
-        <mybatis-ehcache.version>1.2.0</mybatis-ehcache.version>
+        <mybatis.version>3.5.6</mybatis.version>
+        <mybatis-ehcache.version>1.2.1</mybatis-ehcache.version>
         <mapper-module.version>1.1.5</mapper-module.version>
-        <mybatis-spring-boot.version>2.1.2</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
         <mapper-spring-boot.version>2.1.5</mapper-spring-boot.version>
         <pagehelper-spring-boot.version>1.2.13</pagehelper-spring-boot.version>
         <pagehelper.version>5.1.11</pagehelper.version>
@@ -71,11 +73,12 @@
         <opendistro-sql-jdbc.version>1.9.0.0</opendistro-sql-jdbc.version>
 
         <!-- other dependencies -->
-        <fastjson.version>1.2.71</fastjson.version>
+        <fastjson.version>1.2.75</fastjson.version>
         <jjwt.version>0.9.1</jjwt.version>
         <sensitive.version>0.0.9</sensitive.version>
         <guava.version>22.0</guava.version>
         <jest.version>6.3.1</jest.version>
+        <javassist.version>3.27.0-GA</javassist.version>
 
         <netflix-statistics.version>0.1.1</netflix-statistics.version>
         <kaptcha.version>2.3.2</kaptcha.version>
@@ -261,11 +264,6 @@
                 <version>${baymax-common.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.javassist</groupId>
-                <artifactId>javassist</artifactId>
-                <version>3.23.1-GA</version>
-            </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
@@ -485,6 +483,12 @@
                 <artifactId>netflix-statistics</artifactId>
                 <version>${netflix-statistics.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
@@ -593,14 +597,63 @@
                 <artifactId>passay</artifactId>
                 <version>${passay.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>transport</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.distribution.integ-test-zip</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.plugin</groupId>
+                <artifactId>transport-netty4-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>${elasticsearch.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client-sniffer</artifactId>
+                <version>${elasticsearch.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <scm>
         <connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
         <developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <distributionManagement>
         <repository>
             <id>inforefiner-release</id>
@@ -679,17 +732,54 @@
 
     <profiles>
         <profile>
-            <id>hadoop2.7</id>
+            <id>hadoop2.7-es5.5</id>
             <properties>
-                <profileActive>hadoop2</profileActive>
+                <profileActive>hadoop2.7-es5.5</profileActive>
                 <hadoop.version>2.7.3</hadoop.version>
+                <elasticsearch.version>5.5.3</elasticsearch.version>
             </properties>
         </profile>
         <profile>
-            <id>hadoop3.1</id>
+            <id>hadoop2.7-es6.8</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
-                <profileActive>hadoop3</profileActive>
+                <profileActive>hadoop2.7-es6.8</profileActive>
+                <hadoop.version>2.7.3</hadoop.version>
+                <elasticsearch.version>6.8.13</elasticsearch.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>hadoop2.7-es7.10</id>
+            <properties>
+                <profileActive>hadoop2.7-es7.10</profileActive>
+                <hadoop.version>2.7.3</hadoop.version>
+                <elasticsearch.version>7.10.1</elasticsearch.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>hadoop3.1-es5.5</id>
+            <properties>
+                <profileActive>hadoop3.1-es5.5</profileActive>
                 <hadoop.version>3.1.1</hadoop.version>
+                <elasticsearch.version>5.5.3</elasticsearch.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>hadoop3.1-es6.8</id>
+            <properties>
+                <profileActive>hadoop3.1-es6.8</profileActive>
+                <hadoop.version>3.1.1</hadoop.version>
+                <elasticsearch.version>6.8.13</elasticsearch.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>hadoop3.1-es7.10</id>
+            <properties>
+                <profileActive>hadoop3.1-es7.10</profileActive>
+                <hadoop.version>3.1.1</hadoop.version>
+                <elasticsearch.version>7.10.1</elasticsearch.version>
             </properties>
         </profile>
     </profiles>

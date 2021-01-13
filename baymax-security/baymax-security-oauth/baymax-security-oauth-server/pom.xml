@@ -26,7 +26,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-security-oauth-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
