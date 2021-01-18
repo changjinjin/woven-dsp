@@ -78,13 +78,15 @@ public class CASAuthEntryPoint extends CasServerAuthenticationEntryPoint {
                 boolean encodeServiceUrlWithSessionId = true;
                 String serviceUrl = CommonUtils.constructServiceUrl(exchange, casServiceProperties.getFirstPage(), null,
                     casServiceProperties.getArtifactParameter(), encodeServiceUrlWithSessionId);
-                String loginUrl = CommonUtils.constructServiceUrl(exchange, casServiceProperties.getPlatformServer() + "/login", null,
-                    casServiceProperties.getArtifactParameter(), encodeServiceUrlWithSessionId);
-                String redirectUrl = casServiceProperties.getServer() + "/login?service=" + serviceUrl + "&loginUrl=" + loginUrl;
+//                String loginUrl = CommonUtils.constructServiceUrl(exchange, casServiceProperties.getPlatformServer() + "/login", null,
+//                    casServiceProperties.getArtifactParameter(), encodeServiceUrlWithSessionId);
+                String redirectUrl = casServiceProperties.getServer() + casServiceProperties.getServiceCheckSuffix()+"?service=" + serviceUrl;
+//                        + "&loginUrl=" + loginUrl;
 
                 JSONObject map = new JSONObject();
                 map.put("status", 200);
                 map.put("mode", casServiceProperties.getMode());
+                map.put("autoAccess", casServiceProperties.getServiceAutoAccess());
                 if (isCheckLoginRequest(exchange)) {
                     map.put("message", "未登录，请登录。");
                 } else {
@@ -126,21 +128,21 @@ public class CASAuthEntryPoint extends CasServerAuthenticationEntryPoint {
         return super.commence(exchange, authenticationException);
     }
 
-    protected String createRedirectUrl(String serviceUrl, String loginUrl) {
-        String url = super.createRedirectUrl(serviceUrl);
-        String encodeLoginUrl = "";
-        if (!StringUtils.isEmpty(loginUrl)) {
-            url += (url.contains("?") ? "&" : "?");
-            if (!loginUrl.startsWith("http://") && !loginUrl.startsWith("https://")) {
-                final String appClient = this.getDomain(serviceUrl);
-                encodeLoginUrl = appClient + loginUrl;
-            } else {
-                encodeLoginUrl = loginUrl;
-            }
-            url = url + "loginUrl=" + encodeLoginUrl;
-        }
-        return url;
-    }
+//    protected String createRedirectUrl(String serviceUrl, String loginUrl) {
+//        String url = super.createRedirectUrl(serviceUrl);
+//        String encodeLoginUrl = "";
+//        if (!StringUtils.isEmpty(loginUrl)) {
+//            url += (url.contains("?") ? "&" : "?");
+//            if (!loginUrl.startsWith("http://") && !loginUrl.startsWith("https://")) {
+//                final String appClient = this.getDomain(serviceUrl);
+//                encodeLoginUrl = appClient + loginUrl;
+//            } else {
+//                encodeLoginUrl = loginUrl;
+//            }
+//            url = url + "loginUrl=" + encodeLoginUrl;
+//        }
+//        return url;
+//    }
 
     public String getDomain(final String url) {
         if (url == null) {
