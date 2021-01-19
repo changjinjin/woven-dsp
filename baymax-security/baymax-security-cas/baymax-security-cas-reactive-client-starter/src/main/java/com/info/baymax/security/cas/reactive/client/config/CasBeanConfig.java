@@ -12,6 +12,8 @@ import com.info.baymax.security.cas.reactive.client.web.authorization.CasAuthori
 import com.info.baymax.security.cas.reactive.client.web.authorization.CasAuthorizationManager;
 import com.info.baymax.security.cas.reactive.web.CasServerAuthenticationConverter;
 import com.info.baymax.security.cas.reactive.web.CasServerAuthenticationSuccessHandler;
+
+import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
 import org.jasig.cas.client.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -70,9 +72,14 @@ public class CasBeanConfig {
 
     @Bean
     public TicketValidator ticketValidator() {
-        Saml11TicketValidator tv = new Saml11TicketValidator(casServiceProperties.getServer());
-        tv.setTolerance(10000L);
-        return (TicketValidator) tv;
+        if(casServiceProperties.getTicketValidateClass()!= null && casServiceProperties.getTicketValidateClass().toLowerCase().startsWith("cas30")){
+            Cas30ServiceTicketValidator tv = new Cas30ServiceTicketValidator(casServiceProperties.getTicketValidateAddress());
+            return tv;
+        }else{
+            Saml11TicketValidator tv = new Saml11TicketValidator(casServiceProperties.getServer());
+            tv.setTolerance(10000L);
+            return (TicketValidator) tv;
+        }
     }
 
     @Bean

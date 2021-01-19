@@ -42,9 +42,22 @@ public class CasServiceProperties extends ServiceProperties {
     private String loginPath = "/cas/login";
 
     /**
+     * 验证是否登陆并跳转到service的方法
+     */
+    private String serviceCheckSuffix = "/login"; // /login  /check
+
+    /**
+     * login_check返回的redirectUrl需要前端跳转，跳转后是cas帮着跳转到资源页（true）还是需要前端接受响应再做跳转（false）
+     */
+    private String serviceAutoAccess = "true";
+
+    /**
      * logout 路径
      */
     private String logoutPath = "/cas/logout";
+
+    private String ticketValidateClass ;//Saml11TicketValidator, Cas30ProxyReceivingTicketValidationFilter
+    private String ticketValidateAddress; //http://10.40.3.29:8080/cas
 
     /**
      * 访问白名单
