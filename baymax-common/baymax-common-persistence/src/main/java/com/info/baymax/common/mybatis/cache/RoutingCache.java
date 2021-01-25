@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 
 /**
- * Cache 路由类，在Mapper接口上统一使用该类型作为Cache的实现类，但在实例化是根据配置文件动态的切换真正的实现类已达到缓存动态切换目的，目前支持redis和ehcache
+ * Cache 路由类，在Mapper接口上统一使用该类型作为Cache的实现类，但在实例化时根据配置文件动态的切换真正的实现类以达到缓存动态切换目的，目前支持redis和ehcache
  *
  * @author jingwei.yang
  * @date 2020年3月10日 下午3:24:38
