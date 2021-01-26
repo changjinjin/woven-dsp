@@ -12,6 +12,9 @@ public class ThreadPoolProperties {
 
     private int corePoolSize = 5;
     private int maxPoolSize = 20;
+    private int keepAliveSeconds = 60;
     private int queueCapacity = 99999;
+    private boolean allowCoreThreadTimeOut = false;
     private String threadNamePrefix = "thread-pool-";
+
 }
