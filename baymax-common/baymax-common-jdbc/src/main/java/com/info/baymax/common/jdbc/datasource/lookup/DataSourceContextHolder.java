@@ -1,8 +1,8 @@
-package com.info.baymax.dsp.common.jdbc.datasource.lookup;
-
-import java.util.concurrent.atomic.AtomicInteger;
+package com.info.baymax.common.jdbc.datasource.lookup;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class DataSourceContextHolder {

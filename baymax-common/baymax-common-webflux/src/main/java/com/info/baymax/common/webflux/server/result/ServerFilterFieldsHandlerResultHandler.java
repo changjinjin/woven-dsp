@@ -1,7 +1,13 @@
-package com.info.baymax.dsp.common.webflux.server.result;
+package com.info.baymax.common.webflux.server.result;
 
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.info.baymax.common.annotation.JsonBody;
+import com.info.baymax.common.annotation.JsonBodys;
+import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
+import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.utils.JsonUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -15,17 +21,9 @@ import org.springframework.web.reactive.HandlerResultHandler;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.result.method.annotation.AbstractMessageWriterResultHandler;
 import org.springframework.web.server.ServerWebExchange;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.annotation.JsonBody;
-import com.info.baymax.common.annotation.JsonBodys;
-import com.info.baymax.common.comp.serialize.jackson.fieldFilter.FilterFieldsJsonSerializer;
-import com.info.baymax.common.queryapi.exception.BizException;
-import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.utils.JsonUtils;
-
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Slf4j
 public class ServerFilterFieldsHandlerResultHandler extends AbstractMessageWriterResultHandler

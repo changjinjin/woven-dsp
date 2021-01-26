@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.webflux.server.error;
+package com.info.baymax.common.webflux.server.error;
 
 import com.info.baymax.common.queryapi.exception.BizException;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;

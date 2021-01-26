@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.webflux.server.result;
+package com.info.baymax.common.webflux.server.result;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;

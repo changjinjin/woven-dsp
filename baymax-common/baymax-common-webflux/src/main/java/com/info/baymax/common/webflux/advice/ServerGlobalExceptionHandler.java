@@ -1,4 +1,4 @@
-package com.info.baymax.dsp.common.webflux.advice;
+package com.info.baymax.common.webflux.advice;
 
 import com.info.baymax.common.queryapi.exception.BizException;
 import com.info.baymax.common.queryapi.result.ErrMsg;
