@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.common.webflux.server.error;
 
+import com.info.baymax.common.queryapi.exception.BizException;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -12,8 +13,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.info.baymax.common.queryapi.exception.BizException;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -25,13 +24,13 @@ public class GlobalErrorAttributes implements ErrorAttributes {
     private static final String ERROR_ATTRIBUTE = DefaultErrorAttributes.class.getName() + ".ERROR";
 
     private final boolean includeException;
+    private final HttpStatusDeterminer httpStatusDeterminer;
 
     /**
-     * Create a new {@link DefaultErrorAttributes} instance that does not
-     * include the "exception" attribute.
+     * Create a new {@link DefaultErrorAttributes} instance that does not include the "exception" attribute.
      */
     public GlobalErrorAttributes() {
-        this(false);
+        this(false, null);
     }
 
     /**
@@ -39,8 +38,9 @@ public class GlobalErrorAttributes implements ErrorAttributes {
      *
      * @param includeException whether to include the "exception" attribute
      */
-    public GlobalErrorAttributes(boolean includeException) {
+    public GlobalErrorAttributes(boolean includeException, HttpStatusDeterminer httpStatusDeterminer) {
         this.includeException = includeException;
+        this.httpStatusDeterminer = httpStatusDeterminer;
     }
 
     @Override
@@ -68,18 +68,12 @@ public class GlobalErrorAttributes implements ErrorAttributes {
             return response.getStatusCode();
         }
 
-        // 认证异常和业务异常状态
-        /*
-         * if (error instanceof AuthenticationServiceException || error instanceof AccessDeniedException) { return
-         * HttpStatus.FORBIDDEN; }
-         *
-         * if (error instanceof AuthenticationException) { return HttpStatus.UNAUTHORIZED; }
-         */
-
-        if (error instanceof BizException) {
-            return HttpStatus.OK;
+        if (httpStatusDeterminer != null) {
+            HttpStatus determineHttpStatus = httpStatusDeterminer.determineHttpStatus(response, error);
+            if (determineHttpStatus != null) {
+                return determineHttpStatus;
+            }
         }
-
         ResponseStatus responseStatus = AnnotatedElementUtils.findMergedAnnotation(error.getClass(),
             ResponseStatus.class);
         if (responseStatus != null) {
