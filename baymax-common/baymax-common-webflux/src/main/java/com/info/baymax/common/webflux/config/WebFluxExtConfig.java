@@ -1,13 +1,12 @@
 package com.info.baymax.common.webflux.config;
 
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.ObjectProvider;
+import com.info.baymax.common.webflux.server.error.DefaultHttpStatusDeterminer;
+import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
+import com.info.baymax.common.webflux.server.error.HttpStatusDeterminer;
+import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.boot.web.reactive.error.ErrorAttributes;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,15 +20,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
-import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-
-import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
-import com.info.baymax.common.webflux.server.error.GlobalErrorWebExceptionHandler;
-import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
-
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -37,24 +30,12 @@ public class WebFluxExtConfig {
 
     @Autowired
     private ServerProperties serverProperties;
-
     @Autowired
     private RequestedContentTypeResolver webFluxContentTypeResolver;
-
     @Autowired
     private ReactiveAdapterRegistry webFluxAdapterRegistry;
-
     @Autowired
     private ServerCodecConfigurer serverCodecConfigurer;
-
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    @Autowired
-    private ResourceProperties resourceProperties;
-
-    @Autowired
-    private ObjectProvider<ViewResolver> viewResolversProvider;
 
     @Bean
     public ServerFilterFieldsHandlerResultHandler serverFilterFieldsHandlerResultHandler() {
@@ -62,21 +43,16 @@ public class WebFluxExtConfig {
             webFluxContentTypeResolver, webFluxAdapterRegistry);
     }
 
-    // @Bean
-    // @Order(-2)
-    public GlobalErrorWebExceptionHandler globalErrorWebExceptionHandler(ErrorAttributes errorAttributes) {
-        GlobalErrorWebExceptionHandler exceptionHandler = new GlobalErrorWebExceptionHandler(errorAttributes,
-            resourceProperties, applicationContext);
-        exceptionHandler.setViewResolvers(viewResolversProvider.orderedStream().collect(Collectors.toList()));
-        exceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());
-        exceptionHandler.setMessageReaders(this.serverCodecConfigurer.getReaders());
-        return exceptionHandler;
+    @Bean
+    @ConditionalOnMissingBean(value = HttpStatusDeterminer.class)
+    public HttpStatusDeterminer httpStatusDeterminer() {
+        return new DefaultHttpStatusDeterminer();
     }
 
     @Bean
     @Primary
-    public GlobalErrorAttributes errorAttributes() {
-        return new GlobalErrorAttributes(this.serverProperties.getError().isIncludeException());
+    public GlobalErrorAttributes errorAttributes(@Autowired final HttpStatusDeterminer httpStatusDeterminer) {
+        return new GlobalErrorAttributes(this.serverProperties.getError().isIncludeException(), httpStatusDeterminer);
     }
 
     // 这里为支持的请求头，如果有自定义的header字段请自己添加（不知道为什么不能使用*）
