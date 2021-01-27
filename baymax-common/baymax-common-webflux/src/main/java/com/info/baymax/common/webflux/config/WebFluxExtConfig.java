@@ -1,8 +1,8 @@
 package com.info.baymax.common.webflux.config;
 
-import com.info.baymax.common.webflux.server.error.DefaultHttpStatusDeterminer;
+import com.info.baymax.common.webflux.server.error.DefaultErrorResponseDeterminer;
+import com.info.baymax.common.webflux.server.error.ErrorResponseDeterminer;
 import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
-import com.info.baymax.common.webflux.server.error.HttpStatusDeterminer;
 import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +60,16 @@ public class WebFluxExtConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(value = HttpStatusDeterminer.class)
-    public HttpStatusDeterminer httpStatusDeterminer() {
-        return new DefaultHttpStatusDeterminer();
+    @ConditionalOnMissingBean(value = ErrorResponseDeterminer.class)
+    public ErrorResponseDeterminer errorResponseDeterminer() {
+        return new DefaultErrorResponseDeterminer();
     }
 
     @Bean
     @Primary
-    public GlobalErrorAttributes errorAttributes(@Autowired final HttpStatusDeterminer httpStatusDeterminer) {
-        return new GlobalErrorAttributes(this.serverProperties.getError().isIncludeException(), httpStatusDeterminer);
+    public GlobalErrorAttributes errorAttributes(@Autowired final ErrorResponseDeterminer errorResponseDeterminer) {
+        return new GlobalErrorAttributes(this.serverProperties.getError().isIncludeException(),
+            errorResponseDeterminer);
     }
 
     // 这里为支持的请求头，如果有自定义的header字段请自己添加（不知道为什么不能使用*）
