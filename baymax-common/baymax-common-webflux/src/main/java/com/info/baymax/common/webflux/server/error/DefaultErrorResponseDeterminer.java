@@ -10,12 +10,20 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
  * @author jingwei.yang
  * @date 2021年1月26日 下午5:33:35
  */
-public class DefaultHttpStatusDeterminer implements HttpStatusDeterminer {
+public class DefaultErrorResponseDeterminer implements ErrorResponseDeterminer {
 
     @Override
     public HttpStatus determineHttpStatus(ServerHttpResponse response, Throwable error) {
         if (error instanceof BizException) {
             return HttpStatus.OK;
+        }
+        return null;
+    }
+
+    @Override
+    public String determineMessage(ServerHttpResponse response, Throwable error) {
+        if (error instanceof BizException) {
+            return error.getMessage();
         }
         return null;
     }

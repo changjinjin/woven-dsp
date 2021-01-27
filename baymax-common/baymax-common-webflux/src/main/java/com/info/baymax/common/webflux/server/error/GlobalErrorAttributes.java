@@ -1,6 +1,6 @@
 package com.info.baymax.common.webflux.server.error;
 
-import com.info.baymax.common.queryapi.exception.BizException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -24,7 +24,7 @@ public class GlobalErrorAttributes implements ErrorAttributes {
     private static final String ERROR_ATTRIBUTE = DefaultErrorAttributes.class.getName() + ".ERROR";
 
     private final boolean includeException;
-    private final HttpStatusDeterminer httpStatusDeterminer;
+    private final ErrorResponseDeterminer errorResponseDeterminer;
 
     /**
      * Create a new {@link DefaultErrorAttributes} instance that does not include the "exception" attribute.
@@ -38,9 +38,9 @@ public class GlobalErrorAttributes implements ErrorAttributes {
      *
      * @param includeException whether to include the "exception" attribute
      */
-    public GlobalErrorAttributes(boolean includeException, HttpStatusDeterminer httpStatusDeterminer) {
+    public GlobalErrorAttributes(boolean includeException, ErrorResponseDeterminer errorResponseDeterminer) {
         this.includeException = includeException;
-        this.httpStatusDeterminer = httpStatusDeterminer;
+        this.errorResponseDeterminer = errorResponseDeterminer;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class GlobalErrorAttributes implements ErrorAttributes {
         HttpStatus errorStatus = determineHttpStatus(response, error);
         errorAttributes.put("status", errorStatus.value());
         errorAttributes.put("error", errorStatus.getReasonPhrase());
-        errorAttributes.put("message", determineMessage(error));
+        errorAttributes.put("message", determineMessage(response, error));
         handleException(errorAttributes, determineException(error), includeStackTrace);
         return errorAttributes;
     }
@@ -68,8 +68,8 @@ public class GlobalErrorAttributes implements ErrorAttributes {
             return response.getStatusCode();
         }
 
-        if (httpStatusDeterminer != null) {
-            HttpStatus determineHttpStatus = httpStatusDeterminer.determineHttpStatus(response, error);
+        if (errorResponseDeterminer != null) {
+            HttpStatus determineHttpStatus = errorResponseDeterminer.determineHttpStatus(response, error);
             if (determineHttpStatus != null) {
                 return determineHttpStatus;
             }
@@ -82,7 +82,7 @@ public class GlobalErrorAttributes implements ErrorAttributes {
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    private String determineMessage(Throwable error) {
+    private String determineMessage(ServerHttpResponse response, Throwable error) {
         if (error instanceof WebExchangeBindException) {
             return error.getMessage();
         }
@@ -90,10 +90,13 @@ public class GlobalErrorAttributes implements ErrorAttributes {
             return ((ResponseStatusException) error).getReason();
         }
 
-        // 认证异常和业务异常消息
-        if (/* error instanceof AuthenticationException || */error instanceof BizException) {
-            return error.getMessage();
+        if (errorResponseDeterminer != null) {
+            String message = errorResponseDeterminer.determineMessage(response, error);
+            if (StringUtils.isNotEmpty(message)) {
+                return message;
+            }
         }
+
         ResponseStatus responseStatus = AnnotatedElementUtils.findMergedAnnotation(error.getClass(),
             ResponseStatus.class);
         if (responseStatus != null) {
@@ -105,6 +108,13 @@ public class GlobalErrorAttributes implements ErrorAttributes {
     private Throwable determineException(Throwable error) {
         if (error instanceof ResponseStatusException) {
             return (error.getCause() != null) ? error.getCause() : error;
+        }
+
+        if (errorResponseDeterminer != null) {
+            error = errorResponseDeterminer.determineException(error);
+            if (error != null) {
+                return error;
+            }
         }
         return error;
     }
