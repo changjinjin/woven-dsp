@@ -27,7 +27,9 @@ public interface ErrorResponseDeterminer {
      * @param error    异常对象
      * @return 决策后的消息
      */
-    String determineMessage(ServerHttpResponse response, Throwable error);
+    default String determineMessage(ServerHttpResponse response, Throwable error) {
+        return null;
+    }
 
     /**
      * 根据error 决定响应的真实异常信息
