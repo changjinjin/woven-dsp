@@ -969,6 +969,39 @@
                     </checkModificationExcludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <verbose>false</verbose>
+                    <dateFormatTimeZone>GMT+8</dateFormatTimeZone>
+                    <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+                    </generateGitPropertiesFilename>
+                    <useNativeGit>true</useNativeGit>
+                    <offline>true</offline>
+                    <excludeProperties>
+                        <excludeProperty>^git.tags$</excludeProperty>
+                        <excludeProperty>^git.remote.origin.url$</excludeProperty>
+                        <excludeProperty>^git.commit.message.full$</excludeProperty>
+                        <excludeProperty>^git.commit.user.email$</excludeProperty>
+                        <excludeProperty>^git.build.user.email$</excludeProperty>
+                        <excludeProperty>^git.total.commit.count$</excludeProperty>
+                        <excludeProperty>^git.local.branch.ahead$</excludeProperty>
+                        <excludeProperty>^git.local.branch.behind$</excludeProperty>
+                    </excludeProperties>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
