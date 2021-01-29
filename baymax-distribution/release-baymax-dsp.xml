@@ -53,12 +53,12 @@
 			</includes>
 		</fileSet>
         <fileSet>
-            <directory>${project.build.directory}/</directory>
+            <directory>${project.build.outputDirectory}/</directory>
             <outputDirectory>./</outputDirectory>
             <directoryMode>644</directoryMode>
             <fileMode>644</fileMode>
             <includes>
-                <include>*.properties</include>
+                <include>git.properties</include>
             </includes>
         </fileSet>
 
