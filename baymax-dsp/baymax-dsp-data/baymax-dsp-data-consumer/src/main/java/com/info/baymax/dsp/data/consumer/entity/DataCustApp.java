@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.data.consumer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
-import com.info.baymax.common.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
+import com.info.baymax.common.persistence.entity.base.BaseEntity;
+import com.info.baymax.common.persistence.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.persistence.mybatis.type.varchar.VarcharVsStringArrayTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

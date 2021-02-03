@@ -1,12 +1,7 @@
 package com.info.baymax.security.oauth.security.permission;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.security.oauth.api.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -16,8 +11,11 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.security.oauth.api.utils.SecurityUtils;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component("permissionService")
 public class PermissionServiceImpl implements PermissionService {

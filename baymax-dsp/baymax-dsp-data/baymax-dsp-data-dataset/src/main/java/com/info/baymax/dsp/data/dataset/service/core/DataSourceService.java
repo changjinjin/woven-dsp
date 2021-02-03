@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.dataset.service.core;
 
-import com.info.baymax.common.entity.base.BaseMaintableService;
+import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.queryapi.result.MapEntity;

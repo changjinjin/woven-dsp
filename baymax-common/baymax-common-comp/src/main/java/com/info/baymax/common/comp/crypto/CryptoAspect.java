@@ -1,7 +1,7 @@
 package com.info.baymax.common.comp.crypto;
 
-import com.info.baymax.common.crypto.annotation.Cryptoable;
-import com.info.baymax.common.crypto.method.CryptoMethodInvoker;
+import com.info.baymax.common.core.crypto.annotation.Cryptoable;
+import com.info.baymax.common.core.crypto.method.CryptoMethodInvoker;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,7 +27,7 @@ public class CryptoAspect {
 	@Autowired
 	private CryptoMethodInvoker cryptoMethodInvoker;
 
-    @Pointcut("@annotation(com.info.baymax.common.crypto.annotation.Cryptoable)")
+    @Pointcut("@annotation(com.info.baymax.common.core.crypto.annotation.Cryptoable)")
     public void joinPointExpression() {
     }
 

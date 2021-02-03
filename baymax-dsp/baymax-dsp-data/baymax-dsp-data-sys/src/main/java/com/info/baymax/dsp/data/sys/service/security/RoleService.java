@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.sys.service.security;
 
-import com.info.baymax.common.entity.base.BaseMaintableService;
+import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 
 import java.util.List;

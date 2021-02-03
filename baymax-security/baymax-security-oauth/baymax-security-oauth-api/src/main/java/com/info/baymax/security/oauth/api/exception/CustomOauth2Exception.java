@@ -1,7 +1,9 @@
 package com.info.baymax.security.oauth.api.exception;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.info.baymax.security.oauth.api.i18n.Oauth2MessageSource;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 
 import java.util.Map;
@@ -9,6 +11,7 @@ import java.util.Map;
 @JsonSerialize(using = CustomOauth2ExceptionSerializer.class)
 public class CustomOauth2Exception extends OAuth2Exception {
     private static final long serialVersionUID = -8871557007209001038L;
+    private MessageSourceAccessor accessor = Oauth2MessageSource.getAccessor();
 
     private String oAuth2ErrorCode;
     private int httpErrorCode;
@@ -70,32 +73,32 @@ public class CustomOauth2Exception extends OAuth2Exception {
             }
         }
         return builder.toString();
-
     }
 
     public String getErrorPrefix(String errorCode) {
-        if (INVALID_CLIENT.equals(errorCode)) {
-            return "无效的客户端";
-        } else if (UNAUTHORIZED_CLIENT.equals(errorCode)) {
-            return "未授权的客户端";
-        } else if (INVALID_GRANT.equals(errorCode)) {
-            return "授权无效";
-        } else if (INVALID_SCOPE.equals(errorCode)) {
-            return "无效的授权范围";
-        } else if (INVALID_TOKEN.equals(errorCode)) {
-            return "无效的令牌";
-        } else if (INVALID_REQUEST.equals(errorCode)) {
-            return "无效的请求参数";
-        } else if (REDIRECT_URI_MISMATCH.equals(errorCode)) {
-            return "重定向地址无效";
-        } else if (UNSUPPORTED_GRANT_TYPE.equals(errorCode)) {
-            return "不支持的授权类型";
-        } else if (UNSUPPORTED_RESPONSE_TYPE.equals(errorCode)) {
-            return "不支持的响应类型";
-        } else if (ACCESS_DENIED.equals(errorCode)) {
-            return "拒绝访问";
-        } else {
-            return null;
+        switch (errorCode) {
+            case INVALID_CLIENT:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_INVALID_CLIENT.name());
+            case UNAUTHORIZED_CLIENT:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_UNAUTHORIZED_CLIENT.name());
+            case INVALID_GRANT:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_INVALID_GRANT.name());
+            case INVALID_SCOPE:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_INVALID_SCOPE.name());
+            case INVALID_TOKEN:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_INVALID_TOKEN.name());
+            case INVALID_REQUEST:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_INVALID_REQUEST.name());
+            case REDIRECT_URI_MISMATCH:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_REDIRECT_URI_MISMATCH.name());
+            case UNSUPPORTED_GRANT_TYPE:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_UNSUPPORTED_GRANT_TYPE.name());
+            case UNSUPPORTED_RESPONSE_TYPE:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_UNSUPPORTED_RESPONSE_TYPE.name());
+            case ACCESS_DENIED:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_ACCESS_DENIED.name());
+            default:
+                return accessor.getMessage(OAuth2ErrMsg.OAUTH2_ERROR.name());
         }
     }
 

@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.platform.mybatis.type;
 
-import com.info.baymax.common.mybatis.type.clob.ClobVsObjectTypeHandler;
+import com.info.baymax.common.persistence.mybatis.type.clob.ClobVsObjectTypeHandler;
 import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
 
 /**

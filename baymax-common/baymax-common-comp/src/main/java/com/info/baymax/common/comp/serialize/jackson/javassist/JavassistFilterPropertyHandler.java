@@ -3,9 +3,8 @@ package com.info.baymax.common.comp.serialize.jackson.javassist;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.annotation.JsonBody;
-import com.info.baymax.common.annotation.JsonBodys;
-
+import com.info.baymax.common.core.annotation.JsonBody;
+import com.info.baymax.common.core.annotation.JsonBodys;
 import javassist.CannotCompileException;
 import javassist.ClassPool;
 import javassist.CtClass;

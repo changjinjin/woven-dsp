@@ -1,8 +1,8 @@
 package com.info.baymax.common.comp.crypto;
 
-import com.info.baymax.common.crypto.delegater.CryptorDelegater;
-import com.info.baymax.common.crypto.method.AbstractCryptoMethodInvoker;
-import com.info.baymax.common.jpa.page.Page;
+import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.core.crypto.method.AbstractCryptoMethodInvoker;
+import com.info.baymax.common.persistence.jpa.page.Page;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.Response;
 

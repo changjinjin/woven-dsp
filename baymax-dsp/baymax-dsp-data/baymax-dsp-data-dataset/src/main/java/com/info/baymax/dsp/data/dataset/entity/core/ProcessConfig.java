@@ -1,13 +1,12 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
-import com.info.baymax.common.entity.base.Maintable;
+import com.info.baymax.common.persistence.entity.base.Maintable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Column;

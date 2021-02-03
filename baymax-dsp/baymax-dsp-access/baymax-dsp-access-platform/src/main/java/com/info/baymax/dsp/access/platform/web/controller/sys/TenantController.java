@@ -1,15 +1,15 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.crypto.CryptoOperation;
-import com.info.baymax.common.crypto.CryptoType;
-import com.info.baymax.common.crypto.annotation.Cryptoable;
-import com.info.baymax.common.crypto.annotation.Decrypt;
-import com.info.baymax.common.crypto.annotation.ReturnOperation;
+import com.info.baymax.common.core.crypto.CryptoOperation;
+import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.annotation.Cryptoable;
+import com.info.baymax.common.core.crypto.annotation.Decrypt;
+import com.info.baymax.common.core.crypto.annotation.ReturnOperation;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.exception.ControllerException;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.entity.security.TenantRegisterBean;
 import com.info.baymax.dsp.data.sys.entity.security.User;

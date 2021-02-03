@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.consumer.service.impl;
 
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
+import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.mybatis.mapper.CustDataSourceMapper;

@@ -2,7 +2,7 @@ package com.info.baymax.common.comp.serialize.jackson.fieldFilter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.annotation.JsonBody;
+import com.info.baymax.common.core.annotation.JsonBody;
 
 import java.io.DataOutput;
 import java.io.File;

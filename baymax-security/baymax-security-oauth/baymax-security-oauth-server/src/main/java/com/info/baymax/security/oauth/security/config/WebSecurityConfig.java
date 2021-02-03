@@ -1,5 +1,11 @@
 package com.info.baymax.security.oauth.security.config;
 
+import com.info.baymax.security.oauth.api.config.WhiteListProperties;
+import com.info.baymax.security.oauth.security.authentication.customer.CustomerUserDetailsService;
+import com.info.baymax.security.oauth.security.authentication.customer.TenantCustomerAuthenticationProvider;
+import com.info.baymax.security.oauth.security.authentication.manager.ManagerUserDetailsService;
+import com.info.baymax.security.oauth.security.authentication.manager.TenantManagerAuthenticationProvider;
+import com.info.baymax.security.oauth.security.authentication.tenant.TenantDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +20,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
-import com.info.baymax.dsp.data.sys.crypto.check.PasswordChecker;
-import com.info.baymax.dsp.data.sys.crypto.check.StrictModePasswordChecker;
-import com.info.baymax.security.oauth.api.config.WhiteListProperties;
-import com.info.baymax.security.oauth.security.authentication.customer.CustomerUserDetailsService;
-import com.info.baymax.security.oauth.security.authentication.customer.TenantCustomerAuthenticationProvider;
-import com.info.baymax.security.oauth.security.authentication.manager.ManagerUserDetailsService;
-import com.info.baymax.security.oauth.security.authentication.manager.TenantManagerAuthenticationProvider;
-import com.info.baymax.security.oauth.security.authentication.tenant.TenantDetailsService;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,11 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private WhiteListProperties whiteListProperties;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-	@Bean
-	public PasswordChecker passwordChecker() {
-		return new StrictModePasswordChecker();
-	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

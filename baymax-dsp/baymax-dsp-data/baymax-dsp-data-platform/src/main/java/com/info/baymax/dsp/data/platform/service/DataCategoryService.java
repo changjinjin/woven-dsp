@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.platform.service;
 
-import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.service.tree.id.TreeIdableExampleQueryService;
+import com.info.baymax.common.persistence.entity.base.BaseEntityService;
+import com.info.baymax.common.persistence.service.tree.id.TreeIdableExampleQueryService;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;
 
 import java.util.List;

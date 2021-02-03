@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.data.sys.mybatis.mapper.security;
 
-import com.info.baymax.common.mybatis.cache.RoutingCache;
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.common.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler;
+import com.info.baymax.common.persistence.mybatis.cache.RoutingCache;
+import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.persistence.mybatis.type.base64.varchar.GZBase64VarcharVsListStringTypeHandler;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;

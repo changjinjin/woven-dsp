@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.data.dataset.service.security;
 
-import com.info.baymax.common.entity.base.BaseMaintableService;
-import com.info.baymax.common.jpa.criteria.QueryObjectCriteriaService;
-import com.info.baymax.common.service.tree.id.TreeIdableService;
+import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
+import com.info.baymax.common.persistence.jpa.criteria.QueryObjectCriteriaService;
+import com.info.baymax.common.persistence.service.tree.id.TreeIdableService;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 
 import java.util.List;

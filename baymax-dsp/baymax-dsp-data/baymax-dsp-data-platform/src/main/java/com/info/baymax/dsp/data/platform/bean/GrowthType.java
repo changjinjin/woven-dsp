@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.platform.bean;
 
-import com.info.baymax.common.enums.valuable.IntegerValuable;
+import com.info.baymax.common.core.enums.valuable.IntegerValuable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

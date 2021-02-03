@@ -1,9 +1,9 @@
 package com.info.baymax.common.comp.base.crud;
 
-import com.info.baymax.common.entity.gene.Enabled;
-import com.info.baymax.common.entity.gene.Idable;
+import com.info.baymax.common.persistence.entity.gene.Enabled;
+import com.info.baymax.common.persistence.entity.gene.Idable;
+import com.info.baymax.common.persistence.service.EnabledService;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.service.EnabledService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;

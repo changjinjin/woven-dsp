@@ -1,8 +1,8 @@
 package com.info.baymax.common.comp.base;
 
-import com.info.baymax.common.entity.base.CommonEntity;
-import com.info.baymax.common.entity.base.CommonEntityService;
-import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
+import com.info.baymax.common.persistence.entity.base.CommonEntity;
+import com.info.baymax.common.persistence.entity.base.CommonEntityService;
+import com.info.baymax.common.persistence.service.BaseIdableAndExampleQueryService;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;

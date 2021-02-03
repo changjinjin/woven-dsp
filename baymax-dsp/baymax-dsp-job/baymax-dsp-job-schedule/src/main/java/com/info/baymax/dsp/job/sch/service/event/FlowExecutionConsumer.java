@@ -1,19 +1,7 @@
 package com.info.baymax.dsp.job.sch.service.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.rocketmq.common.message.MessageExt;
-import org.apache.rocketmq.spring.annotation.ConsumeMode;
-import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
-import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
@@ -23,6 +11,17 @@ import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceService;
+import org.apache.rocketmq.common.message.MessageExt;
+import org.apache.rocketmq.spring.annotation.ConsumeMode;
+import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
+import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * monitor flow execution status change, and notify DataService.

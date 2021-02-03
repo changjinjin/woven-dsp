@@ -20,11 +20,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Getter
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "security.token.ignored")
-@Slf4j
 public class Oauth2WhiteListProperties {
 
     /**

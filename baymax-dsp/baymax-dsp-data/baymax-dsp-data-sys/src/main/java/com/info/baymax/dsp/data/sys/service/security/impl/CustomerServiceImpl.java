@@ -1,21 +1,21 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
-import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.core.enums.types.YesNoType;
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.data.sys.crypto.check.CompositePasswordChecker;
-import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
+import com.info.baymax.common.validation.passay.check.PasswordChecker;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.CustomerMapper;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import org.passay.PasswordData;
 import org.passay.PasswordData.SourceReference;
+import org.passay.RuleResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +32,8 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
     private CustomerMapper consumerMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordChecker passwordChecker;
 
     @Override
     public MyIdableMapper<Customer> getMyIdableMapper() {
@@ -91,7 +93,7 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
     }
 
     @Override
-    public int changePwd(String oldPass, String newPass, PwdMode pwdMode) {
+    public int changePwd(String oldPass, String newPass) {
         Customer t = selectByPrimaryKey(SaasContext.getCurrentUserId());
         if (t == null) {
             throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "密码修改失败，用户不存在！");
@@ -105,9 +107,10 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
         // 密码格式检查
         PasswordData passwordData = new PasswordData(SaasContext.getCurrentUsername(), newPass);
         passwordData.setPasswordReferences(new SourceReference(oldPass));
-        CompositePasswordChecker passwordChecker = new CompositePasswordChecker();
-        passwordChecker.check(pwdMode, passwordData);
-
+        RuleResult ruleResult = passwordChecker.validate(passwordData);
+        if (!ruleResult.isValid()) {
+            throw new BadCredentialsException(String.join(",", passwordChecker.getValidator(passwordData).getMessages(ruleResult)));
+        }
         t.setPassword(passwordEncoder.encode(newPass));
         updateByPrimaryKeySelective(t);
         return 1;

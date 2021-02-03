@@ -1,8 +1,8 @@
 package com.info.baymax.common.comp.base;
 
-import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.entity.base.BaseEntityService;
-import com.info.baymax.common.entity.base.CommonEntityService;
+import com.info.baymax.common.persistence.entity.base.BaseEntity;
+import com.info.baymax.common.persistence.entity.base.BaseEntityService;
+import com.info.baymax.common.persistence.entity.base.CommonEntityService;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

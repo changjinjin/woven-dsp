@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.data.sys.entity.bean;
 
-import com.info.baymax.common.crypto.CryptoBean;
-import com.info.baymax.common.crypto.CryptoType;
-import com.info.baymax.common.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.core.crypto.CryptoBean;
+import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

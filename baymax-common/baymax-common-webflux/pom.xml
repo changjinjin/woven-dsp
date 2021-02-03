@@ -17,12 +17,10 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-comp</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-jdbc</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -31,7 +29,6 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-swagger</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

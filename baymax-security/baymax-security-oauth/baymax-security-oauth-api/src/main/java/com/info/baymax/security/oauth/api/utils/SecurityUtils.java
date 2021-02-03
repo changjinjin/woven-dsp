@@ -1,6 +1,6 @@
 package com.info.baymax.security.oauth.api.utils;
 
-import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.security.oauth.api.UserInfo;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

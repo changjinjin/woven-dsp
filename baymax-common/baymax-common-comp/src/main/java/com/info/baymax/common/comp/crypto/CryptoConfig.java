@@ -1,9 +1,9 @@
 package com.info.baymax.common.comp.crypto;
 
 import com.info.baymax.common.comp.crypto.CryptoConfig.CryptoProperties;
-import com.info.baymax.common.crypto.delegater.CryptorDelegater;
-import com.info.baymax.common.crypto.delegater.DefaultCryptorDelegater;
-import com.info.baymax.common.crypto.method.CryptoMethodInvoker;
+import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.core.crypto.delegater.DefaultCryptorDelegater;
+import com.info.baymax.common.core.crypto.method.CryptoMethodInvoker;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

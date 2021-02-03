@@ -1,14 +1,13 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import org.hibernate.annotations.ColumnDefault;
-import com.info.baymax.common.mybatis.type.bool.BooleanVsIntegerTypeHandler;
+import com.info.baymax.common.persistence.mybatis.type.bool.BooleanVsIntegerTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;

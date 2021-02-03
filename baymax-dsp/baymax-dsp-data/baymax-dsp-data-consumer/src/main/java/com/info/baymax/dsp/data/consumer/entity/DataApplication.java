@@ -1,19 +1,17 @@
 package com.info.baymax.dsp.data.consumer.entity;
 
-import com.info.baymax.common.entity.base.BaseEntity;
-import org.hibernate.annotations.ColumnDefault;
-import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
-import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.persistence.entity.base.BaseEntity;
+import com.info.baymax.common.persistence.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.persistence.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;

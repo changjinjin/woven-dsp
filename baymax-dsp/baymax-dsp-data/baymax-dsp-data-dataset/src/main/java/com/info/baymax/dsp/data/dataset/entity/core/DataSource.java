@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
-import com.info.baymax.common.crypto.CryptoBean;
-import com.info.baymax.common.crypto.CryptoType;
-import com.info.baymax.common.crypto.delegater.CryptorDelegater;
-import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.core.crypto.CryptoBean;
+import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.persistence.entity.base.Maintable;
+import com.info.baymax.common.persistence.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsConfigObjectTypeHandler;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceId;

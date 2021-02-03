@@ -1,6 +1,6 @@
 package com.info.baymax.common.feign;
 
-import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.utils.JsonUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -24,7 +24,7 @@ public class TransmitTokenFeighClientIntercepter implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        if (requestTemplateApplier == null) {
+        if (requestTemplateApplier == null) { 
             requestTemplateApplier = new DefaultRequestTemplateApplier();
         }
         requestTemplateApplier.apply(requestTemplate);

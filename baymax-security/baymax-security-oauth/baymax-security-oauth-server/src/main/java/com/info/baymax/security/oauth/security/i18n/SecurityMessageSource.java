@@ -8,7 +8,7 @@ import java.util.Locale;
 public class SecurityMessageSource extends SpringSecurityMessageSource {
 
 	public SecurityMessageSource() {
-		setBasenames("i18n.messages");
+        setBasenames("com.info.baymax.security.oauth.i18n.messages");
 	}
 
 	public static MessageSourceAccessor getAccessor() {

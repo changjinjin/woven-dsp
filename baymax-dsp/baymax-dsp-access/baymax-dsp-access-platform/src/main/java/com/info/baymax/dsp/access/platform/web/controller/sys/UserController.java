@@ -1,19 +1,19 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.annotation.JsonBody;
-import com.info.baymax.common.annotation.JsonBodys;
 import com.info.baymax.common.comp.base.MainTableController;
-import com.info.baymax.common.crypto.CryptoOperation;
-import com.info.baymax.common.crypto.CryptoType;
-import com.info.baymax.common.crypto.annotation.Cryptoable;
-import com.info.baymax.common.crypto.annotation.Decrypt;
-import com.info.baymax.common.crypto.annotation.ReturnOperation;
-import com.info.baymax.common.entity.base.BaseMaintableService;
+import com.info.baymax.common.core.annotation.JsonBody;
+import com.info.baymax.common.core.annotation.JsonBodys;
+import com.info.baymax.common.core.crypto.CryptoOperation;
+import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.annotation.Cryptoable;
+import com.info.baymax.common.core.crypto.annotation.Decrypt;
+import com.info.baymax.common.core.crypto.annotation.ReturnOperation;
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.sys.entity.bean.ChangePwd;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
@@ -93,7 +93,7 @@ public class UserController implements MainTableController<User> {
     @Cryptoable(enableParam = true)
     public Response<?> changePwd(
         @ApiParam(value = "新密码", required = true) @RequestBody @Decrypt @Valid ChangePwd changePwd) {
-        userService.changePwd(changePwd.getOldPass(), changePwd.getNewPass(), initConfig.getPwdMode());
+        userService.changePwd(changePwd.getOldPass(), changePwd.getNewPass());
         return Response.ok().build();
     }
 

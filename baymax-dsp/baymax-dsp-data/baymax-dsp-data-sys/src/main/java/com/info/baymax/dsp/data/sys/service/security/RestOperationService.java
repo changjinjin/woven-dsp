@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.sys.service.security;
 
-import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
+import com.info.baymax.common.persistence.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
 
 import java.util.List;

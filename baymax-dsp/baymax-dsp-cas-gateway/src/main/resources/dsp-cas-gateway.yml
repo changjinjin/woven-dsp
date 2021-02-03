@@ -192,8 +192,6 @@ management:
       enabled: false
   endpoints:
     enabled-by-default: true
-    actuator:
-      enabled: true
     web:
       exposure:
         include: '*'
@@ -205,28 +203,6 @@ management:
     elasticsearch:
       enabled: false
 security:
-  token:
-    ignored:
-      staticResources:
-      - /
-      - /static/**
-      - /webjars/**
-      - /**/*.js*
-      - /**/*.css*
-      - /**/*.html*
-      - /**/*.ico*
-      - /**/*.json*
-      - /*.html**
-      anyMethods:
-      - /
-      - /actuator/**
-      - /v2/**
-      - /swagger**
-      - /swagger-resources/**
-      - /api/auth/**
-      - /api/dsp/dataapi/**
-      - /api/auth/v2/api-docs
-      - /api/*/*/v2/api-docs
   cas:
     mode: remote
     server: http://172.25.21.205:8989/cas

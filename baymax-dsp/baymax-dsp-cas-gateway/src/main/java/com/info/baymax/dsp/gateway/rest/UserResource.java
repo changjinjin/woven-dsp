@@ -1,11 +1,10 @@
 package com.info.baymax.dsp.gateway.rest;
 
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

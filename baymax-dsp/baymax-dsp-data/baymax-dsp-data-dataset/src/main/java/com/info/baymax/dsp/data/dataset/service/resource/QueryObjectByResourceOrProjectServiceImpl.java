@@ -1,14 +1,14 @@
 package com.info.baymax.dsp.data.dataset.service.resource;
 
-import com.info.baymax.common.jpa.criteria.query.FieldObject;
-import com.info.baymax.common.jpa.criteria.query.JpaCriteriaHelper;
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
-import com.info.baymax.common.jpa.criteria.query.SortObject;
+import com.info.baymax.common.persistence.jpa.criteria.query.FieldObject;
+import com.info.baymax.common.persistence.jpa.criteria.query.JpaCriteriaHelper;
+import com.info.baymax.common.persistence.jpa.criteria.query.QueryObject;
+import com.info.baymax.common.persistence.jpa.criteria.query.SortObject;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.persistence.service.criteria.example.JoinSql;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.utils.MapUtils;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.criteria.example.JoinSql;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceType;

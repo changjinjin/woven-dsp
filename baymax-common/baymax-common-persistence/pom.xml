@@ -16,7 +16,11 @@
 		<!-- common support -->
 		<dependency>
 			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-common-tools</artifactId>
+            <artifactId>baymax-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-validation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
@@ -84,18 +88,8 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>javax.transaction-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.validation</groupId>
-                    <artifactId>validation-api</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
 
-		<!-- cache support -->
+        <!-- cache support -->
 		<dependency>
 			<groupId>org.mybatis.caches</groupId>
 			<artifactId>mybatis-ehcache</artifactId>

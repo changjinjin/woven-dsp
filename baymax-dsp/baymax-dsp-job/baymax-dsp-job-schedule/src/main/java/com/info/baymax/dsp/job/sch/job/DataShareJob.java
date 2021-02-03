@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.job.sch.job;
 
-import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.platform.entity.DataService;

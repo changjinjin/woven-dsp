@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.data.consumer.service.impl;
 
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.mybatis.mapper.DataApplicationMapper;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;

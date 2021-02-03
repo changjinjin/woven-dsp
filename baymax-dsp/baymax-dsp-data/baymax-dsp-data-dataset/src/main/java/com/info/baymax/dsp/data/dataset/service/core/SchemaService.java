@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.dataset.service.core;
 
-import com.info.baymax.common.entity.base.BaseMaintableService;
+import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
 import com.info.baymax.dsp.data.dataset.entity.core.Schema;
 import com.info.baymax.dsp.data.dataset.service.resource.QueryObjectByResourceOrProjectService;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceIdService;

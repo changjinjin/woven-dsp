@@ -2,8 +2,8 @@ package com.info.baymax.dsp.access.platform.web.controller.menu;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.saas.SaasContext;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
@@ -15,10 +15,12 @@ import com.info.baymax.dsp.data.sys.service.security.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import springfox.documentation.annotations.ApiIgnore;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.Serializable;
 import java.util.List;

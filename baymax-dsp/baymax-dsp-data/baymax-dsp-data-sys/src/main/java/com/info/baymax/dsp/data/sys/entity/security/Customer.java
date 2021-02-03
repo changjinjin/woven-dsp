@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import com.info.baymax.common.crypto.CryptoBean;
-import com.info.baymax.common.crypto.CryptoType;
-import com.info.baymax.common.crypto.delegater.CryptorDelegater;
-import com.info.baymax.common.entity.base.Maintable;
+import com.info.baymax.common.core.crypto.CryptoBean;
+import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.persistence.entity.base.Maintable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;

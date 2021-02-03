@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.platform.mybatis.type;
 
-import com.info.baymax.common.mybatis.type.varchar.AbstractVarcharTypeHandler;
+import com.info.baymax.common.persistence.mybatis.type.varchar.AbstractVarcharTypeHandler;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;

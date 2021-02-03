@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceType;
 import com.info.baymax.dsp.data.dataset.service.security.ResourceDescService;

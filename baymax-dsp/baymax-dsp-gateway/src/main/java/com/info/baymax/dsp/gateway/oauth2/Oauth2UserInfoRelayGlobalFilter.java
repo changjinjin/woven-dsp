@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.gateway.oauth2;
 
 import com.alibaba.fastjson.JSON;
-import com.info.baymax.common.saas.SaasContext;
+import com.info.baymax.common.core.saas.SaasContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

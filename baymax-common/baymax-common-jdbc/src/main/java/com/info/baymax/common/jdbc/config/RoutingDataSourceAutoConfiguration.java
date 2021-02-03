@@ -1,7 +1,10 @@
 package com.info.baymax.common.jdbc.config;
 
-import javax.sql.DataSource;
-
+import com.info.baymax.common.jdbc.annotation.ReadOnly;
+import com.info.baymax.common.jdbc.datasource.lookup.DataSourceContextHolder;
+import com.info.baymax.common.jdbc.datasource.lookup.LookupRoutingDataSource;
+import com.info.baymax.common.jdbc.datasource.lookup.MasterSlaveDataSources;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,12 +22,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.stereotype.Component;
 
-import com.info.baymax.common.jdbc.annotation.ReadOnly;
-import com.info.baymax.common.jdbc.datasource.lookup.DataSourceContextHolder;
-import com.info.baymax.common.jdbc.datasource.lookup.LookupRoutingDataSource;
-import com.info.baymax.common.jdbc.datasource.lookup.MasterSlaveDataSources;
-
-import lombok.extern.slf4j.Slf4j;
+import javax.sql.DataSource;
 
 @Slf4j
 @Configuration
@@ -56,7 +54,7 @@ public class RoutingDataSourceAutoConfiguration {
 	@Component
 	class RoutingDataSourceInterceptor {
 
-		@Pointcut("@annotation(com.info.baymax.dsp.common.jdbc.annotation.ReadOnly) "
+        @Pointcut("@annotation(com.info.baymax.common.jdbc.annotation.ReadOnly) "
 				+ "|| execution(* com.info.baymax.dsp..service..*.select*(..)) "
 				+ "|| execution(* com.info.baymax.dsp..service..*.find*(..)) "
 				+ "|| execution(* com.info.baymax.dsp..service..*.fetch*(..)) "
@@ -66,7 +64,7 @@ public class RoutingDataSourceAutoConfiguration {
 		public void readPointcut() {
 		}
 
-		@Pointcut("!@annotation(com.info.baymax.dsp.common.jdbc.annotation.ReadOnly) "
+        @Pointcut("!@annotation(com.info.baymax.common.jdbc.annotation.ReadOnly) "
 				+ "&&(execution(* com.info.baymax.dsp..service..*.insert*(..)) "
 				+ "|| execution(* com.info.baymax.dsp..service..*.save*(..)) "
 				+ "|| execution(* com.info.baymax.dsp..service..*.add*(..)) "

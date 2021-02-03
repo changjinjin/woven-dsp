@@ -1,17 +1,16 @@
 package com.info.baymax.dsp.data.dataset.entity.security;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.info.baymax.common.entity.base.Maintable;
-import org.hibernate.annotations.ColumnDefault;
-import com.info.baymax.common.service.tree.id.TreeIdable;
+import com.info.baymax.common.persistence.entity.base.Maintable;
+import com.info.baymax.common.persistence.service.tree.id.TreeIdable;
 import com.info.baymax.common.utils.ICollections;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.*;

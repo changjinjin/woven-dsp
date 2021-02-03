@@ -1,29 +1,27 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-
-import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.core.enums.types.YesNoType;
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.PermissionMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RolePermissionRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.PermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Exception.class)

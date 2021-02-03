@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
-import com.info.baymax.common.entity.base.Maintable;
-import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.persistence.entity.base.Maintable;
+import com.info.baymax.common.persistence.jpa.converter.ObjectToStringConverter;
 import com.info.baymax.dsp.data.dataset.entity.ConfigItem;
 import com.info.baymax.dsp.data.dataset.entity.Status;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListConfigItemTypeHandler;

@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.data.platform.entity;
 
-import com.info.baymax.common.entity.base.BaseEntity;
-import com.info.baymax.common.jpa.converter.ObjectToStringConverter;
-import com.info.baymax.common.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
+import com.info.baymax.common.persistence.entity.base.BaseEntity;
+import com.info.baymax.common.persistence.jpa.converter.ObjectToStringConverter;
+import com.info.baymax.common.persistence.mybatis.type.base64.clob.GZBase64ClobVsMapStringKeyStringValueTypeHandler;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.mybatis.type.clob.GZBase64ClobVsListFieldMappingTypeHandler;
 import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;

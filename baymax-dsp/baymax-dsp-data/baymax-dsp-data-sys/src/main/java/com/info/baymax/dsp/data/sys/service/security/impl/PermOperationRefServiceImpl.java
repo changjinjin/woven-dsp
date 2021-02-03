@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
-import com.info.baymax.common.mybatis.mapper.MyBaseMapper;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
+import com.info.baymax.common.persistence.mybatis.mapper.MyBaseMapper;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.dsp.data.sys.entity.security.PermOperationRef;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.PermOperationRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.PermOperationRefService;

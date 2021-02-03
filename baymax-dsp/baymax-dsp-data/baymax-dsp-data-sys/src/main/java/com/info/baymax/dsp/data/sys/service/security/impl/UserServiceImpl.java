@@ -1,37 +1,16 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.transaction.Transactional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.passay.PasswordData;
-import org.passay.PasswordData.SourceReference;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.info.baymax.common.enums.types.YesNoType;
-import com.info.baymax.common.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.core.enums.types.YesNoType;
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.service.entity.EntityClassServiceImpl;
 import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.common.validation.passay.check.PasswordChecker;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
-import com.info.baymax.dsp.data.sys.crypto.check.CompositePasswordChecker;
-import com.info.baymax.dsp.data.sys.crypto.check.PasswordChecker;
-import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.entity.security.UserRoleRef;
@@ -39,6 +18,24 @@ import com.info.baymax.dsp.data.sys.mybatis.mapper.security.RoleMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserRoleRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
+import org.apache.commons.lang3.StringUtils;
+import org.passay.PasswordData;
+import org.passay.PasswordData.SourceReference;
+import org.passay.RuleResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -53,6 +50,8 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordChecker passwordChecker;
 
     @Override
     public MyIdableMapper<User> getMyIdableMapper() {
@@ -156,7 +155,7 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
 
     @CacheEvict(cacheNames = CacheNames.CACHE_SECURITY, allEntries = true)
     @Override
-    public int changePwd(String oldPass, String newPass, PwdMode pwdMode) {
+    public int changePwd(String oldPass, String newPass) {
         User merceUser = selectByPrimaryKey(SaasContext.getCurrentUserId());
         if (merceUser == null) {
             throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "密码修改失败，用户不存在！");
@@ -170,8 +169,11 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
         // 密码格式检查
         PasswordData passwordData = new PasswordData(SaasContext.getCurrentUsername(), newPass);
         passwordData.setPasswordReferences(new SourceReference(oldPass));
-        PasswordChecker passwordChecker = new CompositePasswordChecker();
-        passwordChecker.check(pwdMode, passwordData);
+        RuleResult ruleResult = passwordChecker.validate(passwordData);
+        if (!ruleResult.isValid()) {
+            throw new BadCredentialsException(
+                String.join(",", passwordChecker.getValidator(passwordData).getMessages(ruleResult)));
+        }
 
         merceUser.setPassword(passwordEncoder.encode(newPass));
         merceUser.setPwdExpiredTime(

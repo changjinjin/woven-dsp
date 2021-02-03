@@ -25,14 +25,14 @@ public class CustomAuthenticationExceptionEntryPoint implements AuthenticationEn
         if (e instanceof AuthenticationException) {
             if (e instanceof AuthenticationServiceException) {
                 result.put("status", HttpStatus.FORBIDDEN.value());
-                result.put("message", StringUtils.defaultIfEmpty(e.getMessage(), "拒绝访问"));
+                result.put("message", StringUtils.defaultIfEmpty(e.getMessage(), "Forbidden."));
             } else {
                 result.put("status", HttpStatus.UNAUTHORIZED.value());
-                result.put("message", StringUtils.defaultIfEmpty(e.getMessage(), "认证失败"));
+                result.put("message", StringUtils.defaultIfEmpty(e.getMessage(), "Unauthorized."));
             }
         } else {
             result.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            result.put("message", StringUtils.defaultIfEmpty(e.getMessage(), "内部错误"));
+            result.put("message", StringUtils.defaultIfEmpty(e.getMessage(), "Internal Server Error."));
         }
         result.put("path", request.getServletPath());
         result.put("timestamp", String.valueOf(new Date().getTime()));

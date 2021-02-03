@@ -1,6 +1,6 @@
 package com.info.baymax.security.oauth.security.authentication.customer;
 
-import com.info.baymax.common.enums.types.YesNoType;
+import com.info.baymax.common.core.enums.types.YesNoType;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.security.oauth.security.authentication.DefaultGrantedAuthority;

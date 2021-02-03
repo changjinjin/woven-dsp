@@ -1,13 +1,13 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
-import com.info.baymax.common.jpa.criteria.query.QueryObject;
+import com.info.baymax.common.core.saas.SaasContext;
+import com.info.baymax.common.persistence.jpa.criteria.query.QueryObject;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.field.Field;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.SqlEnums.Operator;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.saas.SaasContext;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
 import com.info.baymax.dsp.data.dataset.entity.security.ResourceDesc;

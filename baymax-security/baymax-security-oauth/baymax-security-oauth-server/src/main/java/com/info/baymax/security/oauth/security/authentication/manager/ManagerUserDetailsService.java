@@ -1,10 +1,25 @@
 package com.info.baymax.security.oauth.security.authentication.manager;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.google.common.collect.Lists;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.utils.ICollections;
+import com.info.baymax.common.validation.config.PassayProperties;
+import com.info.baymax.common.validation.passay.pwd.PwdInfo;
+import com.info.baymax.common.validation.passay.pwd.PwdMode;
+import com.info.baymax.dsp.data.sys.constant.CacheNames;
+import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
+import com.info.baymax.dsp.data.sys.entity.security.Tenant;
+import com.info.baymax.dsp.data.sys.entity.security.User;
+import com.info.baymax.dsp.data.sys.initialize.TenantInitializer;
+import com.info.baymax.dsp.data.sys.service.security.PermissionService;
+import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
+import com.info.baymax.dsp.data.sys.service.security.TenantService;
+import com.info.baymax.dsp.data.sys.service.security.UserService;
+import com.info.baymax.security.oauth.security.authentication.GrantedAuthoritiesService;
+import com.info.baymax.security.oauth.security.config.SecurityInitProperties;
+import com.info.baymax.security.oauth.security.i18n.SecurityMessageSource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,26 +33,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-import com.info.baymax.common.queryapi.query.field.FieldGroup;
-import com.info.baymax.common.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.data.sys.constant.CacheNames;
-import com.info.baymax.dsp.data.sys.crypto.pwd.PwdInfo;
-import com.info.baymax.dsp.data.sys.crypto.pwd.PwdMode;
-import com.info.baymax.dsp.data.sys.entity.security.RestOperation;
-import com.info.baymax.dsp.data.sys.entity.security.Tenant;
-import com.info.baymax.dsp.data.sys.entity.security.User;
-import com.info.baymax.dsp.data.sys.initialize.TenantInitializer;
-import com.info.baymax.dsp.data.sys.service.security.PermissionService;
-import com.info.baymax.dsp.data.sys.service.security.RestOperationService;
-import com.info.baymax.dsp.data.sys.service.security.TenantService;
-import com.info.baymax.dsp.data.sys.service.security.UserService;
-import com.info.baymax.security.oauth.security.authentication.GrantedAuthoritiesService;
-import com.info.baymax.security.oauth.security.config.SecurityInitProperties;
-import com.info.baymax.security.oauth.security.i18n.SecurityMessageSource;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 实现用户信息加载方法
@@ -51,6 +50,8 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 
 	@Autowired
 	public SecurityInitProperties initProps;
+    @Autowired
+    public PassayProperties passayProperties;
 
 	@Autowired
 	public PasswordEncoder passwordEncoder;
@@ -99,7 +100,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		checker.check(userDetails);
 
 		// 如果密码检查是严格模式，则登录需要检查是否需要修改密码
-		userDetails.setPwdInfo(pwdInfo(initProps.isPwdStrict(), userDetails.getUser(), initProps.getPassword()));
+        userDetails.setPwdInfo(pwdInfo(passayProperties.isStrict(), userDetails.getUser(), initProps.getPassword()));
 
 		return userDetails;
 	}

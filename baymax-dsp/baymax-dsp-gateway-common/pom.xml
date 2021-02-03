@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-common-tools</artifactId>
+            <artifactId>baymax-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
@@ -27,7 +27,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-tools</artifactId>
+                    <artifactId>baymax-common-core</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.springframework.cloud</groupId>

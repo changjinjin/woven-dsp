@@ -1,17 +1,15 @@
 package com.info.baymax.dsp.data.dataset.entity.core;
 
-import com.info.baymax.common.entity.base.Maintable;
+import com.info.baymax.common.persistence.entity.base.Maintable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Comment;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Comment;
-
 import java.util.ArrayList;
 import java.util.List;
 

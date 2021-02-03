@@ -1,25 +1,17 @@
 package com.info.baymax.dsp.data.sys.entity.security;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-
-import org.apache.ibatis.type.JdbcType;
-import org.hibernate.annotations.Comment;
-
-import org.hibernate.annotations.ColumnDefault;
-import com.info.baymax.common.mybatis.type.bool.BooleanVsIntegerTypeHandler;
-
+import com.info.baymax.common.persistence.mybatis.type.bool.BooleanVsIntegerTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = false)

@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.data.sys.service.security;
 
-import com.info.baymax.common.service.BaseIdableAndExampleQueryService;
-import com.info.baymax.common.service.tree.id.TreeIdableService;
+import com.info.baymax.common.persistence.service.BaseIdableAndExampleQueryService;
+import com.info.baymax.common.persistence.service.tree.id.TreeIdableService;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 
 import java.util.List;

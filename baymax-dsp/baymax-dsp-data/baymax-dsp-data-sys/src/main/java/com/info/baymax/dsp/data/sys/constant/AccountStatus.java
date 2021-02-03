@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.sys.constant;
 
-import com.info.baymax.common.enums.valuable.ValuableAndComparableAndLabelable;
+import com.info.baymax.common.core.enums.valuable.ValuableAndComparableAndLabelable;
 
 /**
  * 账户状态枚举==> 0-未启用,1-已启用,2-已锁定,3-已禁用.

@@ -1,8 +1,8 @@
 package com.info.baymax.security.oauth.security.authentication.manager;
 
-import com.info.baymax.common.enums.types.YesNoType;
+import com.info.baymax.common.core.enums.types.YesNoType;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.dsp.data.sys.crypto.pwd.PwdInfo;
+import com.info.baymax.common.validation.passay.pwd.PwdInfo;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.security.oauth.security.authentication.TenantUserDetails;

@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data.jdbc;
 
+import com.info.baymax.common.persistence.sqlhelper.SqlQueryHelper;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
@@ -8,7 +9,6 @@ import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.common.queryapi.sql.AbstractQuerySql;
 import com.info.baymax.common.queryapi.sql.SqlQuerySql;
-import com.info.baymax.common.sqlhelper.SqlQueryHelper;
 import com.info.baymax.dsp.access.dataapi.data.Engine;
 import com.info.baymax.dsp.access.dataapi.data.MapEntityDataReader;
 import com.info.baymax.dsp.access.dataapi.data.QueryParser;

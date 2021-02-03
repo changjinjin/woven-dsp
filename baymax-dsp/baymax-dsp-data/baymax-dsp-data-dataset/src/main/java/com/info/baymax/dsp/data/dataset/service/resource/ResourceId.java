@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.data.dataset.service.resource;
 
-import com.info.baymax.common.entity.gene.Idable;
+import com.info.baymax.common.persistence.entity.gene.Idable;
 
 /**
  * 拥有resourceId属性的类继承，方便抽取通用方法
