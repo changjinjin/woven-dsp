@@ -30,7 +30,11 @@ public class ListPaging<T> {
 			offset = 0;
 		}
 		limit = getPageSize(limit);
-		return page(offset / limit, limit);
+		return page(getCurrentPageNum(offset, limit), limit);
+	}
+
+	public int getCurrentPageNum(int offset, int pageSize) {
+		return offset / pageSize + 1;
 	}
 
 	private int getPageNum(int pageNum, int totalPage) {
