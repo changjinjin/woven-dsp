@@ -1,6 +1,6 @@
 package com.info.baymax.common.queryapi.query;
 
-import com.info.baymax.common.queryapi.page.IPageable;
+import com.info.baymax.common.core.page.IPageable;
 
 /**
  * 分页查询条件构造器接口

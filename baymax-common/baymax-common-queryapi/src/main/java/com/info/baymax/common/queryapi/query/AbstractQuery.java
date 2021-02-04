@@ -1,6 +1,6 @@
 package com.info.baymax.common.queryapi.query;
 
-import com.info.baymax.common.queryapi.page.IPageable;
+import com.info.baymax.common.core.page.IPageable;
 import com.info.baymax.common.queryapi.query.field.Field;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.FieldItem;

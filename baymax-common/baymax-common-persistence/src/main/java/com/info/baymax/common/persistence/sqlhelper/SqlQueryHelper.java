@@ -1,8 +1,8 @@
 package com.info.baymax.common.persistence.sqlhelper;
 
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.page.IPageable;
-import com.info.baymax.common.queryapi.result.MapEntity;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.page.IPageable;
+import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.common.queryapi.sql.AbstractQuerySql;
 import com.info.baymax.common.utils.DataBaseUtil;
 import com.info.baymax.common.utils.JsonUtils;

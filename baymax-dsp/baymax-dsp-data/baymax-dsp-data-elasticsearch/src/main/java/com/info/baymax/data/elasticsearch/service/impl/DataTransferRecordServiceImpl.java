@@ -1,8 +1,8 @@
 package com.info.baymax.data.elasticsearch.service.impl;
 
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.data.elasticsearch.config.EsMetricsIndexProperties;
 import com.info.baymax.data.elasticsearch.config.jest.ISearchResult;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;

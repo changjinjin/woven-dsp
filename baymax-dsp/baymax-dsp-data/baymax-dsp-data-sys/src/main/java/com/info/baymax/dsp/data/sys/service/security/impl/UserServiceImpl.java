@@ -1,13 +1,13 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
 import com.info.baymax.common.core.enums.types.YesNoType;
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.validation.passay.PasswordChecker;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
@@ -19,7 +19,6 @@ import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserRoleRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.passay.RuleResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -165,10 +164,7 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
         }
 
         // 密码格式检查
-        RuleResult ruleResult = passwordChecker.validate(SaasContext.getCurrentUsername(), oldPass, newPass);
-        if (!ruleResult.isValid()) {
-            throw new BadCredentialsException(String.join("\n", passwordChecker.getMessages()));
-        }
+        passwordChecker.check(SaasContext.getCurrentUsername(), oldPass, newPass);
 
         merceUser.setPassword(passwordEncoder.encode(newPass));
         merceUser.setPwdExpiredTime(

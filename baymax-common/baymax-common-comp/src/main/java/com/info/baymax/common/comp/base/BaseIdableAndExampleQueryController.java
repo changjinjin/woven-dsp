@@ -1,11 +1,11 @@
 package com.info.baymax.common.comp.base;
 
 import com.info.baymax.common.comp.base.crud.BaseCrudController;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.entity.gene.Idable;
 import com.info.baymax.common.persistence.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.result.Response;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.info.baymax.common.queryapi.result;
+package com.info.baymax.common.core.result;
 
 import java.util.HashMap;
 import java.util.Map;

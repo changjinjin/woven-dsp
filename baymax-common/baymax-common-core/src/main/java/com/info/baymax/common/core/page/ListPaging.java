@@ -1,4 +1,4 @@
-package com.info.baymax.common.queryapi.page;
+package com.info.baymax.common.core.page;
 
 import java.util.ArrayList;
 import java.util.List;

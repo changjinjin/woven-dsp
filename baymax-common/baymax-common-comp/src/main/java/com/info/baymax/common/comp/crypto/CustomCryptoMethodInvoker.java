@@ -2,9 +2,9 @@ package com.info.baymax.common.comp.crypto;
 
 import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.core.crypto.method.AbstractCryptoMethodInvoker;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.jpa.page.Page;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.result.Response;
 
 /**
  * 自定义的方法级别参数和返回值加解密调用器

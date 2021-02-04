@@ -1,12 +1,12 @@
 package com.info.baymax.common.persistence.service.criteria.example;
 
 
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.page.IPageable;
 import com.info.baymax.common.persistence.mybatis.mapper.aggregation.AggregateCondition;
 import com.info.baymax.common.persistence.service.BaseExampleService;
 import com.info.baymax.common.persistence.service.BasePreprocessService;
 import com.info.baymax.common.persistence.service.entity.EntityClassService;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.page.IPageable;
 
 import java.util.List;
 

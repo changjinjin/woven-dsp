@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.data.hbase;
 
-import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
-import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.dsp.access.dataapi.data.Engine;
 import com.info.baymax.dsp.access.dataapi.data.MapEntityDataReader;
 import com.info.baymax.dsp.access.dataapi.data.StorageConf;

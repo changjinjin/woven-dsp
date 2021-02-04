@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.controller;
 
-import com.info.baymax.common.queryapi.result.Response;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.dsp.access.dataapi.api.AggRequest;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;
 import com.info.baymax.dsp.access.dataapi.api.SqlRequest;

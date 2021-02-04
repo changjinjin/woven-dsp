@@ -1,5 +1,7 @@
 package com.info.baymax.common.validation.passay;
 
+import com.info.baymax.common.core.exception.BizException;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.validation.config.PassayProperties;
 import lombok.Getter;
@@ -42,10 +44,14 @@ public class PasswordChecker implements Rule {
         return passayProperties.getPassayRules(passwordData);
     }
 
-    public RuleResult validate(String username, String oldPwd, String newPwd) {
+    public RuleResult check(String username, String oldPwd, String newPwd) {
         PasswordData passwordData = new PasswordData(SaasContext.getCurrentUsername(), newPwd);
         passwordData.setPasswordReferences(new SourceReference("source", oldPwd), new HistoricalReference(newPwd));
-        return validate(passwordData);
+        RuleResult result = validate(passwordData);
+        if (!result.isValid()) {
+            throw new BizException(ErrType.BAD_REQUEST, String.join("\n", getMessages()));
+        }
+        return result;
     }
 
     @Override

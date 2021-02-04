@@ -1,6 +1,6 @@
 package com.info.baymax.security.oauth.api.exception;
 
-import com.info.baymax.common.queryapi.result.ErrMsg;
+import com.info.baymax.common.core.result.ErrMsg;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;

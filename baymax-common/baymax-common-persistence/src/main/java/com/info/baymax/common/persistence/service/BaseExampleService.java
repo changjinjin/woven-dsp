@@ -1,13 +1,13 @@
 package com.info.baymax.common.persistence.service;
 
 import com.github.pagehelper.Page;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.page.IPageable;
 import com.info.baymax.common.persistence.mybatis.mapper.aggregation.AggregateCondition;
 import com.info.baymax.common.persistence.mybatis.mapper.base.BaseExampleMapper;
 import com.info.baymax.common.persistence.mybatis.mapper.example.Example;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleHelper;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.page.IPageable;
 import org.apache.ibatis.session.RowBounds;
 
 import javax.transaction.Transactional;

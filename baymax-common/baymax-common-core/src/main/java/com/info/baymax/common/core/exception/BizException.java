@@ -1,6 +1,6 @@
-package com.info.baymax.common.queryapi.exception;
+package com.info.baymax.common.core.exception;
 
-import com.info.baymax.common.queryapi.result.ErrMsg;
+import com.info.baymax.common.core.result.ErrMsg;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

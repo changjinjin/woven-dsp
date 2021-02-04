@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
-import com.info.baymax.common.queryapi.result.MapEntity;
+import com.info.baymax.common.core.result.MapEntity;
 
 /**
  * DataReader抽象

@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.data.consumer.service.impl;
 
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.crypto.RSAGenerater;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.mybatis.mapper.DataCustAppMapper;

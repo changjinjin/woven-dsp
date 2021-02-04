@@ -1,6 +1,6 @@
 package com.info.baymax.common.queryapi.query;
 
-import com.info.baymax.common.queryapi.page.IPageable;
+import com.info.baymax.common.core.page.IPageable;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 

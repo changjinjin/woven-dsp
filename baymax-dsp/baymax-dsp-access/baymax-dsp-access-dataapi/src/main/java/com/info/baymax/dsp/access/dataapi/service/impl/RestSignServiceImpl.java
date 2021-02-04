@@ -2,8 +2,8 @@ package com.info.baymax.dsp.access.dataapi.service.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.result.ErrType;
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.utils.PasswordGenerator;
 import com.info.baymax.common.utils.crypto.RSAGenerater;
 import com.info.baymax.dsp.access.dataapi.service.RestSignService;

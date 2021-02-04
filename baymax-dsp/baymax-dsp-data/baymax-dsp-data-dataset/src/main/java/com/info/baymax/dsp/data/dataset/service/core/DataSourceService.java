@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.data.dataset.service.core;
 
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
-import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
-import com.info.baymax.common.queryapi.result.MapEntity;
 import com.info.baymax.dsp.data.dataset.entity.core.DataSource;
 import com.info.baymax.dsp.data.dataset.service.resource.QueryObjectByResourceOrProjectService;
 import com.info.baymax.dsp.data.dataset.service.resource.ResourceIdService;

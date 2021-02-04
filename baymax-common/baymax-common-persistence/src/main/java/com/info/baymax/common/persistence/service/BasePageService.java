@@ -1,7 +1,7 @@
 package com.info.baymax.common.persistence.service;
 
 import com.github.pagehelper.PageHelper;
-import com.info.baymax.common.queryapi.page.IPageable;
+import com.info.baymax.common.core.page.IPageable;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.transaction.Transactional;

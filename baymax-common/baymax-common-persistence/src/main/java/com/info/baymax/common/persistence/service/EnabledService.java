@@ -1,11 +1,11 @@
 package com.info.baymax.common.persistence.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.persistence.entity.gene.Enabled;
 import com.info.baymax.common.persistence.entity.gene.Idable;
 import com.info.baymax.common.persistence.service.entity.EntityClassService;
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.utils.JsonUtils;
 

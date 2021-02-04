@@ -1,8 +1,8 @@
 package com.info.baymax.dsp.gateway.rest;
 
+import com.info.baymax.common.core.result.ErrType;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
-import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.data.sys.entity.security.User;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
 import io.swagger.annotations.Api;

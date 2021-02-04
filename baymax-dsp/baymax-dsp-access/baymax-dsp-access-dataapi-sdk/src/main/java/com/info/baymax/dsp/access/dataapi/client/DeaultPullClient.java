@@ -2,12 +2,12 @@ package com.info.baymax.dsp.access.dataapi.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.MapEntity;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
-import com.info.baymax.common.queryapi.result.MapEntity;
-import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.access.dataapi.api.AggRequest;
 import com.info.baymax.dsp.access.dataapi.api.DataRequest;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;

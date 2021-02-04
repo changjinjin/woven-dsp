@@ -1,10 +1,10 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
-import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.MapEntity;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
-import com.info.baymax.common.queryapi.result.MapEntity;
-import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;

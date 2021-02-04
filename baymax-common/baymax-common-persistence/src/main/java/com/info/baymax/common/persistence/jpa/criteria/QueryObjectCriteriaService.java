@@ -1,6 +1,7 @@
 package com.info.baymax.common.persistence.jpa.criteria;
 
 import com.google.common.collect.Lists;
+import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.persistence.jpa.criteria.query.FieldObject;
 import com.info.baymax.common.persistence.jpa.criteria.query.JpaCriteriaHelper.ComparatorOperator;
 import com.info.baymax.common.persistence.jpa.criteria.query.JpaCriteriaHelper.LogicalOperator;
@@ -10,7 +11,6 @@ import com.info.baymax.common.persistence.jpa.criteria.query.SortObject;
 import com.info.baymax.common.persistence.jpa.page.Page;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQueryService;
-import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.field.Field;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.field.Sort;

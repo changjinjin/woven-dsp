@@ -1,11 +1,11 @@
 package com.info.baymax.common.persistence.service;
 
 import com.github.pagehelper.Page;
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.page.IPageable;
 import com.info.baymax.common.persistence.mybatis.mapper.MyBaseMapper;
 import com.info.baymax.common.persistence.mybatis.mapper.base.BaseExampleMapper;
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.page.IPageable;
 import com.info.baymax.common.utils.ICollections;
 import org.apache.ibatis.session.RowBounds;
 

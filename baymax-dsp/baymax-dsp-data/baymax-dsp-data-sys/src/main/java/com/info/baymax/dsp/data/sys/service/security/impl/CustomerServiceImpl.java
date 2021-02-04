@@ -1,19 +1,18 @@
 package com.info.baymax.dsp.data.sys.service.security.impl;
 
 import com.info.baymax.common.core.enums.types.YesNoType;
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.mybatis.mapper.MyIdableMapper;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.persistence.service.entity.EntityClassServiceImpl;
-import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
-import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.validation.passay.PasswordChecker;
 import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.CustomerMapper;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
-import org.passay.RuleResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -103,10 +102,7 @@ public class CustomerServiceImpl extends EntityClassServiceImpl<Customer> implem
         }
 
         // 密码格式检查
-        RuleResult ruleResult = passwordChecker.validate(SaasContext.getCurrentUsername(), oldPass, newPass);
-        if (!ruleResult.isValid()) {
-            throw new BadCredentialsException(String.join("\n", passwordChecker.getMessages()));
-        }
+        passwordChecker.check(SaasContext.getCurrentUsername(), oldPass, newPass);
 
         t.setPassword(passwordEncoder.encode(newPass));
         updateByPrimaryKeySelective(t);

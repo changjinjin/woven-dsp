@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.queryapi.result.Response;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.swagger.annotation.ApiModelMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;

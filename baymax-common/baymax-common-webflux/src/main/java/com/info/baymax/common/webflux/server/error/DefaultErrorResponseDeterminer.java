@@ -1,6 +1,6 @@
 package com.info.baymax.common.webflux.server.error;
 
-import com.info.baymax.common.queryapi.exception.BizException;
+import com.info.baymax.common.core.exception.BizException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 

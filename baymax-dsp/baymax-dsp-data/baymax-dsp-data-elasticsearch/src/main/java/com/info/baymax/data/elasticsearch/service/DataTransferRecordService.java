@@ -1,11 +1,11 @@
 package com.info.baymax.data.elasticsearch.service;
 
+import com.info.baymax.common.core.exception.ServiceException;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
+
 import java.util.List;
 import java.util.Map;
-
-import com.info.baymax.common.queryapi.exception.ServiceException;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 
 public interface DataTransferRecordService {
 

@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import io.swagger.annotations.Api;

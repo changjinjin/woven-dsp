@@ -1,9 +1,9 @@
-package com.info.baymax.common.queryapi.page;
-
-import java.io.Serializable;
+package com.info.baymax.common.core.page;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
 
 /**
  * 分页参数包装

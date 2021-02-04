@@ -2,7 +2,7 @@ package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.info.baymax.common.core.crypto.annotation.Cryptoable;
 import com.info.baymax.common.core.crypto.annotation.Decrypt;
-import com.info.baymax.common.queryapi.result.Response;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.dsp.data.sys.entity.bean.ChangePwd;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import io.swagger.annotations.Api;

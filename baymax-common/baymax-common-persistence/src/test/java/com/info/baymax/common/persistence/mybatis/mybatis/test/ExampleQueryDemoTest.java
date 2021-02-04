@@ -1,9 +1,9 @@
 package com.info.baymax.common.persistence.mybatis.mybatis.test;
 
+import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.persistence.mybatis.mybatis.entity.TUser;
 import com.info.baymax.common.persistence.mybatis.mybatis.service.TUserService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
-import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;

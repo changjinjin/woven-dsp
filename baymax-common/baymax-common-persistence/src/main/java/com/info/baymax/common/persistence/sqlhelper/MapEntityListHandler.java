@@ -1,8 +1,8 @@
 package com.info.baymax.common.persistence.sqlhelper;
 
-import com.info.baymax.common.queryapi.exception.BizException;
-import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.queryapi.result.MapEntity;
+import com.info.baymax.common.core.exception.BizException;
+import com.info.baymax.common.core.result.ErrType;
+import com.info.baymax.common.core.result.MapEntity;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.AbstractListHandler;

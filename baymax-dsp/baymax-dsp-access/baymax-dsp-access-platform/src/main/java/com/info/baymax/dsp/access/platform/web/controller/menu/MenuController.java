@@ -2,8 +2,8 @@ package com.info.baymax.dsp.access.platform.web.controller.menu;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
-import com.info.baymax.common.queryapi.result.Response;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.sys.entity.security.Permission;
 import com.info.baymax.dsp.data.sys.entity.security.RestOperation;

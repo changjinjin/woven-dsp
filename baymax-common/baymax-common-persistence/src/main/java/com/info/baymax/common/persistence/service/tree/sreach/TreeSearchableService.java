@@ -1,6 +1,6 @@
 package com.info.baymax.common.persistence.service.tree.sreach;
 
-import com.info.baymax.common.queryapi.exception.ServiceException;
+import com.info.baymax.common.core.exception.ServiceException;
 import com.info.baymax.common.utils.ICollections;
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,28 +1,19 @@
 package com.info.baymax.security.oauth.web.controller;
 
-import java.security.Principal;
-import java.util.Map;
-
+import com.info.baymax.common.core.result.Response;
+import com.info.baymax.security.oauth.security.authentication.CustomTokenServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
-import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.security.oauth.security.authentication.CustomTokenServices;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.security.Principal;
+import java.util.Map;
 
 @Api(tags = "认证管理", value = "用户认证相关接口", description = "系统用户认证管理")
 @RestController

@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
-import com.info.baymax.common.queryapi.page.IPage;
-import com.info.baymax.common.queryapi.result.MapEntity;
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.dsp.access.dataapi.api.AggRequest;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;
 import com.info.baymax.dsp.access.dataapi.api.SqlRequest;

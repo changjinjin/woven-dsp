@@ -1,15 +1,14 @@
 package com.info.baymax.dsp.data.consumer.beans.source;
 
+import com.info.baymax.common.core.result.ErrType;
+import com.info.baymax.common.core.result.Response;
+import com.info.baymax.common.utils.JsonUtils;
+import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.common.utils.JsonUtils;
-import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 
 public class CheckEntity {
 

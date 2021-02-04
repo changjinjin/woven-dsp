@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.dataapi.data;
 
-import com.info.baymax.common.queryapi.page.IPage;
+import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import org.springframework.core.Ordered;

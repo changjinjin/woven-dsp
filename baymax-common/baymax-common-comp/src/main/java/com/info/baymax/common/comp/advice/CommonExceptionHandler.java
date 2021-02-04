@@ -1,9 +1,9 @@
-package com.info.baymax.common.webflux.advice;
+package com.info.baymax.common.comp.advice;
 
-import com.info.baymax.common.queryapi.exception.BizException;
-import com.info.baymax.common.queryapi.result.ErrMsg;
-import com.info.baymax.common.queryapi.result.ErrType;
-import com.info.baymax.common.queryapi.result.Response;
+import com.info.baymax.common.core.exception.BizException;
+import com.info.baymax.common.core.result.ErrMsg;
+import com.info.baymax.common.core.result.ErrType;
+import com.info.baymax.common.core.result.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,9 +31,9 @@ import java.util.Set;
 /**
  * 系统异常统一处理通知
  */
-@RestControllerAdvice
 @Slf4j
-public class ServerGlobalExceptionHandler {
+@RestControllerAdvice
+public class CommonExceptionHandler {
 
     @Autowired
     @Nullable
@@ -47,11 +47,10 @@ public class ServerGlobalExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    @Order(-2)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @Order(0)
     public Response<?> uncaughtExceptionHandler(ServerWebExchange swe, Exception e) {
         log.error(e.getMessage(), e);
-        ServerHttpResponse response = swe.getResponse();
-        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
     }
 
@@ -63,8 +62,8 @@ public class ServerGlobalExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(BizException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @Order(-3)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @Order(-1)
     public Response<?> bizExceptionHandler(BizException e) {
         log.error(e.getMessage(), e);
         Response<?> result = null;
@@ -104,7 +103,7 @@ public class ServerGlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @Order(-4)
+    @Order(-2)
     public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
         if (e instanceof DuplicateKeyException) {
@@ -116,9 +115,9 @@ public class ServerGlobalExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(WebExchangeBindException.class)
+    @ExceptionHandler(value = {BindException.class, WebExchangeBindException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @Order(-5)
+    @Order(-3)
     public Response<?> webExchangeBindException(WebExchangeBindException e) {
         BindingResult bindingResult = e.getBindingResult();
         FieldError fieldError = bindingResult.getFieldError();
@@ -139,7 +138,7 @@ public class ServerGlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @Order(-6)
+    @Order(-4)
     public Response<?> validationException(ValidationException e) {
         String message = null;
         if (e instanceof ConstraintViolationException) {
