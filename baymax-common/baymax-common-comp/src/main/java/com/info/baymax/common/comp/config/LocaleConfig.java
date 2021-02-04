@@ -13,7 +13,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.context.support.ResourceBundleMessageSource;
 
+import java.time.Duration;
 import java.util.*;
 
 @Configuration
@@ -53,6 +55,25 @@ public class LocaleConfig implements ApplicationContextAware {
         MessageSourceProperties messageSourceProperties = new MessageSourceProperties();
         messageSourceProperties.setBasename(basename);
         return messageSourceProperties;
+    }
+
+    @Bean
+    public MessageSource messageSource(MessageSourceProperties properties) {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        if (StringUtils.isNotEmpty(properties.getBasename())) {
+            messageSource.setBasenames(StringUtils.split(StringUtils.trim(properties.getBasename()), ","));
+        }
+        if (properties.getEncoding() != null) {
+            messageSource.setDefaultEncoding(properties.getEncoding().name());
+        }
+        messageSource.setFallbackToSystemLocale(properties.isFallbackToSystemLocale());
+        Duration cacheDuration = properties.getCacheDuration();
+        if (cacheDuration != null) {
+            messageSource.setCacheMillis(cacheDuration.toMillis());
+        }
+        messageSource.setAlwaysUseMessageFormat(properties.isAlwaysUseMessageFormat());
+        messageSource.setUseCodeAsDefaultMessage(properties.isUseCodeAsDefaultMessage());
+        return messageSource;
     }
 
     @Bean

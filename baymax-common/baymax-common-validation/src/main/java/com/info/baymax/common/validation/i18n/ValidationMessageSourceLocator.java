@@ -11,7 +11,7 @@ public class ValidationMessageSourceLocator implements MessageSourceLocator {
 
     @Override
     public List<String> baseNames() {
-        return Arrays.asList("com.info.baymax.common.validation.i18n.messages",
+        return Arrays.asList("com.info.baymax.common.validation.i18n.validation",
             "com.info.baymax.common.validation.passay.passay");
     }
 }

@@ -10,6 +10,6 @@ import java.util.List;
 public class Oauth2ApiMessageSourceLocator implements MessageSourceLocator {
     @Override
     public List<String> baseNames() {
-        return Arrays.asList("com.info.baymax.security.oauth.api.i18n.messages");
+        return Arrays.asList("com.info.baymax.security.oauth.api.i18n.oauth2");
     }
 }

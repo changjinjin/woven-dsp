@@ -11,7 +11,7 @@ public class PersistenceMessageSourceLocator implements MessageSourceLocator {
 
     @Override
     public List<String> baseNames() {
-        return Arrays.asList("com.info.baymax.common.persistence.i18n.messages");
+        return Arrays.asList("com.info.baymax.common.persistence.i18n.persistence");
     }
 
 }
