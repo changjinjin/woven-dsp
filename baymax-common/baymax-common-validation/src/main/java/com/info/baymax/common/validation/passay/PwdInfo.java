@@ -1,4 +1,4 @@
-package com.info.baymax.common.validation.passay.pwd;
+package com.info.baymax.common.validation.passay;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,6 +18,16 @@ import java.io.Serializable;
 @ApiModel
 public class PwdInfo implements Serializable {
     private static final long serialVersionUID = 7809909789618956073L;
+
+    /**
+     * 密码模式：简单模式和严格模式
+     *
+     * @author jingwei.yang
+     * @date 2019年9月24日 上午11:43:12
+     */
+    public static enum PwdMode {
+        SIMPLE, STRICT, CUSTOM;
+    }
 
     /**
      * 模式：SIMPLE/STRICT

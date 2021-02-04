@@ -1,6 +1,6 @@
 package com.info.baymax.common.validation.config;
 
-import com.info.baymax.common.validation.passay.pwd.PwdMode;
+import com.info.baymax.common.validation.passay.PwdInfo.PwdMode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
