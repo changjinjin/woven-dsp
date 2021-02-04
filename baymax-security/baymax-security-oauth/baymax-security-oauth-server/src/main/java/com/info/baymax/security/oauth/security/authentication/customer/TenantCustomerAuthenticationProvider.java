@@ -1,9 +1,9 @@
 package com.info.baymax.security.oauth.security.authentication.customer;
 
+import com.info.baymax.security.oauth.i18n.SecurityMessageSource;
 import com.info.baymax.security.oauth.security.authentication.tenant.TenantDetails;
 import com.info.baymax.security.oauth.security.authentication.tenant.TenantDetailsService;
 import com.info.baymax.security.oauth.security.authentication.tenant.TenantNotFoundException;
-import com.info.baymax.security.oauth.security.i18n.SecurityMessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

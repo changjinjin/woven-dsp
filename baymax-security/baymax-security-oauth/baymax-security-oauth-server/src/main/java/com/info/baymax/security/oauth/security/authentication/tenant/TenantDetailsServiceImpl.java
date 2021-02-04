@@ -3,7 +3,7 @@ package com.info.baymax.security.oauth.security.authentication.tenant;
 import com.info.baymax.common.core.enums.types.YesNoType;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.service.security.TenantService;
-import com.info.baymax.security.oauth.security.i18n.SecurityMessageSource;
+import com.info.baymax.security.oauth.i18n.SecurityMessageSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;

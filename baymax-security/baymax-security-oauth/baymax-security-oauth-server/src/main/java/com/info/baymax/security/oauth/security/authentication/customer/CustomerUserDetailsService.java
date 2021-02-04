@@ -4,7 +4,7 @@ import com.info.baymax.dsp.data.sys.entity.security.Customer;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;
 import com.info.baymax.dsp.data.sys.service.security.CustomerService;
 import com.info.baymax.dsp.data.sys.service.security.TenantService;
-import com.info.baymax.security.oauth.security.i18n.SecurityMessageSource;
+import com.info.baymax.security.oauth.i18n.SecurityMessageSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
