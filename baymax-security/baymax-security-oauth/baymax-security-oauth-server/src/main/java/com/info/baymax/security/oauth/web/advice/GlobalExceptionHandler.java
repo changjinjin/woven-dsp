@@ -4,23 +4,32 @@ import com.info.baymax.common.queryapi.exception.BizException;
 import com.info.baymax.common.queryapi.result.ErrMsg;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.queryapi.result.Response;
-import com.info.baymax.security.oauth.api.exception.CustomOauth2Exception;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.security.oauth2.common.exceptions.UserDeniedAuthorizationException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.naming.SizeLimitExceededException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.Nullable;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+import java.util.Set;
 
 /**
  * 说明： 系统异常统一处理. <br>
@@ -32,52 +41,139 @@ import javax.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class)
-    @ResponseBody // 在返回自定义相应类的情况下必须有，这是@ControllerAdvice注解的规定
-    public Response<?> errorHandler(Exception e, HttpServletRequest request, HttpServletResponse response) {
+    @Autowired
+    @Nullable
+    private MessageSourceAccessor messageSourceAccessor;
+
+    /**
+     * 没有捕获处理的异常
+     *
+     * @param e 未捕获异常对象
+     * @return 未捕获异常消息报文
+     */
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @Order(-2)
+    public Response<?> uncaughtExceptionHandler(Exception e) {
+        log.error(e.getMessage(), e);
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
+    }
+
+    /**
+     * 业务处理异常信息
+     *
+     * @param e 业务异常对象
+     * @return 业务异常消息报文
+     */
+    @ResponseBody
+    @ExceptionHandler(BizException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @Order(-3)
+    public Response<?> bizExceptionHandler(BizException e) {
+        log.error(e.getMessage(), e);
         Response<?> result = null;
-        // 自定义异常错误处理
-        if (e != null) {
-            log.error(e.getMessage(), e);
-            if (e instanceof BizException || BizException.class.isAssignableFrom(e.getClass())) {
-                BizException e1 = (BizException) e;
-                String message = e1.getMessage();
-                ErrMsg errMsg = e1.getErrMsg();
-                result = Response
-                    .error(errMsg.getStatus(), message != null ? message : "未知错误，错误代码：" + errMsg.getStatus())
-                    .build();
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            } else if (e instanceof NoHandlerFoundException) {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                result = Response.error(ErrType.NOT_FOUND).build();
-            } else if (e instanceof AuthenticationException
-                || AuthenticationException.class.isAssignableFrom(e.getClass())) {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                result = Response.error(ErrType.UNAUTHORIZED).build();
-            } else if (e instanceof HttpMessageNotReadableException) {
-                response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
-                result = Response.error(ErrType.NOT_ACCEPTABLE).build();
-            } else if (e instanceof HttpRequestMethodNotSupportedException) {
-                response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
-                result = Response.error(ErrType.METHOD_NOT_ALLOWED).build();
-            } else if (e instanceof MaxUploadSizeExceededException || e instanceof SizeLimitExceededException) {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                result = Response.error(ErrType.FILE_MAX_UPLOAD_SIZE_EXCEEDED_ERROR).build();
-            } else if (e instanceof MultipartException) {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                result = Response.error(ErrType.FILE_IO_READ_ERROR).build();
-            } else if (e instanceof OAuth2Exception) {
-                CustomOauth2Exception customOauth2Exception = new CustomOauth2Exception((OAuth2Exception) e);
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                result = Response.error(customOauth2Exception.getHttpErrorCode(), customOauth2Exception.getSummary())
-                    .build();
-            }
+
+        Throwable cause = e.getCause();
+        ErrMsg errMsg = e.getErrMsg();
+        String customMessage = e.getCustomMessage();
+
+        String message = null;
+        if (messageSourceAccessor != null) {
+            message = messageSourceAccessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
         }
 
+        message = StringUtils.defaultIfEmpty(message, customMessage);
+        if (cause != null) {
+            if (cause instanceof BizException) {
+                BizException c = (BizException) cause;
+                result = Response
+                    .error(errMsg.getStatus(),
+                        StringUtils.defaultIfEmpty(message, "UNKNOWN ERROR:" + errMsg.getStatus()))
+                    .details(c.toString()).build();
+            } else {
+                result = Response.error(errMsg.getStatus(), cause.getMessage()).details(cause.toString()).build();
+            }
+        } else {
+            result = Response
+                .error(errMsg.getStatus(),
+                    StringUtils.defaultIfEmpty(message, "UNKNOWN ERROR:" + errMsg.getStatus()))
+                .details(e.toString()).build();
+        }
         if (result != null) {
             return result;
         }
-        // 其他异常
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR).build();
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = {AuthenticationException.class, OAuth2Exception.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @Order(-6)
+    public Response<?> authenticationException(Exception e) {
+        log.error(e.getMessage(), e);
+        return Response.error(ErrType.UNAUTHORIZED, e.getMessage()).details(e.toString()).build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = {AccessDeniedException.class, OAuth2AccessDeniedException.class,
+        UserDeniedAuthorizationException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @Order(-5)
+    public Response<?> accessDeniedException(Exception e) {
+        log.error(e.getMessage(), e);
+        return Response.error(ErrType.FORBIDDEN, e.getMessage()).details(e.toString()).build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(DataAccessException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @Order(-4)
+    public Response<?> dataAccessException(DataAccessException e) {
+        log.error(e.getMessage(), e);
+        if (e instanceof DuplicateKeyException) {
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Data duplication constraint violation.")
+                .details(e.getMessage()).build();
+        } else {
+            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
+        }
+    }
+
+    @ResponseBody
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @Order(-5)
+    public Response<?> webExchangeBindException(BindException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        FieldError fieldError = bindingResult.getFieldError();
+        String objectName = fieldError.getObjectName();
+        StringBuffer buff = new StringBuffer();
+        buff.append("[");
+        if (StringUtils.isNotEmpty(objectName)) {
+            buff.append(objectName).append(".");
+        }
+        String field = fieldError.getField();
+        if (StringUtils.isNotEmpty(objectName)) {
+            buff.append(field);
+        }
+        buff.append("] ").append(fieldError.getDefaultMessage());
+        return Response.error(ErrType.BAD_REQUEST, buff.toString()).details(e.toString()).build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @Order(-6)
+    public Response<?> validationException(ValidationException e) {
+        String message = null;
+        if (e instanceof ConstraintViolationException) {
+            ConstraintViolationException exs = (ConstraintViolationException) e;
+            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+            for (ConstraintViolation<?> item : violations) {
+                message = item.getMessage();
+                break;// 拿第一条错误信息即可，满足快速失败就行
+            }
+        }
+        return Response.error(ErrType.BAD_REQUEST, message).details(e.toString()).build();
     }
 }

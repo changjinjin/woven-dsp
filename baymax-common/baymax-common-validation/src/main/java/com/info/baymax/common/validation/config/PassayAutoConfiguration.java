@@ -1,7 +1,6 @@
 package com.info.baymax.common.validation.config;
 
-import com.info.baymax.common.validation.passay.check.PasswordChecker;
-import com.info.baymax.common.validation.passay.check.SimplePasswordChecker;
+import com.info.baymax.common.validation.passay.PasswordChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,6 +29,6 @@ public class PassayAutoConfiguration {
         if (passayProperties == null) {
             passayProperties = new PassayProperties();
         }
-        return new SimplePasswordChecker(passayProperties);
+        return new PasswordChecker(passayProperties);
     }
 }

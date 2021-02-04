@@ -1,6 +1,6 @@
 package com.info.baymax.common.validation.constraints;
 
-import com.info.baymax.common.validation.passay.check.PasswordChecker;
+import com.info.baymax.common.validation.passay.PasswordChecker;
 import org.passay.PasswordData;
 import org.passay.RuleResult;
 
@@ -52,8 +52,7 @@ public @interface Password {
                 return true;
             }
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                String.join(",", passwordChecker.getValidator(passwordData).getMessages(result)))
+            context.buildConstraintViolationWithTemplate(String.join(",", passwordChecker.getMessages()))
                 .addConstraintViolation();
             return false;
         }

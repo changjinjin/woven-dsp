@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.passay.*;
-import org.passay.dictionary.ArrayWordList;
-import org.passay.dictionary.WordListDictionary;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.ArrayList;
@@ -79,10 +77,22 @@ public class PassayProperties {
             rs.add(new IllegalSequenceRule(illegalSequence.getSequenceData(), illegalSequence.getSequenceLength(),
                 illegalSequence.isWrapSequence()));
         }
-        DictionarySubstring dictionarySubstring = rules.getDictionarySubstring();
-        if (dictionarySubstring.isEnabled() || isStrict) {
-            rs.add(new DictionarySubstringRule(
-                new WordListDictionary(new ArrayWordList(new String[]{passwordData.getUsername()}, false))));
+
+        // DictionarySubstring dictionarySubstring = rules.getDictionarySubstring();
+        // if (dictionarySubstring.isEnabled() || isStrict) {
+        // rs.add(new DictionarySubstringRule(
+        // new WordListDictionary(new ArrayWordList(new String[] { passwordData.getUsername() }, false))));
+        // }
+
+        History history = rules.getHistory();
+        if (history.isEnabled() || isStrict) {
+            rs.add(new SourceRule());
+            rs.add(new HistoryRule());
+        }
+
+        Username username = rules.getUsername();
+        if (username.isEnabled() || isStrict) {
+            rs.add(new UsernameRule());
         }
         return rs;
     }
@@ -111,10 +121,20 @@ public class PassayProperties {
          */
         private IllegalSequence illegalSequence = new IllegalSequence();
 
+        // /**
+        // * 5.检查密码是否包含指定字典，如：密码应避免账号信息及其大小写变换
+        // */
+        // private DictionarySubstring dictionarySubstring = new DictionarySubstring();
+
         /**
-         * 5.检查密码是否包含任何历史密码引用，如：密码应避免账号信息及其大小写变换，这里只针对用户名和密码历史
+         * 6.检查密码是否包含任何历史密码引用，如：密码与上次密码相同
          */
-        private DictionarySubstring dictionarySubstring = new DictionarySubstring();
+        private History history = new History();
+
+        /**
+         * 7.检查密码是否包含用户名，如：密码包含用户名字符串
+         */
+        private Username username = new Username();
     }
 
     @Setter
@@ -229,6 +249,24 @@ public class PassayProperties {
     @Getter
     public static final class DictionarySubstring extends Enabled {
         public DictionarySubstring() {
+            super(false);
+        }
+    }
+
+    // 6.不能跟历史密码相同
+    @Setter
+    @Getter
+    public static final class History extends Enabled {
+        public History() {
+            super(false);
+        }
+    }
+
+    // 7.密码不包含用户名
+    @Setter
+    @Getter
+    public static final class Username extends Enabled {
+        public Username() {
             super(false);
         }
     }

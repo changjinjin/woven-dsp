@@ -9,7 +9,7 @@ import com.info.baymax.common.queryapi.exception.ServiceException;
 import com.info.baymax.common.queryapi.page.IPage;
 import com.info.baymax.common.queryapi.result.ErrType;
 import com.info.baymax.common.utils.ICollections;
-import com.info.baymax.common.validation.passay.check.PasswordChecker;
+import com.info.baymax.common.validation.passay.PasswordChecker;
 import com.info.baymax.dsp.data.sys.constant.CacheNames;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.entity.security.User;
@@ -19,8 +19,6 @@ import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserMapper;
 import com.info.baymax.dsp.data.sys.mybatis.mapper.security.UserRoleRefMapper;
 import com.info.baymax.dsp.data.sys.service.security.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.passay.PasswordData;
-import org.passay.PasswordData.SourceReference;
 import org.passay.RuleResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -167,12 +165,9 @@ public class UserServiceImpl extends EntityClassServiceImpl<User> implements Use
         }
 
         // 密码格式检查
-        PasswordData passwordData = new PasswordData(SaasContext.getCurrentUsername(), newPass);
-        passwordData.setPasswordReferences(new SourceReference(oldPass));
-        RuleResult ruleResult = passwordChecker.validate(passwordData);
+        RuleResult ruleResult = passwordChecker.validate(SaasContext.getCurrentUsername(), oldPass, newPass);
         if (!ruleResult.isValid()) {
-            throw new BadCredentialsException(
-                String.join(",", passwordChecker.getValidator(passwordData).getMessages(ruleResult)));
+            throw new BadCredentialsException(String.join("\n", passwordChecker.getMessages()));
         }
 
         merceUser.setPassword(passwordEncoder.encode(newPass));
