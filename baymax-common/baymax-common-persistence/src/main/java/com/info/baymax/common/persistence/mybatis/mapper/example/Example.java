@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.type.JdbcType;
-import org.joda.time.DateTime;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.EntityTable;
@@ -16,6 +15,8 @@ import tk.mybatis.mapper.util.MetaObjectUtil;
 import tk.mybatis.mapper.util.Sqls;
 import tk.mybatis.mapper.util.StringUtil;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -462,7 +463,7 @@ public class Example implements IDynamicTableName {
                 Class<?> javaType = javaType(property);
                 if (javaType != null && javaType.isAssignableFrom(Date.class)) {
                     if (value instanceof String) {
-                        value = DateTime.parse((String) value).toDate();
+                        value = Date.from(LocalDateTime.parse((String) value).atZone(ZoneId.systemDefault()).toInstant());
                     } else if (value instanceof Long) {
                         value = new Date((long) value);
                     }
