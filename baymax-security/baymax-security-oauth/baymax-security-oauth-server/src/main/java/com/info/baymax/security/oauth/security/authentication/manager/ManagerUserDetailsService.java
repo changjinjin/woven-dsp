@@ -78,7 +78,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// 用户名为空
 		if (StringUtils.isEmpty(username)) {
-			String message = this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty");
+            String message = this.messages.getMessage("USER_WRONG_USERNAME", "Wrong username: null or empty");
 			log.debug(message);
 			throw new UsernameNotFoundException(message);
 		}
@@ -91,7 +91,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 			tenantName = certificates[1];
 			userName = certificates[2];
 		} catch (Exception e) {
-			String message = this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty");
+            String message = this.messages.getMessage("USER_WRONG_USERNAME", "Wrong username: null or empty");
 			log.error(message, e);
 			throw new UsernameNotFoundException(message);
 		}
@@ -147,7 +147,7 @@ public class ManagerUserDetailsService implements UserDetailsService, GrantedAut
 		User user = userService.findByTenantAndUsername(tenant.getId(), username);
 		// 用户不存在
 		if (user == null) {
-			String message = this.messages.getMessage("UserErr.usernameNotFound", new Object[] { username },
+            String message = this.messages.getMessage("USER_USERNAME_NOT_FOUND", new Object[]{username},
 					"Username {0} not found");
 			log.debug(message);
 			throw new UsernameNotFoundException(message);

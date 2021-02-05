@@ -36,7 +36,7 @@ public class TenantManagerAuthenticationProvider implements AuthenticationProvid
 
         TenantDetails<?> tenant = tenantDetailsService.findByTenant(token.getTenant());
         if (tenant == null) {
-            throw new TenantNotFoundException(this.messages.getMessage("ClientErr.clientNotFound",
+            throw new TenantNotFoundException(this.messages.getMessage("CLIENT_CLIENT_NOT_FOUND",
                 new Object[]{token.getTenant()}, "Client {0} not found !"));
         }
 
@@ -45,12 +45,12 @@ public class TenantManagerAuthenticationProvider implements AuthenticationProvid
         SimpleManagerDetails userDetails = (SimpleManagerDetails) this.managerUserDetailsService
             .loadUserByUsername(token.getClientId() + ":" + token.getTenant() + ":" + username);
         if (userDetails == null) {
-            throw new UsernameNotFoundException(this.messages.getMessage("UserErr.usernameNotFound",
+            throw new UsernameNotFoundException(this.messages.getMessage("USER_USERNAME_NOT_FOUND",
                 new Object[]{username}, "User {0} not found !"));
         }
 
         if (!this.passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
-            throw new BadCredentialsException(this.messages.getMessage("UserErr.badCredentials", "Bad Credentials !"));
+            throw new BadCredentialsException(this.messages.getMessage("USER_BAD_CREDENTIALS", "Bad Credentials !"));
         }
 
         return new TenantManagerAuthenticationToken(token.getPrincipal(), token.getCredentials(), token.getClientId(),

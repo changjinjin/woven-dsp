@@ -45,6 +45,9 @@ public enum ErrType implements ErrMsg {
     ENTITY_DELETE_ERROR(1006, "Entity delete failed."), //
     ENTITY_QUERY_LIST_ERROR(1007, "Failed to query data list."), //
     ENTITY_QUERY_INFO_ERROR(1008, "Failed to query data details."), //
+    ENTITY_DUPLICATE_KEY(1009, "Entity duplicate key."), //
+    ENTITY_DUPLICATE_NAME(1010, "Entity duplicate name."), //
+    ENTITY_UNIQUE_CONSTRAINT(1011, "Violation of unique constraint."), //
 
     FILE_MAX_UPLOAD_SIZE_EXCEEDED_ERROR(1761, "File is too large."), //
     FILE_FORMAT_NOT_ALLOW_ERROR(1762, "File format error."), //

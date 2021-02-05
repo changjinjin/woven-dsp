@@ -125,6 +125,7 @@
 		<easyexcel.version>2.2.6</easyexcel.version>
 		<javacsv.version>2.0</javacsv.version>
 		<passay.version>1.6.0</passay.version>
+		<classgraph.version>4.8.102</classgraph.version>
 	</properties>
 
 	<modules>
@@ -601,6 +602,12 @@
 				<groupId>org.passay</groupId>
 				<artifactId>passay</artifactId>
 				<version>${passay.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.github.classgraph</groupId>
+				<artifactId>classgraph</artifactId>
+				<version>${classgraph.version}</version>
 			</dependency>
 
 			<dependency>

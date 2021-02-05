@@ -39,7 +39,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (StringUtils.isEmpty(username)) {
-            String message = this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty");
+            String message = this.messages.getMessage("USER_WRONG_USERNAME", "Wrong username: null or empty");
             log.debug(message);
             throw new UsernameNotFoundException(message);
         }
@@ -52,7 +52,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
             tenantName = certificates[1];
             userName = certificates[2];
         } catch (Exception e) {
-            String message = this.messages.getMessage("UserErr.wrongUsername", "Wrong username: null or empty");
+            String message = this.messages.getMessage("USER_WRONG_USERNAME", "Wrong username: null or empty");
             log.error(message, e);
             throw new UsernameNotFoundException(message, e);
         }
@@ -65,7 +65,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
         Tenant tenant = tenantService.findByName(tenantName);
         Customer user = customerService.findByTenantAndUsername(tenant.getId(), username);
         if (user == null) {
-            String message = this.messages.getMessage("UserErr.usernameNotFound", new Object[]{username},
+            String message = this.messages.getMessage("USER_USERNAME_NOT_FOUND", new Object[]{username},
                 "Username {0} not found");
             log.debug(message);
             throw new UsernameNotFoundException(message);

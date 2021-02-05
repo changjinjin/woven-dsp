@@ -27,16 +27,16 @@ public class TenantDetailsServiceImpl implements TenantDetailsService {
 //        LicenseContent content = new LicenseVerifyDemo().verify(LicenseInit.getParamers());
 //        if (content == null) {
 //            throw new LicenseNotActivatedException(
-//                this.messages.getMessage("ClientErr.licenseNotActivation", "License is not activation !"));
+//                this.messages.getMessage("CLIENT_LICENSE_NOT_ACTIVATION", "License is not activation !"));
 //        }
 
         Tenant tenant = tenantService.findByName(tenantName);
         if (tenant == null) {
-            throw new TenantNotFoundException(this.messages.getMessage("ClientErr.clientNotFound",
+            throw new TenantNotFoundException(this.messages.getMessage("CLIENT_CLIENT_NOT_FOUND",
                 new Object[]{tenantName}, "Client {0} not found"));
         }
         if (!YesNoType.YES.equalsTo(tenant.getEnabled())) {
-            throw new TenantDisabledException(this.messages.getMessage("ClientErr.clientDisabled",
+            throw new TenantDisabledException(this.messages.getMessage("CLIENT_CLIENT_DISABLED",
                 new Object[]{tenantName}, "Client {0} disabled"));
         }
         return new SimpleTenantDetails(null, tenant.getName(), tenant.getVersion() + "");

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.ServerWebInputException;
 
 import javax.annotation.Nullable;
 import javax.validation.ConstraintViolation;
@@ -37,7 +37,7 @@ public class CommonExceptionHandler {
 
     @Autowired
     @Nullable
-    private MessageSourceAccessor messageSourceAccessor;
+    private MessageSourceAccessor accessor;
 
     /**
      * 没有捕获处理的异常
@@ -47,11 +47,11 @@ public class CommonExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @Order(0)
     public Response<?> uncaughtExceptionHandler(ServerWebExchange swe, Exception e) {
         log.error(e.getMessage(), e);
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
+        return Response.error(ErrType.SERVICE_UNAVAILABLE, e.getMessage()).details(e).build();
     }
 
     /**
@@ -73,8 +73,8 @@ public class CommonExceptionHandler {
         String customMessage = e.getCustomMessage();
 
         String message = null;
-        if (messageSourceAccessor != null) {
-            message = messageSourceAccessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
+        if (accessor != null) {
+            message = accessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
         }
 
         message = StringUtils.defaultIfEmpty(message, customMessage);
@@ -97,25 +97,30 @@ public class CommonExceptionHandler {
         if (result != null) {
             return result;
         }
-        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
+        return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e).build();
     }
 
     @ResponseBody
     @ExceptionHandler(DataAccessException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @Order(-2)
     public Response<?> dataAccessException(DataAccessException e) {
         log.error(e.getMessage(), e);
-        if (e instanceof DuplicateKeyException) {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, "Data duplication constraint violation.")
-                .details(e.getMessage()).build();
-        } else {
-            return Response.error(ErrType.INTERNAL_SERVER_ERROR, e.getMessage()).details(e.toString()).build();
+        String message = null;
+        Throwable cause = e.getCause();
+        if (accessor != null) {
+            if (cause != null) {
+                message = accessor.getMessage(cause.getClass().getCanonicalName());
+            } else {
+                message = accessor.getMessage(e.getClass().getCanonicalName());
+            }
         }
+        message = StringUtils.defaultIfEmpty(message, e.getMessage());
+        return Response.serviceUnavailable().message(message).details(e).build();
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {BindException.class, WebExchangeBindException.class})
+    @ExceptionHandler(value = {BindException.class, WebExchangeBindException.class, ServerWebInputException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(-3)
     public Response<?> webExchangeBindException(WebExchangeBindException e) {
@@ -132,7 +137,7 @@ public class CommonExceptionHandler {
             buff.append(field);
         }
         buff.append("] ").append(fieldError.getDefaultMessage());
-        return Response.error(ErrType.BAD_REQUEST, buff.toString()).details(e.toString()).build();
+        return Response.badRequest().message(buff.toString()).details(e).build();
     }
 
     @ResponseBody
@@ -148,7 +153,9 @@ public class CommonExceptionHandler {
                 message = item.getMessage();
                 break;// 拿第一条错误信息即可，满足快速失败就行
             }
+        } else {
+            message = e.getMessage();
         }
-        return Response.error(ErrType.BAD_REQUEST, message).details(e.toString()).build();
+        return Response.badRequest().message(message).details(e).build();
     }
 }

@@ -1,7 +1,5 @@
 package com.info.baymax.common.validation.passay;
 
-import com.info.baymax.common.core.exception.BizException;
-import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.validation.config.PassayProperties;
 import lombok.Getter;
@@ -13,7 +11,9 @@ import org.passay.Rule;
 import org.passay.RuleResult;
 import org.springframework.util.Assert;
 
+import javax.validation.ValidationException;
 import java.util.List;
+
 
 /**
  * 密码检查器
@@ -49,7 +49,7 @@ public class PasswordChecker implements Rule {
         passwordData.setPasswordReferences(new SourceReference("source", oldPwd), new HistoricalReference(newPwd));
         RuleResult result = validate(passwordData);
         if (!result.isValid()) {
-            throw new BizException(ErrType.BAD_REQUEST, String.join("\n", getMessages()));
+            throw new ValidationException(String.join("\n", getMessages()));
         }
         return result;
     }
