@@ -271,7 +271,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
                 <configuration>
-                    <timestampFormat>yyyyMMddHHmm</timestampFormat>
+                    <timestampFormat>yyyyMMdd.HHmm</timestampFormat>
                 </configuration>
                 <executions>
                     <execution>
