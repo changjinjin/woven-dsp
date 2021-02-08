@@ -43,7 +43,7 @@ do
 echo ">>>link jars end"
 
 ##archive to tar.gz
-cd $work_dir;cd ../
+cd $work_dir;
 dirname=$(basename $(pwd))
 echo "dir name $dirname"
 cd ../
