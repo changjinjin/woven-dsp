@@ -26,6 +26,9 @@
 		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR3</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
+		<rocketmq-spring-boot.version>2.1.0</rocketmq-spring-boot.version>
+		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
+		<jasypt.version>1.9.3</jasypt.version>
 
 		<!-- commons dependencies -->
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -45,7 +48,8 @@
 		<commons-httpclient.version>3.1</commons-httpclient.version>
 		<commons-io.version>2.6</commons-io.version>
 		<commons-jexl.version>1.1</commons-jexl.version>
-		<commons-jxpath.version>1.3</commons-jxpath.version>
+		<commons-jexl3.version>3.1</commons-jexl3.version>
+		<commons-jxpath.version>3.1</commons-jxpath.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-logging.version>1.2</commons-logging.version>
 		<commons-math.version>1.0</commons-math.version>
@@ -54,9 +58,6 @@
 		<commons-validator.version>1.6</commons-validator.version>
 		<commons-vfs.version>1.0</commons-vfs.version>
 		<commons-lang3.version>3.9</commons-lang3.version>
-
-		<sqlhelper.version>3.2.4</sqlhelper.version>
-		<easyjson.version>3.0.4</easyjson.version>
 
 		<!-- mybatis dependencies -->
 		<mybatis.version>3.5.6</mybatis.version>
@@ -78,14 +79,14 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
 		<guava.version>22.0</guava.version>
+		<guava-retrying.version>2.0.0</guava-retrying.version>
 		<jest.version>6.3.1</jest.version>
-		<javassist.version>3.24.0-GA</javassist.version>
+		<javassist.version>3.25.0-GA</javassist.version>
+		<sqlhelper.version>3.2.4</sqlhelper.version>
+		<easyjson.version>3.0.4</easyjson.version>
 
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
-		<kaptcha.version>2.3.2</kaptcha.version>
-		<jsqlparser.version>1.4</jsqlparser.version>
 		<dom4j.version>1.6.1</dom4j.version>
-		<httpclient.version>4.4.1</httpclient.version>
 		<snappy-java.version>1.1.2.4</snappy-java.version>
 
 		<hadoop.version>2.7.3</hadoop.version>
@@ -95,21 +96,14 @@
 		<spark.streaming.kafka.version>2.2.0</spark.streaming.kafka.version>
 		<parquet.version>1.8.2</parquet.version>
 		<shc.version>1.1.3-2.4-s_2.11</shc.version>
-		<jackson-module-scala.version>2.8.10</jackson-module-scala.version>
-
-		<grpc.version>1.12.0</grpc.version>
-		<netty.version>4.1.17.Final</netty.version>
-		<grpc-spring-boot-version>1.4.1.RELEASE</grpc-spring-boot-version>
 
 		<orc.mapreduce.version>1.4.2</orc.mapreduce.version>
 		<orc.hive-exec.verion>1.2.1.spark2</orc.hive-exec.verion>
 		<spark-redis.version>2.3.0</spark-redis.version>
-		<rocketmq-spring-boot.version>2.1.0</rocketmq-spring-boot.version>
+		<json-flattener.version>0.8.1</json-flattener.version>
 		<fast-classpath-scanner.version>3.1.13</fast-classpath-scanner.version>
 
 		<javax-interceptor.version>1.2</javax-interceptor.version>
-		<javax-transaction.version>1.3</javax-transaction.version>
-		<javax-persistence.version>2.2</javax-persistence.version>
 
 		<!--swagger dependencies -->
 		<swagger2.version>2.10.5</swagger2.version>
@@ -118,12 +112,12 @@
 		<swagger2markup.version>1.3.3</swagger2markup.version>
 		<knife4j.version>2.0.8</knife4j.version>
 
-		<micrometer-core.version>1.1.4</micrometer-core.version>
-
 		<easyexcel.version>2.2.6</easyexcel.version>
 		<javacsv.version>2.0</javacsv.version>
 		<passay.version>1.6.0</passay.version>
 		<classgraph.version>4.8.102</classgraph.version>
+		<classmate.version>1.5.1</classmate.version>
+		<log4j2.version>2.11.2</log4j2.version>
 	</properties>
 
 	<modules>
@@ -136,7 +130,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Import dependency management -->
+			<!-- import dependencies management -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -158,8 +152,23 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-spring-boot-starter</artifactId>
+				<version>${rocketmq-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.ulisesbocchio</groupId>
+				<artifactId>jasypt-spring-boot-starter</artifactId>
+				<version>${jasypt-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jasypt</groupId>
+				<artifactId>jasypt</artifactId>
+				<version>${jasypt.version}</version>
+			</dependency>
 
-			<!-- woven common -->
+			<!-- woven common dependencies -->
 			<dependency>
 				<groupId>com.merce.woven</groupId>
 				<artifactId>woven-common</artifactId>
@@ -192,11 +201,16 @@
 			</dependency>
 			<dependency>
 				<groupId>com.merce.woven</groupId>
+				<artifactId>woven-rtcflow-flink</artifactId>
+				<version>${baymax-woven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.merce.woven</groupId>
 				<artifactId>woven-dataflow-step-sdk</artifactId>
 				<version>${baymax-woven.version}</version>
 			</dependency>
 
-			<!-- baymax common -->
+			<!-- baymax common dependencies -->
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-common-core</artifactId>
@@ -268,6 +282,7 @@
 				<version>${baymax-common.version}</version>
 			</dependency>
 
+			<!-- swagger dependencies -->
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
@@ -323,13 +338,13 @@
 				<artifactId>swagger2markup-spring-restdocs-ext</artifactId>
 				<version>${swagger2markup.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-staticdocs</artifactId>
 				<version>2.6.1</version>
 			</dependency>
 
+			<!-- jdbc drivers -->
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
@@ -351,6 +366,7 @@
 				<version>${opendistro-sql-jdbc.version}</version>
 			</dependency>
 
+			<!-- common dependencies -->
 			<dependency>
 				<artifactId>commons-beanutils</artifactId>
 				<groupId>commons-beanutils</groupId>
@@ -471,7 +487,13 @@
 				<groupId>commons-vfs</groupId>
 				<version>${commons-vfs.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-jexl3</artifactId>
+				<version>${commons-jexl3.version}</version>
+			</dependency>
 
+			<!-- sql dependencies -->
 			<dependency>
 				<groupId>com.github.fangjinuo.sqlhelper</groupId>
 				<artifactId>sqlhelper-dbutils</artifactId>
@@ -486,37 +508,6 @@
 				<groupId>com.netflix.netflix-commons</groupId>
 				<artifactId>netflix-statistics</artifactId>
 				<version>${netflix-statistics.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>${javassist.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.jsonwebtoken</groupId>
-				<artifactId>jjwt</artifactId>
-				<version>${jjwt.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.houbb</groupId>
-				<artifactId>sensitive-core</artifactId>
-				<version>${sensitive.version}</version>
-			</dependency>
-			<dependency>
-				<artifactId>guava</artifactId>
-				<groupId>com.google.guava</groupId>
-				<version>${guava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${fastjson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.interceptor</groupId>
-				<artifactId>javax.interceptor-api</artifactId>
-				<version>${javax-interceptor.version}</version>
 			</dependency>
 
 			<!-- mybatis dependencies -->
@@ -556,17 +547,6 @@
 				<version>${pagehelper.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.fangjinuo.easyjson</groupId>
-				<artifactId>easyjson-core</artifactId>
-				<version>${easyjson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.fangjinuo.easyjson</groupId>
-				<artifactId>easyjson-jackson</artifactId>
-				<version>${easyjson.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>org.mybatis.spring.boot</groupId>
 				<artifactId>mybatis-spring-boot-starter</artifactId>
 				<version>${mybatis-spring-boot.version}</version>
@@ -581,33 +561,13 @@
 				<artifactId>pagehelper-spring-boot-starter</artifactId>
 				<version>${pagehelper-spring-boot.version}</version>
 			</dependency>
+
+			<!-- elasticsearch dependencies -->
 			<dependency>
 				<groupId>io.searchbox</groupId>
 				<artifactId>jest</artifactId>
 				<version>${jest.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>easyexcel</artifactId>
-				<version>${easyexcel.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>net.sourceforge.javacsv</groupId>
-				<artifactId>javacsv</artifactId>
-				<version>${javacsv.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.passay</groupId>
-				<artifactId>passay</artifactId>
-				<version>${passay.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.github.classgraph</groupId>
-				<artifactId>classgraph</artifactId>
-				<version>${classgraph.version}</version>
-			</dependency>
-
 			<dependency>
 				<groupId>org.elasticsearch</groupId>
 				<artifactId>elasticsearch</artifactId>
@@ -655,6 +615,127 @@
 				<groupId>org.elasticsearch.client</groupId>
 				<artifactId>elasticsearch-rest-high-level-client</artifactId>
 				<version>${elasticsearch.version}</version>
+			</dependency>
+
+			<!-- log4j2 dependencies -->
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-web</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+
+
+			<!-- other dependencies -->
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.houbb</groupId>
+				<artifactId>sensitive-core</artifactId>
+				<version>${sensitive.version}</version>
+			</dependency>
+			<dependency>
+				<artifactId>guava</artifactId>
+				<groupId>com.google.guava</groupId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.rholder</groupId>
+				<artifactId>guava-retrying</artifactId>
+				<version>${guava-retrying.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>guava</artifactId>
+						<groupId>com.google.guava</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.interceptor</groupId>
+				<artifactId>javax.interceptor-api</artifactId>
+				<version>${javax-interceptor.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.fangjinuo.easyjson</groupId>
+				<artifactId>easyjson-core</artifactId>
+				<version>${easyjson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.fangjinuo.easyjson</groupId>
+				<artifactId>easyjson-jackson</artifactId>
+				<version>${easyjson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>easyexcel</artifactId>
+				<version>${easyexcel.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.javacsv</groupId>
+				<artifactId>javacsv</artifactId>
+				<version>${javacsv.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.passay</groupId>
+				<artifactId>passay</artifactId>
+				<version>${passay.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.wnameless.json</groupId>
+				<artifactId>json-flattener</artifactId>
+				<version>${json-flattener.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.lukehutch</groupId>
+				<artifactId>fast-classpath-scanner</artifactId>
+				<version>${fast-classpath-scanner.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.classgraph</groupId>
+				<artifactId>classgraph</artifactId>
+				<version>${classgraph.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml</groupId>
+				<artifactId>classmate</artifactId>
+				<version>${classmate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.xerial.snappy</groupId>
+				<artifactId>snappy-java</artifactId>
+				<version>${snappy-java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>${dom4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -749,7 +830,7 @@
 			<properties>
 				<profileActive>hadoop2-es5</profileActive>
 				<hadoop.version>2.7.3</hadoop.version>
-				<elasticsearch.version>5.5.3</elasticsearch.version>
+				<elasticsearch.version>5.6.0</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -782,7 +863,7 @@
 			<properties>
 				<profileActive>hadoop3-es5</profileActive>
 				<hadoop.version>3.1.1</hadoop.version>
-				<elasticsearch.version>5.5.3</elasticsearch.version>
+				<elasticsearch.version>5.6.0</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -928,6 +1009,11 @@
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>4.0.3</version>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>2.2.5.RELEASE</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

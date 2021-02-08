@@ -37,7 +37,7 @@ public class LocaleConfig implements ApplicationContextAware {
 
     @Primary
     @Bean
-    public MessageSourceProperties messageSourceProperties(MessageSourceProperties externalMessageSourceProperties) {
+    public MessageSourceProperties messageSourceProperties(MessageSourceProperties externalProperties) {
         String basename = "";
         if (ICollections.hasElements(locators)) {
             Set<String> basenames = new HashSet<String>();
@@ -46,14 +46,18 @@ public class LocaleConfig implements ApplicationContextAware {
             }
             basename = StringUtils.join(basenames, ",");
         }
-        if (externalMessageSourceProperties != null
-            && StringUtils.isNotEmpty(externalMessageSourceProperties.getBasename())) {
-            basename = StringUtils.isEmpty(basename) ? externalMessageSourceProperties.getBasename()
-                : basename + "," + externalMessageSourceProperties.getBasename();
+        if (externalProperties != null
+            && StringUtils.isNotEmpty(externalProperties.getBasename())) {
+            basename = StringUtils.isEmpty(basename) ? externalProperties.getBasename()
+                : basename + "," + externalProperties.getBasename();
         }
-
         MessageSourceProperties messageSourceProperties = new MessageSourceProperties();
         messageSourceProperties.setBasename(basename);
+        messageSourceProperties.setAlwaysUseMessageFormat(externalProperties.isAlwaysUseMessageFormat());
+        messageSourceProperties.setCacheDuration(externalProperties.getCacheDuration());
+        messageSourceProperties.setEncoding(externalProperties.getEncoding());
+        messageSourceProperties.setFallbackToSystemLocale(externalProperties.isFallbackToSystemLocale());
+        messageSourceProperties.setUseCodeAsDefaultMessage(externalProperties.isUseCodeAsDefaultMessage());
         return messageSourceProperties;
     }
 

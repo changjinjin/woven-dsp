@@ -205,7 +205,6 @@
         <dependency>
             <groupId>io.github.lukehutch</groupId>
             <artifactId>fast-classpath-scanner</artifactId>
-            <version>${fast-classpath-scanner.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>

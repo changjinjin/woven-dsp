@@ -19,10 +19,6 @@
             <artifactId>baymax-common-persistence</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-dataset</artifactId>
         </dependency>
