@@ -8,8 +8,8 @@
         <artifactId>baymax-common</artifactId>
         <version>0.1.5-SNAPSHOT</version>
     </parent>
-    <artifactId>baymax-common-comp</artifactId>
-    <name>baymax-common-comp</name>
+    <artifactId>baymax-common-config</artifactId>
+    <name>baymax-common-config</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -21,10 +21,18 @@
             <artifactId>baymax-common-persistence</artifactId>
             <exclusions>
                 <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-core</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-autoconfigure</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

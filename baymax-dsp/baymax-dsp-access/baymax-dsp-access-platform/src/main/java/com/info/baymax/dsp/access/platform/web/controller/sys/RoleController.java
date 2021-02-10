@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.comp.base.MainTableController;
+import com.info.baymax.common.config.base.MainTableController;
 import com.info.baymax.common.core.annotation.JsonBody;
 import com.info.baymax.common.core.annotation.JsonBodys;
 import com.info.baymax.common.core.page.IPage;

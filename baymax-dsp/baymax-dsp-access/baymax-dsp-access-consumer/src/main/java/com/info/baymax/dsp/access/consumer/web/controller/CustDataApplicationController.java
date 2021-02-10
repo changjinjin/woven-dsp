@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
-import com.info.baymax.common.comp.base.BaseEntityController;
+import com.info.baymax.common.config.base.BaseEntityController;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;

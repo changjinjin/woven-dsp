@@ -20,7 +20,7 @@
 		<skipApiDocs>true</skipApiDocs>
 
 		<baymax-common.version>0.1.5-SNAPSHOT</baymax-common.version>
-		<baymax-woven.version>3.1</baymax-woven.version>
+		<baymax-woven.version>1.2.3-SNAPSHOT</baymax-woven.version>
 
 		<!-- spring boot -->
 		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
@@ -122,6 +122,7 @@
 
 	<modules>
 		<module>baymax-common</module>
+		<module>baymax-starters</module>
 		<module>baymax-security</module>
 		<module>baymax-dsp</module>
 		<module>baymax-sentinel-dashboard</module>
@@ -248,7 +249,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.info.baymax</groupId>
-				<artifactId>baymax-common-comp</artifactId>
+				<artifactId>baymax-common-config</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
@@ -279,6 +280,31 @@
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-security-cas-reactive-client-starter</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-persistence-spring-boot-starter</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-webflux-spring-boot-starter</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-webmvc-spring-boot-starter</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-cloud-spring-boot-starter</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-cache-spring-boot-starter</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 
@@ -893,6 +919,16 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.2</version>
@@ -1009,11 +1045,6 @@
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>4.0.3</version>
-				</plugin>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>2.2.5.RELEASE</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

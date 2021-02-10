@@ -1,9 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.client;
 
+import com.google.common.collect.Lists;
 import com.info.baymax.data.elasticsearch.config.jest.ISearchResult;
 import com.info.baymax.data.elasticsearch.config.jest.JestClientUtils;
 import com.info.baymax.data.elasticsearch.config.jest.JestConf;
-import com.inforefiner.repackaged.org.apache.curator.shaded.com.google.common.collect.Lists;
 import io.searchbox.client.JestClient;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;

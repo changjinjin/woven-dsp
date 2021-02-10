@@ -19,13 +19,13 @@
     <modules>
         <module>baymax-common-core</module>
         <module>baymax-common-queryapi</module>
+        <module>baymax-common-validation</module>
         <module>baymax-common-persistence</module>
         <module>baymax-common-swagger</module>
         <module>baymax-common-jdbc</module>
-        <module>baymax-common-comp</module>
+        <module>baymax-common-config</module>
+        <module>baymax-common-feign</module>
         <module>baymax-common-webflux</module>
         <module>baymax-common-webmvc</module>
-        <module>baymax-common-feign</module>
-        <module>baymax-common-validation</module>
     </modules>
 </project>

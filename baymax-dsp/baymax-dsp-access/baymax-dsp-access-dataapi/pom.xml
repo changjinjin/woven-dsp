@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.info.baymax</groupId>
@@ -25,10 +27,6 @@
     <dependencies>
         <dependency>
             <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-common-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-sys</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -48,112 +46,44 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.merce.woven</groupId>
-            <artifactId>woven-metrics</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-elasticsearch</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-cloud-spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-webflux-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-persistence-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.merce.woven</groupId>
+            <artifactId>woven-metrics</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.ws.rs</groupId>
-                    <artifactId>jsr311-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-openfeign-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-annotations</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-context</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.glassfish.jaxb</groupId>
-                    <artifactId>jaxb-runtime</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.zaxxer</groupId>
-                    <artifactId>HikariCP</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mybatis</groupId>
-                    <artifactId>mybatis</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mybatis</groupId>
-                    <artifactId>mybatis-spring</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.persistence</groupId>
-                    <artifactId>persistence-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mybatis.spring.boot</groupId>
-                    <artifactId>mybatis-spring-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.inforefiner.snowball</groupId>
+            <artifactId>snowball-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
@@ -292,7 +222,7 @@
                             <addClasspath>false</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path />
+                            <Class-Path/>
                         </manifestEntries>
                     </archive>
                     <excludes>
@@ -384,10 +314,10 @@
                         <doctype>book</doctype>
                         <toc>left</toc>
                         <toclevels>3</toclevels>
-                        <numbered />
-                        <hardbreaks />
-                        <sectlinks />
-                        <sectanchors />
+                        <numbered/>
+                        <hardbreaks/>
+                        <sectlinks/>
+                        <sectanchors/>
                         <generated>${generated.asciidoc.directory}</generated>
                     </attributes>
                 </configuration>

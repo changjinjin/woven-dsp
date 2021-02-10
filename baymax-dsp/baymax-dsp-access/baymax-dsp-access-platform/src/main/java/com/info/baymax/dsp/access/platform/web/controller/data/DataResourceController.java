@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
-import com.info.baymax.common.comp.base.BaseEntityController;
+import com.info.baymax.common.config.base.BaseEntityController;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
