@@ -51,7 +51,7 @@
 	<logger name="org.apache.coyote" level="ERROR" />
 	<logger name="ch.qos.logback" level="ERROR" />
 	<logger name="druid.sql" level="ERROR" />
-	<logger name="com.alibaba.druid" level="ERROR" />
+    <logger name="com.alibaba" level="ERROR"/>
 	<logger name="net.sf.ehcache" level="ERROR" />
 	<logger name="com.serotonin.modbus4j" level="ERROR" />
 	<logger name="springfox" level="ERROR" />

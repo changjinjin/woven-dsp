@@ -30,6 +30,8 @@
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
 		<jasypt.version>1.9.3</jasypt.version>
 
+		<dubbo-spring-boot.version>2.7.3</dubbo-spring-boot.version>
+
 		<!-- commons dependencies -->
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<commons-chain.version>1.1</commons-chain.version>
@@ -169,6 +171,12 @@
 				<version>${jasypt.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.alibaba.boot</groupId>
+				<artifactId>dubbo-spring-boot-starter</artifactId>
+				<version>${dubbo-spring-boot.version}</version>
+			</dependency>
+
 			<!-- woven common dependencies -->
 			<dependency>
 				<groupId>com.merce.woven</groupId>
@@ -255,6 +263,11 @@
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-common-webflux</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-common-web</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>

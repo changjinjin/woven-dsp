@@ -25,32 +25,26 @@
                     <artifactId>*</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mybatis</groupId>
-                    <artifactId>mybatis</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>tk.mybatis</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.github.pagehelper</groupId>
-                    <artifactId>pagehelper</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-context</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-autoconfigure</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.info.baymax</groupId>
                     <artifactId>baymax-common-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-validation</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

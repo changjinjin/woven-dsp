@@ -25,7 +25,15 @@
 				<include>conf/dsp-env.sh</include>
 				<include>conf/logback-spring.xml</include>
 				<include>conf/dsp-common.properties</include>
-				<include>conf/dsp-job-schedule.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-job/baymax-dsp-job-schedule/src/main/resources
+            </directory>
+            <outputDirectory>conf</outputDirectory>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-job-schedule.properties</include>
 			</includes>
 		</fileSet>
 		<fileSet>

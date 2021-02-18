@@ -1,4 +1,4 @@
-package com.info.baymax.common.config.base;
+package com.info.baymax.common.web.base;
 
 import com.info.baymax.common.persistence.entity.base.CommonEntity;
 import com.info.baymax.common.persistence.entity.base.CommonEntityService;

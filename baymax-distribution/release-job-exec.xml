@@ -25,7 +25,15 @@
 				<include>conf/dsp-env.sh</include>
 				<include>conf/logback-spring.xml</include>
 				<include>conf/dsp-common.properties</include>
-				<include>conf/dsp-job-exec.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-job/baymax-dsp-job-exec/src/main/resources
+            </directory>
+            <outputDirectory>conf</outputDirectory>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-job-exec.properties</include>
 			</includes>
 		</fileSet>
 		<fileSet>

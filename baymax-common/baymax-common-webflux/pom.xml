@@ -22,9 +22,27 @@
             <exclusions>
                 <exclusion>
                     <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-persistence</artifactId>
+                    <artifactId>baymax-common-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-validation</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-validation</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

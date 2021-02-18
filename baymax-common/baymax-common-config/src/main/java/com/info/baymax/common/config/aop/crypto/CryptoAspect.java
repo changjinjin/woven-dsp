@@ -1,4 +1,4 @@
-package com.info.baymax.common.config.crypto;
+package com.info.baymax.common.config.aop.crypto;
 
 import com.info.baymax.common.core.crypto.annotation.Cryptoable;
 import com.info.baymax.common.core.crypto.method.CryptoMethodInvoker;

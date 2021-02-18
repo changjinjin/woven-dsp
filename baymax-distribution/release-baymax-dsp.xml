@@ -98,7 +98,93 @@
 				<include>*.java</include>
 			</includes>
 		</fileSet>
-		<!-- copy libs -->
+
+        <!-- copy conf -->
+        <fileSet>
+            <directory>
+                ${project.parent.basedir}/baymax-dsp/baymax-dsp-access/baymax-dsp-access-consumer/src/main/resources
+            </directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-access-consumer.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>
+                ${project.parent.basedir}/baymax-dsp/baymax-dsp-access/baymax-dsp-access-dataapi/src/main/resources
+            </directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-access-dataapi.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>
+                ${project.parent.basedir}/baymax-dsp/baymax-dsp-access/baymax-dsp-access-platform/src/main/resources
+            </directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-access-platform.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>
+                ${project.parent.basedir}/baymax-security/baymax-security-oauth/baymax-security-oauth-server/src/main/resources
+            </directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-auth-server.properties</include>
+                <include>ehcache.xml</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-job/baymax-dsp-job-exec/src/main/resources
+            </directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-job-exec.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-job/baymax-dsp-job-schedule/src/main/resources
+            </directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-job-schedule.properties</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-gateway/src/main/resources</directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-gateway.yml</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-cas-gateway/src/main/resources</directory>
+            <outputDirectory>./conf</outputDirectory>
+            <directoryMode>755</directoryMode>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>dsp-cas-gateway.yml</include>
+            </includes>
+        </fileSet>
+
+        <!-- copy libs -->
 		<fileSet>
 			<directory>${project.parent.basedir}/baymax-dsp/baymax-dsp-access/baymax-dsp-access-consumer/target/lib/
             </directory>
@@ -169,7 +255,7 @@
 				<include>*.jar</include>
 			</includes>
 		</fileSet>
-		
+
 		<fileSet>
             <directory>${project.parent.basedir}</directory>
             <outputDirectory>./</outputDirectory>

@@ -1,10 +1,12 @@
-package com.info.baymax.common.config.crypto;
+package com.info.baymax.common.web.aop.crypto;
 
 import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.core.crypto.method.AbstractCryptoMethodInvoker;
+import com.info.baymax.common.core.crypto.method.CryptoConfig;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.jpa.page.Page;
+import org.springframework.stereotype.Component;
 
 /**
  * 自定义的方法级别参数和返回值加解密调用器
@@ -13,10 +15,11 @@ import com.info.baymax.common.persistence.jpa.page.Page;
  * @date 2019年12月6日 下午3:44:21
  */
 @SuppressWarnings("deprecation")
+@Component
 public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
 
-    public CustomCryptoMethodInvoker(String secretKey, CryptorDelegater cryptorDelegater) {
-        super(secretKey, cryptorDelegater);
+    public CustomCryptoMethodInvoker(final CryptoConfig config, final CryptorDelegater cryptorDelegater) {
+        super(config.getSecretKey(), cryptorDelegater);
     }
 
     @Override

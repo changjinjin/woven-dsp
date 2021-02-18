@@ -1,6 +1,5 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.config.base.MainTableController;
 import com.info.baymax.common.core.annotation.JsonBody;
 import com.info.baymax.common.core.annotation.JsonBodys;
 import com.info.baymax.common.core.crypto.CryptoOperation;
@@ -14,6 +13,7 @@ import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.web.base.MainTableController;
 import com.info.baymax.dsp.data.sys.entity.bean.ChangePwd;
 import com.info.baymax.dsp.data.sys.entity.security.Role;
 import com.info.baymax.dsp.data.sys.entity.security.Tenant;

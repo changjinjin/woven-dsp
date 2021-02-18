@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.access.platform.web.controller.sys;
 
-import com.info.baymax.common.config.base.MainTableController;
 import com.info.baymax.common.core.annotation.JsonBody;
 import com.info.baymax.common.core.annotation.JsonBodys;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.web.base.MainTableController;
 import com.info.baymax.dsp.access.platform.config.SysInitConfig;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 import com.info.baymax.dsp.data.consumer.service.DataCustAppService;

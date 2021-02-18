@@ -1,5 +1,5 @@
 server:
-  address: 192.168.1.35
+  address: 192.168.1.164
   port: 8008
   reactive:
     context-path: /
@@ -66,9 +66,11 @@ spring:
 #            buf-size: 1024
 #            recommend-refresh-ms: 10000
     nacos:
+      config:
+        enabled: false
       discovery:
         enabled: true
-        server-addr: 192.168.1.35:8848
+        server-addr: 192.168.1.164:8848
         service: ${spring.application.name}
         metadata:
           serviceName: ${spring.application.name}

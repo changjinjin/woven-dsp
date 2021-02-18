@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
-import com.info.baymax.common.config.base.BaseEntityController;
 import com.info.baymax.common.core.exception.ControllerException;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.web.base.BaseEntityController;
 import com.info.baymax.dsp.data.platform.entity.DataCategory;
 import com.info.baymax.dsp.data.platform.service.DataCategoryService;
 import io.swagger.annotations.Api;

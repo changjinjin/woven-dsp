@@ -1,11 +1,14 @@
-package com.info.baymax.common.config.crypto;
+package com.info.baymax.common.config.aop.crypto;
 
-import com.info.baymax.common.config.crypto.CryptoConfig.CryptoProperties;
+import com.info.baymax.common.config.aop.crypto.CryptoBeanConfig.CryptoProperties;
 import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.core.crypto.delegater.DefaultCryptorDelegater;
+import com.info.baymax.common.core.crypto.method.CryptoConfig;
 import com.info.baymax.common.core.crypto.method.CryptoMethodInvoker;
+import com.info.baymax.common.core.crypto.method.DefaultCryptoMethodInvoker;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,14 +22,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(CryptoProperties.class)
-public class CryptoConfig {
+public class CryptoBeanConfig {
 
     @Bean
-    public CryptoMethodInvoker cryptoMethodInvoker(final CryptoProperties properties) {
-        return new CustomCryptoMethodInvoker(properties.getSecretKey(), cryptorDelegater());
+    @ConditionalOnMissingBean(value = CryptoMethodInvoker.class)
+    public CryptoMethodInvoker cryptoMethodInvoker(final CryptoConfig config) {
+        return new DefaultCryptoMethodInvoker(config.getSecretKey());
     }
 
     @Bean
+    @ConditionalOnMissingBean(value = CryptorDelegater.class)
     public CryptorDelegater cryptorDelegater() {
         return new DefaultCryptorDelegater();
     }
@@ -34,9 +39,7 @@ public class CryptoConfig {
     @Setter
     @Getter
     @ConfigurationProperties(prefix = CryptoProperties.PREFIX)
-    public static final class CryptoProperties {
+    public static final class CryptoProperties extends CryptoConfig {
         public static final String PREFIX = "crypto";
-
-        private String secretKey = "infoaeskey123456";
     }
 }

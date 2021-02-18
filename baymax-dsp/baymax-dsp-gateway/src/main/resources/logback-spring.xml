@@ -50,7 +50,7 @@
     <logger name="org.apache.coyote" level="ERROR"/>
     <logger name="ch.qos.logback" level="ERROR"/>
     <logger name="druid.sql" level="ERROR"/>
-    <logger name="com.alibaba.druid" level="ERROR"/>
+    <logger name="com.alibaba" level="ERROR"/>
     <logger name="net.sf.ehcache" level="ERROR"/>
     <logger name="com.serotonin.modbus4j" level="ERROR"/>
     <logger name="springfox" level="ERROR"/>
@@ -87,7 +87,7 @@
     <logger name="org.apache.tomcat" level="ERROR"/>
 
     <logger name="com.netflix" level="WARN"/>
-    <logger name="org.springframework" level="DEBUG"/>
+    <logger name="org.springframework" level="ERROR"/>
     <logger name="com.info.baymax" level="DEBUG"/>
     <logger name="com.info.baymax.dsp.gateway.feign" level="ERROR"/>
     <logger name="java.sql" level="DEBUG"/>

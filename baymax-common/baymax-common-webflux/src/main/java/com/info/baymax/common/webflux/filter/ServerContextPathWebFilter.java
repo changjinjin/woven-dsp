@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class ServerContextPathWebFilter implements WebFilter {
 
-    @Value("${server.reactive.context-path:/}")
+    @Value("${server.reactive.context-path:${server.servlet.context-path:/}}")
     private String contextPath;
 
     @Override

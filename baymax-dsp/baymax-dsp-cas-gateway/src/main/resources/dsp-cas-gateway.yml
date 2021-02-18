@@ -66,6 +66,8 @@ spring:
 #            buf-size: 1024
 #            recommend-refresh-ms: 10000
     nacos:
+      config:
+        enabled: false
       discovery:
         enabled: true
         server-addr: 192.168.1.82:8848

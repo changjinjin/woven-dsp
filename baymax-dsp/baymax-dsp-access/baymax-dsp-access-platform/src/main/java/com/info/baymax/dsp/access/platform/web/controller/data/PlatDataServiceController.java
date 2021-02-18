@@ -1,12 +1,12 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
-import com.info.baymax.common.config.base.BaseEntityController;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.web.base.BaseEntityController;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;

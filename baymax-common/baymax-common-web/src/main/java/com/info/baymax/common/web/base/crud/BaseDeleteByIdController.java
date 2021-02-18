@@ -1,4 +1,4 @@
-package com.info.baymax.common.config.base.crud;
+package com.info.baymax.common.web.base.crud;
 
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.entity.gene.Idable;

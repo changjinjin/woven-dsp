@@ -22,6 +22,12 @@
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-webflux-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.merce.woven</groupId>
