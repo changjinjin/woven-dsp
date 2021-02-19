@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
 
 import javax.annotation.Nullable;
@@ -48,10 +47,19 @@ public class CommonExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    @Order(0)
-    public Response<?> uncaughtExceptionHandler(ServerWebExchange swe, Exception e) {
+    @Order(1)
+    public Response<?> uncaughtExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
         return Response.error(ErrType.SERVICE_UNAVAILABLE, e.getMessage()).details(e).build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @Order(0)
+    public Response<?> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+        log.error(e.getMessage(), e);
+        return Response.error(ErrType.BAD_REQUEST, e.getMessage()).details(e).build();
     }
 
     /**

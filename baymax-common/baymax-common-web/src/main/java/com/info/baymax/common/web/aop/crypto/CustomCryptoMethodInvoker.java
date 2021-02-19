@@ -6,6 +6,7 @@ import com.info.baymax.common.core.crypto.method.CryptoConfig;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.persistence.jpa.page.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,6 +39,9 @@ public class CustomCryptoMethodInvoker extends AbstractCryptoMethodInvoker {
         if (result instanceof Response) {
             Response<Object> responseObj = (Response<Object>) result;
             obj = responseObj.getContent();
+        } else if (result instanceof ResponseEntity) {
+            ResponseEntity<Object> responseObj = (ResponseEntity<Object>) result;
+            obj = responseObj.getBody();
         } else {
             obj = result;
         }
