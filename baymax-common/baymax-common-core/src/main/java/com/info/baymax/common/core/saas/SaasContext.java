@@ -24,6 +24,9 @@ public class SaasContext implements Serializable {
     private boolean admin;
     private String userType;
 
+    private String internalToken; // user from INTERNAL-TOKEN
+    private String privilegeUser;
+
     private static ThreadLocal<SaasContext> saasContextThreadLocal = new ThreadLocal<>();
 
     public static SaasContext getCurrentSaasContext() {
@@ -80,10 +83,34 @@ public class SaasContext implements Serializable {
         context.setUsername(null);
     }
 
-    public static void initSaasContext(String tenantId, String userId) {
+    public static SaasContext initSaasContext(String host, String clientId, String tenantId, String tenantName,
+                                              String userId, String username, boolean admin, String userType, String internalToken,
+                                              String privilegeUser) {
         SaasContext ctx = getCurrentSaasContext();
+        ctx.setHost(host);
+        ctx.setClientId(clientId);
+        ctx.setTenantId(tenantId);
+        ctx.setTenantName(tenantName);
+        ctx.setUserId(userId);
+        ctx.setUsername(username);
+        ctx.setAdmin(admin);
+        ctx.setUserType(userType);
+        ctx.setInternalToken(internalToken);
+        ctx.setPrivilegeUser(privilegeUser);
+        return ctx;
+    }
 
+    public static SaasContext initSaasContext(String tenantId, String tenantName, String userId, String username,
+                                              boolean admin, String userType) {
+        SaasContext ctx = getCurrentSaasContext();
+        return initSaasContext(ctx.getHost(), ctx.getClientId(), tenantId, tenantName, userId, username, admin,
+            userType, ctx.getInternalToken(), ctx.getPrivilegeUser());
+    }
+
+    public static SaasContext initSaasContext(String tenantId, String userId) {
+        SaasContext ctx = getCurrentSaasContext();
         ctx.setTenantId(tenantId);
         ctx.setUserId(userId);
+        return ctx;
     }
 }
