@@ -54,10 +54,10 @@ public class CommonExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, ServerWebInputException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(0)
-    public Response<?> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+    public Response<?> illegalArgumentExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
         return Response.error(ErrType.BAD_REQUEST, e.getMessage()).details(e).build();
     }
@@ -128,12 +128,11 @@ public class CommonExceptionHandler {
     }
 
     @ResponseBody
-    @ExceptionHandler(value = {BindException.class, WebExchangeBindException.class, ServerWebInputException.class})
+    @ExceptionHandler(value = {BindException.class, WebExchangeBindException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @Order(-3)
-    public Response<?> webExchangeBindException(WebExchangeBindException e) {
-        BindingResult bindingResult = e.getBindingResult();
-        FieldError fieldError = bindingResult.getFieldError();
+    public Response<?> webExchangeBindException(BindingResult e) {
+        FieldError fieldError = e.getFieldError();
         String objectName = fieldError.getObjectName();
         StringBuffer buff = new StringBuffer();
         buff.append("[");
