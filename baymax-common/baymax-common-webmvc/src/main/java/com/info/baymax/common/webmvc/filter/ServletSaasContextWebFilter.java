@@ -26,21 +26,37 @@ public class ServletSaasContextWebFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
-		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		String saasContextHeader = request.getHeader(SaasContext.SAAS_CONTEXT_KEY);
-		if (StringUtils.isNotEmpty(saasContextHeader)) {
-			String decode = null;
-			try {
-				decode = URLDecoder.decode(saasContextHeader, "UTF-8");
-				SaasContext saasContext = JsonUtils.fromJson(decode, SaasContext.class);
-				if (saasContext != null) {
-					SaasContext.setCurrentSaasContext(saasContext);
-				}
-				log.debug("fix current SaasContext :{}", decode);
-			} catch (UnsupportedEncodingException e) {
-				log.error(e.getMessage(), e);
-			}
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        try {
+            String saasContextHeader = request.getHeader(SaasContext.SAAS_CONTEXT_KEY);
+            String userId = request.getHeader("userId");
+            if (StringUtils.isNotEmpty(saasContextHeader)) {
+                String decode = null;
+                try {
+                    decode = URLDecoder.decode(saasContextHeader, "UTF-8");
+                    SaasContext saasContext = JsonUtils.fromJson(decode, SaasContext.class);
+                    if (saasContext != null) {
+                        SaasContext.setCurrentSaasContext(saasContext);
+                    }
+                    log.debug("fix current SaasContext :{}", decode);
+                } catch (UnsupportedEncodingException e) {
+                    log.error(e.getMessage(), e);
+                }
+            } else if (StringUtils.isNotEmpty(userId)) {
+                String admin = request.getHeader("admin");
+                SaasContext.initSaasContext(//
+                    request.getHeader("tenantId"), //
+                    request.getHeader("tenantName"), //
+                    userId, //
+                    request.getHeader("username"), //
+                    StringUtils.isNotEmpty(admin) && "true".equalsIgnoreCase(admin) ? true : false, //
+                    request.getHeader("userType") //
+                );
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            SaasContext.clear();
 		}
 		chain.doFilter(request, response);
 	}

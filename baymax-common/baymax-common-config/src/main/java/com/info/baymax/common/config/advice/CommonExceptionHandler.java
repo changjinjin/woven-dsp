@@ -81,8 +81,12 @@ public class CommonExceptionHandler {
         String customMessage = e.getCustomMessage();
 
         String message = null;
-        if (accessor != null) {
-            message = accessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
+        try {
+            if (accessor != null) {
+                message = accessor.getMessage(errMsg.getCode(), e.getArgs(), e.getCustomMessage());
+            }
+        } catch (Exception e1) {
+            // do nothing
         }
 
         message = StringUtils.defaultIfEmpty(message, customMessage);
@@ -116,12 +120,16 @@ public class CommonExceptionHandler {
         log.error(e.getMessage(), e);
         String message = null;
         Throwable cause = e.getCause();
-        if (accessor != null) {
-            if (cause != null) {
-                message = accessor.getMessage(cause.getClass().getCanonicalName());
-            } else {
-                message = accessor.getMessage(e.getClass().getCanonicalName());
+        try {
+            if (accessor != null) {
+                if (cause != null) {
+                    message = accessor.getMessage(cause.getClass().getCanonicalName());
+                } else {
+                    message = accessor.getMessage(e.getClass().getCanonicalName());
+                }
             }
+        } catch (Exception e1) {
+            // do nothing
         }
         message = StringUtils.defaultIfEmpty(message, e.getMessage());
         return Response.serviceUnavailable().message(message).details(e).build();

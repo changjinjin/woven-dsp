@@ -65,6 +65,10 @@ public class SaasContext implements Serializable {
         return getCurrentSaasContext().isAdmin();
     }
 
+    public static String getCurrentUserType() {
+        return getCurrentSaasContext().getUserType();
+    }
+
     public static Map<String, Object> current() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("tenantId", getCurrentTenantId());
