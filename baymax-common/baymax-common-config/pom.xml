@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.info.baymax</groupId>
         <artifactId>baymax-common</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.6-SNAPSHOT</version>
     </parent>
     <artifactId>baymax-common-config</artifactId>
     <name>baymax-common-config</name>
