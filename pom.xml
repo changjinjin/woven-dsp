@@ -20,7 +20,7 @@
 		<skipApiDocs>true</skipApiDocs>
 
 		<baymax-common.version>0.1.5-SNAPSHOT</baymax-common.version>
-		<baymax-woven.version>1.2.3-SNAPSHOT</baymax-woven.version>
+        <baymax-woven.version>3.1</baymax-woven.version>
 
 		<!-- spring boot -->
 		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
