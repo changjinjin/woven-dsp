@@ -1,7 +1,10 @@
 package com.info.baymax.common.webmvc.config;
 
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.info.baymax.common.config.JacksonConfig.JacksonExtProperties;
+import com.info.baymax.common.webmvc.servlet.result.PathTweakingRequestMappingHandlerMapping;
+import com.info.baymax.common.webmvc.servlet.result.ServletFilterFieldsHandlerResultHandler;
+import com.info.baymax.common.webmvc.servlet.result.ServletMappingJackson2HttpMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,15 +21,14 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.webmvc.servlet.result.PathTweakingRequestMappingHandlerMapping;
-import com.info.baymax.common.webmvc.servlet.result.ServletFilterFieldsHandlerResultHandler;
-import com.info.baymax.common.webmvc.servlet.result.ServletMappingJackson2HttpMessageConverter;
+import java.util.List;
 
 @Configuration
 public class WebMvcExtConfig implements WebMvcConfigurer {
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private JacksonExtProperties properties;
 
     @Bean
     public ServletListenerRegistrationBean<RequestContextListener> servletListenerRegistrationBean() {
@@ -36,7 +38,7 @@ public class WebMvcExtConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         WebMvcConfigurer.super.configureMessageConverters(converters);
-        converters.add(new ServletMappingJackson2HttpMessageConverter());
+        converters.add(new ServletMappingJackson2HttpMessageConverter(properties));
     }
 
     @Override
