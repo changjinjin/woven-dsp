@@ -11,10 +11,39 @@ import java.util.List;
 public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
     private final CustomizeNullJsonSerializer.NullArrayJsonSerializer nullArrayJsonSerializer = new CustomizeNullJsonSerializer.NullArrayJsonSerializer();
     private final CustomizeNullJsonSerializer.NullStringJsonSerializer nullStringJsonSerializer = new CustomizeNullJsonSerializer.NullStringJsonSerializer();
-    @SuppressWarnings("unused")
     private final CustomizeNullJsonSerializer.NullNumberJsonSerializer nullNumberJsonSerializer = new CustomizeNullJsonSerializer.NullNumberJsonSerializer();
-    @SuppressWarnings("unused")
     private final CustomizeNullJsonSerializer.NullBooleanJsonSerializer nullBooleanJsonSerializer = new CustomizeNullJsonSerializer.NullBooleanJsonSerializer();
+
+    /**
+     * 数组或集合为null时是否序列化为空字符串
+     */
+    private boolean writeNullValueAsEmptyString = false;
+    /**
+     * 数组或集合为null时是否序列化为空字符串
+     */
+    private boolean writeNullArrayAsEmptyString = false;
+    /**
+     * 字符串为null时是否序列化为空字符串
+     */
+    private boolean writeNullStringAsEmptyString = false;
+    /**
+     * Number为null时是否序列化为空字符串
+     */
+    private boolean writeNullNumberAsEmptyString = false;
+    /**
+     * Boolean为null时是否序列化为空字符串
+     */
+    private boolean writeNullBooleanAsEmptyString = false;
+
+    public CustomizeBeanSerializerModifier(boolean writeNullValueAsEmptyString, boolean writeNullArrayAsEmptyString,
+                                           boolean writeNullStringAsEmptyString, boolean writeNullNumberAsEmptyString,
+                                           boolean writeNullBooleanAsEmptyString) {
+        this.writeNullValueAsEmptyString = writeNullValueAsEmptyString;
+        this.writeNullArrayAsEmptyString = writeNullArrayAsEmptyString;
+        this.writeNullStringAsEmptyString = writeNullStringAsEmptyString;
+        this.writeNullNumberAsEmptyString = writeNullNumberAsEmptyString;
+        this.writeNullBooleanAsEmptyString = writeNullBooleanAsEmptyString;
+    }
 
     @Override
     public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc,
@@ -23,16 +52,15 @@ public class CustomizeBeanSerializerModifier extends BeanSerializerModifier {
         for (Object beanProperty : beanProperties) {
             BeanPropertyWriter writer = (BeanPropertyWriter) beanProperty;
             // 判断字段的类型，如果是array，list，set则注册nullSerializer
-            if (isArrayType(writer)) {
+            if (writeNullArrayAsEmptyString && isArrayType(writer)) {
                 writer.assignNullSerializer(nullArrayJsonSerializer);
-            } else if (isStringType(writer)) {
+            } else if (writeNullStringAsEmptyString && isStringType(writer)) {
                 writer.assignNullSerializer(nullStringJsonSerializer);
-            }
-            /*
-             * else if (isNumberType(writer)) { writer.assignNullSerializer(nullNumberJsonSerializer); } else if
-             * (isBooleanType(writer)) { writer.assignNullSerializer(nullBooleanJsonSerializer); }
-             */
-            else {
+            } else if (writeNullNumberAsEmptyString && isNumberType(writer)) {
+                writer.assignNullSerializer(nullNumberJsonSerializer);
+            } else if (writeNullBooleanAsEmptyString && isBooleanType(writer)) {
+                writer.assignNullSerializer(nullBooleanJsonSerializer);
+            } else if (writeNullValueAsEmptyString) {
                 writer.assignNullSerializer(nullStringJsonSerializer);
             }
         }

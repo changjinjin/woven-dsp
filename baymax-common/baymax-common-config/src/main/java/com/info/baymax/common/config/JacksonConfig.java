@@ -47,7 +47,11 @@ public class JacksonConfig {
         }
 
         /** 为objectMapper注册一个带有SerializerModifier的Factory */
-        m.setSerializerFactory(m.getSerializerFactory().withSerializerModifier(new CustomizeBeanSerializerModifier()));
+        m.setSerializerFactory(m.getSerializerFactory()
+            .withSerializerModifier(new CustomizeBeanSerializerModifier(
+                extProperties.isWriteNullValueAsEmptyString(), extProperties.isWriteNullArrayAsEmptyString(),
+                extProperties.isWriteNullStringAsEmptyString(), extProperties.isWriteNullNumberAsEmptyString(),
+                extProperties.isWriteNullBooleanAsEmptyString())));
 
         /** Object **/
         // SerializerProvider serializerProvider = m.getSerializerProvider();
@@ -65,5 +69,30 @@ public class JacksonConfig {
          * 是否序列化Long类型数据为String类型
          */
         private boolean writeLongAsString = false;
+
+        /**
+         * 数组或集合为null时是否序列化为空字符串
+         */
+        private boolean writeNullValueAsEmptyString = false;
+
+        /**
+         * 数组或集合为null时是否序列化为空字符串
+         */
+        private boolean writeNullArrayAsEmptyString = false;
+
+        /**
+         * 字符串为null时是否序列化为空字符串
+         */
+        private boolean writeNullStringAsEmptyString = false;
+
+        /**
+         * Number为null时是否序列化为空字符串
+         */
+        private boolean writeNullNumberAsEmptyString = false;
+
+        /**
+         * Boolean为null时是否序列化为空字符串
+         */
+        private boolean writeNullBooleanAsEmptyString = false;
     }
 }
