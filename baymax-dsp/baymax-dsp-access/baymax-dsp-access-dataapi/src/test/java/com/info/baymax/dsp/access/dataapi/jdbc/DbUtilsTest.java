@@ -1,5 +1,15 @@
 package com.info.baymax.dsp.access.dataapi.jdbc;
 
+import java.math.BigInteger;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
+
+import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.junit.jupiter.api.Test;
+
 import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.common.persistence.sqlhelper.MapEntityListHandler;
 import com.info.baymax.common.utils.DataBaseUtil;
@@ -8,15 +18,6 @@ import com.jn.sqlhelper.apachedbutils.QueryRunner;
 import com.jn.sqlhelper.dialect.pagination.PagingRequest;
 import com.jn.sqlhelper.dialect.pagination.PagingResult;
 import com.jn.sqlhelper.dialect.pagination.SqlPaginations;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
-import org.junit.Test;
-
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
 
 public class DbUtilsTest {
 

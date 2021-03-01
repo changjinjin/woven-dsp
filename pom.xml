@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.info.baymax</groupId>
@@ -18,35 +20,35 @@
 		<skipApiDocs>true</skipApiDocs>
 
 		<baymax-common.version>0.1.6-SNAPSHOT</baymax-common.version>
-        <baymax-woven.version>3.1</baymax-woven.version>
+		<baymax-woven.version>3.1</baymax-woven.version>
 
 		<!-- spring boot -->
-		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR3</spring-cloud.version>
-		<spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
-		<rocketmq-spring-boot.version>2.1.0</rocketmq-spring-boot.version>
+		<spring-boot.version>2.4.3</spring-boot.version>
+		<spring-cloud.version>Hoxton.SR10</spring-cloud.version>
+		<spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
+		<rocketmq-spring-boot.version>2.2.0</rocketmq-spring-boot.version>
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
 		<jasypt.version>1.9.3</jasypt.version>
 
 		<dubbo-spring-boot.version>2.7.3</dubbo-spring-boot.version>
 
 		<!-- commons dependencies -->
-		<commons-beanutils.version>1.9.3</commons-beanutils.version>
-		<commons-chain.version>1.1</commons-chain.version>
-		<commons-cli.version>1.2</commons-cli.version>
-		<commons-codec.version>1.11</commons-codec.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
+		<commons-chain.version>1.2</commons-chain.version>
+		<commons-cli.version>1.4</commons-cli.version>
+		<commons-codec.version>1.15</commons-codec.version>
 		<commons-collections.version>3.2.2</commons-collections.version>
-		<commons-compress.version>1.4.1</commons-compress.version>
+		<commons-compress.version>1.20</commons-compress.version>
 		<commons-configuration.version>1.10</commons-configuration.version>
-		<commons-daemon.version>1.0.13</commons-daemon.version>
+		<commons-daemon.version>1.2.4</commons-daemon.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<commons-dbutils.version>1.7</commons-dbutils.version>
-		<commons-digester.version>1.8.1</commons-digester.version>
-		<commons-discovery.version>0.2</commons-discovery.version>
+		<commons-digester.version>2.1</commons-digester.version>
+		<commons-discovery.version>0.5</commons-discovery.version>
 		<commons-el.version>1.0</commons-el.version>
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<commons-io.version>2.6</commons-io.version>
+		<commons-io.version>2.8.0</commons-io.version>
 		<commons-jexl.version>1.1</commons-jexl.version>
 		<commons-jexl3.version>3.1</commons-jexl3.version>
 		<commons-jxpath.version>3.1</commons-jxpath.version>
@@ -57,7 +59,7 @@
 		<commons-pool.version>1.6</commons-pool.version>
 		<commons-validator.version>1.6</commons-validator.version>
 		<commons-vfs.version>1.0</commons-vfs.version>
-		<commons-lang3.version>3.9</commons-lang3.version>
+		<commons-lang3.version>3.11</commons-lang3.version>
 
 		<!-- mybatis dependencies -->
 		<mybatis.version>3.5.6</mybatis.version>
@@ -65,8 +67,8 @@
 		<mapper-module.version>1.1.5</mapper-module.version>
 		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
 		<mapper-spring-boot.version>2.1.5</mapper-spring-boot.version>
-		<pagehelper-spring-boot.version>1.2.13</pagehelper-spring-boot.version>
-		<pagehelper.version>5.1.11</pagehelper.version>
+		<pagehelper-spring-boot.version>1.3.0</pagehelper-spring-boot.version>
+		<pagehelper.version>5.2.0</pagehelper.version>
 
 		<!-- db dependencies -->
 		<mysql.version>5.1.48</mysql.version>
@@ -78,12 +80,13 @@
 		<fastjson.version>1.2.75</fastjson.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
+		<joda.version>2.10.10</joda.version>
 		<guava.version>22.0</guava.version>
 		<guava-retrying.version>2.0.0</guava-retrying.version>
 		<jest.version>6.3.1</jest.version>
-		<javassist.version>3.25.0-GA</javassist.version>
-		<sqlhelper.version>3.2.4</sqlhelper.version>
-		<easyjson.version>3.0.4</easyjson.version>
+		<javassist.version>3.27.0-GA</javassist.version>
+		<sqlhelper.version>3.4.8</sqlhelper.version>
+		<easyjson.version>3.1.1</easyjson.version>
 
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
 		<dom4j.version>1.6.1</dom4j.version>
@@ -699,13 +702,18 @@
 				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.github.rholder</groupId>
 				<artifactId>guava-retrying</artifactId>
 				<version>${guava-retrying.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>guava</artifactId>
 						<groupId>com.google.guava</groupId>
+						<artifactId>guava</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

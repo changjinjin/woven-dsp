@@ -1,17 +1,19 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
-import com.info.baymax.dsp.access.dataapi.DspDataapiStarter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.aspectj.lang.annotation.After;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+import com.info.baymax.dsp.access.dataapi.DspDataapiStarter;
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = { DspDataapiStarter.class }, //
 		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, //
 		properties = {/* "spring.main.web-application-type=none"*/ })
@@ -22,7 +24,7 @@ public abstract class AbstractBootTest {
 	@Autowired
 	protected ApplicationContext applicationContext;
 
-	@Before
+	@BeforeEach
 	public void init() {
 	}
 
@@ -42,7 +44,7 @@ public abstract class AbstractBootTest {
 	public void delete() {
 	}
 
-	@After
+	@AfterEach
 	public void destory() {
 	}
 }

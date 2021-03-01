@@ -1,6 +1,6 @@
 package com.info.baymax.data.elasticsearch.sql;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.info.baymax.common.utils.JsonUtils;

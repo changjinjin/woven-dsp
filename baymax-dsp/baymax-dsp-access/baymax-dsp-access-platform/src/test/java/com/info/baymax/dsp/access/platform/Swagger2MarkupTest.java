@@ -15,58 +15,56 @@
  */
 package com.info.baymax.dsp.access.platform;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.reactive.server.WebTestClient;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @AutoConfigureRestDocs(outputDir = "build/asciidoc/snippets")
 @AutoConfigureWebTestClient
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Swagger2MarkupTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+	@Autowired
+	private WebTestClient webTestClient;
 
-    @Test
-    public void createSpringfoxSwaggerJson() throws Exception {
-        log.info("create Springfox Swagger Json begin .....");
-        // String designFirstSwaggerLocation = Swagger2MarkupTest.class.getResource("/swagger.yaml").getPath();
-        String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
+	@Test
+	public void createSpringfoxSwaggerJson() throws Exception {
+		log.info("create Springfox Swagger Json begin .....");
+		// String designFirstSwaggerLocation = Swagger2MarkupTest.class.getResource("/swagger.yaml").getPath();
+		String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
 
-        webTestClient//
-            .get().uri("/v2/api-docs")//
-            .accept(MediaType.APPLICATION_JSON)//
-            .exchange()//
-            .expectStatus().isOk()//
-            .expectBody().consumeWith(t -> {
-            try {
-                Files.createDirectories(Paths.get(outputDir));
-                try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputDir, "swagger.json"),
-                    StandardCharsets.UTF_8)) {
-                    writer.write(new String(t.getResponseBodyContent(), "UTF-8"));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        log.info("create Springfox Swagger Json end .....");
-    }
+		webTestClient//
+				.get().uri("/v2/api-docs")//
+				.accept(MediaType.APPLICATION_JSON)//
+				.exchange()//
+				.expectStatus().isOk()//
+				.expectBody().consumeWith(t -> {
+					try {
+						Files.createDirectories(Paths.get(outputDir));
+						try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputDir, "swagger.json"),
+								StandardCharsets.UTF_8)) {
+							writer.write(new String(t.getResponseBodyContent(), "UTF-8"));
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+		log.info("create Springfox Swagger Json end .....");
+	}
 }

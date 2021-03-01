@@ -130,6 +130,7 @@ import org.hibernate.boot.spi.ClassLoaderAccess;
 import org.hibernate.internal.CoreLogging;
 import org.hibernate.internal.CoreMessageLogger;
 import org.hibernate.internal.util.StringHelper;
+
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 
@@ -1378,7 +1379,7 @@ public class JPAOverriddenAnnotationReader implements AnnotationReader {
 			}
 		}
 		if ( elementsForProperty.size() == 0 && defaults.canUseJavaAnnotations() ) {
-			//we have nothing, so Java annotations might occurs
+			//we have nothing, so Java annotations might occur
 			Annotation annotation = getPhysicalAnnotation( Version.class );
 			if ( annotation != null ) {
 				annotationList.add( annotation );
@@ -2615,7 +2616,7 @@ public class JPAOverriddenAnnotationReader implements AnnotationReader {
 				}
 				else {
 					throw new AnnotationException(
-							"Unknown DiscrimiatorType in XML: " + value + " (" + SCHEMA_VALIDATION + ")"
+							"Unknown DiscriminatorType in XML: " + value + " (" + SCHEMA_VALIDATION + ")"
 					);
 				}
 			}
@@ -2870,7 +2871,7 @@ public class JPAOverriddenAnnotationReader implements AnnotationReader {
 			secondaryTables.add( AnnotationFactory.create( annotation ) );
 		}
 		/*
-		 * You can't have both secondary table in XML and Java,
+		 * You can't have both secondary tables in XML and Java,
 		 * since there would be no way to "remove" a secondary table
 		 */
 		if ( secondaryTables.size() == 0 && defaults.canUseJavaAnnotations() ) {

@@ -1,5 +1,9 @@
 package com.info.baymax.dsp.access.dataapi.service;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.common.core.result.Response;
@@ -9,9 +13,6 @@ import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;
 import com.info.baymax.dsp.access.dataapi.utils.EncryptUtils;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 
 @TestConfiguration
 public class SignTest extends AbstractBootTest {

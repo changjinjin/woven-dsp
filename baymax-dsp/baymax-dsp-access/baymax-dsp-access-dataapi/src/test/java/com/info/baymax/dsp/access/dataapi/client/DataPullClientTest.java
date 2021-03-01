@@ -1,5 +1,15 @@
 package com.info.baymax.dsp.access.dataapi.client;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.reactive.server.WebTestClient;
+
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.aggregate.AggType;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
@@ -8,29 +18,17 @@ import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.access.dataapi.api.AggRequest;
 import com.info.baymax.dsp.access.dataapi.api.RecordRequest;
 
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DataPullClientTest {
     @Autowired
     private WebTestClient webTestClient;
     private String accessKey = "07739986-6232-4e75-9e97-fe3321919d94";
 
-    @Before
+    @BeforeEach
     public void init() {
         webTestClient//
             .get().uri(uriBuilder -> uriBuilder.path("/data/secertkey").queryParam("accessKey", accessKey).build())

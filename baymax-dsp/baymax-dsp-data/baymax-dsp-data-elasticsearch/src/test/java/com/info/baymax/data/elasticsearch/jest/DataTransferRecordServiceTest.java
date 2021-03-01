@@ -1,15 +1,16 @@
 package com.info.baymax.data.elasticsearch.jest;
 
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.info.baymax.common.core.exception.ServiceException;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.data.elasticsearch.AbstractBootTest;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.data.elasticsearch.service.DataTransferRecordService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Map;
 
 public class DataTransferRecordServiceTest extends AbstractBootTest {
     @Autowired

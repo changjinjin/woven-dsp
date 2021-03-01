@@ -3,26 +3,22 @@
  *
  * Copyright 2012-2016, Connect2id Ltd and contributors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use
- * this file except in compliance with the License. You may obtain a copy of the
- * License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed
- * under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
- * CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
 
 package com.info.baymax.dsp.gateway.oauth2.introspection;
 
-
 import com.nimbusds.oauth2.sdk.ErrorObject;
 import com.nimbusds.oauth2.sdk.ErrorResponse;
 import com.nimbusds.oauth2.sdk.OAuth2Error;
 import com.nimbusds.oauth2.sdk.ParseException;
-import com.nimbusds.oauth2.sdk.http.CommonContentTypes;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import com.nimbusds.oauth2.sdk.token.BearerTokenError;
 import net.jcip.annotations.Immutable;
@@ -31,14 +27,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.http.MediaType;
+
 import static com.nimbusds.oauth2.sdk.http.HTTPResponse.SC_FORBIDDEN;
 import static com.nimbusds.oauth2.sdk.http.HTTPResponse.SC_UNAUTHORIZED;
-
 
 /**
  * Token introspection error response.
  *
- * <p>Standard errors:
+ * <p>
+ * Standard errors:
  *
  * <ul>
  * <li>{@link OAuth2Error#INVALID_REQUEST}
@@ -49,7 +47,8 @@ import static com.nimbusds.oauth2.sdk.http.HTTPResponse.SC_UNAUTHORIZED;
  * <li>{@link BearerTokenError#INSUFFICIENT_SCOPE}
  * </ul>
  *
- * <p>Example HTTP response:
+ * <p>
+ * Example HTTP response:
  *
  * <pre>
  * HTTP/1.1 401 Unauthorized
@@ -58,7 +57,8 @@ import static com.nimbusds.oauth2.sdk.http.HTTPResponse.SC_UNAUTHORIZED;
  *                   error_description="The access token expired"
  * </pre>
  *
- * <p>Related specifications:
+ * <p>
+ * Related specifications:
  *
  * <ul>
  * <li>OAuth 2.0 Token Introspection (RFC 7662).
@@ -67,121 +67,113 @@ import static com.nimbusds.oauth2.sdk.http.HTTPResponse.SC_UNAUTHORIZED;
 @Immutable
 public class Oauth2TokenIntrospectionErrorResponse extends Oauth2TokenIntrospectionResponse implements ErrorResponse {
 
+	/**
+	 * The standard errors for a token introspection error response.
+	 */
+	private static final Set<ErrorObject> STANDARD_ERRORS;
 
-    /**
-     * The standard errors for a token introspection error response.
-     */
-    private static final Set<ErrorObject> STANDARD_ERRORS;
+	static {
+		Set<ErrorObject> errors = new HashSet<>();
+		errors.add(OAuth2Error.INVALID_REQUEST);
+		errors.add(OAuth2Error.INVALID_CLIENT);
+		errors.add(BearerTokenError.MISSING_TOKEN);
+		errors.add(BearerTokenError.INVALID_REQUEST);
+		errors.add(BearerTokenError.INVALID_TOKEN);
+		errors.add(BearerTokenError.INSUFFICIENT_SCOPE);
+		STANDARD_ERRORS = Collections.unmodifiableSet(errors);
+	}
 
+	/**
+	 * Gets the standard errors for a token introspection error response.
+	 *
+	 * @return The standard errors, as a read-only set.
+	 */
+	public static Set<ErrorObject> getStandardErrors() {
 
-    static {
-        Set<ErrorObject> errors = new HashSet<>();
-        errors.add(OAuth2Error.INVALID_REQUEST);
-        errors.add(OAuth2Error.INVALID_CLIENT);
-        errors.add(BearerTokenError.MISSING_TOKEN);
-        errors.add(BearerTokenError.INVALID_REQUEST);
-        errors.add(BearerTokenError.INVALID_TOKEN);
-        errors.add(BearerTokenError.INSUFFICIENT_SCOPE);
-        STANDARD_ERRORS = Collections.unmodifiableSet(errors);
-    }
+		return STANDARD_ERRORS;
+	}
 
+	/**
+	 * The error.
+	 */
+	private final ErrorObject error;
 
-    /**
-     * Gets the standard  errors for a token introspection error response.
-     *
-     * @return The standard errors, as a read-only set.
-     */
-    public static Set<ErrorObject> getStandardErrors() {
+	/**
+	 * Creates a new token introspection error response.
+	 *
+	 * @param error The error, {@code null} if not specified.
+	 */
+	public Oauth2TokenIntrospectionErrorResponse(final ErrorObject error) {
 
-        return STANDARD_ERRORS;
-    }
+		this.error = error;
+	}
 
+	@Override
+	public ErrorObject getErrorObject() {
 
-    /**
-     * The error.
-     */
-    private final ErrorObject error;
+		return error;
+	}
 
+	@Override
+	public boolean indicatesSuccess() {
 
-    /**
-     * Creates a new token introspection error response.
-     *
-     * @param error The error, {@code null} if not specified.
-     */
-    public Oauth2TokenIntrospectionErrorResponse(final ErrorObject error) {
+		return false;
+	}
 
-        this.error = error;
-    }
+	@Override
+	public HTTPResponse toHTTPResponse() {
 
+		// Determine HTTP status code
+		int statusCode = error != null && error.getHTTPStatusCode() > 0 ? error.getHTTPStatusCode()
+				: HTTPResponse.SC_BAD_REQUEST;
 
-    @Override
-    public ErrorObject getErrorObject() {
+		HTTPResponse httpResponse = new HTTPResponse(statusCode);
 
-        return error;
-    }
+		if (error == null) {
+			return httpResponse;
+		}
 
+		// Print error object if available
+		if (error instanceof BearerTokenError) {
+			httpResponse.setWWWAuthenticate(((BearerTokenError) error).toWWWAuthenticateHeader());
+		}
 
-    @Override
-    public boolean indicatesSuccess() {
+		try {
+			httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+		httpResponse.setCacheControl("no-store");
+		httpResponse.setPragma("no-cache");
+		httpResponse.setContent(error.toJSONObject().toJSONString());
 
-        return false;
-    }
+		return httpResponse;
+	}
 
+	/**
+	 * Parses a token introspection error response from the specified HTTP response.
+	 *
+	 * @param httpResponse The HTTP response to parse. Its status code must not be 200 (OK). Must not be {@code null}.
+	 * @return The token introspection error response.
+	 * @throws ParseException If the HTTP response couldn't be parsed to a token introspection error response.
+	 */
+	public static Oauth2TokenIntrospectionErrorResponse parse(final HTTPResponse httpResponse) throws ParseException {
 
-    @Override
-    public HTTPResponse toHTTPResponse() {
+		httpResponse.ensureStatusCodeNotOK();
 
-        // Determine HTTP status code
-        int statusCode = error != null && error.getHTTPStatusCode() > 0 ?
-            error.getHTTPStatusCode() : HTTPResponse.SC_BAD_REQUEST;
+		String wwwAuth = httpResponse.getWWWAuthenticate();
 
-        HTTPResponse httpResponse = new HTTPResponse(statusCode);
+		if ((httpResponse.getStatusCode() == SC_UNAUTHORIZED || httpResponse.getStatusCode() == SC_FORBIDDEN)
+				&& wwwAuth != null && wwwAuth.toLowerCase().startsWith("bearer")) {
 
-        if (error == null) {
-            return httpResponse;
-        }
+			try {
+				return new Oauth2TokenIntrospectionErrorResponse(
+						BearerTokenError.parse(httpResponse.getWWWAuthenticate()));
+			} catch (ParseException e) {
+				// try generic error parse ...
+			}
+		}
 
-        // Print error object if available
-        if (error instanceof BearerTokenError) {
-            httpResponse.setWWWAuthenticate(((BearerTokenError) error).toWWWAuthenticateHeader());
-        }
-
-        httpResponse.setContentType(CommonContentTypes.APPLICATION_JSON);
-        httpResponse.setCacheControl("no-store");
-        httpResponse.setPragma("no-cache");
-        httpResponse.setContent(error.toJSONObject().toJSONString());
-
-        return httpResponse;
-    }
-
-
-    /**
-     * Parses a token introspection error response from the specified HTTP
-     * response.
-     *
-     * @param httpResponse The HTTP response to parse. Its status code must
-     *                     not be 200 (OK). Must not be {@code null}.
-     * @return The token introspection error response.
-     * @throws ParseException If the HTTP response couldn't be parsed to a
-     *                        token introspection error response.
-     */
-    public static Oauth2TokenIntrospectionErrorResponse parse(final HTTPResponse httpResponse)
-        throws ParseException {
-
-        httpResponse.ensureStatusCodeNotOK();
-
-        String wwwAuth = httpResponse.getWWWAuthenticate();
-
-        if ((httpResponse.getStatusCode() == SC_UNAUTHORIZED || httpResponse.getStatusCode() == SC_FORBIDDEN)
-            && wwwAuth != null && wwwAuth.toLowerCase().startsWith("bearer")) {
-
-            try {
-                return new Oauth2TokenIntrospectionErrorResponse(BearerTokenError.parse(httpResponse.getWWWAuthenticate()));
-            } catch (ParseException e) {
-                // try generic error parse ...
-            }
-        }
-
-        return new Oauth2TokenIntrospectionErrorResponse(ErrorObject.parse(httpResponse));
-    }
+		return new Oauth2TokenIntrospectionErrorResponse(ErrorObject.parse(httpResponse));
+	}
 }
