@@ -1,7 +1,7 @@
 package com.info.baymax.common.webmvc.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.config.JacksonConfig.JacksonExtProperties;
+import com.info.baymax.common.config.JacksonConfig.JacksonExtSerializationProperties;
 import com.info.baymax.common.webmvc.servlet.result.PathTweakingRequestMappingHandlerMapping;
 import com.info.baymax.common.webmvc.servlet.result.ServletFilterFieldsHandlerResultHandler;
 import com.info.baymax.common.webmvc.servlet.result.ServletMappingJackson2HttpMessageConverter;
@@ -28,7 +28,7 @@ public class WebMvcExtConfig implements WebMvcConfigurer {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private JacksonExtProperties properties;
+    private JacksonExtSerializationProperties properties;
 
     @Bean
     public ServletListenerRegistrationBean<RequestContextListener> servletListenerRegistrationBean() {
