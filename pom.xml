@@ -18,13 +18,14 @@
 
 		<!-- build arguments -->
 		<skipApiDocs>true</skipApiDocs>
+		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 
 		<baymax-common.version>0.1.6-SNAPSHOT</baymax-common.version>
 		<baymax-woven.version>3.1</baymax-woven.version>
 
 		<!-- spring boot -->
 		<spring-boot.version>2.4.3</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR10</spring-cloud.version>
+		<spring-cloud.version>2020.0.0</spring-cloud.version>
 		<spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
 		<rocketmq-spring-boot.version>2.2.0</rocketmq-spring-boot.version>
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
@@ -131,6 +132,69 @@
 		<module>baymax-sentinel-dashboard</module>
 		<module>baymax-distribution</module>
 	</modules>
+
+	<scm>
+		<connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
+		<developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	<distributionManagement>
+		<repository>
+			<id>inforefiner-release</id>
+			<name>Inforefiner Porject Release</name>
+			<url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>inforefiner-snapshot</id>
+			<name>Inforefiner Porject Snapshot</name>
+			<url>http://192.168.1.171:8081/nexus/content/repositories/snapshots/</url>
+			<uniqueVersion>true</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>aliyun</id>
+			<url>https://maven.aliyun.com/repository/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>inforefiner</id>
+			<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>aliyun</id>
+			<url>https://maven.aliyun.com/repository/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>inforefiner</id>
+			<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<dependencyManagement>
 		<dependencies>
@@ -785,69 +849,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<scm>
-		<connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
-		<developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-	<distributionManagement>
-		<repository>
-			<id>inforefiner-release</id>
-			<name>Inforefiner Porject Release</name>
-			<url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>inforefiner-snapshot</id>
-			<name>Inforefiner Porject Snapshot</name>
-			<url>http://192.168.1.171:8081/nexus/content/repositories/snapshots/</url>
-			<uniqueVersion>true</uniqueVersion>
-		</snapshotRepository>
-	</distributionManagement>
-	<repositories>
-		<repository>
-			<id>aliyun</id>
-			<url>https://maven.aliyun.com/repository/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>inforefiner</id>
-			<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>aliyun</id>
-			<url>https://maven.aliyun.com/repository/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>inforefiner</id>
-			<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<reporting>
 		<plugins>
 			<plugin>
@@ -868,69 +869,63 @@
 
 	<profiles>
 		<profile>
-			<id>hadoop2-es5</id>
+			<id>hadoop2</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<profileActive>hadoop2-es5</profileActive>
+				<profileActive>hadoop2</profileActive>
 				<hadoop.version>2.7.3</hadoop.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>hadoop3</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>hadoop3</profileActive>
+				<hadoop.version>3.1.1</hadoop.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>es5</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>es5</profileActive>
 				<elasticsearch.version>5.6.0</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
-			<id>hadoop2-es6</id>
+			<id>es6</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<profileActive>hadoop2-es6</profileActive>
-				<hadoop.version>2.7.3</hadoop.version>
+				<profileActive>es6</profileActive>
 				<elasticsearch.version>6.8.13</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
-			<id>hadoop2-es7</id>
+			<id>es7</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<profileActive>hadoop2-es7</profileActive>
-				<hadoop.version>2.7.3</hadoop.version>
+				<profileActive>es7</profileActive>
 				<elasticsearch.version>7.10.1</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
-			<id>hadoop3-es5</id>
+			<id>fat-jar</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<profileActive>hadoop3-es5</profileActive>
-				<hadoop.version>3.1.1</hadoop.version>
-				<elasticsearch.version>5.6.0</elasticsearch.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>hadoop3-es6</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>hadoop3-es6</profileActive>
-				<hadoop.version>3.1.1</hadoop.version>
-				<elasticsearch.version>6.8.13</elasticsearch.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>hadoop3-es7</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>hadoop3.1-es7.10</profileActive>
-				<hadoop.version>3.1.1</hadoop.version>
-				<elasticsearch.version>7.10.1</elasticsearch.version>
+				<profileActive>fat-jar</profileActive>
+				<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
 			</properties>
 		</profile>
 	</profiles>

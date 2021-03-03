@@ -71,10 +71,54 @@
             <properties>
                 <profileActive>release-baymax-dsp</profileActive>
                 <release.finalName>baymax-dsp</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-access-platform</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-access-consumer</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-access-dataapi</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-security-oauth-server</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-gateway</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-cas-gateway</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-job-exec</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-job-schedule</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>release-baymax-dsp-boot</id>
+            <properties>
+                <profileActive>release-baymax-dsp-boot</profileActive>
+                <release.finalName>baymax-dsp-boot</release.finalName>
+                <spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <dependencies>
                 <dependency>
@@ -116,7 +160,6 @@
             <properties>
                 <profileActive>release-access-platform</profileActive>
                 <release.finalName>access-platform</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -133,7 +176,6 @@
             <properties>
                 <profileActive>release-access-consumer</profileActive>
                 <release.finalName>access-consumer</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -150,7 +192,6 @@
             <properties>
                 <profileActive>release-access-dataapi</profileActive>
                 <release.finalName>access-dataapi</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -167,7 +208,6 @@
             <properties>
                 <profileActive>release-auth-server</profileActive>
                 <release.finalName>auth-server</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -184,7 +224,6 @@
             <properties>
                 <profileActive>release-job-exec</profileActive>
                 <release.finalName>job-exec</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -201,7 +240,6 @@
             <properties>
                 <profileActive>release-job-schedule</profileActive>
                 <release.finalName>job-schedule</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -218,7 +256,6 @@
             <properties>
                 <profileActive>release-sentinel-dashboard</profileActive>
                 <release.finalName>sentinel-dashboard</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -235,7 +272,6 @@
             <properties>
                 <profileActive>release-baymax-dsp-docs</profileActive>
                 <release.finalName>baymax-dsp-docs</release.finalName>
-                <hadoop.version>2.7.3</hadoop.version>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>

@@ -1,17 +1,30 @@
 package com.info.baymax.dsp.job.sch.scheduler;
 
-import com.info.baymax.common.utils.JsonUtils;
-import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
-import com.info.baymax.dsp.data.platform.entity.DataService;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
-import org.springframework.stereotype.Component;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.Job;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
+import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.stereotype.Component;
+
+import com.info.baymax.common.utils.JsonUtils;
+import com.info.baymax.dsp.data.consumer.constant.ScheduleType;
+import com.info.baymax.dsp.data.platform.entity.DataService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: haijun

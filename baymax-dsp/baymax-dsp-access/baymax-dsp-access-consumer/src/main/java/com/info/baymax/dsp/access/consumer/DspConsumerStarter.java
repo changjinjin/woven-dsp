@@ -10,8 +10,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
 
+@Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -23,6 +26,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class DspConsumerStarter {
 
     public static void main(String[] args) {
+    	
+    	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
         // @formatter:off
         new SpringApplicationBuilder()
             .bannerMode(Banner.Mode.OFF)

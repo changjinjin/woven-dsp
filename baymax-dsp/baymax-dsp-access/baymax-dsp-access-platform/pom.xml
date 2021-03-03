@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.info.baymax</groupId>
@@ -45,16 +47,16 @@
 		</dependency>
 
 		<dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-cloud-spring-boot-starter</artifactId>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-cloud-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-webflux-spring-boot-starter</artifactId>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-webflux-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-persistence-spring-boot-starter</artifactId>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-persistence-spring-boot-starter</artifactId>
 		</dependency>
 
 		<dependency>
@@ -73,12 +75,12 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-staticdocs</artifactId>
 			<scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.validation</groupId>
-                    <artifactId>validation-api</artifactId>
-                </exclusion>
-            </exclusions>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.validation</groupId>
+					<artifactId>validation-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.github.swagger2markup</groupId>
@@ -119,27 +121,27 @@
 				</executions>
 			</plugin>
 			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <excludeArtifactIds>
-                                lombok,spring-boot-devtools,spring-boot-configuration-processor
-                            </excludeArtifactIds>
-                            <includeScope>compile</includeScope>
-                            <outputDirectory>target/lib</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeArtifactIds>
+								lombok,spring-boot-devtools,spring-boot-configuration-processor
+							</excludeArtifactIds>
+							<includeScope>compile</includeScope>
+							<outputDirectory>target/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -296,6 +298,22 @@
 								</resource>
 							</resources>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>${project.runtime.startClass}</mainClass>
+					<layout>ZIP</layout>
+					
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

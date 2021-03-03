@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.info.baymax</groupId>
@@ -157,13 +159,9 @@
                             <addClasspath>false</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path />
+                            <Class-Path/>
                         </manifestEntries>
                     </archive>
-                    <excludes>
-                        <exclude>/*.properties</exclude>
-                        <exclude>/logback-spring.xml</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -202,7 +200,6 @@
                     <config>
                         <swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
                         <swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
-
                         <swagger2markup.extensions.dynamicOverview.contentPath>
                             ${project.basedir}/src/docs/asciidoc/extensions/overview
                         </swagger2markup.extensions.dynamicOverview.contentPath>
@@ -215,7 +212,6 @@
                         <swagger2markup.extensions.dynamicSecurity.contentPath>
                             ${project.basedir}src/docs/asciidoc/extensions/security/
                         </swagger2markup.extensions.dynamicSecurity.contentPath>
-
                         <swagger2markup.extensions.springRestDocs.snippetBaseUri>${swagger.snippetOutput.dir}
                         </swagger2markup.extensions.springRestDocs.snippetBaseUri>
                         <swagger2markup.extensions.springRestDocs.defaultSnippets>true
@@ -249,10 +245,10 @@
                         <doctype>book</doctype>
                         <toc>left</toc>
                         <toclevels>3</toclevels>
-                        <numbered />
-                        <hardbreaks />
-                        <sectlinks />
-                        <sectanchors />
+                        <numbered/>
+                        <hardbreaks/>
+                        <sectlinks/>
+                        <sectanchors/>
                         <generated>${generated.asciidoc.directory}</generated>
                     </attributes>
                 </configuration>
@@ -302,6 +298,21 @@
                                 </resource>
                             </resources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${project.runtime.startClass}</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
