@@ -1,5 +1,6 @@
 package com.info.baymax.security.oauth;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import tk.mybatis.spring.annotation.MapperScan;
 
+@Slf4j
 @SpringCloudApplication
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @ComponentScan(basePackages = {"com.info.baymax"})
@@ -17,6 +19,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @PropertySource(value = {"classpath:/dsp-common.properties", "classpath:/dsp-auth-server.properties"})
 public class OauthServerStarter {
     public static void main(String[] args) {
+    	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
         SpringApplication.run(OauthServerStarter.class, args);
     }
 }

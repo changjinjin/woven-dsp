@@ -3,6 +3,7 @@ package com.info.baymax.dsp.gateway;
 import com.info.baymax.dsp.gateway.config.YamlPropertySourceFactory;
 import com.info.baymax.security.cas.reactive.client.config.EnableCasClientWebflux;
 import com.merce.woven.metrics.config.EnableElasticMetricsExport;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import tk.mybatis.spring.annotation.MapperScan;
 
+@Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableCasClientWebflux
@@ -26,6 +28,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class DspCasGateway {
     public static void main(String[] args) {
         // @formatter:off
+    	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
         new SpringApplicationBuilder()
             .bannerMode(Banner.Mode.OFF)
             .properties()

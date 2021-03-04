@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.platform;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
+@Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -24,6 +26,7 @@ public class DspPlatformStarter {
 
     public static void main(String[] args) {
         // @formatter:off
+    	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
         new SpringApplicationBuilder()
             .bannerMode(Banner.Mode.OFF)
             .properties()

@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.dataapi;
 
 import com.merce.woven.metrics.config.EnableElasticMetricsExport;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
+@Slf4j
 @EnableElasticMetricsExport
 @EnableCaching
 @SpringBootApplication
@@ -27,6 +29,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class DspDataapiStarter {
     public static void main(String[] args) {
         // @formatter:off
+    	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
         System.setProperty("es.set.netty.runtime.available.processors", "false");
         new SpringApplicationBuilder()
             .bannerMode(Banner.Mode.OFF)
