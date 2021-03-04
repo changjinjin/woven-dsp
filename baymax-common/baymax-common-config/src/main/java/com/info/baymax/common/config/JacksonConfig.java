@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.info.baymax.common.config.JacksonConfig.JacksonExtProperties;
+import com.info.baymax.common.config.JacksonConfig.JacksonExtSerializationProperties;
 import com.info.baymax.common.config.serialize.jackson.serializer.CustomizeBeanSerializerModifier;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +17,13 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
-@EnableConfigurationProperties(JacksonExtProperties.class)
+@EnableConfigurationProperties(JacksonExtSerializationProperties.class)
 public class JacksonConfig {
 
     @Bean
     @Primary
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder, JacksonExtProperties extProperties) {
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder,
+                                     JacksonExtSerializationProperties extProperties) {
         return config(builder.createXmlMapper(false).build(), extProperties);
     }
 
@@ -30,7 +31,7 @@ public class JacksonConfig {
         return config(null, null);
     }
 
-    public static ObjectMapper config(ObjectMapper m, JacksonExtProperties extProperties) {
+    public static ObjectMapper config(ObjectMapper m, JacksonExtSerializationProperties extProperties) {
         if (m == null) {
             m = Jackson2ObjectMapperBuilder.json().build();
         }
@@ -61,9 +62,9 @@ public class JacksonConfig {
 
     @Getter
     @Setter
-    @ConfigurationProperties(prefix = JacksonExtProperties.PREFIX)
-    public static class JacksonExtProperties {
-        public static final String PREFIX = "spring.jackson.serialization";
+    @ConfigurationProperties(prefix = JacksonExtSerializationProperties.PREFIX)
+    public static class JacksonExtSerializationProperties {
+        public static final String PREFIX = "spring.jackson.ext.serialization";
 
         /**
          * 是否序列化Long类型数据为String类型
