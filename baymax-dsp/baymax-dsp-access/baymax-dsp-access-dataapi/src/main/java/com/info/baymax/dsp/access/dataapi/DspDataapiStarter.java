@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @Slf4j
-@EnableElasticMetricsExport
-@EnableCaching
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @EnableDiscoveryClient
+@EnableCaching
+@EnableElasticMetricsExport
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.dataapi"})
 @ComponentScan(basePackages = {"com.info.baymax","com.merce.woven"})

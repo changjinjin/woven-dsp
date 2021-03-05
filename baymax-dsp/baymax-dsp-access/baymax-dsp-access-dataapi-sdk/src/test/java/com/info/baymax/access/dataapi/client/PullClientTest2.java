@@ -3,7 +3,7 @@ package com.info.baymax.access.dataapi.client;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.MapEntity;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
-import com.info.baymax.dsp.access.dataapi.client.DeaultPullClient;
+import com.info.baymax.dsp.access.dataapi.client.DefaultPullClient;
 import com.info.baymax.dsp.access.dataapi.client.PullClient;
 import com.info.baymax.dsp.access.dataapi.client.PullClientException;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class PullClientTest2 {
     // 是否启用报文加密，如果启用需要先请求秘钥，使用秘钥对加密报文解密
     private final boolean encrypted = false;
 
-    private final PullClient client = new DeaultPullClient(baseUrl);
+    private final PullClient client = new DefaultPullClient(baseUrl);
 
     @Test
     public void pullBySql() {

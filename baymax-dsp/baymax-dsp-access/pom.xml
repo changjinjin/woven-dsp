@@ -16,8 +16,8 @@
     </properties>
     <modules>
         <module>baymax-dsp-access-consumer</module>
+        <module>baymax-dsp-access-dataapi-sdk</module>
         <module>baymax-dsp-access-dataapi</module>
         <module>baymax-dsp-access-platform</module>
-        <module>baymax-dsp-access-dataapi-sdk</module>
     </modules>
 </project>

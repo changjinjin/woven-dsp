@@ -16,7 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @EnableDiscoveryClient
 @EnableCasClientWebflux
 @EnableElasticMetricsExport

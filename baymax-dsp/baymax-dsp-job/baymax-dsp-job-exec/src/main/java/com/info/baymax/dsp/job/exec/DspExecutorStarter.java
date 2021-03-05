@@ -17,9 +17,9 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Author: haijun
  * @Date: 2019/12/19 14:29
  */
-@EnableElasticMetricsExport
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @EnableDiscoveryClient
+@EnableElasticMetricsExport
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.exec"})
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})

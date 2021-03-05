@@ -15,7 +15,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Author: haijun
  * @Date: 2019/12/12 14:17
  */
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.sch.client"})
 @ComponentScan(basePackages = {"com.info.baymax"})

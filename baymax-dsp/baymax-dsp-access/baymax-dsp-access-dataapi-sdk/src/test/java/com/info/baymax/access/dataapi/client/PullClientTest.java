@@ -7,7 +7,7 @@ import com.info.baymax.common.queryapi.query.aggregate.AggType;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.common.queryapi.query.sql.SqlQuery;
-import com.info.baymax.dsp.access.dataapi.client.DeaultPullClient;
+import com.info.baymax.dsp.access.dataapi.client.DefaultPullClient;
 import com.info.baymax.dsp.access.dataapi.client.PullClient;
 import com.info.baymax.dsp.access.dataapi.client.PullClientException;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class PullClientTest {
     // 是否启用报文加密，如果启用需要先请求秘钥，使用秘钥对加密报文解密
     private final boolean encrypted = true;
 
-    private final PullClient client = new DeaultPullClient(baseUrl);
+    private final PullClient client = new DefaultPullClient(baseUrl);
 
     @Test
     public void secertkey() throws PullClientException {

@@ -19,13 +19,13 @@ import com.info.baymax.dsp.access.dataapi.utils.RSAGenerater;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DeaultPullClient implements PullClient {
+public class DefaultPullClient implements PullClient {
     private final String baseUrl;
     private final Gson gson;
     private final Map<String, Object> params;
     private final Map<String, String> headers;
 
-    public DeaultPullClient(String baseUrl) {
+    public DefaultPullClient(String baseUrl) {
         this.baseUrl = baseUrl;
         gson = new Gson();
         params = new HashMap<String, Object>();

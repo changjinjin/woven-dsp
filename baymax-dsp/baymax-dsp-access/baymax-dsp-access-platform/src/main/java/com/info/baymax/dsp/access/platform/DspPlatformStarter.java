@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @EnableDiscoveryClient
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.access.platform"})

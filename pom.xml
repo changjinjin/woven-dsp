@@ -18,6 +18,7 @@
 
 		<!-- build arguments -->
 		<skipApiDocs>true</skipApiDocs>
+		<spring.native.skip>true</spring.native.skip>
 		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 
 		<baymax-common.version>0.1.6-SNAPSHOT</baymax-common.version>
@@ -122,13 +123,15 @@
 		<classgraph.version>4.8.102</classgraph.version>
 		<classmate.version>1.5.1</classmate.version>
 		<log4j2.version>2.11.2</log4j2.version>
+		
+		<elasticsearch.version>5.6.0</elasticsearch.version>
 	</properties>
 
 	<modules>
 		<module>baymax-common</module>
 		<module>baymax-starters</module>
-		<module>baymax-security</module>
 		<module>baymax-dsp</module>
+		<module>baymax-security</module>
 		<module>baymax-sentinel-dashboard</module>
 		<module>baymax-distribution</module>
 	</modules>
@@ -152,6 +155,17 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 		<repository>
 			<id>aliyun</id>
 			<url>https://maven.aliyun.com/repository/public</url>
@@ -195,6 +209,80 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<profiles>
+		<profile>
+			<id>hadoop2</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>hadoop2</profileActive>
+				<hadoop.version>2.7.3</hadoop.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>hadoop3</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>hadoop3</profileActive>
+				<hadoop.version>3.1.1</hadoop.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>es5</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>es5</profileActive>
+				<elasticsearch.version>5.6.0</elasticsearch.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>es6</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>es6</profileActive>
+				<elasticsearch.version>6.8.13</elasticsearch.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>es7</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>es7</profileActive>
+				<elasticsearch.version>7.10.1</elasticsearch.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>fat-jar</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>fat-jar</profileActive>
+				<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>native</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<profileActive>native</profileActive>
+				<spring.native.skip>false</spring.native.skip>
+				<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencyManagement>
 		<dependencies>
@@ -240,6 +328,11 @@
 				<groupId>com.alibaba.boot</groupId>
 				<artifactId>dubbo-spring-boot-starter</artifactId>
 				<version>${dubbo-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.experimental</groupId>
+				<artifactId>spring-graalvm-native</artifactId>
+				<version>0.8.5</version>
 			</dependency>
 
 			<!-- woven common dependencies -->
@@ -866,69 +959,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<profiles>
-		<profile>
-			<id>hadoop2</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>hadoop2</profileActive>
-				<hadoop.version>2.7.3</hadoop.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>hadoop3</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>hadoop3</profileActive>
-				<hadoop.version>3.1.1</hadoop.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>es5</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>es5</profileActive>
-				<elasticsearch.version>5.6.0</elasticsearch.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>es6</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>es6</profileActive>
-				<elasticsearch.version>6.8.13</elasticsearch.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>es7</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>es7</profileActive>
-				<elasticsearch.version>7.10.1</elasticsearch.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>fat-jar</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<profileActive>fat-jar</profileActive>
-				<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
-			</properties>
-		</profile>
-	</profiles>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -1059,6 +1089,11 @@
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>4.0.3</version>
+				</plugin>
+				<plugin>
+					<groupId>org.graalvm.nativeimage</groupId>
+					<artifactId>native-image-maven-plugin</artifactId>
+					<version>21.0.0.2</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

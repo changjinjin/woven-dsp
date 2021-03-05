@@ -16,10 +16,10 @@
     </properties>
     <modules>
         <module>baymax-dsp-data</module>
-        <module>baymax-dsp-job</module>
         <module>baymax-dsp-access</module>
+        <module>baymax-dsp-job</module>
+        <module>baymax-dsp-gateway-common</module>
         <module>baymax-dsp-gateway</module>
         <module>baymax-dsp-cas-gateway</module>
-        <module>baymax-dsp-gateway-common</module>
     </modules>
 </project>

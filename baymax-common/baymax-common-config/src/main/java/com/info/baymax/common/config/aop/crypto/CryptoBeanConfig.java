@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  * @author jingwei.yang
  * @date 2019年11月21日 上午11:08:14
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(CryptoProperties.class)
 public class CryptoBeanConfig {
 
