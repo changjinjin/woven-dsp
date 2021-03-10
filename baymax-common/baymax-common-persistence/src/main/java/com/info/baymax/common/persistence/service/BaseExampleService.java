@@ -25,13 +25,11 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
 
     BaseExampleMapper<T> getBaseExampleMapper();
 
-
     @Override
     default int updateByExample(T record, Example example) {
         preUpdate(record);
         return getBaseExampleMapper().updateByExample(record, example);
     }
-
 
     @Override
     default int updateByExampleSelective(T record, Example example) {
@@ -118,7 +116,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
             Page<T> selectPage = (Page<T>) selectByExampleAndPage(example, pageable);
             if (selectPage != null) {
                 page.setTotalCount(selectPage.getTotal());
-                page.setList(selectPage.getResult());
+                page.setList(converPageToList(selectPage.getResult()));
             }
         }
         return page;
@@ -136,7 +134,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
 
     default List<Map<String, Object>> selectMapByExampleAndPage(Example example, IPageable pageable) {
         startPage(pageable);
-        return selectMapByExample(example);
+        return converPageToList(selectMapByExample(example));
     }
 
     default IPage<Map<String, Object>> selectMapPageByExample(Example example, IPageable pageable) {
@@ -155,7 +153,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
                 pageable);
             if (selectPage != null) {
                 page.setTotalCount(selectPage.getTotal());
-                page.setList(selectPage.getResult());
+                page.setList(converPageToList(selectPage.getResult()));
             }
         }
         return page;
@@ -167,6 +165,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
     }
 
     default List<T> selectAggregationByExample(ExampleQuery query, AggregateCondition aggregateCondition) {
-        return getBaseExampleMapper().selectAggregationByExample(ExampleHelper.createExample(query), aggregateCondition);
+        return getBaseExampleMapper().selectAggregationByExample(ExampleHelper.createExample(query),
+            aggregateCondition);
     }
 }

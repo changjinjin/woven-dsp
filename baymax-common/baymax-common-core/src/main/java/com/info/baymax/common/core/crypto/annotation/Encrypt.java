@@ -1,6 +1,8 @@
 package com.info.baymax.common.core.crypto.annotation;
 
+import com.info.baymax.common.core.crypto.CryptoEncoder;
 import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.encoder.NoneCryptoEncoder;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,4 +32,11 @@ public @interface Encrypt {
      * @return 加密类型
      */
     CryptoType cryptoType() default CryptoType.NONE;
+
+    /**
+     * 加密器类
+     *
+     * @return 加密器类
+     */
+    Class<? extends CryptoEncoder<?>> encoder() default NoneCryptoEncoder.class;
 }

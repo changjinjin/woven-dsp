@@ -1,13 +1,13 @@
 package com.info.baymax.common.core.crypto.method;
 
-import com.info.baymax.common.core.crypto.CryptoBean;
-import com.info.baymax.common.core.crypto.CryptoOperation;
-import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.*;
 import com.info.baymax.common.core.crypto.annotation.Cryptoable;
 import com.info.baymax.common.core.crypto.annotation.Decrypt;
 import com.info.baymax.common.core.crypto.annotation.Encrypt;
 import com.info.baymax.common.core.crypto.annotation.ReturnOperation;
+import com.info.baymax.common.core.crypto.decoder.NoneCryptoDecoder;
 import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
+import com.info.baymax.common.core.crypto.encoder.NoneCryptoEncoder;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -47,11 +47,11 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
 
                     Encrypt encrypt = parameter.getAnnotation(Encrypt.class);
                     if (encrypt != null) {
-                        obj = encryptObject(obj, encrypt.wrapped(), encrypt.cryptoType());
+                        obj = encryptObject(obj, encrypt.wrapped(), encrypt.cryptoType(), encrypt.encoder());
                     }
                     Decrypt decrypt = parameter.getAnnotation(Decrypt.class);
                     if (decrypt != null) {
-                        obj = decryptObject(obj, decrypt.wrapped(), decrypt.cryptoType());
+                        obj = decryptObject(obj, decrypt.wrapped(), decrypt.cryptoType(), decrypt.decoder());
                     }
 
                     args[i] = obj;
@@ -83,12 +83,36 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
                     result = afterHandleResult(result, obj);
                 } else {
                     for (ReturnOperation returnOperation : returnOperations) {
-                        handleReturnResult(returnOperation, obj);
+                        boolean flag = isCustom(returnOperation);
+                        if (flag) {
+                            result = handleReturnResult(returnOperation, obj);
+                        } else {
+                            handleReturnResult(returnOperation, obj);
+                        }
                     }
                 }
             }
         }
         return result;
+    }
+
+    private boolean isCustom(ReturnOperation returnOperation) {
+        CryptoOperation cryptoOperation = returnOperation.cryptoOperation();
+        boolean flag = false;
+        switch (cryptoOperation) {
+            case Decrypt:
+                Class<? extends CryptoDecoder<?>> decoderClass = returnOperation.decoder();
+                flag = (decoderClass != null && !NoneCryptoDecoder.class.isAssignableFrom(decoderClass));
+                break;
+            case Encrypt:
+                Class<? extends CryptoEncoder<?>> encoderClass = returnOperation.encoder();
+                flag = (encoderClass != null && !NoneCryptoEncoder.class.isAssignableFrom(encoderClass));
+                break;
+            default:
+                flag = false;
+                break;
+        }
+        return flag;
     }
 
     /**
@@ -118,30 +142,40 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
         CryptoOperation cryptoOperation = returnOperation.cryptoOperation();
         switch (cryptoOperation) {
             case Encrypt:
-                return encryptObject(resultBody, returnOperation.wrapped(), returnOperation.cryptoType());
+                return encryptObject(resultBody, returnOperation.wrapped(), returnOperation.cryptoType(),
+                    returnOperation.encoder());
             case Decrypt:
-                return decryptObject(resultBody, returnOperation.wrapped(), returnOperation.cryptoType());
+                return decryptObject(resultBody, returnOperation.wrapped(), returnOperation.cryptoType(),
+                    returnOperation.decoder());
             default:
                 return resultBody;
         }
     }
 
     // 处理较复杂对象的加密逻辑
-    private Object encryptObject(Object obj, boolean wrapped, CryptoType cryptoType) {
-        Class<? extends Object> clazz = obj.getClass();
-        if (Iterable.class.isAssignableFrom(clazz)) {
-            Iterator<?> iterator = ((Iterable<?>) obj).iterator();
-            iterator.forEachRemaining(t -> {
-                encryptSingle(t, wrapped, cryptoType);
-            });
-        } else if (clazz.isArray()) {
-            for (int i = 0; i < Array.getLength(obj); i++) {
-                encryptSingle(Array.get(obj, i), wrapped, cryptoType);
-            }
+    // FIXME 处理字符串数组和集合的不生效，需要把处理后的结果在包装到数组和集合中去，目前暂没有办法解决
+    private Object encryptObject(Object obj, boolean wrapped, CryptoType cryptoType,
+                                 Class<? extends CryptoEncoder<?>> encoderClass) {
+        if (encoderClass != null && !NoneCryptoEncoder.class.isAssignableFrom(encoderClass)) {
+            CryptoEncoder<?> encoder = CryptoEncoder.getInstance(encoderClass);
+            return encoder.encode(obj, secretKey, wrapped, cryptoType, cryptorDelegater);
         } else {
-            return encryptSingle(obj, wrapped, cryptoType);
+            Class<? extends Object> clazz = obj.getClass();
+            if (Iterable.class.isAssignableFrom(clazz)) {
+                Iterator<?> iterator = ((Iterable<?>) obj).iterator();
+                iterator.forEachRemaining(t -> {
+                    // TODO 需要将处理的结果在放回到集合中去，因不知集合类型所以没法封装回原来的集合中去，建议先返回成string数组以支持改加密逻辑
+                    encryptSingle(t, wrapped, cryptoType);
+                });
+            } else if (clazz.isArray()) {
+                for (int i = 0; i < Array.getLength(obj); i++) {
+                    encryptSingle(Array.get(obj, i), wrapped, cryptoType);
+                }
+            } else {
+                return encryptSingle(obj, wrapped, cryptoType);
+            }
+            return obj;
         }
-        return obj;
     }
 
     // 处理单个对象的解密逻辑
@@ -157,21 +191,28 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
     }
 
     // 处理较复杂对象的解密逻辑
-    private Object decryptObject(Object obj, boolean wrapped, CryptoType cryptoType) {
-        Class<? extends Object> clazz = obj.getClass();
-        if (Iterable.class.isAssignableFrom(clazz)) {
-            Iterator<?> iterator = ((Iterable<?>) obj).iterator();
-            iterator.forEachRemaining(t -> {
-                decryptSingle(t, wrapped, cryptoType);
-            });
-        } else if (clazz.isArray()) {
-            for (int i = 0; i < Array.getLength(obj); i++) {
-                decryptSingle(Array.get(obj, i), wrapped, cryptoType);
-            }
+    private Object decryptObject(Object obj, boolean wrapped, CryptoType cryptoType,
+                                 Class<? extends CryptoDecoder<?>> decoderClass) {
+        if (decoderClass != null && !NoneCryptoDecoder.class.isAssignableFrom(decoderClass)) {
+            CryptoDecoder<?> decoder = CryptoDecoder.getInstance(decoderClass);
+            return decoder.decode(obj, secretKey, wrapped, cryptoType, cryptorDelegater);
         } else {
-            return decryptSingle(obj, wrapped, cryptoType);
+            Class<? extends Object> clazz = obj.getClass();
+            if (Iterable.class.isAssignableFrom(clazz)) {
+                Iterator<?> iterator = ((Iterable<?>) obj).iterator();
+                iterator.forEachRemaining(t -> {
+                    // TODO 需要将处理的结果在放回到集合中去，因不知集合类型所以没法封装回原来的集合中去，建议先返回成string数组以支持改加密逻辑
+                    decryptSingle(t, wrapped, cryptoType);
+                });
+            } else if (clazz.isArray()) {
+                for (int i = 0; i < Array.getLength(obj); i++) {
+                    decryptSingle(Array.get(obj, i), wrapped, cryptoType);
+                }
+            } else {
+                return decryptSingle(obj, wrapped, cryptoType);
+            }
+            return obj;
         }
-        return obj;
     }
 
     // 处理单个对象的加密逻辑
