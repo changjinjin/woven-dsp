@@ -19,7 +19,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Date: 2019/12/19 14:29
  */
 @Slf4j
-@SpringBootApplication(proxyBeanMethods = false)
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableElasticMetricsExport
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.exec"})

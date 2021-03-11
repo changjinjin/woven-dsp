@@ -1,5 +1,5 @@
 server:
-  address: 192.168.1.164
+  address: 192.168.1.189
   port: 8008
   reactive:
     context-path: /
@@ -73,7 +73,7 @@ spring:
         enabled: false
       discovery:
         enabled: true
-        server-addr: 192.168.1.164:8848
+        server-addr: 192.168.1.189:8848
         service: ${spring.application.name}
         metadata:
           serviceName: ${spring.application.name}

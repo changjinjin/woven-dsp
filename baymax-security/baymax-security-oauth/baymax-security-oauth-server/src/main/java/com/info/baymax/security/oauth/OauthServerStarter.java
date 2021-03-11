@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @Slf4j
-@SpringBootApplication(proxyBeanMethods = false)
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @ComponentScan(basePackages = {"com.info.baymax"})

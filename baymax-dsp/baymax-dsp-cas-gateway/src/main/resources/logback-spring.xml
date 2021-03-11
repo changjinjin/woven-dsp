@@ -87,7 +87,6 @@
 
     <logger name="com.netflix" level="INFO"/>
     <logger name="org.springframework" level="ERROR"/>
-    <logger name="org.springframework.cloud.consul" level="ERROR"/>
     <logger name="com.info.baymax" level="DEBUG"/>
     <logger name="java.sql" level="DEBUG"/>
 

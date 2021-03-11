@@ -16,7 +16,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Date: 2019/12/12 14:17
  */
 @Slf4j
-@SpringBootApplication(proxyBeanMethods = false)
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.info.baymax.dsp.job.sch.client"})
 @ComponentScan(basePackages = {"com.info.baymax"})

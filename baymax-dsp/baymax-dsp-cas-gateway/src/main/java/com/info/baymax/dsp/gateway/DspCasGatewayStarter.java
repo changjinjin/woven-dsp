@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @Slf4j
-@SpringBootApplication(proxyBeanMethods = false)
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableCasClientWebflux
 @EnableElasticMetricsExport

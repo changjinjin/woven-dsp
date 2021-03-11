@@ -13,7 +13,7 @@ import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@SpringBootApplication(proxyBeanMethods = false)
+@SpringBootApplication
 @EnableDiscoveryClient
 @EnableElasticMetricsExport
 @ComponentScan(basePackages = {"com.info.baymax"})
