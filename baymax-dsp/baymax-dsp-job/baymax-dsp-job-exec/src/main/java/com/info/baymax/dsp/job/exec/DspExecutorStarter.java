@@ -1,22 +1,24 @@
 package com.info.baymax.dsp.job.exec;
 
-import com.merce.woven.metrics.config.EnableElasticMetricsExport;
-import org.springframework.boot.Banner;
-import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import com.merce.woven.metrics.config.EnableElasticMetricsExport;
+
+import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @Author: haijun
  * @Date: 2019/12/19 14:29
  */
+@Slf4j
 @SpringBootApplication(proxyBeanMethods = false)
 @EnableDiscoveryClient
 @EnableElasticMetricsExport
@@ -29,8 +31,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 public class DspExecutorStarter {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder().bannerMode(Banner.Mode.OFF).properties().sources(DspExecutorStarter.class)
-            .web(WebApplicationType.REACTIVE).run(args);
+        log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
+		SpringApplication.run(DspExecutorStarter.class, args);
     }
 
 }

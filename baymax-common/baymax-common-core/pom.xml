@@ -28,6 +28,12 @@
 		<dependency>
 			<artifactId>commons-beanutils</artifactId>
 			<groupId>commons-beanutils</groupId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<artifactId>guava</artifactId>

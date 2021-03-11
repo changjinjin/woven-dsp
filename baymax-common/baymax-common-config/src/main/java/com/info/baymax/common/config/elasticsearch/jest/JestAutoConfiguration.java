@@ -46,7 +46,7 @@ import io.searchbox.client.config.HttpClientConfig;
  * @since 1.4.0
  * @deprecated since 2.2.0 in favor of other auto-configured Elasticsearch clients
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @ConditionalOnClass(JestClient.class)
 @EnableConfigurationProperties(JestProperties.class)
 @AutoConfigureAfter(GsonAutoConfiguration.class)

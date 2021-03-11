@@ -1,0 +1,3 @@
+org.springframework.cloud.client.discovery.DiscoveryClientHints
+org.springframework.cloud.commons.util.SpringFactoryHints
+org.springframework.cloud.openfeign.FeignHints

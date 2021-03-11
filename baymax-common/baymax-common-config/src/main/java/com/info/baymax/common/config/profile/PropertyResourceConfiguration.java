@@ -23,7 +23,7 @@ import java.util.Map;
  * @author jingwei.yang
  * @date 2019年12月25日 下午4:22:59
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @ConditionalOnBean(annotation = {EnableExtProperties.class})
 public class PropertyResourceConfiguration implements ImportAware {
 

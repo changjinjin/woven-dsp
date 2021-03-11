@@ -123,8 +123,11 @@
 		<classgraph.version>4.8.102</classgraph.version>
 		<classmate.version>1.5.1</classmate.version>
 		<log4j2.version>2.11.2</log4j2.version>
-		
+
 		<elasticsearch.version>5.6.0</elasticsearch.version>
+
+		<spring-native.version>0.8.5</spring-native.version>
+		<graal.version>21.0.0.2</graal.version>
 	</properties>
 
 	<modules>
@@ -332,7 +335,12 @@
 			<dependency>
 				<groupId>org.springframework.experimental</groupId>
 				<artifactId>spring-graalvm-native</artifactId>
-				<version>0.8.5</version>
+				<version>${spring-native.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.graalvm.sdk</groupId>
+				<artifactId>graal-sdk</artifactId>
+				<version>${graal.version}</version>
 			</dependency>
 
 			<!-- woven common dependencies -->
@@ -431,6 +439,11 @@
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-common-webmvc</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-common-native</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
@@ -963,14 +976,14 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>${spring-boot.version}</version>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>3.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -982,11 +995,6 @@
 						<showDeprecation>true</showDeprecation>
 						<showWarnings>true</showWarnings>
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.9</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1002,24 +1010,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>2.18</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.1.0</version>
-					<configuration>
-						<tarLongFileMode>gnu</tarLongFileMode>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1041,29 +1031,36 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>rpm-maven-plugin</artifactId>
-					<version>2.1.4</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.4</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>buildnumber-maven-plugin</artifactId>
-					<version>1.4</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.9</version>
 				</plugin>
 				<plugin>
-					<groupId>io.github.swagger2markup</groupId>
-					<artifactId>swagger2markup-maven-plugin</artifactId>
-					<version>${swagger2markup.version}</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.1.0</version>
+					<configuration>
+						<tarLongFileMode>gnu</tarLongFileMode>
+					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.asciidoctor</groupId>
-					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>1.6.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>appassembler-maven-plugin</artifactId>
-					<version>2.1.0</version>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.6</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1081,9 +1078,49 @@
 					<version>3.0.0-M3</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-invoker-plugin</artifactId>
+					<version>3.2.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.6.0</version>
+				</plugin>
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>rpm-maven-plugin</artifactId>
+					<version>2.1.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>1.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>appassembler-maven-plugin</artifactId>
+					<version>2.1.0</version>
+				</plugin>
+				<plugin>
+					<groupId>io.github.swagger2markup</groupId>
+					<artifactId>swagger2markup-maven-plugin</artifactId>
+					<version>${swagger2markup.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.asciidoctor</groupId>
+					<artifactId>asciidoctor-maven-plugin</artifactId>
+					<version>1.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
@@ -1091,9 +1128,14 @@
 					<version>4.0.3</version>
 				</plugin>
 				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.graalvm.nativeimage</groupId>
 					<artifactId>native-image-maven-plugin</artifactId>
-					<version>21.0.0.2</version>
+					<version>${graal.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -1118,7 +1160,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.12</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,5 +1,14 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.info.baymax.common.core.exception.ServiceException;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
@@ -7,17 +16,10 @@ import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
 import com.info.baymax.data.elasticsearch.service.DataTransferRecordService;
 import com.info.baymax.dsp.data.platform.bean.GrowthType;
 import com.info.baymax.dsp.data.platform.bean.TransferType;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
 
 @Api(tags = "数据管理：数据传输记录管理", description = "数据传输记录管理")
 @RestController

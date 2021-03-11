@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @date 2019年5月15日 下午6:59:35
  */
 @Slf4j
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @EnableConfigurationProperties(value = ThreadPoolProperties.class)
 public class ThreadPoolTaskExecutorConfig {
 

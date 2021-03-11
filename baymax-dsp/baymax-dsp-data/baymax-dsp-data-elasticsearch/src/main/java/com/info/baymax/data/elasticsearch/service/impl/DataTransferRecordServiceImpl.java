@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
-@Service
 @Slf4j
+@Service
 public class DataTransferRecordServiceImpl implements DataTransferRecordService {
 
     @Autowired
