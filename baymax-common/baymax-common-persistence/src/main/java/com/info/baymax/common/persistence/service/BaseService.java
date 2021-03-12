@@ -28,7 +28,6 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         return getMyBaseMapper();
     }
 
-
     @Override
     default int insert(T record) {
         if (record != null) {
@@ -38,7 +37,6 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         return 0;
     }
 
-
     @Override
     default int insertSelective(T record) {
         if (record != null) {
@@ -47,7 +45,6 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         }
         return 0;
     }
-
 
     @Override
     default int insertList(List<? extends T> recordList) {
@@ -189,7 +186,7 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
             Page<T> selectPage = (Page<T>) selectByPage(s, pageable);
             if (selectPage != null) {
                 page.setTotalCount(selectPage.getTotal());
-                page.setList(selectPage.getResult());
+                page.setList(converPageToList(selectPage.getResult()));
             }
         }
         return page;

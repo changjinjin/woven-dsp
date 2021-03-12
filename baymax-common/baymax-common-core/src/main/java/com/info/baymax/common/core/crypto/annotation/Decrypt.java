@@ -1,6 +1,8 @@
 package com.info.baymax.common.core.crypto.annotation;
 
+import com.info.baymax.common.core.crypto.CryptoDecoder;
 import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.decoder.NoneCryptoDecoder;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -31,4 +33,10 @@ public @interface Decrypt {
      */
     CryptoType cryptoType() default CryptoType.NONE;
 
+    /**
+     * 解密器类
+     *
+     * @return 解密器类
+     */
+    Class<? extends CryptoDecoder<?>> decoder() default NoneCryptoDecoder.class;
 }
