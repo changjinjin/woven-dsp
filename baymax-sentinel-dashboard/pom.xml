@@ -12,7 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.runtime.startClass>com.alibaba.csp.sentinel.dashboard.DashboardApplication</project.runtime.startClass>
+        <start-class>com.alibaba.csp.sentinel.dashboard.DashboardApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -224,21 +224,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>${project.runtime.startClass}</mainClass>
-							<classpathPrefix>../lib</classpathPrefix>
-							<addClasspath>false</addClasspath>
-						</manifest>
-						<manifestEntries>
-							<Class-Path />
-						</manifestEntries>
-					</archive>
-					<excludes>
-						<exclude>/*.properties</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

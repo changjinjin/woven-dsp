@@ -1,7 +1,7 @@
 server:
   address: 192.168.1.35
   port: 8008
-  reactive:
+  servlet:
     context-path: /
   compression:
     enabled: true
@@ -10,12 +10,15 @@ server:
 spring:
   application:
     name: dsp-cas-gateway
+  profiles:
+    active: dev
   main:
     banner-mode: off
     web-application-type: reactive
-  resources:
-    add-mappings: true
-    static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+  web:
+    resources:
+      add-mappings: true
+      static-locations: classpath:/webapp/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   cloud:
     sentinel:
       enabled: true
@@ -70,16 +73,17 @@ spring:
 #            recommend-refresh-ms: 10000
     nacos:
       config:
-        enabled: false
+        enabled: true
+        file-extension: yaml
+        namespace: yjw
+        group: dsp
+        prefix: ${spring.application.name}
+        server-addr: 192.168.1.82:8848
       discovery:
         enabled: true
         server-addr: 192.168.1.82:8848
-        service: ${spring.application.name}
-        heartBeatInterval: 15
-        heartBeatTimeout: 30
-        metadata:
-          serviceName: ${spring.application.name}
-          instanceId: ${spring.application.name}:${server.address}:${server.port}
+        namespace: yjw
+        group: dsp
     gateway:
       httpclient:
         pool:

@@ -93,6 +93,7 @@
 		<netflix-statistics.version>0.1.1</netflix-statistics.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<snappy-java.version>1.1.2.4</snappy-java.version>
+        <protobuf-java.version>3.15.6</protobuf-java.version>
 
 		<hadoop.version>2.7.3</hadoop.version>
 		<hbase.version>1.1.2</hbase.version>
@@ -126,10 +127,30 @@
 
 		<elasticsearch.version>5.6.0</elasticsearch.version>
 
+        <!-- native-image properties -->
 		<spring-native.version>0.8.5</spring-native.version>
 		<graal.version>21.0.0.2</graal.version>
-	</properties>
 
+        <!-- docker plugin properties -->
+        <docker.verbose>true</docker.verbose>
+        <docker.useColor>true</docker.useColor>
+        <docker.skip>true</docker.skip>
+        <docker.skip.build>true</docker.skip.build>
+        <docker.skip.push>true</docker.skip.push>
+        <docker.maintainer>info@inforefiner.com</docker.maintainer>
+        <docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
+        <docker.image.prefix>baymax</docker.image.prefix>
+        <docker.host>tcp://localhost:2375</docker.host>
+        <docker.push.registry>192.168.1.74:5000</docker.push.registry>
+
+        <!-- docker env properties -->
+        <docker.image.port>8080</docker.image.port>
+        <docker.env.JAVA_OPTS>-Xms2048M -Xmx2048M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
+        <docker.env.PROFILES>default</docker.env.PROFILES>
+		<docker.env.NACOS_HOST>http://192.168.1.82:8848</docker.env.NACOS_HOST>
+        <docker.env.NACOS_NAMESPACE>public</docker.env.NACOS_NAMESPACE>
+		<docker.env.NACOS_GROUP>DEFAULT_GROUP</docker.env.NACOS_GROUP>
+	</properties>
 	<modules>
 		<module>baymax-common</module>
 		<module>baymax-starters</module>
@@ -138,81 +159,6 @@
 		<module>baymax-sentinel-dashboard</module>
 		<module>baymax-distribution</module>
 	</modules>
-
-	<scm>
-		<connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
-		<developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-	<distributionManagement>
-		<repository>
-			<id>inforefiner-release</id>
-			<name>Inforefiner Porject Release</name>
-			<url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>inforefiner-snapshot</id>
-			<name>Inforefiner Porject Snapshot</name>
-			<url>http://192.168.1.171:8081/nexus/content/repositories/snapshots/</url>
-			<uniqueVersion>true</uniqueVersion>
-		</snapshotRepository>
-	</distributionManagement>
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>aliyun</id>
-			<url>https://maven.aliyun.com/repository/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>inforefiner</id>
-			<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>aliyun</id>
-			<url>https://maven.aliyun.com/repository/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>inforefiner</id>
-			<url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<profiles>
 		<profile>
 			<id>hadoop2</id>
@@ -265,13 +211,16 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>fat</id>
+            <id>docker</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<profileActive>fat</profileActive>
+                <profileActive>docker</profileActive>
 				<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+                <docker.skip>false</docker.skip>
+                <docker.skip.build>false</docker.skip.build>
+                <docker.skip.push>false</docker.skip.push>
 			</properties>
 		</profile>
 	</profiles>
@@ -838,7 +787,6 @@
 				<version>${log4j2.version}</version>
 			</dependency>
 
-
 			<!-- other dependencies -->
 			<dependency>
 				<groupId>org.javassist</groupId>
@@ -936,7 +884,13 @@
 				<artifactId>snappy-java</artifactId>
 				<version>${snappy-java.version}</version>
 			</dependency>
-			<dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf-java.version}</version>
+            </dependency>
+
+            <dependency>
 				<groupId>dom4j</groupId>
 				<artifactId>dom4j</artifactId>
 				<version>${dom4j.version}</version>
@@ -948,7 +902,79 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+    <scm>
+        <connection>scm:git:https://github.com/inforefiner/woven-dsp.git</connection>
+        <developerConnection>scm:git:https://github.com/inforefiner/woven-dsp.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <distributionManagement>
+        <repository>
+            <id>inforefiner-release</id>
+            <name>Inforefiner Porject Release</name>
+            <url>http://192.168.1.171:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>inforefiner-snapshot</id>
+            <name>Inforefiner Porject Snapshot</name>
+            <url>http://192.168.1.171:8081/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>inforefiner</id>
+            <url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>inforefiner</id>
+            <url>http://192.168.1.171:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 	<reporting>
 		<plugins>
 			<plugin>
@@ -1112,10 +1138,15 @@
 					<version>${swagger2markup.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.asciidoctor</groupId>
-					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>1.6.0</version>
-				</plugin>
+                    <groupId>com.github.wvengen</groupId>
+                    <artifactId>proguard-maven-plugin</artifactId>
+                    <version>2.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                </plugin>
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
@@ -1130,7 +1161,17 @@
 					<groupId>org.graalvm.nativeimage</groupId>
 					<artifactId>native-image-maven-plugin</artifactId>
 					<version>${graal.version}</version>
-				</plugin>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.34.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>3.4.6</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>

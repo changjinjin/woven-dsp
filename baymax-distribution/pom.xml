@@ -113,10 +113,10 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>release-baymax-dsp-fat</id>
+            <id>release-baymax-dsp-docker</id>
 			<properties>
-				<profileActive>release-baymax-dsp-fat</profileActive>
-				<release.finalName>baymax-dsp-fat</release.finalName>
+                <profileActive>release-baymax-dsp-docker</profileActive>
+                <release.finalName>baymax-dsp-docker</release.finalName>
 				<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
 			</properties>
 			<activation>
@@ -284,6 +284,7 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<os>
+                    <name>linux</name>
 					<family>unix</family>
 				</os>
 			</activation>
@@ -351,6 +352,7 @@
 				</executions>
 			</plugin>
 			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
