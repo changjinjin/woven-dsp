@@ -1,5 +1,7 @@
 package com.info.baymax.dsp.job.exec;
 
+import com.merce.woven.metrics.config.EnableElasticMetricsExport;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -8,10 +10,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
-
-import com.merce.woven.metrics.config.EnableElasticMetricsExport;
-
-import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -26,7 +24,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource({"classpath:dsp-common.properties", "classpath:dsp-job-exec.properties"})
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-job-exec.properties"}, ignoreResourceNotFound = true)
 @EnableAsync
 public class DspExecutorStarter {
 

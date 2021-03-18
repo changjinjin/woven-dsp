@@ -1,5 +1,6 @@
 package com.info.baymax.dsp.access.platform;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -8,8 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @Slf4j
@@ -20,7 +19,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = { "com.info.baymax", "com.merce.woven" })
 @EntityScan(basePackages = { "com.info.baymax.dsp.data.**.entity" })
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource(value = { "classpath:dsp-common.properties", "classpath:dsp-access-platform.properties" })
+@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-access-platform.properties"}, ignoreResourceNotFound = true)
 public class DspPlatformStarter {
 	public static void main(String[] args) {
 		log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
