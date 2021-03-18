@@ -1,20 +1,11 @@
 server:
   address: 192.168.1.35
   port: 8008
-  servlet:
-    context-path: /
   compression:
     enabled: true
     mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
     min-response-size: 2048
 spring:
-  application:
-    name: dsp-cas-gateway
-  profiles:
-    active: dev
-  main:
-    banner-mode: off
-    web-application-type: reactive
   web:
     resources:
       add-mappings: true

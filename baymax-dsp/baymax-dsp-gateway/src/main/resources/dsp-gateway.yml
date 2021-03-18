@@ -5,13 +5,6 @@ server:
     mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
     min-response-size: 2048
 spring:
-  application:
-    name: dsp-gateway
-  profiles:
-    active: dev
-  main:
-    banner-mode: off
-    web-application-type: reactive
   web:
     locale: zh_CN
     resources:
