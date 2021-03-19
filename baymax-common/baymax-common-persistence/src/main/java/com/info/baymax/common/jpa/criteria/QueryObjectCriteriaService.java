@@ -256,6 +256,8 @@ class ExampleQueryTransferHelper {
                 return Operator.NOT_EQUAL;
             case LIKE:
                 return Operator.LIKE;
+            case NOT_LIKE:
+            	return Operator.NOT_LIKE;
             case BETWEEN:
                 return Operator.BETWEEN;
             case NOT_BETWEEN:
