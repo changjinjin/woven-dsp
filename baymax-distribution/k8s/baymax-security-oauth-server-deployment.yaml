@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baymax-security-oauth-server-deployment
+  labels:
+    app: baymax-security-oauth-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: baymax-security-oauth-server
+  template:
+    metadata:
+      labels:
+        app: baymax-security-oauth-server
+    spec:
+      imagePullSecrets:
+        - name: harborsecret
+      containers:
+        - name: baymax-security-oauth-server
+          image: 192.168.1.74/baymax/baymax-security-oauth-server
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 1
+              memory: 1024Mi
+            limits:
+              cpu: 1
+              memory: 2048Mi
+          env:
+            - name: JAVA_OPTS
+              value: -server -Xmx2048m -Xms2048m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -Djava.awt.headless=true
+            - name: PROFILES
+              value: 'dev'
+            - name: NACOS_HOST
+              value: '192.168.1.82:8848'
+            - name: NACOS_NAMESPACE
+              value: 'yjw'
+            - name: NACOS_GROUP
+              value: 'dsp'
+          ports:
+            - containerPort: 8004

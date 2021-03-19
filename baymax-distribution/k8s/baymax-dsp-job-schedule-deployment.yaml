@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baymax-dsp-job-schedule-deployment
+  labels:
+    app: baymax-dsp-job-schedule
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: baymax-dsp-job-schedule
+  template:
+    metadata:
+      labels:
+        app: baymax-dsp-job-schedule
+    spec:
+      imagePullSecrets:
+        - name: harborsecret
+      containers:
+        - name: baymax-dsp-job-schedule
+          image: 192.168.1.74/baymax/baymax-dsp-job-schedule
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 1
+              memory: 1024Mi
+            limits:
+              cpu: 1
+              memory: 2048Mi
+          env:
+            - name: JAVA_OPTS
+              value: -server -Xmx2048m -Xms2048m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -Djava.awt.headless=true
+            - name: PROFILES
+              value: 'dev'
+            - name: NACOS_HOST
+              value: '192.168.1.82:8848'
+            - name: NACOS_NAMESPACE
+              value: 'yjw'
+            - name: NACOS_GROUP
+              value: 'dsp'
+          ports:
+            - containerPort: 8005
