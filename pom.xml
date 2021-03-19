@@ -141,7 +141,8 @@
         <docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
         <docker.image.prefix>baymax</docker.image.prefix>
         <docker.host>tcp://localhost:2375</docker.host>
-        <docker.push.registry>192.168.1.74:5000</docker.push.registry>
+        <docker.registry>192.168.1.74</docker.registry>
+        <docker.push.registry>192.168.1.74</docker.push.registry>
 
         <!-- docker env properties -->
         <docker.image.port>8080</docker.image.port>

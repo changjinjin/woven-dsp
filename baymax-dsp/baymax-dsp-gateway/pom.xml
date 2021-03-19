@@ -158,7 +158,7 @@
                                         <arg>/bin/sh</arg>
                                         <arg>-c</arg>
                                         <arg>
-                                            <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8 -jar /${docker.image.prefix}/${project.artifactId}.jar]]></arg>
+                                            <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8 -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
                                     </exec>
                                 </entryPoint>
                                 <assembly>

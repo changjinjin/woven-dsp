@@ -7,7 +7,7 @@
         <file>
             <source>target/${project.build.finalName}.jar</source>
             <outputDirectory>${docker.image.prefix}</outputDirectory>
-            <destName>${project.artifactId}.jar</destName>
+            <destName>${project.build.finalName}.jar</destName>
         </file>
     </files>
 </assembly>
