@@ -16,6 +16,7 @@ public interface CryptoMethodInvoker {
      * @param method 方法
      * @param args   未处理的参数列表
      * @return 处理后的参数列表
+     * @throws Exception
      */
     Object[] handleArgs(Method method, Object[] args);
 

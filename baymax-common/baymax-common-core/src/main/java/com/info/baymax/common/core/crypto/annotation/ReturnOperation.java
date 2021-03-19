@@ -1,7 +1,11 @@
 package com.info.baymax.common.core.crypto.annotation;
 
+import com.info.baymax.common.core.crypto.CryptoDecoder;
+import com.info.baymax.common.core.crypto.CryptoEncoder;
 import com.info.baymax.common.core.crypto.CryptoOperation;
 import com.info.baymax.common.core.crypto.CryptoType;
+import com.info.baymax.common.core.crypto.decoder.NoneCryptoDecoder;
+import com.info.baymax.common.core.crypto.encoder.NoneCryptoEncoder;
 
 import java.lang.annotation.*;
 
@@ -30,4 +34,18 @@ public @interface ReturnOperation {
      * @return 加解密方式
      */
     CryptoType cryptoType();
+
+    /**
+     * 解密器类
+     *
+     * @return 解密器类
+     */
+    Class<? extends CryptoDecoder<?>> decoder() default NoneCryptoDecoder.class;
+
+    /**
+     * 加密器类
+     *
+     * @return 加密器类
+     */
+    Class<? extends CryptoEncoder<?>> encoder() default NoneCryptoEncoder.class;
 }

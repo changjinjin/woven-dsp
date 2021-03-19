@@ -1,10 +1,13 @@
 package com.info.baymax.common.persistence.service;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.info.baymax.common.core.page.IPageable;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 public interface BasePageService<T> {
@@ -39,5 +42,12 @@ public interface BasePageService<T> {
         if (StringUtils.isNotEmpty(orderByClause)) {
             PageHelper.orderBy(orderByClause);
         }
+    }
+
+    default <E> List<E> converPageToList(List<E> list) {
+        if (list != null && list instanceof Page) {
+            return Lists.newArrayList(list);
+        }
+        return list;
     }
 }
