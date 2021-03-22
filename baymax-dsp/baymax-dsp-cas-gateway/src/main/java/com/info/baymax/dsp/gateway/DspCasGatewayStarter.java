@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.gateway;
 
-import com.info.baymax.dsp.gateway.config.YamlPropertySourceFactory;
+import com.info.baymax.common.config.YamlPropertySourceFactory;
 import com.info.baymax.security.cas.reactive.client.config.EnableCasClientWebflux;
 import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import lombok.extern.slf4j.Slf4j;

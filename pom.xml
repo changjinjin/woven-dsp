@@ -25,9 +25,9 @@
 		<baymax-woven.version>3.1</baymax-woven.version>
 
 		<!-- spring boot -->
-		<spring-boot.version>2.4.3</spring-boot.version>
-		<spring-cloud.version>2020.0.0</spring-cloud.version>
-		<spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>
+        <spring-boot.version>2.4.4</spring-boot.version>
+        <spring-cloud.version>2020.0.2</spring-cloud.version>
+        <spring-cloud-alibaba.version>2020.0.RC1</spring-cloud-alibaba.version>
 		<rocketmq-spring-boot.version>2.2.0</rocketmq-spring-boot.version>
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
 		<jasypt.version>1.9.3</jasypt.version>
@@ -137,7 +137,7 @@
         <docker.skip>true</docker.skip>
         <docker.skip.build>true</docker.skip.build>
         <docker.skip.push>true</docker.skip.push>
-        <docker.maintainer>info@inforefiner.com</docker.maintainer>
+        <docker.maintainer>inforefiner info@inforefiner.com</docker.maintainer>
         <docker.imagePullPolicy>IfNotPresent</docker.imagePullPolicy>
         <docker.image.prefix>baymax</docker.image.prefix>
         <docker.host>tcp://localhost:2375</docker.host>
@@ -145,8 +145,8 @@
         <docker.push.registry>192.168.1.74</docker.push.registry>
 
         <!-- docker env properties -->
-        <docker.image.port>8080</docker.image.port>
-        <docker.env.JAVA_OPTS>-Xms2048M -Xmx2048M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
+        <docker.env.JAVA_OPTS>-Xms1024M -Xmx1024M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
+        <docker.env.SERVER_PORT>8080</docker.env.SERVER_PORT>
         <docker.env.PROFILES>default</docker.env.PROFILES>
 		<docker.env.NACOS_HOST>http://192.168.1.82:8848</docker.env.NACOS_HOST>
         <docker.env.NACOS_NAMESPACE>public</docker.env.NACOS_NAMESPACE>

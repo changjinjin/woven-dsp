@@ -19,7 +19,7 @@ spec:
       containers:
         - name: baymax-dsp-access-dataapi
           image: 192.168.1.74/baymax/baymax-dsp-access-dataapi
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           resources:
             requests:
               cpu: 1
@@ -29,7 +29,9 @@ spec:
               memory: 2048Mi
           env:
             - name: JAVA_OPTS
-              value: -server -Xmx2048m -Xms2048m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -Djava.awt.headless=true
+              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
+            - name: SERVER_PORT
+              value: '8001'
             - name: PROFILES
               value: 'dev'
             - name: NACOS_HOST
