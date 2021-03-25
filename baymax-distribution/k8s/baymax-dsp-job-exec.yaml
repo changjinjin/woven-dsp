@@ -43,14 +43,16 @@ spec:
           ports:
             - containerPort: 8006
           readinessProbe:
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
             httpGet:
               path: /actuator/health/readiness
               port: 8080
           livenessProbe:
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
             httpGet:
               path: /actuator/health/liveness
               port: 8080
