@@ -86,12 +86,12 @@
     <logger name="org.apache.tomcat" level="ERROR"/>
 
     <logger name="com.netflix" level="INFO"/>
-    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework" level="INFO"/>
     <logger name="com.info.baymax" level="DEBUG"/>
     <logger name="java.sql" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <!-- <appender-ref ref="FILE" /> -->
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

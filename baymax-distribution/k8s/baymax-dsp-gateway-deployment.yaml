@@ -29,7 +29,7 @@ spec:
               memory: 2048Mi
           env:
             - name: JAVA_OPTS
-              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
+              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-gateway -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
             - name: SERVER_PORT
               value: '8008'
             - name: PROFILES
