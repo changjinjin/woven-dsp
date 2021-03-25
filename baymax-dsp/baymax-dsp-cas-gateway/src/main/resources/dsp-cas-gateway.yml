@@ -178,6 +178,8 @@ management:
     health:
       enabled: true
       show-details: never
+      probes:
+        enabled: true
     beans:
       enabled: true
     env:
@@ -202,6 +204,10 @@ management:
       enabled: false
     elasticsearch:
       enabled: false
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
 security:
   cas:
     mode: remote

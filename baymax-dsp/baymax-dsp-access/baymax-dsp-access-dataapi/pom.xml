@@ -390,7 +390,7 @@
                             <alias>${project.artifactId}</alias>
                             <build>
                                 <!-- <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile> -->
-                                <from>openjdk:8-jdk-alpine</from>
+                                <from>${docker.BASE_IMAGE}</from>
                                 <maintainer>${docker.maintainer}</maintainer>
                                 <tags>
                                     <tag>latest</tag>

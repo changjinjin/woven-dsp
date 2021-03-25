@@ -15,7 +15,7 @@ spec:
         app: baymax-dsp-access-platform
     spec:
       imagePullSecrets:
-        - name: harborsecret
+        - name: baymax-secret
       containers:
         - name: baymax-dsp-access-platform
           image: 192.168.1.74/baymax/baymax-dsp-access-platform
@@ -31,7 +31,7 @@ spec:
             - name: JAVA_OPTS
               value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-access-platform -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
             - name: SERVER_PORT
-              value: '8002'
+              value: '8080'
             - name: PROFILES
               value: 'dev'
             - name: NACOS_HOST
@@ -41,4 +41,16 @@ spec:
             - name: NACOS_GROUP
               value: 'dsp'
           ports:
-            - containerPort: 8002
+            - containerPort: 8080
+          readinessProbe:
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080

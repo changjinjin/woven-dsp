@@ -15,7 +15,7 @@ spec:
         app: baymax-dsp-job-exec
     spec:
       imagePullSecrets:
-        - name: harborsecret
+        - name: baymax-secret
       containers:
         - name: baymax-dsp-job-exec
           image: 192.168.1.74/baymax/baymax-dsp-job-exec
@@ -42,3 +42,15 @@ spec:
               value: 'dsp'
           ports:
             - containerPort: 8006
+          readinessProbe:
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080

@@ -178,6 +178,8 @@ management:
     health:
       enabled: true
       show-details: always
+      probes:
+        enabled: true
     beans:
       enabled: true
     env:
@@ -203,6 +205,10 @@ management:
     elasticsearch:
       enabled: false
     db:
+      enabled: true
+    livenessstate:
+      enabled: true
+    readinessstate:
       enabled: true
 security:
   token:

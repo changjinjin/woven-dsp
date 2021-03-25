@@ -145,6 +145,7 @@
         <docker.push.registry>192.168.1.74</docker.push.registry>
 
         <!-- docker env properties -->
+        <docker.BASE_IMAGE>openjdk:8-jdk-alpine</docker.BASE_IMAGE>
         <docker.env.JAVA_OPTS>-Xms1024M -Xmx1024M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
         <docker.env.SERVER_PORT>8080</docker.env.SERVER_PORT>
         <docker.env.PROFILES>default</docker.env.PROFILES>
