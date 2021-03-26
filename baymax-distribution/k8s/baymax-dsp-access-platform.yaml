@@ -20,26 +20,12 @@ spec:
         - name: baymax-dsp-access-platform
           image: 192.168.1.74/baymax/baymax-dsp-access-platform
           imagePullPolicy: Always
-          resources:
-            requests:
-              cpu: 1
-              memory: 1024Mi
-            limits:
-              cpu: 1
-              memory: 2048Mi
           env:
             - name: JAVA_OPTS
               value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-access-platform -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
-            - name: SERVER_PORT
-              value: '8080'
-            - name: PROFILES
-              value: 'dev'
-            - name: NACOS_HOST
-              value: '192.168.1.82:8848'
-            - name: NACOS_NAMESPACE
-              value: 'yjw'
-            - name: NACOS_GROUP
-              value: 'dsp'
+          envFrom:
+            - configMapRef:
+                name: baymax-dsp-env-config
           ports:
             - containerPort: 8080
           readinessProbe:

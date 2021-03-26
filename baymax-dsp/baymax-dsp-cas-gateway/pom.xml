@@ -13,7 +13,6 @@
 	<url>http://maven.apache.org</url>
 	<properties>
         <start-class>com.info.baymax.dsp.gateway.DspCasGatewayStarter</start-class>
-        <docker.env.SERVER_PORT>8008</docker.env.SERVER_PORT>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -142,7 +141,7 @@
                                 </buildOptions>
                                 <env>
                                     <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-                                    <SERVER_PORT>${docker.env.SERVER_PORT}</SERVER_PORT>
+
                                     <PROFILES>${docker.env.PROFILES}</PROFILES>
                                     <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
                                     <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
@@ -153,7 +152,7 @@
                                         <arg>/bin/sh</arg>
                                         <arg>-c</arg>
                                         <arg>
-                                            <![CDATA[java $JAVA_OPTS -Dserver.port=$SERVER_PORT -Dspring.profiles.active=$PROFILES -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
+                                            <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
                                     </exec>
                                 </entryPoint>
                                 <assembly>
@@ -165,7 +164,7 @@
                             <run>
                                 <namingStrategy>alias</namingStrategy>
                                 <ports>
-                                    <port>${docker.env.SERVER_PORT}:${docker.env.SERVER_PORT}</port>
+                                    <port>8080:8080</port>
                                 </ports>
                             </run>
                         </image>
