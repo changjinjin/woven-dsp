@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.access.platform.web.controller.data;
 
 import com.info.baymax.common.core.result.Response;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
 import com.info.baymax.common.queryapi.query.field.FieldGroup;
@@ -9,16 +10,19 @@ import com.info.baymax.dsp.data.consumer.constant.DataServiceStatus;
 import com.info.baymax.dsp.data.consumer.constant.ScheduleJobStatus;
 import com.info.baymax.dsp.data.consumer.entity.DataApplication;
 import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
+import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.platform.entity.DataResource;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -84,4 +88,25 @@ public class DataResourceController implements BaseEntityController<DataResource
         return Response.ok().build();
     }
 
+    @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
+    @GetMapping("/infoById")
+    @ResponseBody
+    public Response<DataResource> infoById(@ApiParam(value = "记录ID", required = true) @RequestParam Long id) {
+        DataResource dataResource = dataResourceService.selectByPrimaryKey(id);
+        List<FieldMapping> list = new ArrayList<>();
+        List<FieldMapping> fieldMappings = dataResource.getFieldMappings();
+        if(null != fieldMappings && fieldMappings.size() > 0){
+            SaasContext currentSaasContext = SaasContext.getCurrentSaasContext();
+            String userType = currentSaasContext.getUserType();
+            if(!userType.isEmpty() && userType.equals("Customer")){
+                for(FieldMapping field : fieldMappings){
+                    if(!field.getTargetField().isEmpty()){
+                        list.add(field);
+                    }
+                }
+                dataResource.setFieldMappings(list);
+            }
+        }
+        return Response.ok(dataResource);
+    }
 }

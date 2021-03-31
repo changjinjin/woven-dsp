@@ -55,6 +55,7 @@ public enum ErrType implements ErrMsg {
     FILE_IO_READ_ERROR(1764, "File write failed."), //
     FILE_DELETE_ERROR(1765, "File delete failed."), //
     FILE_NOT_FOUND_ERROR(1766, "File not found."), //
+    FILE_EXPORT_FAILED(1767, "File export failed"), //
 
     SECRET_KEY_ERROR(1801, "Secret key error"), //
     SECRET_KEY_EXPIRED(1802, "Secret key expired") //
