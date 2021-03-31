@@ -269,7 +269,11 @@ public class PullServiceImpl implements PullService {
             }
             String accessKey = custApp.getAccessKey();
             String[] accessIp = custApp.getAccessIp();
-            if (!accessKey.equals(requestKey) || accessIp == null || !Arrays.asList(accessIp).contains(host)) {
+            /*if (!accessKey.equals(requestKey) || accessIp == null || !Arrays.asList(accessIp).contains(host)) {
+                throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
+            }*/
+            //TODO host不做匹配
+            if (!accessKey.equals(requestKey) || accessIp == null) {
                 throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
             }
 

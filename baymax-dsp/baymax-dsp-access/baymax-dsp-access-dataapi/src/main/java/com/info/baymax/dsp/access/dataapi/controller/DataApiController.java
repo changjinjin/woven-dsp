@@ -80,4 +80,14 @@ public class DataApiController implements Serializable {
         return Response.ok(EncryptUtils.encrypt(pullService.pullBySql(request, hosts), request.isEncrypted(),
             restSignService.signKeyIfExist(request.getAccessKey())));
     }
+
+    //对用户暴露接口
+    @ApiOperation(value = "数据源SQL模板方式查询")
+    @PostMapping("/pullBySqlRemote")
+    public Response<Object> pullBySqlRemote(
+            @ApiParam(value = "聚合请求信息", required = true) @RequestBody @Valid SqlRequest request,
+            @ApiParam(value = "请求端hosts信息，需要与申请应用对应", required = true) @RequestHeader String hosts) {
+        return Response.ok(EncryptUtils.encrypt(pullService.pullBySql(request, hosts), request.isEncrypted(),
+                restSignService.signKeyIfExist(request.getAccessKey())));
+    }
 }
