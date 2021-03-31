@@ -29,6 +29,7 @@
 		<spring-cloud.version>2020.0.2</spring-cloud.version>
 		<spring-cloud-alibaba.version>2020.0.RC1</spring-cloud-alibaba.version>
 		<rocketmq-spring-boot.version>2.2.0</rocketmq-spring-boot.version>
+		<rocketmq.version>4.8.0</rocketmq.version>
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
 		<jasypt.version>1.9.3</jasypt.version>
 
@@ -254,6 +255,21 @@
 				<groupId>org.apache.rocketmq</groupId>
 				<artifactId>rocketmq-spring-boot-starter</artifactId>
 				<version>${rocketmq-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-client</artifactId>
+				<version>${rocketmq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-acl</artifactId>
+				<version>${rocketmq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-tools</artifactId>
+				<version>${rocketmq.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.ulisesbocchio</groupId>
