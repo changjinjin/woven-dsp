@@ -341,14 +341,14 @@
                                     <PROFILES>${docker.env.PROFILES}</PROFILES>
                                     <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
                                     <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
-                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
+                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP><LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
                                 </env>
                                 <entryPoint>
                                     <exec>
                                         <arg>/bin/sh</arg>
                                         <arg>-c</arg>
                                         <arg>
-                                            <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
+                                            <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
                                     </exec>
                                 </entryPoint>
                                 <assembly>
@@ -376,7 +376,7 @@
                     </execution>
                     <execution>
                         <id>push-image</id>
-                        <phase>deploy</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>push</goal>
                         </goals>

@@ -40,6 +40,7 @@
 		</Root>
 
 		<Logger name="java.sql" level="DEBUG" />
+		<Logger name="com.merce" level="DEBUG" />
 		<Logger name="com.info.baymax" level="DEBUG" />
 		<Logger name="org.springframework" level="INFO" />
 

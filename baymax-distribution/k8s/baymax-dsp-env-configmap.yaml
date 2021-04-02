@@ -7,5 +7,6 @@ data:
   PROFILES: 'dev'
   NACOS_HOST: '192.168.1.82:8848'
   NACOS_NAMESPACE: 'yjw'
-  NACOS_GROUP: 'woven'
+  NACOS_GROUP: 'dsp'
+  LOG_CONF: '/conf/log4j2.xml'
   JAVA_OPTS: '-server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=woven -DWOVEN_LOGS_DIR=/logs  -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8'

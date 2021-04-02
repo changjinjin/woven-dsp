@@ -15,30 +15,43 @@ spec:
         app: baymax-security-oauth-server
     spec:
       imagePullSecrets:
-        - name: baymax-secret
+      - name: baymax-secret
       containers:
-        - name: baymax-security-oauth-server
-          image: 192.168.1.74/baymax/baymax-security-oauth-server
-          imagePullPolicy: Always
-          env:
-            - name: JAVA_OPTS
-              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=baymax-auth-server -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
-          envFrom:
-            - configMapRef:
-                name: baymax-dsp-env-config
-          ports:
-            - containerPort: 8080
-          readinessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 30
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-          livenessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 30
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
+      - name: baymax-security-oauth-server
+        image: 192.168.1.74/baymax/baymax-security-oauth-server
+        imagePullPolicy: Always
+        env:
+        - name: JAVA_OPTS
+          value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=baymax-auth-server -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
+        envFrom:
+        - configMapRef:
+            name: baymax-dsp-env-config
+        volumeMounts:
+        - name: conf
+          mountPath: /conf
+        - name: logs
+          mountPath: /logs
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 30
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+        livenessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 30
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+      volumes:
+      - name: conf
+        nfs:
+          server: 192.168.1.149
+          path: /nfs/baymax/conf
+      - name: logs
+        hostPath:
+          path: /data/baymax/logs

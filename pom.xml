@@ -152,6 +152,7 @@
 		<docker.env.NACOS_HOST>http://192.168.1.82:8848</docker.env.NACOS_HOST>
 		<docker.env.NACOS_NAMESPACE>public</docker.env.NACOS_NAMESPACE>
 		<docker.env.NACOS_GROUP>DEFAULT_GROUP</docker.env.NACOS_GROUP>
+		<docker.env.LOG_CONF>classpath:log4j2.xml</docker.env.LOG_CONF>
 	</properties>
 	<modules>
 		<module>baymax-common</module>
