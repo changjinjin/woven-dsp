@@ -23,6 +23,50 @@
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-dataset</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-sys</artifactId>
+            <version>0.1.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-consumer</artifactId>
+            <version>0.1.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-consumer</artifactId>
+            <version>0.1.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-consumer</artifactId>
+            <version>0.1.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-consumer</artifactId>
+            <version>0.1.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -69,4 +72,17 @@ public class DataCustAppServiceImpl extends EntityClassServiceImpl<DataCustApp> 
         return app;
     }
 
+    @Override
+    public List<String> selectAccessIps(String custId) {
+        List<String> accessIps = dataCustAppMapper.selectAccessIp(custId);
+        List<String> ipList = new ArrayList<>();
+        if(null != accessIps && accessIps.size() > 0){
+            for(String str : accessIps){
+                String[] splits = str.split(",");
+                List list = Arrays.asList(splits);
+                ipList.addAll(list);
+            }
+        }
+        return ipList;
+    }
 }

@@ -68,4 +68,14 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
     public IPage<Dataset> queryDatasets(ExampleQuery exampleQuery) {
         return datasetService.selectPage(exampleQuery);
     }
+
+    @Override
+    public List<DataResource> selectDataResourceListByIds(List<Long> ids) {
+        return resourceMapper.selectDataResourceListByIds(ids);
+    }
+
+    @Override
+    public DataResource selectEntityByName(String name) {
+        return resourceMapper.selectEntityByName(name);
+    }
 }

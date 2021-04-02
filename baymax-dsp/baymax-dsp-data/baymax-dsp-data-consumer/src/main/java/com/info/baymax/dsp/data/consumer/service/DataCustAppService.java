@@ -3,6 +3,8 @@ package com.info.baymax.dsp.data.consumer.service;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
 
+import java.util.List;
+
 public interface DataCustAppService extends BaseEntityService<DataCustApp> {
 
     /**
@@ -13,4 +15,5 @@ public interface DataCustAppService extends BaseEntityService<DataCustApp> {
      */
     DataCustApp selectByAccessKeyNotNull(String accessKey);
 
+    List<String> selectAccessIps(String userId);
 }

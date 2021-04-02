@@ -17,4 +17,8 @@ public interface DataResourceService extends BaseEntityService<DataResource> {
     void closeDataResource(List<Long> ids);
 
     IPage<Dataset> queryDatasets(ExampleQuery exampleQuery);
+
+    List<DataResource> selectDataResourceListByIds(List<Long> ids);
+
+    DataResource selectEntityByName(String name);
 }
