@@ -18,18 +18,15 @@ package com.info.baymax.dsp.access.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.dsp.data.sys.entity.security.User;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -38,18 +35,16 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 
 @AutoConfigureRestDocs(outputDir = "build/asciidoc/snippets")
 @AutoConfigureWebTestClient
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DspConsumerStarter.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = { DspConsumerStarter.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WebClientTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+	@Autowired
+	private WebTestClient webTestClient;
 
-    @Ignore
-    @Test
-    public void addANewPetToTheStore() throws Exception {
-        // @formatter:off
+	@Test
+	public void addANewPetToTheStore() throws Exception {
+		// @formatter:off
         webTestClient
             .post().uri("/createUser/")
             .contentType(MediaType.APPLICATION_JSON)
@@ -63,16 +58,16 @@ public class WebClientTest {
             .jsonPath("$.name").isNotEmpty()
             .jsonPath("$.name").isEqualTo("zhangsan");
         // @formatter:on
-    }
+	}
 
-    private String createUser() throws JsonProcessingException {
-        User user = new User();
-        user.setId("1");
-        user.setAdmin(1);
-        user.setEmail("760374564@qq.com");
-        user.setDescription("我叫张三");
-        user.setName("张三");
-        user.setLoginId("zhangsan");
-        return new ObjectMapper().writeValueAsString(user);
-    }
+	private String createUser() throws JsonProcessingException {
+		User user = new User();
+		user.setId("1");
+		user.setAdmin(1);
+		user.setEmail("760374564@qq.com");
+		user.setDescription("我叫张三");
+		user.setName("张三");
+		user.setLoginId("zhangsan");
+		return new ObjectMapper().writeValueAsString(user);
+	}
 }

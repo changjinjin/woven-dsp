@@ -13,7 +13,7 @@
 	<name>baymax-dsp-access-platform</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-        <start-class>com.info.baymax.dsp.access.platform.DspPlatformStarter</start-class>
+		<start-class>com.info.baymax.dsp.access.platform.DspPlatformStarter</start-class>
 
 		<asciidoctor.input.directory>${project.basedir}/src/docs/asciidoc</asciidoctor.input.directory>
 		<swagger.output.dir>${project.build.directory}/swagger</swagger.output.dir>
@@ -57,13 +57,13 @@
 			<groupId>com.info.baymax</groupId>
 			<artifactId>baymax-persistence-spring-boot-starter</artifactId>
 		</dependency>
+
+		<!-- test dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- docs dependencies -->
 		<dependency>
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-webtestclient</artifactId>
@@ -285,90 +285,85 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-                    <mainClass>${start-class}</mainClass>
+					<mainClass>${start-class}</mainClass>
 					<layout>ZIP</layout>
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
-                            <alias>${project.artifactId}</alias>
-                            <build>
-                                <!-- <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile> -->
-                                <from>${docker.BASE_IMAGE}</from>
-                                <maintainer>${docker.maintainer}</maintainer>
-                                <tags>
-                                    <tag>latest</tag>
-                                    <tag>${project.version}</tag>
-                                </tags>
-                                <!-- <ports>
-                                    <port>${docker.env.SERVER_PORT}</port>
-                                </ports> -->
-                                <volumes>
-                                    <volume>/${docker.image.prefix}</volume>
-                                </volumes>
-                                <buildOptions>
-                                    <shmsize>2147483648</shmsize>
-                                </buildOptions>
-                                <env>
-                                    <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-
-                                    <PROFILES>${docker.env.PROFILES}</PROFILES>
-                                    <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
-                                    <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
-                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
-                                </env>
-                                <entryPoint>
-                                    <exec>
-                                        <arg>/bin/sh</arg>
-                                        <arg>-c</arg>
-                                        <arg>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
+							<alias>${project.artifactId}</alias>
+							<build>
+								<from>${docker.BASE_IMAGE}</from>
+								<maintainer>${docker.maintainer}</maintainer>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+								<volumes>
+									<volume>/${docker.image.prefix}</volume>
+								</volumes>
+								<buildOptions>
+									<shmsize>2147483648</shmsize>
+								</buildOptions>
+								<env>
+									<JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
+									<PROFILES>${docker.env.PROFILES}</PROFILES>
+									<NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
+									<NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
+									<NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
+								</env>
+								<entryPoint>
+									<exec>
+										<arg>/bin/sh</arg>
+										<arg>-c</arg>
+										<arg>
                                             <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
-                                    </exec>
-                                </entryPoint>
-                                <assembly>
-                                    <mode>dir</mode>
-                                    <basedir>/</basedir>
-                                    <descriptor>assembly.xml</descriptor>
-                                </assembly>
-                            </build>
-                            <run>
-                                <namingStrategy>alias</namingStrategy>
-                                <ports>
-                                    <port>8080:8080</port>
-                                </ports>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>push-image</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+									</exec>
+								</entryPoint>
+								<assembly>
+									<mode>dir</mode>
+									<basedir>/</basedir>
+									<descriptor>assembly.xml</descriptor>
+								</assembly>
+							</build>
+							<run>
+								<namingStrategy>alias</namingStrategy>
+								<ports>
+									<port>8080:8080</port>
+								</ports>
+							</run>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>push-image</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

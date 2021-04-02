@@ -29,14 +29,14 @@ spec:
           ports:
             - containerPort: 8006
           readinessProbe:
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 30
             httpGet:
               path: /actuator/health/readiness
               port: 8080
           livenessProbe:
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 30
             httpGet:

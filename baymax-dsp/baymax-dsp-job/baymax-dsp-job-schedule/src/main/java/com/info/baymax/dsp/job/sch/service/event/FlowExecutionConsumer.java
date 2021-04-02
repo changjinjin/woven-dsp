@@ -28,8 +28,8 @@ import java.util.List;
  */
 @Component
 @RocketMQMessageListener(
-        topic = "${rocketmq.dsp-dataset.topic:dsp_dataset}",
-        consumerGroup = "${woven.dsp.group:woven_dsp_group}",
+        topic = "${rocketmq.naming.prefix:baymax}_${rocketmq.dsp-dataset.topic:dsp_dataset}",
+        consumerGroup = "${rocketmq.naming.prefix:baymax}_${woven.dsp.group:woven_dsp_group}",
         consumeMode = ConsumeMode.CONCURRENTLY,
         selectorExpression = "*"
 )

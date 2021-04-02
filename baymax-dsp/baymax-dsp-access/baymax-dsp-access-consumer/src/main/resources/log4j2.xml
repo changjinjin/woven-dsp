@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="20">
+	<Properties>
+		<Property name="LOG_PATH"><![CDATA[${sys:WOVEN_LOGS_DIR}/${sys:WOVEN_COM_NAME}]]></Property>
+		<Property name="LOG_FILE"><![CDATA[${LOG_PATH}/${sys:WOVEN_COM_NAME}.log]]></Property>
+		<Property name="JSON_LOG_FILE"><![CDATA[${LOG_PATH}/${sys:WOVEN_COM_NAME}_json.log]]></Property>
+		<Property name="LOG_LEVEL_PATTERN"><![CDATA[%5p]]></Property>
+		<Property name="LOG_PATTERN">
+            <![CDATA[[%d{yyyy-MM-dd HH:mm:ss.SSS}] %X{pid} ${LOG_LEVEL_PATTERN} [%t] --- %c{1}: %m%n %throwable{1000}]]></Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+		<RollingFile name="Rolling_file" immediateFlush="true"
+			fileName="${LOG_FILE}"
+			filePattern="${LOG_PATH}/${WOVEN_COM_NAME}.log.%d{yyyy-MM-dd}-%i">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Filters>
+				<ThresholdFilter level="DEBUG" onMatch="ACCEPT"
+					onMismatch="DENY" />
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy fileIndex="nomax">
+				<Delete basePath="${LOG_PATH}">
+					<IfFileName glob="${WOVEN_COM_NAME}*" />
+					<IfLastModified age="30d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="Rolling_file" />
+		</Root>
+
+		<Logger name="java.sql" level="DEBUG" />
+		<Logger name="com.info.baymax" level="DEBUG" />
+		<Logger name="org.springframework" level="INFO" />
+
+		<!-- hibernate日志输出 -->
+		<Logger name="org.hibernate" level="DEBUG" />
+		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+			level="DEBUG" />
+		<Logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+			level="DEBUG" />
+		<Logger name="org.hibernate.SQL" level="DEBUG" />
+		<Logger name="org.hibernate.engine.QueryParameters"
+			level="DEBUG" />
+		<Logger name="org.hibernate.engine.query.HQLQueryPlan"
+			level="DEBUG" />
+		<Logger name="reactor" level="ERROR" />
+		<Logger name="io.undertow" level="ERROR" />
+		<Logger name="io.netty" level="ERROR" />
+		<Logger name="net.openhft" level="ERROR" />
+		<Logger name="net.sf" level="ERROR" />
+		<Logger name="org.hibernate" level="ERROR" />
+		<Logger name="com.zaxxer" level="ERROR" />
+		<Logger name="com.alibaba" level="ERROR" />
+		<Logger name="org.apache" level="ERROR" />
+		<Logger name="org.reflections" level="ERROR" />
+		<Logger name="io.swagger" level="ERROR" />
+		<Logger name="org.quartz" level="ERROR" />
+		<Logger name="com.netflix" level="ERROR" />
+		<Logger name="org.mybatis" level="ERROR" />
+		<Logger name="org.apache.ibatis" level="ERROR" />
+		<Logger name="tk.mybatis" level="ERROR" />
+		<Logger name="java.nio" level="ERROR" />
+		<Logger name="sun.nio" level="ERROR" />
+		<Logger name="org.xnio" level="ERROR" />
+		<Logger name="io.lettuce" level="ERROR" />
+		<logger name="com.zaxxer.hikari" level="ERROR" />
+		<logger name="io.searchbox" level="ERROR" />
+	</Loggers>
+</Configuration>

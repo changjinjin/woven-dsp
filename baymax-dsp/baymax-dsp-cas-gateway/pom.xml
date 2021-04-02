@@ -123,16 +123,12 @@
                             <name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
                             <alias>${project.artifactId}</alias>
                             <build>
-                                <!-- <dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile> -->
                                 <from>${docker.BASE_IMAGE}</from>
                                 <maintainer>${docker.maintainer}</maintainer>
                                 <tags>
                                     <tag>latest</tag>
                                     <tag>${project.version}</tag>
                                 </tags>
-                                <!-- <ports>
-                                    <port>${docker.env.SERVER_PORT}</port>
-                                </ports> -->
                                 <volumes>
                                     <volume>/${docker.image.prefix}</volume>
                                 </volumes>
@@ -141,7 +137,6 @@
                                 </buildOptions>
                                 <env>
                                     <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-
                                     <PROFILES>${docker.env.PROFILES}</PROFILES>
                                     <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
                                     <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
