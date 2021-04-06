@@ -39,6 +39,7 @@ public interface TreeCodeableService<C extends Serializable, T extends TreeCodea
      * @return 根节点的集合，每个根节点包含自己所有的字段节点
      */
     default List<T> fetchTree(List<T> allList) {
+        allList.forEach(t -> t.setChildren(null));
         return fetchTree(findRoots(allList), findNotRoots(allList));
     }
 
