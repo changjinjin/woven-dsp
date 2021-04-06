@@ -270,16 +270,6 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>release-baymax-dsp-docs</id>
-			<properties>
-				<profileActive>release-baymax-dsp-docs</profileActive>
-				<release.finalName>baymax-dsp-docs</release.finalName>
-			</properties>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-		</profile>
-		<profile>
 			<id>exec-shell</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>

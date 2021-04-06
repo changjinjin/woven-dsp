@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO" monitorInterval="20">
 	<Properties>
-		<Property name="LOG_PATH"><![CDATA[${sys:WOVEN_LOGS_DIR}/${sys:WOVEN_COM_NAME}]]></Property>
-		<Property name="LOG_FILE"><![CDATA[${LOG_PATH}/${sys:WOVEN_COM_NAME}.log]]></Property>
-		<Property name="JSON_LOG_FILE"><![CDATA[${LOG_PATH}/${sys:WOVEN_COM_NAME}_json.log]]></Property>
-		<Property name="LOG_LEVEL_PATTERN"><![CDATA[%5p]]></Property>
-		<Property name="LOG_PATTERN">
+        <Property name="APP_NAME"><![CDATA[${sys:WOVEN_COM_NAME:-baymax}]]></Property>
+        <Property name="LOG_DIR"><![CDATA[${sys:WOVEN_LOGS_DIR:-logs}]]></Property>
+        <Property name="LOG_PATH"><![CDATA[${LOG_DIR}/${APP_NAME}]]></Property>
+        <Property name="LOG_FILE"><![CDATA[${LOG_PATH}/${APP_NAME}.log]]></Property>
+        <Property name="JSON_LOG_FILE"><![CDATA[${LOG_PATH}/${APP_NAME}_json.log]]></Property>
+        <Property name="LOG_LEVEL_PATTERN"><![CDATA[%5p]]></Property>
+        <Property name="LOG_PATTERN">
             <![CDATA[[%d{yyyy-MM-dd HH:mm:ss.SSS}] %X{pid} ${LOG_LEVEL_PATTERN} [%t] --- %c{1}: %m%n %throwable{1000}]]></Property>
-	</Properties>
+    </Properties>
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="${LOG_PATTERN}" />
 		</Console>
-		<RollingFile name="Rolling_file" immediateFlush="true"
-			fileName="${LOG_FILE}"
-			filePattern="${LOG_PATH}/${WOVEN_COM_NAME}.log.%d{yyyy-MM-dd}-%i">
-			<PatternLayout pattern="${LOG_PATTERN}" />
-			<Filters>
-				<ThresholdFilter level="DEBUG" onMatch="ACCEPT"
-					onMismatch="DENY" />
-			</Filters>
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="1"
-					modulate="true" />
-				<SizeBasedTriggeringPolicy size="250 MB" />
-			</Policies>
+        <RollingFile name="Rolling_file" immediateFlush="true"
+                     fileName="${LOG_FILE}"
+                     filePattern="${LOG_FILE}.%d{yyyy-MM-dd}-%i">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Filters>
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT"
+                                 onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"
+                                           modulate="true"/>
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
 			<DefaultRolloverStrategy fileIndex="nomax">
-				<Delete basePath="${LOG_PATH}">
-					<IfFileName glob="${WOVEN_COM_NAME}*" />
-					<IfLastModified age="30d" />
-				</Delete>
+                <Delete basePath="${LOG_PATH}">
+                    <IfFileName glob="${APP_NAME}*"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
 			</DefaultRolloverStrategy>
 		</RollingFile>
 	</Appenders>

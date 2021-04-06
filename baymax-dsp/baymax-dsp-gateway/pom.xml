@@ -38,15 +38,21 @@
 			<artifactId>spring-security-oauth2-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
@@ -142,17 +148,20 @@
                                     <shmsize>2147483648</shmsize>
                                 </buildOptions>
                                 <env>
-                                    <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-                                    <PROFILES>${docker.env.PROFILES}</PROFILES>
-                                    <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
-                                    <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
-                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP><LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
-                                </env>
+									<JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
+									<PROFILES>${docker.env.PROFILES}</PROFILES>
+									<NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
+									<NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
+									<NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
+									<NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
+									<LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
+								</env>
                                 <entryPoint>
                                     <exec>
                                         <arg>/bin/sh</arg>
                                         <arg>-c</arg>
-                                        <arg><![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
+										<arg>
+											<![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
                                     </exec>
                                 </entryPoint>
                                 <assembly>

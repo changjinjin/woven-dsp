@@ -5,7 +5,7 @@ metadata:
   labels:
     app: baymax-security-oauth-server
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: baymax-security-oauth-server
@@ -38,20 +38,36 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 30
           httpGet:
-            path: /actuator/health/readiness
+            path: /api/auth/actuator/health/readiness
             port: 8080
         livenessProbe:
           initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 30
           httpGet:
-            path: /actuator/health/liveness
+            path: /api/auth/actuator/health/liveness
             port: 8080
       volumes:
-      - name: conf
-        nfs:
-          server: 192.168.1.149
-          path: /nfs/baymax/conf
-      - name: logs
-        hostPath:
-          path: /data/baymax/logs
+        - name: conf
+          nfs:
+            server: 192.168.1.149
+            path: /nfs/baymax/conf
+        - name: logs
+          hostPath:
+            path: /data/baymax/logs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: baymax
+  name: baymax-security-oauth-server-service
+spec:
+  type: NodePort
+  selector:
+    app: baymax-security-oauth-server
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30003          

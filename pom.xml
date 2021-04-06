@@ -17,7 +17,6 @@
 		<java.version>1.8</java.version>
 
 		<!-- build arguments -->
-		<skipApiDocs>true</skipApiDocs>
 		<spring.native.skip>true</spring.native.skip>
 		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 
@@ -113,10 +112,8 @@
 		<javax-interceptor.version>1.2</javax-interceptor.version>
 
 		<!--swagger dependencies -->
-		<swagger2.version>2.10.5</swagger2.version>
-		<swagger-module.version>1.5.20</swagger-module.version>
-		<swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
-		<swagger2markup.version>1.3.3</swagger2markup.version>
+		<swagger-module.version>1.5.22</swagger-module.version>
+		<springfox.version>2.10.5</springfox.version>
 		<knife4j.version>2.0.8</knife4j.version>
 
 		<easyexcel.version>2.2.6</easyexcel.version>
@@ -149,6 +146,7 @@
 		<docker.BASE_IMAGE>openjdk:8-jdk-alpine</docker.BASE_IMAGE>
 		<docker.env.JAVA_OPTS>-Xms1024M -Xmx1024M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
 		<docker.env.PROFILES>default</docker.env.PROFILES>
+		<docker.env.NACOS_ENABLED>true</docker.env.NACOS_ENABLED>
 		<docker.env.NACOS_HOST>http://192.168.1.82:8848</docker.env.NACOS_HOST>
 		<docker.env.NACOS_NAMESPACE>public</docker.env.NACOS_NAMESPACE>
 		<docker.env.NACOS_GROUP>DEFAULT_GROUP</docker.env.NACOS_GROUP>
@@ -450,64 +448,21 @@
 
 			<!-- swagger dependencies -->
 			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>${swagger2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-bean-validators</artifactId>
-				<version>${swagger2.version}</version>
+				<groupId>com.github.xiaoymin</groupId>
+				<artifactId>knife4j-dependencies</artifactId>
+				<version>${knife4j.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-spring-webflux</artifactId>
-				<version>${swagger2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-spring-webmvc</artifactId>
-				<version>${swagger2.version}</version>
+				<version>${springfox.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-annotations</artifactId>
 				<version>${swagger-module.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-models</artifactId>
-				<version>${swagger-module.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.xiaoymin</groupId>
-				<artifactId>swagger-bootstrap-ui</artifactId>
-				<version>${swagger-bootstrap-ui.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.xiaoymin</groupId>
-				<artifactId>knife4j-micro-spring-boot-starter</artifactId>
-				<version>${knife4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.xiaoymin</groupId>
-				<artifactId>knife4j-spring-boot-starter</artifactId>
-				<version>${knife4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.swagger2markup</groupId>
-				<artifactId>swagger2markup-import-files-ext</artifactId>
-				<version>${swagger2markup.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.swagger2markup</groupId>
-				<artifactId>swagger2markup-spring-restdocs-ext</artifactId>
-				<version>${swagger2markup.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-staticdocs</artifactId>
-				<version>2.6.1</version>
 			</dependency>
 
 			<!-- jdbc drivers -->
@@ -1020,19 +975,13 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.2</version>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
-					<configuration>
-						<fork>true</fork>
-						<optimize>true</optimize>
-						<showDeprecation>true</showDeprecation>
-						<showWarnings>true</showWarnings>
-					</configuration>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1151,19 +1100,9 @@
 					<version>2.1.0</version>
 				</plugin>
 				<plugin>
-					<groupId>io.github.swagger2markup</groupId>
-					<artifactId>swagger2markup-maven-plugin</artifactId>
-					<version>${swagger2markup.version}</version>
-				</plugin>
-				<plugin>
 					<groupId>com.github.wvengen</groupId>
 					<artifactId>proguard-maven-plugin</artifactId>
 					<version>2.3.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.asciidoctor</groupId>
-					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>1.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
@@ -1202,7 +1141,9 @@
 					<target>${java.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<fork>true</fork>
+					<optimize>true</optimize>
 					<verbose>true</verbose>
+					<showDeprecation>true</showDeprecation>
 					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>

@@ -3,7 +3,7 @@ package com.info.baymax.common;
 import com.info.baymax.common.core.crypto.CryptoType;
 import com.info.baymax.common.core.crypto.delegater.CryptorDelegater;
 import com.info.baymax.common.core.crypto.delegater.DefaultCryptorDelegater;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CryptoTest {
 

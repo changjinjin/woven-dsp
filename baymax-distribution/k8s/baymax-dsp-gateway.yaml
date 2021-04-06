@@ -5,7 +5,7 @@ metadata:
   labels:
     app: baymax-dsp-gateway
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: baymax-dsp-gateway
@@ -50,8 +50,24 @@ spec:
       volumes:
         - name: conf
           nfs:
-            server: 192.168.1.149            
+            server: 192.168.1.149
             path: /nfs/baymax/conf
         - name: logs
           hostPath:
-            path: /data/baymax/logs              
+            path: /data/baymax/logs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: baymax
+  name: baymax-dsp-gateway-service
+spec:
+  type: NodePort
+  selector:
+    app: baymax-dsp-gateway
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30002

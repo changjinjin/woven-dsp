@@ -6,7 +6,7 @@ import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.queryapi.query.record.RecordQuery;
 import com.info.baymax.common.queryapi.sql.AggQuerySql;
 import com.info.baymax.common.queryapi.sql.RecordQuerySql;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 

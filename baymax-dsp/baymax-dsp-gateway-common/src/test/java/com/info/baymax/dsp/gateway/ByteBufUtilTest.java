@@ -1,7 +1,7 @@
 package com.info.baymax.dsp.gateway;
 
 import io.netty.buffer.ByteBufUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ByteBufUtilTest {
     @Test

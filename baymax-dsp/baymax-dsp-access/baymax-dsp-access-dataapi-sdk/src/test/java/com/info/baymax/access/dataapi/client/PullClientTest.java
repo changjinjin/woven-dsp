@@ -10,7 +10,7 @@ import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.dsp.access.dataapi.client.DefaultPullClient;
 import com.info.baymax.dsp.access.dataapi.client.PullClient;
 import com.info.baymax.dsp.access.dataapi.client.PullClientException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PullClientTest {
 

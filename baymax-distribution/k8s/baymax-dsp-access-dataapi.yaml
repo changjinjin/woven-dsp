@@ -5,7 +5,7 @@ metadata:
   labels:
     app: baymax-dsp-access-dataapi
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: baymax-dsp-access-dataapi

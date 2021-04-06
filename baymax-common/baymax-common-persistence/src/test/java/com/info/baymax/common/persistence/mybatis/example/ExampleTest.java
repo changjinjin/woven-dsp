@@ -3,7 +3,7 @@ package com.info.baymax.common.persistence.mybatis.example;
 import com.info.baymax.common.persistence.mybatis.mapper.example.Example;
 import com.info.baymax.common.persistence.mybatis.mybatis.entity.TUser;
 import com.info.baymax.common.utils.JsonUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tk.mybatis.mapper.util.Sqls;
 
 import java.util.Arrays;

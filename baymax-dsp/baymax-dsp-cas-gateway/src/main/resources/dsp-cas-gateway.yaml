@@ -1,5 +1,4 @@
 server:
-  address: 192.168.1.35
   port: 8008
   compression:
     enabled: true
@@ -63,13 +62,6 @@ spring:
 #            buf-size: 1024
 #            recommend-refresh-ms: 10000
     nacos:
-      config:
-        enabled: true
-        file-extension: yaml
-        namespace: yjw
-        group: dsp
-        prefix: ${spring.application.name}
-        server-addr: 192.168.1.82:8848
       discovery:
         enabled: true
         server-addr: 192.168.1.82:8848
@@ -113,33 +105,6 @@ spring:
         filters:
         - RewritePath=/(?<segment>.*), /index.html
         - PreserveHostHeader
-  security:
-    oauth2:
-      resourceserver:
-#        jwt:
-#          jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
-        opaquetoken:
-          client-id: dsp-cas-gateway
-          client-secret: 123456
-          introspection-uri: http://localhost:8004/api/auth/oauth/userinfo
-      client:
-        registration:
-          dsp-gateway:
-            client-id: dsp-cas-gateway
-            client-name: dsp-cas-gateway
-            client-secret: 123456
-            client-authentication-method: Basic
-            authorization-grant-type: authorization_code
-            scope: api,resource,login,read,write,trust
-            redirect-uri: http://localhost:8004/api/auth/oauth/authorize
-        provider:
-          dsp-gateway:
-            user-name-attribute: username
-            authorization-uri: http://localhost:8004/api/auth/oauth/authorize
-            token-uri: http://localhost:8004/api/auth/oauth/token
-            user-info-uri: http://localhost:8004/api/auth/oauth/userinfo
-#            jwk-set-uri: http://localhost:8004/api/auth/oauth/.well-known/jwks.json
-            user-info-authentication-method: Basic
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     dialect: mysql

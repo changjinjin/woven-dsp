@@ -1,6 +1,7 @@
 package com.info.baymax.common.swagger.config;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -35,36 +37,39 @@ import java.util.List;
 @Configuration
 @ConditionalOnProperty(prefix = Swagger2Properties.PREFIX, name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(Swagger2Properties.class)
-// @Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config {
-    private final Swagger2Properties properties;
+	private final Swagger2Properties properties;
 
-    public Swagger2Config(Swagger2Properties properties) {
-        this.properties = properties;
-    }
+	public Swagger2Config(Swagger2Properties properties) {
+		this.properties = properties;
+	}
 
-    @Value("${server.reactive.context-path:}")
-    private String reactiveContextPath;
+	@Autowired
+	@Nullable
+	private ReactiveMode reactiveMode;
 
-    @Bean
-    public Docket createRestApi() {
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)//
-            .enable(true)//
-            .apiInfo(apiInfo())//
-            .select()//
-            .apis(RequestHandlerSelectors
-                .basePackage(StringUtils.defaultString(properties.getBasePackage(), "com.info.baymax")))//
+	@Value("${server.reactive.context-path:${server.servlet.context-path:/}}")
+	private String reactiveContextPath;
+
+	@Bean
+	public Docket createRestApi() {
+		Docket docket = new Docket(DocumentationType.SWAGGER_2)//
+			.enable(true)//
+			.apiInfo(apiInfo())//
+			.select()//
+			.apis(RequestHandlerSelectors
+				.basePackage(StringUtils.defaultString(properties.getBasePackage(), "com.info.baymax")))//
             .paths(PathSelectors.any())//
             .build() //
             .globalOperationParameters(globalOperationParameters())//
             .globalResponseMessage(RequestMethod.GET, responseMessages)//
             .globalResponseMessage(RequestMethod.GET, responseMessages);//
 
-        if (reactiveContextPath != null && !reactiveContextPath.equals("/") && reactiveContextPath.length() > 0) {
-            docket.pathMapping(reactiveContextPath);
-        } else {
-            docket.pathMapping("/");
-        }
+		if (StringUtils.isNotEmpty(reactiveContextPath) && !reactiveContextPath.equals("/") && reactiveMode != null) {
+			docket.pathMapping(reactiveContextPath);
+		} else {
+			docket.pathMapping("/");
+		}
         return docket;
     }
 
@@ -151,15 +156,22 @@ public class Swagger2Config {
         }
     }
 
-    @Configuration
-    @ConditionalOnClass(name = "org.springframework.web.reactive.BindingContext")
-    @EnableSwagger2WebFlux
-    public class EnableSwagger2WebFluxAutoConfiguration {
-    }
+	@Configuration
+	@ConditionalOnClass(name = "org.springframework.web.reactive.BindingContext")
+	@EnableSwagger2WebFlux
+	public class EnableSwagger2WebFluxAutoConfiguration {
+		@Bean
+		public ReactiveMode reactiveMode() {
+			return new ReactiveMode();
+		}
+	}
 
-    @Configuration
-    @ConditionalOnClass(name = "javax.servlet.http.HttpServletRequest")
-    @EnableSwagger2WebMvc
-    public class EnableSwagger2WebMvcAutoConfiguration {
-    }
+	@Configuration
+	@ConditionalOnClass(name = "javax.servlet.http.HttpServletRequest")
+	@EnableSwagger2WebMvc
+	public class EnableSwagger2WebMvcAutoConfiguration {
+	}
+
+	public static final class ReactiveMode {
+	}
 }
