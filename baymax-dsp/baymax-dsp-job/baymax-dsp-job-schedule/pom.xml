@@ -43,28 +43,32 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-dsp-data-dataset</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-cloud-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-webflux-spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.info.baymax</groupId>
-					<artifactId>baymax-common-swagger</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>io.springfox</groupId>
-					<artifactId>springfox-spring-webflux</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-dataset</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-cloud-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-openfeign-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-webflux-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-common-swagger</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.springfox</groupId>
+                    <artifactId>springfox-spring-webflux</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
 			<artifactId>baymax-persistence-spring-boot-starter</artifactId>

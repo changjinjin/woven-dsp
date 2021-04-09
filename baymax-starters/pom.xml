@@ -17,5 +17,6 @@
         <module>baymax-webmvc-spring-boot-starter</module>
         <module>baymax-cloud-spring-boot-starter</module>
         <module>baymax-cache-spring-boot-starter</module>
+        <module>baymax-openfeign-spring-boot-starter</module>
     </modules>
 </project>
