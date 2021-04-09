@@ -133,14 +133,15 @@
 									<shmsize>2147483648</shmsize>
 								</buildOptions>
 								<env>
-									<JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-									<PROFILES>${docker.env.PROFILES}</PROFILES>
-									<NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
-									<NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
-									<NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
-									<NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
-									<LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
-								</env>
+                                    <LANG>zh_CN.UTF-8</LANG>
+                                    <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
+                                    <PROFILES>${docker.env.PROFILES}</PROFILES>
+                                    <NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
+                                    <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
+                                    <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
+                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
+                                    <LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
+                                </env>
 								<entryPoint>
 									<exec>
 										<arg>/bin/sh</arg>

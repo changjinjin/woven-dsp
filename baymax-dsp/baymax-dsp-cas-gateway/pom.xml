@@ -117,6 +117,7 @@
                                     <shmsize>2147483648</shmsize>
                                 </buildOptions>
                                 <env>
+                                    <LANG>zh_CN.UTF-8</LANG>
                                     <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
                                     <PROFILES>${docker.env.PROFILES}</PROFILES>
                                     <NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>

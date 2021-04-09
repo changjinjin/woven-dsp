@@ -147,7 +147,7 @@
 		<docker.env.JAVA_OPTS>-Xms1024M -Xmx1024M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
 		<docker.env.PROFILES>default</docker.env.PROFILES>
 		<docker.env.NACOS_ENABLED>true</docker.env.NACOS_ENABLED>
-		<docker.env.NACOS_HOST>http://192.168.1.82:8848</docker.env.NACOS_HOST>
+		<docker.env.NACOS_HOST>http://localhost:8848</docker.env.NACOS_HOST>
 		<docker.env.NACOS_NAMESPACE>public</docker.env.NACOS_NAMESPACE>
 		<docker.env.NACOS_GROUP>DEFAULT_GROUP</docker.env.NACOS_GROUP>
 		<docker.env.LOG_CONF>classpath:log4j2.xml</docker.env.LOG_CONF>
