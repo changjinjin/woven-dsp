@@ -14,7 +14,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
         <start-class>com.info.baymax.dsp.gateway.DspGatewayStarter</start-class>
-	</properties>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
@@ -37,7 +37,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-client</artifactId>
 		</dependency>
-		<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -48,11 +48,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
@@ -60,25 +55,28 @@
 		<directory>${project.basedir}/target</directory>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>webapp/**</exclude>
+                        <exclude>dsp-gateway.yaml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skipTests>true</skipTests>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -103,25 +101,16 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>/webapp</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
                     <mainClass>${start-class}</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -161,8 +150,8 @@
                                     <exec>
                                         <arg>/bin/sh</arg>
                                         <arg>-c</arg>
-										<arg>
-											<![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
+                                        <arg>
+                                            <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
                                     </exec>
                                 </entryPoint>
                                 <assembly>

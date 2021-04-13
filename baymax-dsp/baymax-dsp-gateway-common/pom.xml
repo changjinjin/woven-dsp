@@ -56,12 +56,12 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>reactor-netty</artifactId>
                     <groupId>io.projectreactor.ipc</groupId>
+                    <artifactId>reactor-netty</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>spring-webflux</artifactId>
                     <groupId>org.springframework</groupId>
+                    <artifactId>spring-webflux</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.springframework.security</groupId>
@@ -114,19 +114,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgument>-parameters</compilerArgument>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <fork>true</fork>
-                    <verbose>true</verbose>
-                    <showWarnings>true</showWarnings>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
@@ -136,13 +123,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
             </plugin>
         </plugins>
     </build>

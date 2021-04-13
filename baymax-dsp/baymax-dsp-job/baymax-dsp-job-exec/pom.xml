@@ -14,7 +14,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
         <start-class>com.info.baymax.dsp.job.exec.DspExecutorStarter</start-class>
-	</properties>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
@@ -38,16 +38,16 @@
 			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>com.info.baymax</groupId>
-					<artifactId>baymax-dsp-data-dataset</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-dsp-data-dataset</artifactId>
-		</dependency>
-		<dependency>
+                    <groupId>com.info.baymax</groupId>
+                    <artifactId>baymax-dsp-data-dataset</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-dsp-data-dataset</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-dsp-data-elasticsearch</artifactId>
             <version>${project.version}</version>
@@ -74,16 +74,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-		<dependency>
-			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-persistence-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.merce.woven</groupId>
-			<artifactId>woven-metrics</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-beanutils</groupId>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-persistence-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.merce.woven</groupId>
+            <artifactId>woven-metrics</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
 					<artifactId>commons-beanutils</artifactId>
 				</exclusion>
 				<exclusion>
@@ -242,23 +242,16 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<compilerArgument>-parameters</compilerArgument>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<fork>true</fork>
-					<verbose>true</verbose>
-					<showWarnings>true</showWarnings>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>dsp-common.properties</exclude>
+                        <exclude>dsp-job-exec.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -294,16 +287,16 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
                     <mainClass>${start-class}</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>

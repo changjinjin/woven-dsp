@@ -26,7 +26,7 @@
 		<!-- spring boot -->
 		<spring-boot.version>2.4.4</spring-boot.version>
 		<spring-cloud.version>2020.0.2</spring-cloud.version>
-		<spring-cloud-alibaba.version>2020.0.RC1</spring-cloud-alibaba.version>
+		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<rocketmq-spring-boot.version>2.2.0</rocketmq-spring-boot.version>
 		<rocketmq.version>4.8.0</rocketmq.version>
 		<jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
