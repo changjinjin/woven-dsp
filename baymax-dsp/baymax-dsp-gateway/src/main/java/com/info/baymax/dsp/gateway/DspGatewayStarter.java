@@ -16,10 +16,11 @@ import org.springframework.context.annotation.PropertySource;
 @EnableElasticMetricsExport
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableFeignClients(basePackages = "com.info.baymax.dsp.gateway.feign")
-@PropertySource(value = {"classpath:/dsp-gateway.yaml"}, factory = YamlPropertySourceFactory.class, ignoreResourceNotFound = true)
+@PropertySource(value = {
+    "classpath:/dsp-gateway.yaml"}, factory = YamlPropertySourceFactory.class, ignoreResourceNotFound = true)
 public class DspGatewayStarter {
     public static void main(String[] args) {
         log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
-		SpringApplication.run(DspGatewayStarter.class, args);
+        SpringApplication.run(DspGatewayStarter.class, args);
     }
 }
