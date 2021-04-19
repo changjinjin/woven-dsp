@@ -1,5 +1,6 @@
 package com.info.baymax.common.webflux.utils;
 
+import com.info.baymax.common.core.saas.SaasContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -12,45 +13,43 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.function.BiConsumer;
 
 @Slf4j
 public class FilePartUtils {
 
-	public static File writeTempFile(FilePart filePart) throws IOException {
-		return writeTempPath(filePart).toFile();
+	public static void writeTemp(FilePart filePart) throws IOException {
+		writeTemp(filePart, null, null);
 	}
 
-	public static Path writeTempPath(FilePart filePart) throws IOException {
+	public static void writeTemp(FilePart filePart, SaasContext sc, BiConsumer<Path, SaasContext> bc)
+		throws IOException {
 		Path path = Files.createTempFile("tempFile", filePart.filename());
-		Path fileName = path.getFileName();
 		DataBufferUtils.write(filePart.content(), AsynchronousFileChannel.open(path, StandardOpenOption.WRITE), 0)
 			.doOnComplete(() -> {
-				log.info("File saved to server location : " + fileName);
+				if (bc != null) {
+					bc.accept(path, sc);
+				}
+				log.info("File saved to server location : " + path.getFileName());
 			}).subscribe();
-		return path;
 	}
 
-	public static File writeFile(FilePart filePart, String parentPath) throws IOException {
-		return writePath(filePart, parentPath).toFile();
+	public static void write(FilePart filePart, String parentPath, SaasContext sc, BiConsumer<Path, SaasContext> bc)
+		throws IOException {
+		write(filePart, parentPath, null, sc, bc);
 	}
 
-	public static File writeFile(FilePart filePart, String parentPath, String newFilename) throws IOException {
-		return writePath(filePart, parentPath, newFilename).toFile();
-	}
-
-	public static Path writePath(FilePart filePart, String parentPath) throws IOException {
-		return writePath(filePart, parentPath, null);
-	}
-
-	public static Path writePath(FilePart filePart, String parentPath, String newFilename) throws IOException {
+	public static void write(FilePart filePart, String parentPath, String newFilename, SaasContext sc,
+							 BiConsumer<Path, SaasContext> bc) throws IOException {
 		Path path = Files
 			.createFile(Paths.get(parentPath, StringUtils.defaultIfEmpty(newFilename, filePart.filename())));
-		Path fileName = path.getFileName();
 		DataBufferUtils.write(filePart.content(), AsynchronousFileChannel.open(path, StandardOpenOption.WRITE), 0)
 			.doOnComplete(() -> {
-				log.info("File saved to server location : " + fileName);
+				if (bc != null) {
+					bc.accept(path, sc);
+				}
+				log.info("File saved to server location : " + path.getFileName());
 			}).subscribe();
-		return path;
 	}
 
 	public static void deleteQuietly(Path path) {

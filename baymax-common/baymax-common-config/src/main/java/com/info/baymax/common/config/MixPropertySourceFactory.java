@@ -7,11 +7,18 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.support.DefaultPropertySourceFactory;
 import org.springframework.core.io.support.EncodedResource;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * 自定义配置读取工厂类，兼容properties,yaml格式
+ *
+ * @author jingwei.yang
+ * @date 2021年4月16日 上午10:20:41
+ */
 @Slf4j
-public class YamlPropertySourceFactory extends DefaultPropertySourceFactory {
+public class MixPropertySourceFactory extends DefaultPropertySourceFactory {
 
 	@Override
 	public PropertySource<?> createPropertySource(String name, EncodedResource resource) throws IOException {
@@ -21,7 +28,14 @@ public class YamlPropertySourceFactory extends DefaultPropertySourceFactory {
 				Properties propertiesFromYaml = loadYml(resource);
 				return new PropertiesPropertySource(sourceName, propertiesFromYaml);
 			} catch (Exception e) {
-				log.warn("class path resource [" + sourceName + "] cannot be opened because it does not exist");
+				// for ignoreResourceNotFound
+				Throwable cause = e.getCause();
+				if (cause instanceof FileNotFoundException) {
+					// throw (FileNotFoundException) e.getCause();
+					log.warn("class path resource [" + sourceName + "] cannot be opened because it does not exist");
+				} else {
+					throw e;
+				}
 			}
 		} else {
 			return super.createPropertySource(name, resource);

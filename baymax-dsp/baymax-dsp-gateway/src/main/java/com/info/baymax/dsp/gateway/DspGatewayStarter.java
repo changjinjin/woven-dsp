@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.gateway;
 
-import com.info.baymax.common.config.YamlPropertySourceFactory;
+import com.info.baymax.common.config.MixPropertySourceFactory;
 import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.PropertySource;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EnableFeignClients(basePackages = "com.info.baymax.dsp.gateway.feign")
 @PropertySource(value = {
-    "classpath:/dsp-gateway.yaml"}, factory = YamlPropertySourceFactory.class, ignoreResourceNotFound = true)
+    "classpath:/dsp-gateway.yaml"}, factory = MixPropertySourceFactory.class, ignoreResourceNotFound = true)
 public class DspGatewayStarter {
     public static void main(String[] args) {
         log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
