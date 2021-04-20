@@ -18,6 +18,7 @@ import org.springframework.http.codec.multipart.MultipartHttpMessageReader;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import reactor.core.scheduler.Schedulers;
 
@@ -40,6 +41,18 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 			.allowedHeaders("*")
 			// 跨域允许时间
 			.maxAge(3600);
+	}
+
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/**")
+			.addResourceLocations("classpath:/webapp/")
+			.addResourceLocations("classpath:/META-INF/resources/")
+			.addResourceLocations("classpath:/resources/")
+			.addResourceLocations("classpath:/static/")
+			.addResourceLocations("classpath:/public/")
+		;
 	}
 
 

@@ -1,5 +1,6 @@
 package com.info.baymax.common.core.result;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public abstract class AbstractResponse<T> implements ErrResult, Serializable {
      *  详情描述，错误信息等
      */
     @ApiModelProperty("详情描述，错误信息等")
+    @JsonIgnore
     protected Object details;
 
     /**
