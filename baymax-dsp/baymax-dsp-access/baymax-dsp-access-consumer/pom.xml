@@ -57,15 +57,25 @@
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>dsp-common.properties</exclude>
-                        <exclude>dsp-access-consumer.properties</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>dsp-common.properties</exclude>
+						<exclude>dsp-access-consumer.properties</exclude>
+					</excludes>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -101,21 +111,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>${start-class}</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
 				<configuration>
@@ -125,7 +120,7 @@
 							<alias>${project.artifactId}</alias>
 							<build>
 								<from>${docker.BASE_IMAGE}</from>
-								<maintainer>${docker.maintainer}</maintainer>
+								<maintainer>${docker.maintainer}</maintainer><workdir>/${docker.image.prefix}</workdir>
 								<tags>
 									<tag>latest</tag>
 									<tag>${project.version}</tag>
@@ -138,6 +133,7 @@
 								</buildOptions>
 								<env>
 									<LANG>zh_CN.UTF-8</LANG>
+									<BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*</BOOT_CLASSPATH>
 									<JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
 									<PROFILES>${docker.env.PROFILES}</PROFILES>
 									<NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
@@ -151,7 +147,7 @@
 										<arg>/bin/sh</arg>
 										<arg>-c</arg>
 										<arg>
-											<![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -jar /${docker.image.prefix}/${project.build.finalName}.jar]]></arg>
+											<![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -cp $BOOT_CLASSPATH ${start-class}]]></arg>
 									</exec>
 								</entryPoint>
 								<assembly>

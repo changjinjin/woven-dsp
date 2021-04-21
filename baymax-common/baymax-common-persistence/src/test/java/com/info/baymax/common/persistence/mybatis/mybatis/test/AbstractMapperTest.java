@@ -5,10 +5,7 @@ import org.springframework.context.ApplicationContext;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = { Starter.class }, //
-//		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, //
-//		properties = { //
-//				"ribbon.eureka.enabled=false"  //
-//		})
+//		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@TestPropertySource(locations = { "classpath:/woven.properties", "classpath:/woven-pipeline.properties" })
 //@TestConfiguration
 public abstract class AbstractMapperTest {

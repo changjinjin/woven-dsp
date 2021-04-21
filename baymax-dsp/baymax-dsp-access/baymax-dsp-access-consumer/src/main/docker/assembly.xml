@@ -4,10 +4,19 @@
         xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
     <id>${project.artifactId}</id>
     <files>
-        <file>
-            <source>target/${project.build.finalName}.jar</source>
-            <outputDirectory>${docker.image.prefix}</outputDirectory>
-            <destName>${project.build.finalName}.jar</destName>
-        </file>
-    </files>
+		<file>
+			<source>target/${project.build.finalName}.jar</source>
+			<outputDirectory>${docker.image.prefix}/libs</outputDirectory>
+			<destName>${project.build.finalName}.jar</destName>
+			<fileMode>777</fileMode>
+		</file>
+	</files>
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.directory}/lib</directory>
+			<outputDirectory>${docker.image.prefix}/libs</outputDirectory>
+			<directoryMode>777</directoryMode>
+			<fileMode>777</fileMode>
+		</fileSet>
+	</fileSets>
 </assembly>

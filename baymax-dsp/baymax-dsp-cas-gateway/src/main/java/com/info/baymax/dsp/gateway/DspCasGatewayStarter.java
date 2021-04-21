@@ -1,6 +1,6 @@
 package com.info.baymax.dsp.gateway;
 
-import com.info.baymax.common.config.YamlPropertySourceFactory;
+import com.info.baymax.common.config.MixPropertySourceFactory;
 import com.info.baymax.security.cas.reactive.client.config.EnableCasClientWebflux;
 import com.merce.woven.metrics.config.EnableElasticMetricsExport;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableFeignClients(basePackages = "com.info.baymax.dsp.gateway.feign")
 @MapperScan(basePackages = {"com.info.baymax.dsp.data.**.mapper"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
-@PropertySource(value = {"classpath:/dsp-cas-gateway.yaml"}, factory = YamlPropertySourceFactory.class, ignoreResourceNotFound = true)
+@PropertySource(value = {"classpath:/dsp-cas-gateway.yaml"}, factory = MixPropertySourceFactory.class, ignoreResourceNotFound = true)
 public class DspCasGatewayStarter {
     public static void main(String[] args) {
     	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));

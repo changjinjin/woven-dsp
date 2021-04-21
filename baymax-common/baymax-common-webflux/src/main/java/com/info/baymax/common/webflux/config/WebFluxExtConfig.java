@@ -4,10 +4,11 @@ import com.info.baymax.common.webflux.server.error.DefaultErrorResponseDetermine
 import com.info.baymax.common.webflux.server.error.ErrorResponseDeterminer;
 import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
 import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,14 +16,11 @@ import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.codec.multipart.DefaultPartHttpMessageReader;
 import org.springframework.http.codec.multipart.MultipartHttpMessageReader;
+import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
-import org.springframework.web.reactive.config.CorsRegistry;
-import org.springframework.web.reactive.config.EnableWebFlux;
-import org.springframework.web.reactive.config.ResourceHandlerRegistry;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.reactive.config.*;
 import reactor.core.scheduler.Schedulers;
 
-@Slf4j
 @EnableWebFlux
 @Configuration
 public class WebFluxExtConfig implements WebFluxConfigurer {
@@ -43,18 +41,23 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 			.maxAge(3600);
 	}
 
+	@Autowired
+	@Nullable
+	private WebProperties webProperties;
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/**")
-			.addResourceLocations("classpath:/webapp/")
-			.addResourceLocations("classpath:/META-INF/resources/")
-			.addResourceLocations("classpath:/resources/")
-			.addResourceLocations("classpath:/static/")
-			.addResourceLocations("classpath:/public/")
-		;
+		if (webProperties != null) {
+			Resources resources = webProperties.getResources();
+			String[] staticLocations = resources.getStaticLocations();
+			if (resources.isAddMappings() && staticLocations != null && staticLocations.length > 0) {
+				ResourceHandlerRegistration resourceHandler = registry.addResourceHandler("/**");
+				for (String staticLocation : staticLocations) {
+					resourceHandler.addResourceLocations(staticLocation);
+				}
+			}
+		}
 	}
-
 
 	@Override
 	public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
@@ -62,7 +65,6 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 		partReader.setBlockingOperationScheduler(Schedulers.immediate());
 		configurer.defaultCodecs().multipartReader(new MultipartHttpMessageReader(partReader));
 	}
-
 
 	@Autowired
 	private ServerProperties serverProperties;

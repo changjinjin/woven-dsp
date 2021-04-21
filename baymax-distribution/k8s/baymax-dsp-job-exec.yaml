@@ -22,28 +22,29 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_OPTS
-              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-job-exec -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8
+              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-job-exec -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8400
           envFrom:
             - configMapRef:
                 name: baymax-dsp-env-config
           volumeMounts:
             - name: conf
-              mountPath: /conf
+              mountPath: /baymax/conf
             - name: logs
-              mountPath: /logs                
+              mountPath: /baymax/logs                
           ports:
             - containerPort: 8080
+            - containerPort: 8400
           readinessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 30
+            initialDelaySeconds: 90
+            periodSeconds: 20
+            timeoutSeconds: 50
             httpGet:
               path: /actuator/health/readiness
               port: 8080
           livenessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 30
+            initialDelaySeconds: 90
+            periodSeconds: 20
+            timeoutSeconds: 50
             httpGet:
               path: /actuator/health/liveness
               port: 8080
