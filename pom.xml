@@ -17,7 +17,6 @@
 		<java.version>1.8</java.version>
 
 		<!-- build arguments -->
-		<spring.native.skip>true</spring.native.skip>
 		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
 
 		<baymax-common.version>0.1.6-SNAPSHOT</baymax-common.version>
@@ -124,10 +123,6 @@
 		<log4j2.version>2.11.2</log4j2.version>
 
 		<elasticsearch.version>5.6.0</elasticsearch.version>
-
-		<!-- native-image properties -->
-		<spring-native.version>0.8.5</spring-native.version>
-		<graal.version>21.0.0.2</graal.version>
 
 		<!-- docker plugin properties -->
 		<docker.verbose>true</docker.verbose>
@@ -286,16 +281,6 @@
 				<artifactId>dubbo-spring-boot-starter</artifactId>
 				<version>${dubbo-spring-boot.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework.experimental</groupId>
-				<artifactId>spring-graalvm-native</artifactId>
-				<version>${spring-native.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.graalvm.sdk</groupId>
-				<artifactId>graal-sdk</artifactId>
-				<version>${graal.version}</version>
-			</dependency>
 
 			<!-- woven common dependencies -->
 			<dependency>
@@ -393,11 +378,6 @@
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-common-webmvc</artifactId>
-				<version>${baymax-common.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.info.baymax</groupId>
-				<artifactId>baymax-common-native</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
@@ -1118,11 +1098,6 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<version>${spring-boot.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.graalvm.nativeimage</groupId>
-					<artifactId>native-image-maven-plugin</artifactId>
-					<version>${graal.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>io.fabric8</groupId>
