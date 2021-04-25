@@ -149,8 +149,8 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
 
             page.setList(selectMapByExample(example));
         } else {// 分页查询
-            Page<Map<String, Object>> selectPage = (Page<Map<String, Object>>) selectMapByExampleAndPage(example,
-                pageable);
+            startPage(pageable);
+            Page<Map<String, Object>> selectPage = (Page<Map<String, Object>>) selectMapByExample(example);
             if (selectPage != null) {
                 page.setTotalCount(selectPage.getTotal());
                 page.setList(converPageToList(selectPage.getResult()));

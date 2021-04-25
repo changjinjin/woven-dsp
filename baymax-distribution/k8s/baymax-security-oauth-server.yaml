@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: baymax-security-oauth-server-deployment
+  name: baymax-security-oauth-server-deploy
+  namespace: dsp
   labels:
     app: baymax-security-oauth-server
 spec:
@@ -15,7 +16,7 @@ spec:
         app: baymax-security-oauth-server
     spec:
       imagePullSecrets:
-      - name: baymax-secret
+        - name: dsp-secret
       containers:
       - name: baymax-security-oauth-server
         image: 192.168.1.74/baymax/baymax-security-oauth-server
@@ -25,7 +26,7 @@ spec:
           value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=baymax-auth-server -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8400
         envFrom:
         - configMapRef:
-            name: baymax-dsp-env-config
+            name: baymax-dsp-env-cm
         volumeMounts:
         - name: conf
           mountPath: /baymax/conf
@@ -61,14 +62,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: baymax
-  name: baymax-security-oauth-server-service
+  name: baymax-security-oauth-server-svc
+  namespace: dsp
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: baymax-security-oauth-server
   ports:
     - port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: 30003

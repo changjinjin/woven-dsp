@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: baymax-dsp-gateway-deployment
+  name: baymax-dsp-gateway-deploy
+  namespace: dsp
   labels:
     app: baymax-dsp-gateway
 spec:
@@ -15,7 +16,7 @@ spec:
         app: baymax-dsp-gateway
     spec:
       imagePullSecrets:
-        - name: baymax-secret
+        - name: dsp-secret
       containers:
         - name: baymax-dsp-gateway
           image: 192.168.1.74/baymax/baymax-dsp-gateway
@@ -25,7 +26,7 @@ spec:
               value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-gateway -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8400
           envFrom:
             - configMapRef:
-                name: baymax-dsp-env-config
+                name: baymax-dsp-env-cm
           volumeMounts:
             - name: conf
               mountPath: /baymax/conf
@@ -61,8 +62,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: baymax
-  name: baymax-dsp-gateway-service
+  namespace: dsp
+  name: baymax-dsp-gateway-svc
 spec:
   type: NodePort
   selector:

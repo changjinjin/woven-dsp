@@ -18,10 +18,11 @@ import tk.mybatis.spring.annotation.MapperScan;
 @ComponentScan(basePackages = {"com.info.baymax"})
 @EntityScan(basePackages = {"com.info.baymax.dsp.data.**.entity"})
 @MapperScan(basePackages = "com.info.baymax.dsp.data.**.mapper")
-@PropertySource(value = {"classpath:dsp-common.properties", "classpath:dsp-auth-server.properties"})
+@PropertySource(value = {"classpath:dsp-common.properties",
+	"classpath:dsp-auth-server.properties"}, ignoreResourceNotFound = true)
 public class OauthServerStarter {
     public static void main(String[] args) {
-    	log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
-        SpringApplication.run(OauthServerStarter.class, args);
+		log.info("JAVA CLASS PATH = " + System.getProperty("java.class.path"));
+		SpringApplication.run(OauthServerStarter.class, args);
     }
 }

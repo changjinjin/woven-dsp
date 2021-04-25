@@ -2,8 +2,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: baymax
-  name: baymax-dsp-ui-deployment
+  name: baymax-dsp-ui-deploy
+  namespace: dsp
   labels:
     app: baymax-dsp-ui
 spec:
@@ -17,14 +17,15 @@ spec:
         app: baymax-dsp-ui
     spec:
       imagePullSecrets:
-        - name: baymax-secret
+        - name: dsp-secret
       containers:
         - name: woven-gateway
           image: 192.168.1.74/baymax/dsp:latest
           imagePullPolicy: Always
           env:
             - name: HOSTS
-              value: '192.168.1.149:30002'
+#              value: '192.168.1.149:30002'
+              value: 'baymax-dsp-gateway-svc:8080'
           ports:
             - containerPort: 80
 
@@ -32,7 +33,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: baymax-dsp-ui-service
+  name: baymax-dsp-ui-svc
+  namespace: dsp
 spec:
   type: NodePort
   selector:
