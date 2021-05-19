@@ -41,8 +41,16 @@ public class FilePartUtils {
 
 	public static void write(FilePart filePart, String parentPath, String newFilename, SaasContext sc,
 							 BiConsumer<Path, SaasContext> bc) throws IOException {
-		Path path = Files
-			.createFile(Paths.get(parentPath, StringUtils.defaultIfEmpty(newFilename, filePart.filename())));
+		write(filePart, parentPath, newFilename, sc, bc, false);
+	}
+
+	public static void write(FilePart filePart, String parentPath, String newFilename, SaasContext sc,
+							 BiConsumer<Path, SaasContext> bc, boolean delExists) throws IOException {
+		Path existPath = Paths.get(parentPath, StringUtils.defaultIfEmpty(newFilename, filePart.filename()));
+		if (existPath.toFile().exists() && delExists) {
+			deleteQuietly(existPath);
+		}
+		final Path path = Files.createFile(existPath);
 		DataBufferUtils.write(filePart.content(), AsynchronousFileChannel.open(path, StandardOpenOption.WRITE), 0)
 			.doOnComplete(() -> {
 				if (bc != null) {

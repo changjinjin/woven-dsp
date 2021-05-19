@@ -1,4 +1,394 @@
 
+## 2021-04-26
+### Features
+- feat(k8s): add dsp namespace on k8s to deploy dsp project
+
+
+## 2021-04-23
+### Features
+- feat(config): modify some config: 1) remove ribbon config 2) remove aliyun repository 3)fix reacter thread block error for feign client
+
+
+## 2021-04-21
+### Features
+- feat(spring native): remove spring native code
+
+
+## 2021-04-20
+### Bug Fixes
+- fix(static resources): fix static resources not found bug
+
+
+## 2021-04-19
+### Bug Fixes
+- fix(file upload): fix file upload can not get SaasContext bug
+
+
+## 2021-04-15
+### Bug Fixes
+- fix(yaml config): print warning log instead of throwing exception if yaml resource does not exist
+
+
+## 2021-04-14
+### Features
+- feat(profile): exclude default profiles when packaging
+
+
+## 2021-04-09
+### Features
+- feat(feign): extract feign as a separate dependency package
+- feat(k8s): add LANG env to pod
+
+
+## 2021-04-08
+### Features
+- feat(pom): slimming pom.xml and upgrade JUnit version
+
+
+## 2021-04-06
+### Bug Fixes
+- fix(tree): fix bug of duplicate data in tree if enable cache
+
+
+## 2021-04-02
+### Features
+- feat(k8s): add volumes for conf to add some configuration files (eg: log4j2.xml )
+- feat(log4j): unify the log framework of all projects as log4j2, and delete logback dependency
+
+
+## 2021-03-31
+### Features
+- feat(rocketmq): modify rocketmq version
+
+
+## 2021-03-26
+### Features
+- feat(k8s): increase the inspection time of liveness and readness
+- feat(k8s): add ConfigMap to set docker env
+
+
+## 2021-03-25
+### Features
+- feat(k8s): add liveness&readiness config to deployment
+- feat(k8s): add liveness&readiness config to deployment
+- feat(k8s): add log out path to k8s pods
+
+
+## 2021-03-24
+### Features
+- feat(k8s): modify deployment yaml files
+
+
+## 2021-03-19
+### Features
+- feat(persistence): fix NOT_LIKE convert bug
+- feat(k8s): add k8s yaml files
+- feat(docker): change docker.registry
+
+
+## 2021-03-18
+### Features
+- feat(bootstrap): add bootstrap.properties to solve nacos config center loading problem
+- feat(properties): ignore resource not found
+
+
+## 2021-03-17
+### Features
+- feat(docker): add docker profile
+
+
+## 2021-03-11
+### Features
+- feat(fat jar): remove native image profile and modify fat jar profile
+- feat(native): add native image profile
+- feat(crypto): add custom encryption and decryption logic entry for interface data
+
+
+## 2021-03-05
+### Features
+- feat(native): add native image profile
+
+
+## 2021-03-04
+### Features
+- feat(fat-jar): add fat-jar profile for package
+
+
+## 2021-03-03
+### Features
+- feat(spring-cloud): adapting spring boot and spring cloud version numbers
+
+### Bug Fixes
+- fix(jackson): fix jackson properties bind bug
+
+
+## 2021-03-02
+### Features
+- feat(profiles): format maven profiles
+
+
+## 2021-03-01
+### Features
+- feat(spring-boot): upgrade spring boot version number and handle dependency issues
+
+### Bug Fixes
+- fix(message): fix message too long bug for token error
+
+
+## 2021-02-26
+### Features
+- feat(pom): modify woven version to release version
+- feat(jackson): fix compile error
+- feat(jackson): add more jackson serialization related configuration switchs
+
+### Other Changes
+- [maven-release-plugin] prepare for next development iteration
+- [maven-release-plugin] prepare release v0.1.5
+
+
+## 2021-02-25
+### Features
+- feat(jackson): add writeLongAsString properties to jackson config
+
+
+## 2021-02-23
+### Features
+- feat(saas): modify SaasContext Filter
+
+### Bug Fixes
+- fix(exception): fix exception handle bug
+
+
+## 2021-02-22
+### Features
+- feat(saas): add init methods to SaasContext
+
+
+## 2021-02-19
+### Features
+- feat(crypto): add ResponseEntity result crypto handler
+
+
+## 2021-02-18
+### Features
+- feat(starters): formatting dependencies on starters
+
+
+## 2021-02-10
+### Features
+- feat(starter): add starters to facilitate dependency introduction
+- feat(starter): add starters to facilitate dependency introduction
+
+
+## 2021-02-08
+### Features
+- feat(build): reformat final package name
+- feat(pom): pom slimming
+
+### Bug Fixes
+- fix(build): fix package name error
+
+
+## 2021-02-05
+### Features
+- feat(pom): pom slimming
+- feat(i18n): add exception messages properties
+
+
+## 2021-02-04
+### Features
+- feat(i18n): modify internationalization profile names
+- feat(i18n): modify internationalization profile names
+- feat(persistence): add exclusion artifactId
+- feat(queryapi): delete duplicate dependencies
+- feat(common): change message bean to core package
+
+### Other Changes
+- perf(pwd): delete package 'pwd'
+- perf(passay): pref passay config and validate logic
+
+
+## 2021-02-03
+### Features
+- feat(i18n): improve the internationalization function of response message
+
+### Bug Fixes
+- fix(queryapi): fix bug of get page number by offset
+
+
+## 2021-02-02
+### Features
+- feat(common): add hasChildren properties to treeable beans
+
+
+## 2021-01-29
+### Features
+- feat(common): add git properties to packaged jars
+
+
+## 2021-01-27
+### Features
+- feat(common): add default return to method determineMessage
+- feat(common): add default return to method determineMessage
+- feat(common): add methods to handle error response
+- feat(common): add methods to handle error response
+
+
+## 2021-01-26
+### Features
+- feat(common): add thread pool properties
+- feat(common): add thread pool properties
+- feat(common): add thread pool properties
+- feat(common): add thread pool properties
+- feat(common): format package name
+- feat(webflux): recode ErrorAttributes
+- feat(webflux): recode ErrorAttributes
+- feat(tools): add test cases
+
+
+## 2021-01-25
+### Features
+- feat(baymax-parent): delete license file
+
+
+## 2021-01-18
+### Other Changes
+- update for new cas logic
+
+
+## 2021-01-14
+### Other Changes
+- refactor(pom): restore spring boot to version 2.2.5
+
+
+## 2021-01-13
+### Features
+- feat(profile): change profile names
+- feat(es): add profile to deal with ES version compatibility
+
+
+## 2020-12-31
+### Other Changes
+- [maven-release-plugin] prepare for next development iteration
+- [maven-release-plugin] prepare release v0.1.4
+- exclude slf4j-log4j12 dependency
+
+
+## 2020-12-28
+### Bug Fixes
+- fix(platform): fix npe bug
+
+
+## 2020-12-25
+### Features
+- feat(swagger): fix maybe npe error
+
+### Other Changes
+- refactor(common): remove duplicate annotation
+- refactor(common): change scope of crypto
+- perf(gateway): extract gateway common code
+- perf(gateway): extract gateway common code
+
+
+## 2020-12-24
+### Bug Fixes
+- fix(build): fix commons-cli version missing
+- fix(auth): fix auth erro respone code
+
+### Other Changes
+- build(build): unified commons dependency version number
+
+
+## 2020-12-23
+### Bug Fixes
+- fix(platform): fix npe bug
+
+### Other Changes
+- refactor(remove): remove duplicate artifactId
+
+
+## 2020-12-22
+### Features
+- feat(job-exec): delete fileld "totalExecuted"
+
+### Bug Fixes
+- fix(platform): fix bug: "scheduleType of dataservice is empty"
+
+### Other Changes
+- refactor(job-schedule): change log level from error to warn
+
+
+## 2020-12-21
+### Bug Fixes
+- fix(job-exec): fix npe error
+- fix(cas): fix spring bean overwrite error
+- fix(es): fix es fuzzy query bug
+
+### Other Changes
+- refactor(maven): remove snowball jar from system dependency
+- refactor(maven): remove snowball jar from system dependency
+
+
+## 2020-12-16
+### Features
+- feat(common): fix possible package conflicts
+- feat(common): fix possible package conflicts
+- feat(common): add some methods to IoUtils
+- feat(common): add io utils
+
+### Bug Fixes
+- fix(common): fix stream closed error
+
+
+## 2020-12-14
+### Other Changes
+- build(build): add more common dependences to management
+- build(build): add git-commit-id-plugin management
+- refactor(build): add baymax-dsp-data-dataset to dependency management
+
+
+## 2020-12-13
+### Other Changes
+- refactor(common): modify baymax common version
+- build(build): add git-commit-id-plugin & baymax common dependencies management
+
+
+## 2020-12-12
+### Other Changes
+- build(build): remove redundant execution for maven-assembly-plugin
+
+
+## 2020-12-10
+### Bug Fixes
+- fix(platform): fix class import error
+
+### Other Changes
+- build(build): exclude optional dependencies copy for package
+- refactor(common): change default id check for entity saveOrUpdate
+
+
+## 2020-12-09
+### Other Changes
+- refactor(dsp): fix class import error
+
+
+## 2020-12-08
+### Features
+- feat(common): modify annotation @EnumValue
+- feat(common): add some methods
+- feat(common): add some methods
+
+### Bug Fixes
+- fix(common): add inherited parent interface for UuidEntity
+- fix(common): add inherited parent interface for UuidEntity
+
+### Other Changes
+- perf(common): modify CryptoAspect code
+- perf(common): modify CryptoAspect code
+- refactor(common): change package about annotation @NumberFormat
+- refactor(common): change package about annotation @JsonBodys
+
+
 ## 2020-12-03
 ### Other Changes
 - perf(pom): pom slimming

@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_OPTS
-              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-access-dataapi -DWOVEN_LOGS_DIR=/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8400
+              value: -server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=dsp-access-dataapi -DWOVEN_LOGS_DIR=/baymax/logs -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8400
           envFrom:
             - configMapRef:
                 name: baymax-dsp-env-cm

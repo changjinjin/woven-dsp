@@ -119,7 +119,7 @@
 		<classmate.version>1.5.1</classmate.version>
 		<log4j2.version>2.11.2</log4j2.version>
 
-		<elasticsearch.version>6.8.15</elasticsearch.version>
+		<elasticsearch.version>7.12.1</elasticsearch.version>
 
 		<!-- docker plugin properties -->
 		<docker.verbose>true</docker.verbose>
@@ -135,7 +135,7 @@
 		<docker.push.registry>192.168.1.74</docker.push.registry>
 
 		<!-- docker env properties -->
-		<docker.BASE_IMAGE>openjdk:8-jdk-alpine</docker.BASE_IMAGE>
+		<docker.BASE_IMAGE>192.168.1.74/library/openjdk:8-jdk-alpine-bash</docker.BASE_IMAGE>
 		<docker.env.JAVA_OPTS>-Xms1024M -Xmx1024M -Xmn512M -Xss512K</docker.env.JAVA_OPTS>
 		<docker.env.PROFILES>default</docker.env.PROFILES>
 		<docker.env.NACOS_ENABLED>true</docker.env.NACOS_ENABLED>
@@ -186,7 +186,7 @@
 		<profile>
 			<id>es6</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<profileActive>es6</profileActive>
@@ -196,11 +196,11 @@
 		<profile>
 			<id>es7</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<profileActive>es7</profileActive>
-				<elasticsearch.version>7.12.0</elasticsearch.version>
+				<elasticsearch.version>7.12.1</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
