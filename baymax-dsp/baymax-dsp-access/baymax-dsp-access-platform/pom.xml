@@ -62,38 +62,38 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>dsp-common.properties</exclude>
-                        <exclude>dsp-access-platform.properties</exclude>
-                    </excludes>
-                    <archive>
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>${buildNumber}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>dsp-common.properties</exclude>
+						<exclude>dsp-access-platform.properties</exclude>
+					</excludes>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -126,7 +126,8 @@
 							<alias>${project.artifactId}</alias>
 							<build>
 								<from>${docker.BASE_IMAGE}</from>
-								<maintainer>${docker.maintainer}</maintainer><workdir>/${docker.image.prefix}</workdir>
+								<maintainer>${docker.maintainer}</maintainer>
+								<workdir>/${docker.image.prefix}</workdir>
 								<tags>
 									<tag>latest</tag>
 									<tag>${project.version}</tag>
@@ -137,8 +138,10 @@
 								<buildOptions>
 									<shmsize>2147483648</shmsize>
 								</buildOptions>
-                                <env>
-                                    <LANG>zh_CN.UTF-8</LANG><BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*</BOOT_CLASSPATH>
+								<env>
+
+                                    <BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*:/${docker.image.prefix}/conf/
+                                    </BOOT_CLASSPATH>
                                     <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
                                     <PROFILES>${docker.env.PROFILES}</PROFILES>
                                     <NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>

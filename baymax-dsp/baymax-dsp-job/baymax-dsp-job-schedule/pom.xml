@@ -13,8 +13,8 @@
 	<name>baymax-dsp-job-schedule</name>
 	<url>http://maven.apache.org</url>
 	<properties>
-        <start-class>com.info.baymax.dsp.job.sch.DspSchedulerStarter</start-class>
-    </properties>
+		<start-class>com.info.baymax.dsp.job.sch.DspSchedulerStarter</start-class>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
@@ -33,80 +33,80 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-dsp-data-consumer</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-dsp-data-dataset</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-dsp-data-dataset</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-cloud-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-openfeign-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-webflux-spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-swagger</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.springfox</groupId>
-                    <artifactId>springfox-spring-webflux</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-persistence-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.zaxxer</groupId>
-                    <artifactId>HikariCP-java7</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz-jobs</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-dsp-data-consumer</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.info.baymax</groupId>
+					<artifactId>baymax-dsp-data-dataset</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-dsp-data-dataset</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-cloud-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-openfeign-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-webflux-spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.info.baymax</groupId>
+					<artifactId>baymax-common-swagger</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>io.springfox</groupId>
+					<artifactId>springfox-spring-webflux</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-persistence-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-api</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>HikariCP-java7</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 		<defaultGoal>install</defaultGoal>
@@ -114,26 +114,26 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>dsp-common.properties</exclude>
-                        <exclude>dsp-job-schedule.properties</exclude>
-                    </excludes>
-                    <archive>
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>${buildNumber}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>dsp-common.properties</exclude>
+						<exclude>dsp-job-schedule.properties</exclude>
+					</excludes>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -168,29 +168,32 @@
 					</execution>
 				</executions>
 			</plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
-                            <alias>${project.artifactId}</alias>
-                            <build>
-                                <from>${docker.BASE_IMAGE}</from>
-                                <maintainer>${docker.maintainer}</maintainer><workdir>/${docker.image.prefix}</workdir>
-                                <tags>
-                                    <tag>latest</tag>
-                                    <tag>${project.version}</tag>
-                                </tags>
-                                <volumes>
-                                    <volume>/${docker.image.prefix}</volume>
-                                </volumes>
-                                <buildOptions>
-                                    <shmsize>2147483648</shmsize>
-                                </buildOptions>
-                                <env>
-                                    <LANG>zh_CN.UTF-8</LANG><BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*</BOOT_CLASSPATH>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${project.artifactId}:${project.version}</name>
+							<alias>${project.artifactId}</alias>
+							<build>
+								<from>${docker.BASE_IMAGE}</from>
+								<maintainer>${docker.maintainer}</maintainer>
+								<workdir>/${docker.image.prefix}</workdir>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+								<volumes>
+									<volume>/${docker.image.prefix}</volume>
+								</volumes>
+								<buildOptions>
+									<shmsize>2147483648</shmsize>
+								</buildOptions>
+								<env>
+
+                                    <BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*:/${docker.image.prefix}/conf/
+                                    </BOOT_CLASSPATH>
                                     <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
                                     <PROFILES>${docker.env.PROFILES}</PROFILES>
                                     <NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
@@ -199,46 +202,46 @@
                                     <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
                                     <LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
                                 </env>
-                                <entryPoint>
-                                    <exec>
-                                        <arg>/bin/sh</arg>
-                                        <arg>-c</arg>
-                                        <arg>
+								<entryPoint>
+									<exec>
+										<arg>/bin/sh</arg>
+										<arg>-c</arg>
+										<arg>
                                             <![CDATA[java $JAVA_OPTS -Dspring.profiles.active=$PROFILES -Dlogging.config=$LOG_CONF -Dspring.cloud.nacos.config.enabled=$NACOS_ENABLED -Dspring.cloud.nacos.config.server-addr=$NACOS_HOST -Dspring.cloud.nacos.config.namespace=$NACOS_NAMESPACE -Dspring.cloud.nacos.config.group=$NACOS_GROUP -cp $BOOT_CLASSPATH ${start-class}]]></arg>
-                                    </exec>
-                                </entryPoint>
-                                <assembly>
-                                    <mode>dir</mode>
-                                    <basedir>/</basedir>
-                                    <descriptor>assembly.xml</descriptor>
-                                </assembly>
-                            </build>
-                            <run>
-                                <namingStrategy>alias</namingStrategy>
-                                <ports>
-                                    <port>8080:8080</port>
-                                </ports>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>push-image</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+									</exec>
+								</entryPoint>
+								<assembly>
+									<mode>dir</mode>
+									<basedir>/</basedir>
+									<descriptor>assembly.xml</descriptor>
+								</assembly>
+							</build>
+							<run>
+								<namingStrategy>alias</namingStrategy>
+								<ports>
+									<port>8080:8080</port>
+								</ports>
+							</run>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>push-image</id>
+						<phase>install</phase>
+						<goals>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

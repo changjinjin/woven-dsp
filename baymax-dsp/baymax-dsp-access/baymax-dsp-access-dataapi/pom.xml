@@ -110,9 +110,9 @@
 					<groupId>netty-all</groupId>
 				</exclusion>
 				<exclusion>
-                    <groupId>org.junit.jupiter</groupId>
-                    <artifactId>junit-jupiter-engine</artifactId>
-                </exclusion>
+					<groupId>org.junit.jupiter</groupId>
+					<artifactId>junit-jupiter-engine</artifactId>
+				</exclusion>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
@@ -133,25 +133,25 @@
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>dsp-common.properties</exclude>
-                        <exclude>dsp-access-dataapi.properties</exclude>
-                    </excludes>
-                    <archive>
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>${buildNumber}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>dsp-common.properties</exclude>
+						<exclude>dsp-access-dataapi.properties</exclude>
+					</excludes>
+					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -196,7 +196,8 @@
 							<alias>${project.artifactId}</alias>
 							<build>
 								<from>${docker.BASE_IMAGE}</from>
-								<maintainer>${docker.maintainer}</maintainer><workdir>/${docker.image.prefix}</workdir>
+								<maintainer>${docker.maintainer}</maintainer>
+								<workdir>/${docker.image.prefix}</workdir>
 								<tags>
 									<tag>latest</tag>
 									<tag>${project.version}</tag>
@@ -207,16 +208,17 @@
 								<buildOptions>
 									<shmsize>2147483648</shmsize>
 								</buildOptions>
-                                <env>
-									<LANG>zh_CN.UTF-8</LANG><BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*</BOOT_CLASSPATH>
-									<JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-									<PROFILES>${docker.env.PROFILES}</PROFILES>
-									<NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
-									<NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
-									<NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
-									<NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
-									<LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
-								</env>
+								<env>
+                                    <BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*:/${docker.image.prefix}/conf/
+                                    </BOOT_CLASSPATH>
+                                    <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
+                                    <PROFILES>${docker.env.PROFILES}</PROFILES>
+                                    <NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
+                                    <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
+                                    <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
+                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
+                                    <LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
+                                </env>
 								<entryPoint>
 									<exec>
 										<arg>/bin/sh</arg>

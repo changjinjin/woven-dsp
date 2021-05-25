@@ -6,9 +6,10 @@ metadata:
 data:
   PROFILES: 'dev'
   NACOS_ENABLED: 'true'
-  NACOS_HOST: '192.168.1.149:30848'
+#  NACOS_HOST: '192.168.1.149:30848'
+  NACOS_HOST: 'nacos-cluster-svc.nacos.svc.cluster.local:8848'
   NACOS_NAMESPACE: 'baymax_k8s_149'
   NACOS_GROUP: 'dsp'
   LOG_CONF: '/baymax/conf/log4j2.xml'
   #BOOT_CLASSPATH: '.:/baymax/libs/*'
-  JAVA_OPTS: '-server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=woven -DWOVEN_LOGS_DIR=/logs  -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8'
+  JAVA_OPTS: '-server -Xmx1024m -Xms1024m -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -DWOVEN_COM_NAME=woven -DWOVEN_LOGS_DIR=/baymax/logs  -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Dfile.encoding=UTF-8'
