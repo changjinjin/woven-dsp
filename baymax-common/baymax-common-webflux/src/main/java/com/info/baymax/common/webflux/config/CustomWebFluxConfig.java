@@ -5,6 +5,7 @@ import com.info.baymax.common.webflux.server.error.DefaultErrorResponseDetermine
 import com.info.baymax.common.webflux.server.error.ErrorResponseDeterminer;
 import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
 import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -13,7 +14,9 @@ import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
 import org.springframework.core.ReactiveAdapterRegistry;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
@@ -25,9 +28,11 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.config.*;
 import reactor.core.scheduler.Schedulers;
 
+@Slf4j
 @EnableWebFlux
 @Configuration
-public class WebFluxExtConfig implements WebFluxConfigurer {
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class CustomWebFluxConfig implements WebFluxConfigurer {
 	@Autowired
 	@Nullable
 	private WebProperties webProperties;
@@ -90,6 +95,7 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 			new Jackson2JsonEncoder(objectMapper, MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON));
 	}
 
+
 	@Autowired
 	private ServerProperties serverProperties;
 	@Autowired
@@ -117,4 +123,5 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 		return new GlobalErrorAttributes(this.serverProperties.getError().isIncludeException(),
 			errorResponseDeterminer);
 	}
+
 }

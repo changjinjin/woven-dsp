@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>com.info.baymax</groupId>
 			<artifactId>baymax-webflux-spring-boot-starter</artifactId>
-			<exclusions>
+			<!--<exclusions>
 				<exclusion>
 					<groupId>com.info.baymax</groupId>
 					<artifactId>baymax-common-swagger</artifactId>
@@ -67,7 +67,7 @@
 					<groupId>io.springfox</groupId>
 					<artifactId>springfox-spring-webflux</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions>-->
 		</dependency>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
@@ -192,16 +192,16 @@
 								</buildOptions>
 								<env>
 
-                                    <BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*:/${docker.image.prefix}/conf/
-                                    </BOOT_CLASSPATH>
-                                    <JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
-                                    <PROFILES>${docker.env.PROFILES}</PROFILES>
-                                    <NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
-                                    <NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
-                                    <NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
-                                    <NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
-                                    <LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
-                                </env>
+									<BOOT_CLASSPATH>.:/${docker.image.prefix}/libs/*:/${docker.image.prefix}/conf/
+									</BOOT_CLASSPATH>
+									<JAVA_OPTS>${docker.env.JAVA_OPTS}</JAVA_OPTS>
+									<PROFILES>${docker.env.PROFILES}</PROFILES>
+									<NACOS_ENABLED>${docker.env.NACOS_ENABLED}</NACOS_ENABLED>
+									<NACOS_HOST>${docker.env.NACOS_HOST}</NACOS_HOST>
+									<NACOS_NAMESPACE>${docker.env.NACOS_NAMESPACE}</NACOS_NAMESPACE>
+									<NACOS_GROUP>${docker.env.NACOS_GROUP}</NACOS_GROUP>
+									<LOG_CONF>${docker.env.LOG_CONF}</LOG_CONF>
+								</env>
 								<entryPoint>
 									<exec>
 										<arg>/bin/sh</arg>
