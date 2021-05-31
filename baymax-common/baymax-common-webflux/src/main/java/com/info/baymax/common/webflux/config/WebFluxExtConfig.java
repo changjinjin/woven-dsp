@@ -1,5 +1,6 @@
 package com.info.baymax.common.webflux.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.info.baymax.common.webflux.server.error.DefaultErrorResponseDeterminer;
 import com.info.baymax.common.webflux.server.error.ErrorResponseDeterminer;
 import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
@@ -13,7 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.ReactiveAdapterRegistry;
+import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
+import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.http.codec.multipart.DefaultPartHttpMessageReader;
 import org.springframework.http.codec.multipart.MultipartHttpMessageReader;
 import org.springframework.lang.Nullable;
@@ -24,6 +28,11 @@ import reactor.core.scheduler.Schedulers;
 @EnableWebFlux
 @Configuration
 public class WebFluxExtConfig implements WebFluxConfigurer {
+	@Autowired
+	@Nullable
+	private WebProperties webProperties;
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -40,10 +49,6 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 			// 跨域允许时间
 			.maxAge(3600);
 	}
-
-	@Autowired
-	@Nullable
-	private WebProperties webProperties;
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -64,6 +69,25 @@ public class WebFluxExtConfig implements WebFluxConfigurer {
 		DefaultPartHttpMessageReader partReader = new DefaultPartHttpMessageReader();
 		partReader.setBlockingOperationScheduler(Schedulers.immediate());
 		configurer.defaultCodecs().multipartReader(new MultipartHttpMessageReader(partReader));
+
+		// SynchronossPartHttpMessageReader syncPartReader = new SynchronossPartHttpMessageReader();
+		// partReader.setMaxParts(Integer.parseInt(commonConfig.getMaxparts()));
+		// 字节bytes
+		// partReader.setMaxDiskUsagePerPart(Integer.parseInt(commonConfig.getMaxFileSize()));
+		// partReader.setEnableLoggingRequestDetails(true);
+
+		// 单文件上传大小限制
+		// MultipartHttpMessageReader multipartReader = new MultipartHttpMessageReader(partReader);
+		// multipartReader.setEnableLoggingRequestDetails(true);
+		// configurer.defaultCodecs().multipartReader(multipartReader);
+
+		// 配置jackson
+		ServerCodecConfigurer.ServerDefaultCodecs defaultCodecs = configurer.defaultCodecs();
+		defaultCodecs.enableLoggingRequestDetails(true);
+		defaultCodecs.jackson2JsonDecoder(
+			new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON));
+		defaultCodecs.jackson2JsonEncoder(
+			new Jackson2JsonEncoder(objectMapper, MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON));
 	}
 
 	@Autowired
