@@ -54,4 +54,9 @@ public interface DataServiceService extends BaseEntityService<DataService> {
      * 导入excel并返回结果，pull导入
      */
     List<String> importExcelByPull(String custId, File targetFile, Long custAppId) throws Exception;
+
+    /**
+     * 根据用户id和服务类型查询数据服务信息
+     */
+    List<DataService> selectByCustIdAndType(String custId, int type);
 }
