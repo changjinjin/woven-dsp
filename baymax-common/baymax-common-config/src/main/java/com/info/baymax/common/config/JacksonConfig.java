@@ -30,8 +30,8 @@ public class JacksonConfig {
 	@Primary
 	public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder,
 									 JacksonExtSerializationProperties extProperties) {
-		log.error("extProperties:" + JsonUtils.toJson(extProperties, true));
-		return config(builder.createXmlMapper(false).build(), extProperties);
+		log.debug("extProperties:" + JsonUtils.toJson(extProperties, true));
+		return config(builder.build(), extProperties);
 	}
 
 	public static ObjectMapper config() {

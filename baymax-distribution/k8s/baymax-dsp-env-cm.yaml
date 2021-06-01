@@ -6,8 +6,9 @@ metadata:
 data:
   PROFILES: 'dev'
   NACOS_ENABLED: 'true'
-#  NACOS_HOST: '192.168.1.149:30848'
-  NACOS_HOST: 'nacos-cluster-svc.nacos.svc.cluster.local:8848'
+  #  NACOS_HOST: '192.168.1.149:30848'
+  #  NACOS_HOST: 'nacos-cluster-svc.nacos.svc.cluster.local:8848'
+  NACOS_HOST: 'nacos-standalone-svc.nacos.svc.cluster.local:8848'
   NACOS_NAMESPACE: 'baymax_k8s_149'
   NACOS_GROUP: 'dsp'
   LOG_CONF: '/baymax/conf/log4j2.xml'

@@ -23,6 +23,7 @@ import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.http.codec.multipart.DefaultPartHttpMessageReader;
 import org.springframework.http.codec.multipart.MultipartHttpMessageReader;
 import org.springframework.lang.Nullable;
+import org.springframework.util.MimeType;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.config.*;
 import reactor.core.scheduler.Schedulers;
@@ -87,12 +88,12 @@ public class CustomWebFluxConfig implements WebFluxConfigurer {
 		// 配置jackson
 		ServerCodecConfigurer.ServerDefaultCodecs defaultCodecs = configurer.defaultCodecs();
 		defaultCodecs.enableLoggingRequestDetails(true);
-		defaultCodecs.jackson2JsonDecoder(
-			new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON));
-		defaultCodecs.jackson2JsonEncoder(
-			new Jackson2JsonEncoder(objectMapper, MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON));
+		MimeType[] mimeTypes = new MimeType[]{MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON,
+			MediaType.APPLICATION_PROBLEM_JSON, MediaType.APPLICATION_STREAM_JSON, MediaType.APPLICATION_JSON_UTF8,
+			MediaType.valueOf("application/vnd.spring-boot.actuator.v3+json")};
+		defaultCodecs.jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, mimeTypes));
+		defaultCodecs.jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper, mimeTypes));
 	}
-
 
 	@Autowired
 	private ServerProperties serverProperties;

@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>com.info.baymax</groupId>
 			<artifactId>baymax-webflux-spring-boot-starter</artifactId>
-			<!-- <exclusions>
+			<exclusions>
 				<exclusion>
 					<groupId>com.info.baymax</groupId>
 					<artifactId>baymax-common-swagger</artifactId>
@@ -72,7 +72,7 @@
 					<groupId>io.springfox</groupId>
 					<artifactId>springfox-spring-webflux</artifactId>
 				</exclusion>
-			</exclusions> -->
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
