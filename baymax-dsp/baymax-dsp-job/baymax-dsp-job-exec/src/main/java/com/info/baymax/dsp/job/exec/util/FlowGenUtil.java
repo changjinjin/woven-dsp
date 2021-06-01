@@ -1,6 +1,7 @@
 package com.info.baymax.dsp.job.exec.util;
 
 import com.google.common.collect.Maps;
+import com.info.baymax.common.utils.Snowflake;
 import com.info.baymax.dsp.data.consumer.beans.source.DataSourceType;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceMode;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
@@ -344,7 +345,7 @@ public class FlowGenUtil {
 
     public Schema createSchema(DataService dataService, List<FlowField> inputFields, String schemaName) {
         Schema schema = new Schema(schemaName, new ArrayList<FieldDesc>());
-        schema.setId(UUID.randomUUID().toString());
+        schema.setId(Snowflake.stringId());
         schema.setCreateTime(new Date());
         schema.setLastModifiedTime(schema.getCreateTime());
         ResourceDesc schema_resource = resourceDescService.findRootsByName(dataService.getTenantId(),

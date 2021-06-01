@@ -1,8 +1,7 @@
 package com.info.baymax.common.persistence.mybatis.genid;
 
+import com.info.baymax.common.utils.Snowflake;
 import tk.mybatis.mapper.genid.GenId;
-
-import java.util.UUID;
 
 /**
  * UUID 主键策略
@@ -13,6 +12,6 @@ import java.util.UUID;
 public class UuidGenId implements GenId<String> {
     @Override
     public String genId(String s, String s1) {
-        return UUID.randomUUID().toString();
+		return Snowflake.stringId();
     }
 }

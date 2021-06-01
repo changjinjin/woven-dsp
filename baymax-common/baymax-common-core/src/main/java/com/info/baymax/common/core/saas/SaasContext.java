@@ -55,25 +55,29 @@ public class SaasContext implements Serializable {
 
     public static String getCurrentUserId() {
         return getCurrentSaasContext().getUserId();
-    }
+	}
 
-    public static String getCurrentUsername() {
-        return getCurrentSaasContext().getUsername();
-    }
+	public static String getCurrentUsername() {
+		return getCurrentSaasContext().getUsername();
+	}
 
-    public static boolean getCurrentUserIsAdmin() {
-        return getCurrentSaasContext().isAdmin();
-    }
+	public static boolean getCurrentUserIsRoot() {
+		return getCurrentSaasContext().isAdmin();
+	}
 
-    public static String getCurrentUserType() {
-        return getCurrentSaasContext().getUserType();
-    }
+	public static boolean getCurrentUserIsAdmin() {
+		return "root".equalsIgnoreCase(getCurrentUsername());
+	}
 
-    public static Map<String, Object> current() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("tenantId", getCurrentTenantId());
-        map.put("owner", getCurrentUserId());
-        map.put("admin", getCurrentUserIsAdmin());
+	public static String getCurrentUserType() {
+		return getCurrentSaasContext().getUserType();
+	}
+
+	public static Map<String, Object> current() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tenantId", getCurrentTenantId());
+		map.put("owner", getCurrentUserId());
+		map.put("admin", getCurrentUserIsAdmin());
         return map;
     }
 
@@ -108,13 +112,18 @@ public class SaasContext implements Serializable {
                                               boolean admin, String userType) {
         SaasContext ctx = getCurrentSaasContext();
         return initSaasContext(ctx.getHost(), ctx.getClientId(), tenantId, tenantName, userId, username, admin,
-            userType, ctx.getInternalToken(), ctx.getPrivilegeUser());
-    }
+			userType, ctx.getInternalToken(), ctx.getPrivilegeUser());
+	}
 
-    public static SaasContext initSaasContext(String tenantId, String userId) {
-        SaasContext ctx = getCurrentSaasContext();
-        ctx.setTenantId(tenantId);
-        ctx.setUserId(userId);
-        return ctx;
-    }
+	public static SaasContext initSaasContext(String tenantId, String userId, boolean isAdmin) {
+		SaasContext ctx = getCurrentSaasContext();
+		ctx.setTenantId(tenantId);
+		ctx.setUserId(userId);
+		ctx.setAdmin(isAdmin);
+		return ctx;
+	}
+
+	public static SaasContext initSaasContext(String tenantId, String userId) {
+		return initSaasContext(tenantId, userId, false);
+	}
 }

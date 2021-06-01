@@ -5,7 +5,6 @@ import com.info.baymax.common.webflux.server.error.DefaultErrorResponseDetermine
 import com.info.baymax.common.webflux.server.error.ErrorResponseDeterminer;
 import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
 import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -28,7 +27,6 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 import org.springframework.web.reactive.config.*;
 import reactor.core.scheduler.Schedulers;
 
-@Slf4j
 @EnableWebFlux
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
