@@ -55,27 +55,27 @@ public class SaasContext implements Serializable {
 
     public static String getCurrentUserId() {
         return getCurrentSaasContext().getUserId();
-	}
+    }
 
-	public static String getCurrentUsername() {
-		return getCurrentSaasContext().getUsername();
-	}
+    public static String getCurrentUsername() {
+        return getCurrentSaasContext().getUsername();
+    }
 
-	public static boolean getCurrentUserIsRoot() {
-		return getCurrentSaasContext().isAdmin();
-	}
+    public static boolean getCurrentUserIsRoot() {
+        return "root".equalsIgnoreCase(getCurrentUsername());
+    }
 
-	public static boolean getCurrentUserIsAdmin() {
-		return "root".equalsIgnoreCase(getCurrentUsername());
-	}
+    public static boolean getCurrentUserIsAdmin() {
+        return getCurrentSaasContext().isAdmin();
+    }
 
-	public static String getCurrentUserType() {
-		return getCurrentSaasContext().getUserType();
-	}
+    public static String getCurrentUserType() {
+        return getCurrentSaasContext().getUserType();
+    }
 
-	public static Map<String, Object> current() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tenantId", getCurrentTenantId());
+    public static Map<String, Object> current() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("tenantId", getCurrentTenantId());
 		map.put("owner", getCurrentUserId());
 		map.put("admin", getCurrentUserIsAdmin());
         return map;
