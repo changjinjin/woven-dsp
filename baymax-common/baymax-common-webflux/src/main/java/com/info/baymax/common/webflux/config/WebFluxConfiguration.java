@@ -1,21 +1,13 @@
 package com.info.baymax.common.webflux.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.info.baymax.common.webflux.server.error.DefaultErrorResponseDeterminer;
-import com.info.baymax.common.webflux.server.error.ErrorResponseDeterminer;
-import com.info.baymax.common.webflux.server.error.GlobalErrorAttributes;
-import com.info.baymax.common.webflux.server.result.ServerFilterFieldsHandlerResultHandler;
+import com.info.baymax.common.config.JacksonConfig.JacksonExtSerializationProperties;
+import com.info.baymax.common.config.serialize.jackson.serializer.CustomizeBeanSerializerModifier;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.Ordered;
-import org.springframework.core.ReactiveAdapterRegistry;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
@@ -24,19 +16,22 @@ import org.springframework.http.codec.multipart.DefaultPartHttpMessageReader;
 import org.springframework.http.codec.multipart.MultipartHttpMessageReader;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MimeType;
-import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
-import org.springframework.web.reactive.config.*;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.ResourceHandlerRegistration;
+import org.springframework.web.reactive.config.ResourceHandlerRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import reactor.core.scheduler.Schedulers;
 
-@EnableWebFlux
+@Slf4j
 @Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CustomWebFluxConfig implements WebFluxConfigurer {
+public class WebFluxConfiguration implements WebFluxConfigurer {
 	@Autowired
 	@Nullable
 	private WebProperties webProperties;
 	@Autowired
-	private ObjectMapper objectMapper;
+	private ObjectMapper jacksonObjectMapper;
+	@Autowired
+	private JacksonExtSerializationProperties extProperties;
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -85,42 +80,21 @@ public class CustomWebFluxConfig implements WebFluxConfigurer {
 		// multipartReader.setEnableLoggingRequestDetails(true);
 		// configurer.defaultCodecs().multipartReader(multipartReader);
 
+		log.debug("add custom objectMapper and BeanSerializerModifier to Jackson2JsonDecoder and Jackson2JsonEncoder: "
+			+ jacksonObjectMapper + ",hashcode:" + jacksonObjectMapper.hashCode());
+
+		/** 为objectMapper注册一个带有SerializerModifier的Factory */
+		jacksonObjectMapper.setSerializerFactory(jacksonObjectMapper.getSerializerFactory()
+			.withSerializerModifier(new CustomizeBeanSerializerModifier(
+				extProperties.isWriteNullValueAsEmptyString(), extProperties.isWriteNullArrayAsEmptyString(),
+				extProperties.isWriteNullStringAsEmptyString(), extProperties.isWriteNullNumberAsEmptyString(),
+				extProperties.isWriteNullBooleanAsEmptyString())));
 		// 配置jackson
 		ServerCodecConfigurer.ServerDefaultCodecs defaultCodecs = configurer.defaultCodecs();
 		defaultCodecs.enableLoggingRequestDetails(true);
 		MimeType[] mimeTypes = new MimeType[]{MediaType.APPLICATION_JSON, MediaType.APPLICATION_NDJSON,
-			MediaType.APPLICATION_PROBLEM_JSON, MediaType.APPLICATION_STREAM_JSON, MediaType.APPLICATION_JSON_UTF8,
-			MediaType.valueOf("application/vnd.spring-boot.actuator.v3+json")};
-		defaultCodecs.jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, mimeTypes));
-		defaultCodecs.jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper, mimeTypes));
+			MediaType.APPLICATION_PROBLEM_JSON, MediaType.valueOf("application/vnd.spring-boot.actuator.v3+json")};
+		defaultCodecs.jackson2JsonDecoder(new Jackson2JsonDecoder(jacksonObjectMapper, mimeTypes));
+		defaultCodecs.jackson2JsonEncoder(new Jackson2JsonEncoder(jacksonObjectMapper, mimeTypes));
 	}
-
-	@Autowired
-	private ServerProperties serverProperties;
-	@Autowired
-	private RequestedContentTypeResolver webFluxContentTypeResolver;
-	@Autowired
-	private ReactiveAdapterRegistry webFluxAdapterRegistry;
-	@Autowired
-	private ServerCodecConfigurer serverCodecConfigurer;
-
-	@Bean
-	public ServerFilterFieldsHandlerResultHandler serverFilterFieldsHandlerResultHandler() {
-		return new ServerFilterFieldsHandlerResultHandler(serverCodecConfigurer.getWriters(),
-			webFluxContentTypeResolver, webFluxAdapterRegistry);
-	}
-
-	@Bean
-	@ConditionalOnMissingBean(value = ErrorResponseDeterminer.class)
-	public ErrorResponseDeterminer errorResponseDeterminer() {
-		return new DefaultErrorResponseDeterminer();
-	}
-
-	@Bean
-	@Primary
-	public GlobalErrorAttributes errorAttributes(@Autowired final ErrorResponseDeterminer errorResponseDeterminer) {
-		return new GlobalErrorAttributes(this.serverProperties.getError().isIncludeException(),
-			errorResponseDeterminer);
-	}
-
 }

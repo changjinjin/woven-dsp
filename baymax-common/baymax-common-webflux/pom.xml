@@ -12,10 +12,12 @@
 
     <name>baymax-common-webflux</name>
     <url>http://maven.apache.org</url>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-extras</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.info.baymax</groupId>
             <artifactId>baymax-common-config</artifactId>
