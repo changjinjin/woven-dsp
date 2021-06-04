@@ -46,11 +46,6 @@ public interface DataServiceService extends BaseEntityService<DataService> {
     String exportDataServiceByIds(List<Long> ids, Integer type);
 
     /**
-     * 根据服务启动类型type,导出数据服务信息记录
-     */
-    String exportDataServiceByType(Integer type);
-
-    /**
      * 导入excel并返回结果, push导入
      */
     List<String> importExcelByPush(String custId, File targetFile, Long custDataSourceId, String custTableName) throws Exception;
@@ -59,9 +54,4 @@ public interface DataServiceService extends BaseEntityService<DataService> {
      * 导入excel并返回结果，pull导入
      */
     List<String> importExcelByPull(String custId, File targetFile, Long custAppId) throws Exception;
-
-    /**
-     * 导入excel并返回结果
-     */
-    //List<String> importExcel(String dspCustomerId, File excelFile) throws Exception;
 }

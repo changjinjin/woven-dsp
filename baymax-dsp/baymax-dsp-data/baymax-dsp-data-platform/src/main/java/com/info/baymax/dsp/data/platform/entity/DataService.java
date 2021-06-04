@@ -169,4 +169,10 @@ public class DataService extends BaseEntity {
     @ColumnDefault("'DATASET'")
     private String sourceType;
 
+    @ApiModelProperty("数据服务信息表原主键")
+    @Comment("数据服务信息表原主键")
+    @Column(length = 20, nullable = false)
+    @ColumnType(jdbcType = JdbcType.BIGINT)
+    @ColumnDefault("0")
+    protected Long serviceId;
 }

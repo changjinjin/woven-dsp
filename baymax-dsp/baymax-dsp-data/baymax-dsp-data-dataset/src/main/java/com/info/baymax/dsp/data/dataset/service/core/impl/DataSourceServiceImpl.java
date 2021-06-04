@@ -172,4 +172,9 @@ public class DataSourceServiceImpl extends QueryObjectByResourceOrProjectService
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
     }
+
+    @Override
+    public DataSource selectEntityByName(String name) {
+        return dataSourceMapper.selectEntityByName(name);
+    }
 }

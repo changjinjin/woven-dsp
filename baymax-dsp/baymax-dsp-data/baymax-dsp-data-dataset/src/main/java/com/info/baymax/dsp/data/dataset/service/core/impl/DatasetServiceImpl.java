@@ -122,4 +122,8 @@ public class DatasetServiceImpl extends QueryObjectByResourceOrProjectServiceImp
 		}
 	}
 
+	@Override
+	public Dataset selectEntityByName(String name) {
+		return datasetMapper.selectEntityByName(name);
+	}
 }

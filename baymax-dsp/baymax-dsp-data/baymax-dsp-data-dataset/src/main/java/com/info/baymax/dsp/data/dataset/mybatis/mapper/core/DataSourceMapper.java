@@ -15,4 +15,7 @@ public interface DataSourceMapper extends MyIdableMapper<DataSource> {
     @Select("select distinct t.type from merce_dss t where t.tenant = #{tenantId,jdbcType=VARCHAR}")
     List<String> getDistinctTypes(@Param("tenantId") String tenantId);
 
+    @Options(useCache = false)
+    @Select("select * from merce_dss t where t.name = #{name,jdbcType=VARCHAR}")
+    DataSource selectEntityByName(@Param("name") String name);
 }
