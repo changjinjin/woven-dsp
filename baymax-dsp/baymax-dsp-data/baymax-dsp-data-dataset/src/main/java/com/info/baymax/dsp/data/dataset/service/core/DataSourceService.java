@@ -24,4 +24,6 @@ public interface DataSourceService extends BaseMaintableService<DataSource>,
     List<String> fetchTableColumns(String dataSourceId, String table);
 
     IPage<MapEntity> previewBySql(String dataSourceId, SqlQuery query);
+
+    DataSource selectEntityByName(String name);
 }

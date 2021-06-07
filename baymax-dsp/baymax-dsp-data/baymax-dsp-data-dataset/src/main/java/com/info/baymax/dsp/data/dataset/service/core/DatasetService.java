@@ -16,4 +16,6 @@ public interface DatasetService extends BaseMaintableService<Dataset>, QueryObje
     List<Dataset> findBySchemaId(String schemaId);
 
     Dataset findOneByName(String tenant, String name);
+
+    Dataset selectEntityByName(String name);
 }
