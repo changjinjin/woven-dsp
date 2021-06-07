@@ -27,6 +27,7 @@
 			<includes>
 				<include>*.properties</include>
 				<include>*.yml</include>
+				<include>*.yaml</include>
 				<include>*.xml</include>
 				<include>*.sh</include>
 			</includes>
@@ -172,6 +173,7 @@
             <fileMode>755</fileMode>
             <includes>
                 <include>dsp-gateway.yml</include>
+				<include>dsp-gateway.yaml</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -181,6 +183,7 @@
             <fileMode>755</fileMode>
             <includes>
                 <include>dsp-cas-gateway.yml</include>
+				<include>dsp-cas-gateway.yaml</include>
             </includes>
         </fileSet>
 

@@ -160,22 +160,24 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
             CryptoEncoder<?> encoder = CryptoEncoder.getInstance(encoderClass);
             return encoder.encode(obj, secretKey, wrapped, cryptoType, cryptorDelegater);
         } else {
-            Class<? extends Object> clazz = obj.getClass();
-            if (Iterable.class.isAssignableFrom(clazz)) {
-                Iterator<?> iterator = ((Iterable<?>) obj).iterator();
-                iterator.forEachRemaining(t -> {
-                    // TODO 需要将处理的结果在放回到集合中去，因不知集合类型所以没法封装回原来的集合中去，建议先返回成string数组以支持改加密逻辑
-                    encryptSingle(t, wrapped, cryptoType);
-                });
-            } else if (clazz.isArray()) {
-                for (int i = 0; i < Array.getLength(obj); i++) {
-                    encryptSingle(Array.get(obj, i), wrapped, cryptoType);
-                }
-            } else {
-                return encryptSingle(obj, wrapped, cryptoType);
-            }
-            return obj;
-        }
+			if (obj != null) {
+				Class<? extends Object> clazz = obj.getClass();
+				if (Iterable.class.isAssignableFrom(clazz)) {
+					Iterator<?> iterator = ((Iterable<?>) obj).iterator();
+					iterator.forEachRemaining(t -> {
+						// TODO 需要将处理的结果在放回到集合中去，因不知集合类型所以没法封装回原来的集合中去，建议先返回成string数组以支持改加密逻辑
+						encryptSingle(t, wrapped, cryptoType);
+					});
+				} else if (clazz.isArray()) {
+					for (int i = 0; i < Array.getLength(obj); i++) {
+						encryptSingle(Array.get(obj, i), wrapped, cryptoType);
+					}
+				} else {
+					return encryptSingle(obj, wrapped, cryptoType);
+				}
+			}
+			return obj;
+		}
     }
 
     // 处理单个对象的解密逻辑
@@ -197,22 +199,24 @@ public abstract class AbstractCryptoMethodInvoker implements CryptoMethodInvoker
             CryptoDecoder<?> decoder = CryptoDecoder.getInstance(decoderClass);
             return decoder.decode(obj, secretKey, wrapped, cryptoType, cryptorDelegater);
         } else {
-            Class<? extends Object> clazz = obj.getClass();
-            if (Iterable.class.isAssignableFrom(clazz)) {
-                Iterator<?> iterator = ((Iterable<?>) obj).iterator();
-                iterator.forEachRemaining(t -> {
-                    // TODO 需要将处理的结果在放回到集合中去，因不知集合类型所以没法封装回原来的集合中去，建议先返回成string数组以支持改加密逻辑
-                    decryptSingle(t, wrapped, cryptoType);
-                });
-            } else if (clazz.isArray()) {
-                for (int i = 0; i < Array.getLength(obj); i++) {
-                    decryptSingle(Array.get(obj, i), wrapped, cryptoType);
-                }
-            } else {
-                return decryptSingle(obj, wrapped, cryptoType);
-            }
-            return obj;
-        }
+			if (obj != null) {
+				Class<? extends Object> clazz = obj.getClass();
+				if (Iterable.class.isAssignableFrom(clazz)) {
+					Iterator<?> iterator = ((Iterable<?>) obj).iterator();
+					iterator.forEachRemaining(t -> {
+						// TODO 需要将处理的结果在放回到集合中去，因不知集合类型所以没法封装回原来的集合中去，建议先返回成string数组以支持改加密逻辑
+						decryptSingle(t, wrapped, cryptoType);
+					});
+				} else if (clazz.isArray()) {
+					for (int i = 0; i < Array.getLength(obj); i++) {
+						decryptSingle(Array.get(obj, i), wrapped, cryptoType);
+					}
+				} else {
+					return decryptSingle(obj, wrapped, cryptoType);
+				}
+			}
+			return obj;
+		}
     }
 
     // 处理单个对象的加密逻辑
