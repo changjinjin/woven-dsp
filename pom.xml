@@ -72,6 +72,8 @@
 		<mysql.version>5.1.48</mysql.version>
 		<oracle.version>12.1.0.1.0</oracle.version>
 		<snowball.version>1.1.0</snowball.version>
+		<oscar.version>16.0.0</oscar.version>
+		<kingbase.version>8.2.0</kingbase.version>
 		<opendistro-sql-jdbc.version>1.13.0.0</opendistro-sql-jdbc.version>
 
 		<!-- other dependencies -->
@@ -467,6 +469,16 @@
 				<groupId>com.amazon.opendistroforelasticsearch.client</groupId>
 				<artifactId>opendistro-sql-jdbc</artifactId>
 				<version>${opendistro-sql-jdbc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oscar.driver</groupId>
+				<artifactId>oscar16</artifactId>
+				<version>${oscar.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.kingbase</groupId>
+				<artifactId>kingbase</artifactId>
+				<version>${kingbase.version}</version>
 			</dependency>
 
 			<!-- common dependencies -->
