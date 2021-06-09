@@ -73,7 +73,8 @@
 		<oracle.version>12.1.0.1.0</oracle.version>
 		<snowball.version>1.1.0</snowball.version>
 		<oscar.version>16.0.0</oscar.version>
-		<kingbase.version>8.2.0</kingbase.version>
+		<kingbase.version>7.1.2</kingbase.version>
+		<kingbase8.version>8.2.0</kingbase8.version>
 		<opendistro-sql-jdbc.version>1.13.0.0</opendistro-sql-jdbc.version>
 
 		<!-- other dependencies -->
@@ -479,6 +480,11 @@
 				<groupId>com.kingbase</groupId>
 				<artifactId>kingbase</artifactId>
 				<version>${kingbase.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.kingbase</groupId>
+				<artifactId>kingbase8</artifactId>
+				<version>${kingbase8.version}</version>
 			</dependency>
 
 			<!-- common dependencies -->
