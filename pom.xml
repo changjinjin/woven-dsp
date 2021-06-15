@@ -75,6 +75,7 @@
 		<oscar.version>16.0.0</oscar.version>
 		<kingbase.version>7.1.2</kingbase.version>
 		<kingbase8.version>8.2.0</kingbase8.version>
+		<dm7.version>18.0.0</dm7.version>
 		<opendistro-sql-jdbc.version>1.13.0.0</opendistro-sql-jdbc.version>
 
 		<!-- other dependencies -->
@@ -485,6 +486,11 @@
 				<groupId>com.kingbase</groupId>
 				<artifactId>kingbase8</artifactId>
 				<version>${kingbase8.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dm.jdbc.driver</groupId>
+				<artifactId>dm7</artifactId>
+				<version>${dm7.version}</version>
 			</dependency>
 
 			<!-- common dependencies -->

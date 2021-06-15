@@ -36,25 +36,25 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Root level="INFO">
-			<AppenderRef ref="Console" />
-			<AppenderRef ref="Rolling_file" />
-		</Root>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Rolling_file"/>
+        </Root>
 
-		<Logger name="java.sql" level="DEBUG" />
-		<Logger name="com.merce" level="DEBUG" />
-		<Logger name="com.info.baymax" level="DEBUG" />
-		<Logger name="org.springframework" level="INFO" />
+        <Logger name="java.sql" level="DEBUG"/>
+        <Logger name="com.merce" level="DEBUG"/>
+        <Logger name="com.info.baymax" level="DEBUG"/>
+        <Logger name="org.springframework" level="INFO"/>
 
-		<!-- hibernate日志输出 -->
-		<Logger name="org.hibernate" level="DEBUG" />
-		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder"
-			level="DEBUG" />
-		<Logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
-			level="DEBUG" />
-		<Logger name="org.hibernate.SQL" level="DEBUG" />
-		<Logger name="org.hibernate.engine.QueryParameters"
-			level="DEBUG" />
+        <!-- hibernate日志输出 -->
+        <Logger name="org.hibernate" level="DEBUG"/>
+        <Logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+                level="DEBUG"/>
+        <Logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+                level="DEBUG"/>
+        <Logger name="org.hibernate.SQL" level="DEBUG"/>
+        <Logger name="org.hibernate.engine.QueryParameters"
+                level="DEBUG"/>
 		<Logger name="org.hibernate.engine.query.HQLQueryPlan"
 			level="DEBUG" />
 		<Logger name="reactor" level="ERROR" />

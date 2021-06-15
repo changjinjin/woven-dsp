@@ -27,7 +27,6 @@
         <module>baymax-common-webflux</module>
         <module>baymax-common-webmvc</module>
         <module>baymax-common-web</module>
-        <module>baymax-common-extras</module>
         <module>baymax-common-elasticsearch</module>
     </modules>
 </project>
