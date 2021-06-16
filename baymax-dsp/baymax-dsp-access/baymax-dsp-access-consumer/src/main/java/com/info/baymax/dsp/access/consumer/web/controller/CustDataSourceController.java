@@ -6,6 +6,8 @@ import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.queryapi.query.field.Field;
+import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.common.web.base.BaseEntityController;
 import com.info.baymax.dsp.data.consumer.beans.source.CheckEntity;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
@@ -59,7 +61,20 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 	@Override
 	public Response<IPage<CustDataSource>> page(ExampleQuery query) {
 		query = ExampleQuery.builder(query);
-		query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+		List<Field> fields = query.fieldGroup().getFields();
+		boolean b = false;
+		if (ICollections.hasElements(fields)) {
+			for (Field field : fields) {
+				String name = field.getName();
+				if ("owner".equals(name)) {
+					b = true;
+				}
+			}
+		}
+
+		if(!b){
+			query.fieldGroup().andEqualTo("owner", SaasContext.getCurrentUserId());
+		}
 		return BaseEntityController.super.page(query);
 	}
 
