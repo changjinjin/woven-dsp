@@ -2,9 +2,11 @@ package com.info.baymax.common.web.base;
 
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.gene.Idable;
 import com.info.baymax.common.persistence.service.BaseIdableAndExampleQueryService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.web.base.crud.BaseCrudController;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -55,7 +57,8 @@ public interface BaseIdableAndExampleQueryController<ID extends Serializable, T 
     @ApiOperation(value = "分页查询", notes = "根据条件分页查询数据，复杂的查询条件需要构建一个ExampleQuery对象")
     @PostMapping("/page")
     default Response<IPage<T>> page(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        return Response.ok(getBaseIdableAndExampleQueryService().selectPage(ExampleQuery.builder(query)));
+        return Response.ok(getBaseIdableAndExampleQueryService().selectPage(ExampleQuery.builder(query)
+                .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", SaasContext.getCurrentTenantId()))));
     }
 
     @ApiOperation(value = "查询详情", notes = "根据ID查询单条数据的详情，ID不能为空")
