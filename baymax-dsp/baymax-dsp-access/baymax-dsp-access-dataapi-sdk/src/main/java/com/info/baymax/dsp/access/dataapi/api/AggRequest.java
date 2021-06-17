@@ -16,4 +16,8 @@ public class AggRequest extends DataRequest<AggQuery> {
     public AggRequest(String accessKey, Long dataServiceId, long timestamp, boolean encrypted, AggQuery query) {
         super(accessKey, dataServiceId, timestamp, encrypted, query);
     }
+
+    public AggRequest(Long dataServiceId, long timestamp, boolean encrypted, AggQuery query) {
+        super("accessKey", dataServiceId, timestamp, encrypted, query);
+    }
 }

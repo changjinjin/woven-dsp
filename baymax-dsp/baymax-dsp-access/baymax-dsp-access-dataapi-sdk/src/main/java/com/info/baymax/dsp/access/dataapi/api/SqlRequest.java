@@ -16,4 +16,8 @@ public class SqlRequest extends DataRequest<SqlQuery> {
     public SqlRequest(String accessKey, Long dataServiceId, long timestamp, boolean encrypted, SqlQuery query) {
         super(accessKey, dataServiceId, timestamp, encrypted, query);
     }
+
+    public SqlRequest(Long dataServiceId, long timestamp, boolean encrypted, SqlQuery query) {
+        super("accessKey", dataServiceId, timestamp, encrypted, query);
+    }
 }

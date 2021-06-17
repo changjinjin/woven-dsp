@@ -25,7 +25,7 @@ public class DataRequest<T> implements Serializable {
     public static final long serialVersionUID = 1837415801984192215L;
 
     @ApiModelProperty(value = "消费者应用accessKey", required = true)
-    @NotBlank
+    //@NotBlank
     protected String accessKey;
 
     @ApiModelProperty(value = "服务ID", required = true)

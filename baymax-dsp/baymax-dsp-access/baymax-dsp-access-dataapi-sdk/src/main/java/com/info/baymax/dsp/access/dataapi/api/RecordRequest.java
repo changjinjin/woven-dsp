@@ -16,4 +16,8 @@ public class RecordRequest extends DataRequest<RecordQuery> {
     public RecordRequest(String accessKey, Long dataServiceId, long timestamp, boolean encrypted, RecordQuery query) {
         super(accessKey, dataServiceId, timestamp, encrypted, query);
     }
+
+    public RecordRequest(Long dataServiceId, long timestamp, boolean encrypted, RecordQuery query) {
+        super("accessKey", dataServiceId, timestamp, encrypted, query);
+    }
 }
