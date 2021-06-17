@@ -1,7 +1,9 @@
 package com.info.baymax.dsp.access.consumer.web.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.info.baymax.common.core.exception.ControllerException;
 import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.result.Response;
 import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.base.BaseEntityService;
@@ -14,6 +16,9 @@ import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
 import com.info.baymax.dsp.data.dataset.entity.core.ProcessConfig;
 import com.info.baymax.dsp.data.dataset.service.core.ProcessConfigService;
+import com.info.baymax.dsp.data.platform.bean.ApplyConfiguration;
+import com.info.baymax.dsp.data.platform.entity.DataService;
+import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -30,6 +35,8 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 	private CustDataSourceService custDataSourceService;
 	@Autowired
 	private ProcessConfigService processConfigService;
+	@Autowired
+	private DataServiceService dataServiceEntityService;
 
 	@Override
 	public BaseEntityService<CustDataSource> getBaseEntityService() {
@@ -97,5 +104,26 @@ public class CustDataSourceController implements BaseEntityController<CustDataSo
 	@GetMapping("table/list")
 	public Response<List<String>> getTableList(@ApiParam(required = true) @RequestParam String id) {
 		return Response.ok(custDataSourceService.selectTableList(id));
+	}
+
+
+	@ApiOperation(value = "单个删除", notes = "根据ID每次删除一条数据，ID不能为空")
+	@GetMapping("/deleteById")
+	public Response<Integer> deleteById(@ApiParam(value = "删除ID", required = true) @RequestParam Long id) {
+		CustDataSource custDataSource = custDataSourceService.selectByPrimaryKey(id);
+		int type = 1; //订阅服务
+		List<DataService> list = dataServiceEntityService.selectByCustIdAndType(custDataSource.getOwner(), type);
+		if(ICollections.hasElements(list)){
+			for(DataService dataService : list){
+				DataService dataServiceNew = dataServiceEntityService.selectByPrimaryKey(dataService.getId());
+				ApplyConfiguration applyConfiguration = dataServiceNew.getApplyConfiguration();
+				Long custDataSourceId = applyConfiguration.getCustDataSourceId();
+				if(id.longValue() == custDataSourceId.longValue()){
+					throw new ControllerException(ErrType.ENTITY_DELETE_ERROR,
+							String.format("The data source has associated with data service ID %s and cannot be delete", dataService.getId()));
+				}
+			}
+		}
+		return Response.ok(custDataSourceService.deleteById(id));
 	}
 }
