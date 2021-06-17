@@ -4,8 +4,10 @@ import com.info.baymax.common.core.annotation.JsonBody;
 import com.info.baymax.common.core.annotation.JsonBodys;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.Response;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.base.BaseMaintableService;
 import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
 import com.info.baymax.common.web.base.MainTableController;
 import com.info.baymax.dsp.access.platform.config.SysInitConfig;
 import com.info.baymax.dsp.data.consumer.entity.DataCustApp;
@@ -67,7 +69,8 @@ public class CustomerController implements MainTableController<Customer> {
     @ApiOperation(value = "消费者应用配置查询", notes = "消费者应用配置查询")
     @PostMapping("/appPage")
     public Response<IPage<DataCustApp>> appPage(@ApiParam(value = "查询条件", required = true) @RequestBody ExampleQuery query) {
-        return Response.ok(dataCustAppService.selectPage(query));
+        return Response.ok(dataCustAppService.selectPage(ExampleQuery.builder(query).
+                fieldGroup(FieldGroup.builder().andEqualTo("tenantId", SaasContext.getCurrentTenantId()))));
     }
 
     @ApiOperation(value = "查询接入配置详情", notes = "根据ID查询单条数据的详情，ID不能为空")
