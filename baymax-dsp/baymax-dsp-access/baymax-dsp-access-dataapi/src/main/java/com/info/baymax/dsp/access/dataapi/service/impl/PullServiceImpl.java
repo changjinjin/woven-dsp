@@ -244,62 +244,59 @@ public class PullServiceImpl implements PullService {
     private QueryConf<?> parseRequest(DataRequest<?> request, String hosts) {
         try {
             Long dataServiceId = request.getDataServiceId();
-            String requestKey = request.getAccessKey();
-            String host = hosts.split(",")[0];
-
             DataService dataService = dataServiceService.selectByPrimaryKey(Long.valueOf(dataServiceId));
             if (dataService == null) {
                 throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
-                    String.format("The data service with ID %s does not exist.", dataServiceId));
+                        String.format("The data service with ID %s does not exist.", dataServiceId));
             }
             if (dataService.getType() == 1) {
                 throw new ControllerException(ErrType.BAD_REQUEST,
-                    "The current data service does not support pull mode.");
+                        "The current data service does not support pull mode.");
             }
             if (dataService.getStatus() != 1) {
                 throw new ControllerException(ErrType.BAD_REQUEST,
-                    "The current data service is not available, not deployed, stopped, or expired.");
+                        "The current data service is not available, not deployed, stopped, or expired.");
             }
 
             Long custAppId = dataService.getApplyConfiguration().getCustAppId();
             DataCustApp custApp = custAppService.selectByPrimaryKey(custAppId);
             if (custApp == null) {
                 throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
-                    String.format("The access configuration with ID %s does not exist", custAppId));
-            }
-            String accessKey = custApp.getAccessKey();
-            String[] accessIp = custApp.getAccessIp();
-            /*if (!accessKey.equals(requestKey) || accessIp == null || !Arrays.asList(accessIp).contains(host)) {
-                throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
-            }*/
-            //TODO host不做匹配
-            if (!accessKey.equals(requestKey) || accessIp == null) {
-                throw new ControllerException(ErrType.BAD_REQUEST, "Wrong accessKey or accessIp");
+                        String.format("The access configuration with ID %s does not exist", custAppId));
             }
 
             Long dataResId = dataService.getApplyConfiguration().getDataResId();
             DataResource dataResource = dataResourceService.selectByPrimaryKey(dataResId);
             if (dataResource == null) {
                 throw new ControllerException(ErrType.ENTITY_NOT_EXIST,
-                    String.format("The data resource with ID %s does not exist", dataResId));
+                        String.format("The data resource with ID %s does not exist", dataResId));
             }
 
             // 这里判断该数据资源的类型是dataset还是datasource类型
             SourceType sourceType = dataResource.getSourceType();
             switch (sourceType) {
                 case DATASOURCE:
+                    //修改查询条件(先用ID查询，如果查不到，再用name查)
                     DataSource dataSource = dataSourceService.selectByPrimaryKey(dataResource.getDatasetId());
                     if (dataSource == null) {
-                        throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
-                            String.format("The datasource with ID %s does not exist", dataResource.getDatasetId()));
+                        dataSource = dataSourceService.selectEntityByName(dataResource.getDatasetName());
+                        if (dataSource == null) {
+                            throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
+                                    String.format("The datasource with ID %s does not exist", dataResource.getDatasetId()));
+                        }
                     }
+                    DataSource newDataSource = dataSourceService.selectByPrimaryKey(dataSource.getId());
                     return new DataSourceQueryConf(dataService.getName(),
-                        dataSource.getAttributes().withConfig("storage", Engine.JDBC.name()), dataResource.getQuery());
+                            newDataSource.getAttributes().withConfig("storage", Engine.JDBC.name()), dataResource.getQuery());
                 default:
+                    //修改查询条件(先用ID查询，如果查不到，再用name查)
                     Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
                     if (dataset == null) {
-                        throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
-                            String.format("The dataset with ID %s does not exist", dataResource.getDatasetId()));
+                        dataset = datasetService.selectEntityByName(dataResource.getDatasetName());
+                        if (dataset == null) {
+                            throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
+                                    String.format("The dataset with ID %s does not exist", dataResource.getDatasetId()));
+                        }
                     }
 
                     // 将fieldMappings装进map中以便于查询
@@ -311,7 +308,16 @@ public class PullServiceImpl implements PullService {
                         }
                     }
                     // 处理存储信息
-                    Map<String, Object> conf = dataset.getStorageConfigurations();
+                    Map<String, Object> conf = new HashMap<>();
+                    if(null != dataset){
+                        conf = dataset.getStorageConfigurations();
+                        if(null == conf){
+                            Dataset newDataset = datasetService.selectByPrimaryKey(dataset.getId());
+                            if(null != newDataset){
+                                conf = newDataset.getStorageConfigurations();
+                            }
+                        }
+                    }
                     conf.put("storage", dataset.getStorage());
                     return new DatasetQueryConf(dataService.getName(), conf, fieldMap);
             }
