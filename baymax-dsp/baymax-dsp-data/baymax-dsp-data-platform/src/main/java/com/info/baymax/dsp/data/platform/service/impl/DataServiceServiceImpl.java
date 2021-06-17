@@ -150,8 +150,402 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
     }
 
     @Override
-    public List<String> importExcelByPull(String custId, File targetFile, Long custAppId) throws Exception {
-        return null;
+    public List<String> importExcelByPull(String custId, File excelFile, Long custAppId) throws Exception {
+        List<String> result = new ArrayList<>();
+        //读取excel数据
+        ImportJobVo importJobVo = importJobExcelByPull(excelFile, custId, custAppId);
+        //过滤数据记录
+        ImportJobVo checkImportJobVo = datasetRelationCheck(importJobVo);
+        //导入数据到数据库中(导入策略：若对象存在，则更新;若不存在，则添加)
+        result = importJobToDb(checkImportJobVo, custId);
+        return result;
+    }
+
+    private ImportJobVo importJobExcelByPull(File excelFile, String custId, Long custAppId) throws Exception{
+        ImportJobVo importJobVo = new ImportJobVo();
+        List<DataService> jobList = new ArrayList<>();
+        List<DataResource> jobPoolList = new ArrayList<>();
+
+        importJobVo.setJobList(jobList);
+        importJobVo.setJobPoolList(jobPoolList);
+        List<String> errorStringList = new ArrayList<>();
+        Customer customer = consumerService.selectByPrimaryKey(custId);
+        if(null == customer || "".equals(customer)){
+            throw new ServiceException(ErrType.ENTITY_NOT_EXIST, "消费者不存在");
+        }
+
+        /*
+         * workbook:工作簿,就是整个Excel文档
+         * sheet:工作表
+         * row:行
+         * cell:单元格
+         */
+        InputStream is = new FileInputStream(excelFile);//创建输入流对象
+        XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
+        //获取Sheet数量
+        int sheetNum = xssfWorkbook.getNumberOfSheets();
+
+        //这是最外层
+        long xuhao = 0;//临时的序号
+        List<String> linshiName = new ArrayList<>();//临时用来存放名字和下标对应关系的集合
+        //数据集不存在的的数据资源信息
+        List<Long> uselessDataResourceIds = new ArrayList<>();
+
+        for (int index = 0; index < sheetNum; index++) {
+
+            XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(index);
+            if (xssfSheet == null) {
+                continue;
+            }
+            //创建二维数组保存所有读取到的行列数据，外层存行数据，内层存单元格数据
+            List<List<String>> dataList = new ArrayList<List<String>>();
+            for (int rowIndex = 1; rowIndex < xssfSheet.getLastRowNum() + 1; rowIndex++) {
+                XSSFRow xssfRow = xssfSheet.getRow(rowIndex);
+                if (xssfRow == null) {
+                    continue;
+                }
+                List<String> cellList = new ArrayList<String>();
+                for (int cellIndex = 0; cellIndex < xssfRow.getLastCellNum(); cellIndex++) {
+                    XSSFCell xssfCell = xssfRow.getCell(cellIndex);
+                    cellList.add(getString(xssfCell));
+                }
+                dataList.add(cellList);
+            }
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if (index == 0) {  //数据服务信息表
+                xuhao = 100;
+                for (int i = 0; i < dataList.size(); i++) {
+                    boolean isError = false;//校验当入行是否出错
+                    DataService dataService = new DataService();
+                    xuhao = xuhao + 1;
+                    dataService.setId(xuhao);//先给个临时的序号
+                    for (int j = 0; j < dataList.get(i).size(); j++) {
+                        if (j == 0) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【主键】不存在;") ;
+                                isError = true;
+                            }else{
+                                Long id = Long.parseLong(dataList.get(i).get(j));
+                                dataService.setId(id);
+                            }
+                        } else if (j == 1) {
+                            if (null != dataList.get(i).get(j) && !dataList.get(i).get(j).equals("")) {
+                                dataService.setDescription(dataList.get(i).get(j));
+                            }
+                        }
+                        else if (j == 2) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【名称】不存在;") ;
+                                isError = true;
+                            }else{
+                                dataService.setName(dataList.get(i).get(j));
+                            }
+                        }
+                        else if (j == 3) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                dataService.setAuditMind(dataList.get(i).get(j));
+                            }
+                        } else if (j == 4) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                dataService.setCursorVal(dataList.get(i).get(j));
+                            }
+                        }
+                        else if (j == 5) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【数据资源ID】不存在;") ;
+                                isError = true;
+                            }else{
+                                dataService.setDataResId(Long.parseLong(dataList.get(i).get(j)));
+                            }
+                        }
+                        else if (j == 6) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【服务过期时间】不存在;") ;
+                                isError = true;
+                            }else{
+                                dataService.setExpiredTime(Long.parseLong(dataList.get(i).get(j)));
+                            }
+                        }
+                        else if (j == 7) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                dataService.setScheduleType(dataList.get(i).get(j));
+                            }
+                        } else if (j == 8) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                Map<String, String> map = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), Map.class);
+                                dataService.setServiceConfiguration(map);
+                            }
+                        } else if (j == 9) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【数据类型】不能为空;") ;
+                                isError = true;
+                            }else{
+                                dataService.setSourceType(dataList.get(i).get(j));
+                            }
+                        }
+                        else if (j == 10) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【服务启动类型】不能为空;") ;
+                                isError = true;
+                            }else if(!dataList.get(i).get(j).equals("0.0")){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【服务启动类型】不正确, 不是申请服务;") ;
+                                isError = true;
+                            }else{
+                                if(dataList.get(i).get(j).endsWith(".0")){
+                                    dataService.setType(Integer.valueOf(dataList.get(i).get(j).substring(0, dataList.get(i).get(j).length() - 2)));
+                                }else{
+                                    dataService.setType(Integer.valueOf(dataList.get(i).get(j)));
+                                }
+                            }
+                        }
+                        else if (j == 11) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                List<FieldMapping> fieldMappings = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), List.class);
+                                dataService.setFieldMappings(fieldMappings);
+                            }
+                        }
+                        else if (j == 12) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据服务信息表,第" + (i + 1) + "行，【消费者申请记录ID】不存在;") ;
+                            }else{
+                                Long applicationId = Long.parseLong(dataList.get(i).get(j));
+                                dataService.setApplicationId(applicationId);
+                            }
+                        }
+                        else if (j == 13) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                ApplyConfiguration applyConfiguration = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), ApplyConfiguration.class);
+                                applyConfiguration.setCustId(custId);
+                                applyConfiguration.setCustName(customer.getName());
+                                applyConfiguration.setCustAppId(custAppId);
+                                dataService.setApplyConfiguration(applyConfiguration);
+                            }
+                        }
+                    }
+                    //字段信息初始值（默认值）设置
+                    dataService.setEnabled(1);//启用
+                    dataService.setCustId(custId);//导入消费者id
+                    dataService.setIsRunning(0);//未运行
+                    dataService.setStatus(0);//待部署
+                    dataService.setLastModifier(SaasContext.getCurrentUsername());
+                    dataService.setLastModifiedTime(new Date());
+                    dataService.setTenantId(SaasContext.getCurrentTenantId());
+                    dataService.setOwner(SaasContext.getCurrentUserId());
+                    if(!isError){
+                        jobList.add(dataService);
+                    }
+                }
+            }
+
+            if (index == 1) {//数据资源信息表--Start
+                xuhao = 200;
+                for (int i = 0; i < dataList.size(); i++) {
+                    boolean isError = false;//校验数据记录是否出错
+                    DataResource dataResource = new DataResource();
+                    xuhao = xuhao + 1;
+                    dataResource.setId(xuhao);
+                    for (int j = 0; j < dataList.get(i).size(); j++) {
+                        if (j == 0) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【主键】不存在;") ;
+                                isError = true;
+                            }else{
+                                Long id = Long.parseLong(dataList.get(i).get(j));
+                                dataResource.setId(id);
+                            }
+                        }
+                        else if (j == 1) {
+                            if (null != dataList.get(i).get(j) && !dataList.get(i).get(j).equals(" ")) {
+                                dataResource.setDescription(dataList.get(i).get(j));
+                            }
+                        }
+                        else if (j == 2) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【名称】不存在;") ;
+                                isError = true;
+                            }else{
+                                dataResource.setName(dataList.get(i).get(j));
+                            }
+                        }else if (j == 3) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                Map<String, String> baseConfiguration = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), Map.class);
+                                dataResource.setBaseConfiguration(baseConfiguration);
+                            }
+                        }
+                        else if (j == 4) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【数据集ID】不存在;");
+                                isError = true;
+                            }else{
+                                dataResource.setDatasetId(dataList.get(i).get(j));
+                            }
+                        } else if (j == 5) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【数据集名称】不存在;");
+                                isError = true;
+                            }else{
+                                String name = dataList.get(i).get(j);
+                                String sourceType = dataList.get(i).get(17);
+                                if(StringUtils.isEmpty(sourceType)){
+                                    errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【数据类型】不存在,无法匹配数据集;");
+                                    isError = true;
+                                    uselessDataResourceIds.add(Long.parseLong(dataList.get(i).get(0)));
+                                }
+                                if("DATASOURCE".equals(sourceType)){
+                                    DataSource dataSource = dataSourceService.selectEntityByName(name);
+                                    if(null == dataSource){
+                                        errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 数据源信息记录不存在;");
+                                        isError = true;
+                                        uselessDataResourceIds.add(Long.parseLong(dataList.get(i).get(0)));
+                                    }else{
+                                        dataResource.setDatasetName(dataList.get(i).get(j));
+                                    }
+                                } else if("DATASET".equals(sourceType)){
+                                    Dataset dataset = datasetService.selectEntityByName(name);
+                                    if(null == dataset){
+                                        errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 数据集信息记录不存在;");
+                                        isError = true;
+                                        uselessDataResourceIds.add(Long.parseLong(dataList.get(i).get(0)));
+                                    }else{
+                                        dataResource.setDatasetName(dataList.get(i).get(j));
+                                    }
+                                }else{
+                                    errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 【数据类型】填写错误;");
+                                    isError = true;
+                                    uselessDataResourceIds.add(Long.parseLong(dataList.get(i).get(0)));
+                                }
+                            }
+                        } else if (j == 6) {
+                            dataResource.setEncoder(dataList.get(i).get(j));
+                        } else if (j == 7) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【失效时间】不存在;");
+                                isError = true;
+                            }else{
+                                dataResource.setExpiredTime(Long.parseLong(dataList.get(i).get(j)));
+                            }
+                        } else if (j == 8) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                List<FieldMapping> fieldMappings = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), List.class);
+                                dataResource.setFieldMappings(fieldMappings);
+                            }
+                        } else if (j == 9) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                dataResource.setIncrementField(dataList.get(i).get(j));
+                            }
+                        } else if (j == 10) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                if("1.0".equals(dataList.get(i).get(j)) || "1".equals(dataList.get(i).get(j))){
+                                    dataResource.setIsPull(1);
+                                }else{
+                                    dataResource.setIsPull(0);
+                                }
+                            }
+                        } else if (j == 11) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                if("1.0".equals(dataList.get(i).get(j)) || "1".equals(dataList.get(i).get(j))){
+                                    dataResource.setIsPush(1);
+                                }else{
+                                    dataResource.setIsPush(0);
+                                }
+                            }
+                        }
+                        else if (j == 12) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                Map<String, String> publishConfiguration = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), Map.class);
+                                dataResource.setPublishConfiguration(publishConfiguration);
+                            }
+                        } else if (j == 13) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                String[] strArray = dataList.get(i).get(j).split(",");
+                                Integer[] intArray = (Integer[]) ConvertUtils.convert(strArray, Integer.class);
+                                dataResource.setPullServiceMode(intArray);
+                            }
+                        } else if (j == 14) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                String[] strArray = dataList.get(i).get(j).split(",");
+                                Integer[] intArray = (Integer[]) ConvertUtils.convert(strArray, Integer.class);
+                                dataResource.setPushServiceMode(intArray);
+                            }
+                        } else if (j == 15) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                SqlQuery query = JsonBuilder.getInstance().fromJson(dataList.get(i).get(j), SqlQuery.class);
+                                dataResource.setQuery(query);
+                            }
+                        } else if (j == 16) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【数据来源】不存在;");
+                                isError = true;
+                            }else{
+                                dataResource.setSource(dataList.get(i).get(j));
+                            }
+                        } else if (j == 17) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【数据类型】不存在;") ;
+                                isError = true;
+                            }else{
+                                String sourceType = dataList.get(i).get(j);
+                                if("DATASET".equals(sourceType)){
+                                    dataResource.setSourceType(SourceType.DATASET);
+                                }else if("DATASOURCE".equals(sourceType)){
+                                    dataResource.setSourceType(SourceType.DATASOURCE);
+                                }
+                            }
+                        } else if (j == 18) {
+                            if(null == dataList.get(i).get(j) || "".equals(dataList.get(i).get(j))){
+                                errorStringList.add("数据资源信息表,第" + (i + 1) + "行，【数据集存储引擎】不存在;") ;
+                                isError = true;
+                            }else{
+                                dataResource.setStorage(dataList.get(i).get(j));
+                            }
+                        } else if (j == 19) {
+                            if(null != dataList.get(i).get(j) && !"".equals(dataList.get(i).get(j))){
+                                if(dataList.get(i).get(j).endsWith(".0")){
+                                    dataResource.setType(Integer.valueOf(dataList.get(i).get(j).substring(0, dataList.get(i).get(j).length() - 2)));
+                                }else{
+                                    dataResource.setType(Integer.valueOf(dataList.get(i).get(j)));
+                                }
+                            }
+                        }
+                    }
+                    //字段信息初始值（默认值）设置
+                    dataResource.setEnabled(1);//启用
+                    dataResource.setOpenStatus(1);//已开放
+                    dataResource.setLastModifier(SaasContext.getCurrentUsername());
+                    dataResource.setLastModifiedTime(new Date());
+                    dataResource.setTenantId(SaasContext.getCurrentTenantId());
+                    dataResource.setOwner(SaasContext.getCurrentUserId());
+                    if(!isError){
+                        jobPoolList.add(dataResource);
+                    }
+                }
+            }
+        }
+
+        if(null != jobList && jobList.size() > 0){
+            Iterator<DataService> iterator = jobList.iterator();
+            while(iterator.hasNext()){
+                DataService dataServiceEntity = iterator.next();
+                Long dataResId = dataServiceEntity.getDataResId();
+                if(uselessDataResourceIds.contains(dataResId)){
+                    iterator.remove();
+                }
+            }
+        }
+
+        importJobVo.setJobList(jobList);
+        importJobVo.setJobPoolList(jobPoolList);
+        importJobVo.setErrorStringList(errorStringList);
+        is.close();
+        if (errorStringList.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (String error : errorStringList) {
+                sb.append(error)
+                        .append("<br/>");
+            }
+            throw new RuntimeException(sb.toString());
+        }
+        return importJobVo;
     }
 
     @Override
