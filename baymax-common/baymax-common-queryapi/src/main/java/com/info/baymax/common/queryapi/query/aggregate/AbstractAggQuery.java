@@ -10,6 +10,7 @@ import com.info.baymax.common.queryapi.query.field.SqlEnums.AndOr;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -49,6 +50,7 @@ import java.util.List;
  */
 @ApiModel
 @Getter
+@Setter
 @SuppressWarnings("unchecked")
 public abstract class AbstractAggQuery<T extends AbstractAggQuery<T>> extends AbstractQuery<AbstractAggQuery<T>>
         implements AggFieldQueryBuilder<T>, GroupByFieldQueryBuilder<T>, HavingFieldGroupQueryBuilder<T> {
