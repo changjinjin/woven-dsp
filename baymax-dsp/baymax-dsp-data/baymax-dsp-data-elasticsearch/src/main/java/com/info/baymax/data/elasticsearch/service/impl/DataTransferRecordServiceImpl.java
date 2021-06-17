@@ -3,6 +3,7 @@ package com.info.baymax.data.elasticsearch.service.impl;
 import com.info.baymax.common.core.exception.ServiceException;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.ErrType;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.data.elasticsearch.config.EsMetricsIndexProperties;
 import com.info.baymax.data.elasticsearch.config.jest.ISearchResult;
 import com.info.baymax.data.elasticsearch.entity.DataTransferRecord;
@@ -57,7 +58,9 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         if (end > 0) {
             queryBuilder.must(rangeQuery("@timestamp").lt(end));
         }
-
+        if(StringUtils.isNotEmpty(SaasContext.getCurrentTenantId())){
+            queryBuilder.must(termQuery("tenantId.keyword", SaasContext.getCurrentTenantId()));
+        }
         TermsAggregationBuilder teamAgg = AggregationBuilders.terms("custIdAgg").field("custId.keyword").subAggregation(
             AggregationBuilders.terms("custNameAgg").field("custName.keyword").subAggregation(AggregationBuilders
                 .cardinality("distinct_sid").field("sid.keyword").precisionThreshold(Integer.MAX_VALUE)));
@@ -108,7 +111,9 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         if (end > 0) {
             queryBuilder.must(rangeQuery("@timestamp").lt(end));
         }
-
+        if(StringUtils.isNotEmpty(SaasContext.getCurrentTenantId())){
+            queryBuilder.must(termQuery("tenantId.keyword", SaasContext.getCurrentTenantId()));
+        }
         TermsAggregationBuilder teamAgg = AggregationBuilders.terms("datasetIdAgg").field("datasetId.keyword")
             .subAggregation(AggregationBuilders.terms("datasetNameAgg").field("datasetName.keyword")
                 .subAggregation(AggregationBuilders.cardinality("distinct_sid").field("sid.keyword")
@@ -279,6 +284,9 @@ public class DataTransferRecordServiceImpl implements DataTransferRecordService 
         }
         if (StringUtils.isNotEmpty(datasetId)) {
             queryBuilder.must(termQuery("datasetId.keyword", datasetId));
+        }
+        if(StringUtils.isNotEmpty(SaasContext.getCurrentTenantId())){
+            queryBuilder.must(termQuery("tenantId.keyword", SaasContext.getCurrentTenantId()));
         }
         if (start > 0) {
             queryBuilder.must(rangeQuery("@timestamp").gte(start));

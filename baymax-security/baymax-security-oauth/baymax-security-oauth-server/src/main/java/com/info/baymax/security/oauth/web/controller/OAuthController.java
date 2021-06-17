@@ -1,6 +1,7 @@
 package com.info.baymax.security.oauth.web.controller;
 
 import com.info.baymax.common.core.result.Response;
+import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.security.oauth.security.authentication.CustomTokenServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +12,9 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.util.StringUtil;
 
+import java.net.URLDecoder;
 import java.security.Principal;
 import java.util.Map;
 
@@ -23,6 +26,7 @@ public class OAuthController {
 
     // @Autowired
     // private KeyPair keyPair;
+    private static final String KEY = "infoaeskey123456";
     @Autowired
     private TokenEndpoint tokenEndpoint;
     @Autowired
@@ -39,6 +43,12 @@ public class OAuthController {
     @GetMapping("/token")
     public Response<OAuth2AccessToken> getAccessToken(Principal principal, @RequestParam Map<String, String> parameters)
         throws HttpRequestMethodNotSupportedException {
+        if(StringUtil.isNotEmpty(parameters.get("password"))){
+            String decodePassword = decodePassword(parameters.get("password"));
+            if(StringUtil.isNotEmpty(decodePassword)){
+                parameters.put("password", decodePassword);
+            }
+        }
         return Response.ok(tokenEndpoint.getAccessToken(principal, parameters).getBody());
     }
 
@@ -46,7 +56,22 @@ public class OAuthController {
     @PostMapping("/token")
     public Response<OAuth2AccessToken> postAccessToken(Principal principal,
                                                        @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+        if(StringUtil.isNotEmpty(parameters.get("password"))){
+            String decodePassword = decodePassword(parameters.get("password"));
+            if(StringUtil.isNotEmpty(decodePassword)){
+                parameters.put("password", decodePassword);
+            }
+        }
         return Response.ok(tokenEndpoint.postAccessToken(principal, parameters).getBody());
+    }
+
+    private String decodePassword(String password) {
+        if(password.startsWith("AES")){
+            String decode = URLDecoder.decode(password);
+            String decodePassword = AESUtil.decrypt(decode.substring(4, decode.length() - 1), KEY);
+            return decodePassword;
+        }
+        return null;
     }
 
     @ApiOperation(value = "销毁认证信息（退出登录）")
