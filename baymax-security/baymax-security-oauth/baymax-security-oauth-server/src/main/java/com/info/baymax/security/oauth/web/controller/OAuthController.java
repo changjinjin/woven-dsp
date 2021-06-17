@@ -1,7 +1,6 @@
 package com.info.baymax.security.oauth.web.controller;
 
 import com.info.baymax.common.core.result.Response;
-import com.info.baymax.common.utils.Base64Utils;
 import com.info.baymax.common.utils.crypto.AESUtil;
 import com.info.baymax.security.oauth.security.authentication.CustomTokenServices;
 import io.swagger.annotations.Api;
@@ -15,6 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.util.StringUtil;
 
+import java.net.URLDecoder;
 import java.security.Principal;
 import java.util.Map;
 
@@ -66,12 +66,10 @@ public class OAuthController {
     }
 
     private String decodePassword(String password) {
-        if(password.startsWith("AES(")){
-            String decryptAES = AESUtil.decrypt(password.substring(4, password.length() - 1), KEY);
-            if(Base64Utils.check(decryptAES)){
-                String decode = Base64Utils.decode(decryptAES);
-                return decode;
-            }
+        if(password.startsWith("AES")){
+            String decode = URLDecoder.decode(password);
+            String decodePassword = AESUtil.decrypt(decode.substring(4, decode.length() - 1), KEY);
+            return decodePassword;
         }
         return null;
     }
