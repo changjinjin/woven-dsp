@@ -77,12 +77,28 @@ public class PullServiceImpl implements PullService {
         try {
             DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             RecordQuery query = request.getQuery();
-            validate(queryConf.getOtherConf(), query);
+            validate(queryConf.getOtherConf(), request.getQuery());
+            LinkedHashSet<String> linkedHashSet = modifyFieldNameByDBType(queryConf.getConf(), request.getQuery().getSelectProperties());
+            query.setSelectProperties(linkedHashSet);
             return dataReader.readRecord(StorageConf.from(queryConf.getConf()), query);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new ServiceException(ErrType.INTERNAL_SERVER_ERROR, e);
         }
+    }
+
+    private LinkedHashSet<String> modifyFieldNameByDBType(Map<String, Object> conf, LinkedHashSet<String> selectProperties) {
+        String dbType = (String) conf.get("DBType");
+        if("DB2".equals(dbType)){
+            LinkedHashSet<String> newSelectProperties = new LinkedHashSet<>();
+            if(ICollections.hasElements(selectProperties)){
+                for(String columnName : selectProperties){
+                    newSelectProperties.add("\"" + columnName + "\"");
+                }
+            }
+            return newSelectProperties;
+        }
+        return selectProperties;
     }
 
     @Override
@@ -91,6 +107,7 @@ public class PullServiceImpl implements PullService {
             DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             AggQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
+            query = modifyAggFieldNameByDBType(queryConf.getConf(), request.getQuery());
             return dataReader.readAgg(StorageConf.from(queryConf.getConf()), query);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -98,12 +115,45 @@ public class PullServiceImpl implements PullService {
         }
     }
 
+    private AggQuery modifyAggFieldNameByDBType(Map<String, Object> conf, AggQuery query) {
+        String dbType = (String) conf.get("DBType");
+        LinkedHashSet<String> newGroupFields = new LinkedHashSet<>();
+        if("DB2".equals(dbType)){
+            LinkedHashSet<AggField> aggFields = query.getAggFields();
+            if(ICollections.hasElements(aggFields)){
+                for(AggField aggField : aggFields){
+                    String name = aggField.getName();
+                    aggField.setName("\"" + name + "\"");
+                }
+            }
+
+            LinkedHashSet<String> groupFields = query.getGroupFields();
+            if(ICollections.hasElements(groupFields)){
+                for(String str : groupFields){
+                    newGroupFields.add("\"" + str + "\"");
+                }
+            }
+            query.setGroupFields(newGroupFields);
+
+            LinkedHashSet<Sort> ordSort = query.getOrdSort();
+            if(ICollections.hasElements(ordSort)){
+                for(Sort sort : ordSort){
+                    String name = sort.getName();
+                    sort.setName("\"" + name + "\"");
+                }
+            }
+        }
+        return query;
+    }
+
     @Override
     public String pullRecordsSql(RecordRequest request, String hosts) {
         try {
             DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             RecordQuery query = request.getQuery();
-            validate(queryConf.getOtherConf(), query);
+            validate(queryConf.getOtherConf(), request.getQuery());
+            LinkedHashSet<String> linkedHashSet = modifyFieldNameByDBType(queryConf.getConf(), request.getQuery().getSelectProperties());
+            query.setSelectProperties(linkedHashSet);
             return RecordQuerySql.builder(query.table(queryConf.getDataServiceName())).getExecuteSql();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -117,6 +167,7 @@ public class PullServiceImpl implements PullService {
             DatasetQueryConf queryConf = (DatasetQueryConf) parseRequest(request, hosts);
             AggQuery query = request.getQuery();
             validate(queryConf.getOtherConf(), query);
+            query = modifyAggFieldNameByDBType(queryConf.getConf(), request.getQuery());
             return AggQuerySql.builder(query.table(queryConf.getDataServiceName())).getExecuteSql();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

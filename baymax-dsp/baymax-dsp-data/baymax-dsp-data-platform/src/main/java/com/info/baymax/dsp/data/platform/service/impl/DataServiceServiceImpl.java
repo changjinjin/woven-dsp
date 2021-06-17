@@ -154,6 +154,11 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
         return null;
     }
 
+    @Override
+    public List<DataService> selectByCustIdAndType(String custId, int type) {
+        return dataServiceMapper.selectByCustIdAndType(custId, type);
+    }
+
     private String exportExcel(List<DataService> dataServiceList, List<DataResource> dataResourceList, Integer type) {
         //创建XSSFWorkbook工作薄对象
         XSSFWorkbook workbook = new XSSFWorkbook();
