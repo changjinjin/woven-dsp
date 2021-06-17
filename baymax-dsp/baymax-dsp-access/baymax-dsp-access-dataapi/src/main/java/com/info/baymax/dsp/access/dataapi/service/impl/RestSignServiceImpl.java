@@ -38,6 +38,16 @@ public class RestSignServiceImpl implements RestSignService {
     }
 
     @Override
+    public String secertkeyRemote(String accessKey) {
+        DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
+        // 生成随机的对称加密秘钥并使用app的私钥进行加密返回给用户
+        String generateRandomPassword = accessKey + new PasswordGenerator(16, 3).generateRandomPassword();
+        String encryptKey = RSAGenerater.encryptByPrivateKey(generateRandomPassword, app.getPrivateKey());
+        ACCESSKEY_CACHE.put(signKey(accessKey), encryptKey);
+        return encryptKey;
+    }
+
+    @Override
     public String signKeyIfExist(String accessKey) {
         DataCustApp app = dataCustAppService.selectByAccessKeyNotNull(accessKey);
         // 返回解密的对称加密秘钥明文用于加解密报文内容

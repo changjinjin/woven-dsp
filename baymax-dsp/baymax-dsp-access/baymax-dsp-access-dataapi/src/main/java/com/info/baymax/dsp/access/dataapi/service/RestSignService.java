@@ -24,4 +24,10 @@ public interface RestSignService {
      */
     String signKeyIfExist(String accessKey);
 
+    /**
+     * 根据消费者应用的accessKey获取一个临时的接口请求的singKey
+     *
+     * @param accessKey 消费端应用accessKey
+     */
+    String secertkeyRemote(String accessKey);
 }
