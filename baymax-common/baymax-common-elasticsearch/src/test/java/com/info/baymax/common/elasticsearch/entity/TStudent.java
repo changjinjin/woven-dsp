@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.info.baymax.common.persistence.entity.gene.Idable;
 import com.info.baymax.common.persistence.mybatis.genid.SnowflakeGenId;
 import com.info.baymax.common.persistence.mybatis.type.varchar.VarcharVsDateTimeTypeHandler;
+import com.info.baymax.common.persistence.mybatis.type.varchar.VarcharVsDateTypeHandler;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -51,8 +52,8 @@ public class TStudent implements Idable<Long> {
 	@ApiModelProperty("生日")
 	@Comment("生日")
 	@Column
-	@ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsDateTimeTypeHandler.class)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsDateTypeHandler.class)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date birth;
 
 	@ApiModelProperty("年级")

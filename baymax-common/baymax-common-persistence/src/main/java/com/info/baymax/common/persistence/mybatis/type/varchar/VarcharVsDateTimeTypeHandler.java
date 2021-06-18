@@ -1,19 +1,33 @@
 package com.info.baymax.common.persistence.mybatis.type.varchar;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Getter
+@Setter
 public class VarcharVsDateTimeTypeHandler extends AbstractVarcharTypeHandler<Date> {
 
-	private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+	private static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+	private String dataFormat;
+
+	public VarcharVsDateTimeTypeHandler() {
+		this(PATTERN);
+	}
+
+	protected VarcharVsDateTimeTypeHandler(String dataFormat) {
+		this.dataFormat = dataFormat;
+	}
 
 	@Override
 	public String translate2Str(Date t) {
 		if (t != null) {
-			SimpleDateFormat sdf = new SimpleDateFormat(PATTERN);
+			SimpleDateFormat sdf = new SimpleDateFormat(dataFormat);
 			return sdf.format(t);
 		}
 		return null;
@@ -25,7 +39,7 @@ public class VarcharVsDateTimeTypeHandler extends AbstractVarcharTypeHandler<Dat
 			try {
 				return DateTime.parse(result).toDate();
 			} catch (Exception e) {
-				return DateTime.parse(result, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS")).toDate();
+				return DateTime.parse(result, DateTimeFormat.forPattern(dataFormat)).toDate();
 			}
 		}
 		return null;
