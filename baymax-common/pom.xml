@@ -28,5 +28,6 @@
         <module>baymax-common-webmvc</module>
         <module>baymax-common-web</module>
         <module>baymax-common-elasticsearch</module>
+        <module>baymax-common-httpfsclient</module>
     </modules>
 </project>

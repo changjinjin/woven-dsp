@@ -391,6 +391,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-common-httpfsclient</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-dsp-data-dataset</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
