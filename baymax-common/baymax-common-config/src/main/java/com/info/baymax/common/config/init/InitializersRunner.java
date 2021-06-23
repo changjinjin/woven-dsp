@@ -1,5 +1,6 @@
 package com.info.baymax.common.config.init;
 
+import com.info.baymax.common.core.Initializer;
 import com.info.baymax.common.utils.ICollections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactoryUtils;

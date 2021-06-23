@@ -17,22 +17,26 @@
 		<dependency>
 			<groupId>com.info.baymax</groupId>
 			<artifactId>baymax-common-persistence</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
-            <artifactId>opendistro-sql-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-webflux-spring-boot-starter</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
+		</dependency>
+		<dependency>
+			<groupId>com.amazon.opendistroforelasticsearch.client</groupId>
+			<artifactId>opendistro-sql-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-webflux-spring-boot-starter</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
                     <groupId>com.info.baymax</groupId>
                     <artifactId>baymax-common-swagger</artifactId>
                 </exclusion>
@@ -53,16 +57,16 @@
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-jpa</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+					<artifactId>spring-boot-starter-data-jpa</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

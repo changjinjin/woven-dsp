@@ -30,7 +30,8 @@ public interface BasePageService<T> {
      * @param orderByClause 排序条件
      */
     default void startPage(int pageNum, int pageSize, String orderByClause) {
-        PageHelper.startPage(pageNum, pageSize, orderByClause);
+        PageHelper.startPage(pageNum, pageSize, false);
+        PageHelper.orderBy(orderByClause);
     }
 
     /**

@@ -124,7 +124,10 @@
 		<classmate.version>1.5.1</classmate.version>
 		<log4j2.version>2.11.2</log4j2.version>
 
-		<elasticsearch.version>7.12.1</elasticsearch.version>
+		<es5.version>5.6.16</es5.version>
+		<es6.version>6.8.15</es6.version>
+		<es7.version>7.10.1</es7.version>
+		<elasticsearch.version>${es7.version}</elasticsearch.version>
 
 		<!-- docker plugin properties -->
 		<docker.verbose>true</docker.verbose>
@@ -185,7 +188,7 @@
 			</activation>
 			<properties>
 				<profileActive>es5</profileActive>
-				<elasticsearch.version>5.6.16</elasticsearch.version>
+				<elasticsearch.version>${es5.version}</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -195,7 +198,7 @@
 			</activation>
 			<properties>
 				<profileActive>es6</profileActive>
-				<elasticsearch.version>6.8.15</elasticsearch.version>
+				<elasticsearch.version>${es6.version}</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -205,7 +208,7 @@
 			</activation>
 			<properties>
 				<profileActive>es7</profileActive>
-				<elasticsearch.version>7.12.1</elasticsearch.version>
+				<elasticsearch.version>${es7.version}</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -344,6 +347,11 @@
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-common-persistence</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-common-elasticsearch</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
