@@ -21,7 +21,6 @@
         <module>baymax-common-validation</module>
         <module>baymax-common-persistence</module>
         <module>baymax-common-swagger</module>
-        <module>baymax-common-jdbc</module>
         <module>baymax-common-config</module>
         <module>baymax-common-feign</module>
         <module>baymax-common-webflux</module>
