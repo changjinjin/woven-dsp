@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.info.baymax</groupId>
@@ -30,43 +32,7 @@
                     <groupId>com.github.pagehelper</groupId>
                     <artifactId>pagehelper</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-validation</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-queryapi</artifactId>
-                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-common-validation</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-common-queryapi</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-common-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -104,7 +70,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <exclusions>
@@ -129,7 +95,7 @@
                     <artifactId>spring-boot-autoconfigure</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -149,16 +115,16 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
         </dependency>
     </dependencies>
 </project>

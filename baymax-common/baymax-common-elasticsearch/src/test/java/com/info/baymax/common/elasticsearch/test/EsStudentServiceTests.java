@@ -1,0 +1,108 @@
+package com.info.baymax.common.elasticsearch.test;
+
+import com.info.baymax.common.core.page.IPage;
+import com.info.baymax.common.core.page.IPageable;
+import com.info.baymax.common.elasticsearch.MultipleDatasourceMybatisStarter;
+import com.info.baymax.common.elasticsearch.entity.elasticsearch.EsStudent;
+import com.info.baymax.common.elasticsearch.service.elasticsearch.EsStudentService;
+import com.info.baymax.common.persistence.service.criteria.example.ExampleQuery;
+import com.info.baymax.common.queryapi.query.field.FieldGroup;
+import com.info.baymax.common.utils.JsonUtils;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Date;
+import java.util.List;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = {
+	MultipleDatasourceMybatisStarter.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class EsStudentServiceTests {
+
+	@Autowired
+	private EsStudentService esStudentService;
+	@Autowired
+	private ElasticsearchRestTemplate restTemplate;
+
+	@Test
+	public void addData() {
+		try {
+			EsStudent t = new EsStudent();
+			t.setId(1L);
+			t.setName("zhangsan");
+			t.setAge(12);
+			t.setBirth(new Date());
+			t.setGender("F");
+			t.setGrade("03");
+			t.setClazz("03-01");
+			t.setIntro("张三是个好同学！");
+			t.setUpdateTime(new Date());
+			restTemplate.save(t);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Test
+	public void selectByPrimaryKey() {
+		try {
+			EsStudent t = esStudentService.selectByPrimaryKey("1");
+			System.out.println(JsonUtils.toJson(t));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Test
+	public void count() {
+		try {
+			int count = esStudentService.selectCount();
+			System.out.println(count);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Test
+	public void selectAll() {
+		try {
+			List<EsStudent> list = esStudentService.selectAll();
+			System.out.println(JsonUtils.toJson(list));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Test
+	public void page() {
+		try {
+			IPage<EsStudent> page = esStudentService.selectPage(ExampleQuery.builder().page(1, 10).orderBy("id"));
+			System.out.println(JsonUtils.toJson(page));
+
+			page = esStudentService.selectPage(ExampleQuery.builder()//
+				.fieldGroup(FieldGroup.builder()//
+					.andLike("name", "zhang%") //
+					.andEqualTo("enabled", 1) //
+				)//
+				.page(1, 10).orderBy("updateTime", false));
+			System.out.println(JsonUtils.toJson(page));
+
+			EsStudent t = new EsStudent();
+			t.setAge(12);
+			page = esStudentService.selectPage(t, IPageable.page(1, 10));
+			System.out.println(JsonUtils.toJson(page));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+}
