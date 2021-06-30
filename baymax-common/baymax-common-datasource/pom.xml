@@ -28,6 +28,10 @@
 		</dependency>
 		<dependency>
 			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>tk.mybatis</groupId>
 			<artifactId>mapper-spring</artifactId>
 		</dependency>
 		<dependency>
