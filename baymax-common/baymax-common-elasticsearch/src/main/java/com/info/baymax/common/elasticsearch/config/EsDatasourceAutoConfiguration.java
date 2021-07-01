@@ -22,8 +22,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @ConditionalOnPropertyNotEmpty("spring.es-datasource.url")
-@MapperScan(basePackages = "${spring.es-datasource.mapper.base-packages}", sqlSessionFactoryRef = "esSqlSessionFactory", sqlSessionTemplateRef = "esSqlSessionTemplate", mapperHelperRef = "esMapperHelper", properties = {
-	"identity=elasticsearch", "style=camelhumpAndLowercase"})
+@MapperScan(basePackages = "${spring.es-mybatis.mapper.base-packages}", sqlSessionFactoryRef = "esSqlSessionFactory", sqlSessionTemplateRef = "esSqlSessionTemplate", mapperHelperRef = "esMapperHelper", properties = {
+		"identity=elasticsearch", "style=camelhumpAndLowercase" })
 public class EsDatasourceAutoConfiguration extends AbstractDataSourceConfiguration {
 
 	@Bean(name = "esDataSourceProperties")
@@ -56,25 +56,25 @@ public class EsDatasourceAutoConfiguration extends AbstractDataSourceConfigurati
 
 	@Bean(name = "esSqlSessionTemplate")
 	public SqlSessionTemplate sqlSessionTemplate(@Qualifier("esSqlSessionFactory") SqlSessionFactory sqlSessionFactory)
-		throws Exception {
+			throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory);
 	}
 
 	@Configuration
-	public static class EsDataSourceMapperConfiguration {
+	public static class EsMybatisMapperConfiguration {
 
-		@Bean(name = "esDataSourceMapperProperties")
-		@ConfigurationProperties(prefix = "spring.es-datasource.mapper")
-		public MapperProperties esDataSourceMapperProperties() {
+		@Bean(name = "esMybatisMapperProperties")
+		@ConfigurationProperties(prefix = "spring.es-mybatis.mapper")
+		public MapperProperties esMybatisMapperProperties() {
 			return new MapperProperties();
 		}
 
 		@Bean(name = "esMapperHelper")
 		public MapperHelper esMapperHelper(@Qualifier("mapperProperties") @Nullable MapperProperties mapperProperties,
-										   @Qualifier("esDataSourceMapperProperties") MapperProperties dataSourceMapperProperties) {
+				@Qualifier("esMybatisMapperProperties") MapperProperties esMybatisMapperProperties) {
 			MapperHelper mapperHelper = new MapperHelper();
-			if (dataSourceMapperProperties != null) {
-				mapperHelper.setConfig(dataSourceMapperProperties);
+			if (esMybatisMapperProperties != null) {
+				mapperHelper.setConfig(esMybatisMapperProperties);
 			} else {
 				mapperHelper.setConfig(mapperProperties);
 			}

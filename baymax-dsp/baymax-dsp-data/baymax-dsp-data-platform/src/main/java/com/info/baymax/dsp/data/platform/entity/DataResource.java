@@ -180,4 +180,10 @@ public class DataResource extends BaseEntity {
     @Column(length = 4000)
     @ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = SqlQueryTypeHandler.class)
     private SqlQuery query;
+
+    @ApiModelProperty("描述")
+    @Comment("描述")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String description;
 }

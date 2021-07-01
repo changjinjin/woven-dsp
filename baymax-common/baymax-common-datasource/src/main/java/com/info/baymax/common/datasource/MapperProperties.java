@@ -13,6 +13,6 @@ public class MapperProperties extends Config {
 	/**
 	 * 对应数据源mapper包路径
 	 */
-	public String[] basePackages;
+	private String[] basePackages;
 
 }

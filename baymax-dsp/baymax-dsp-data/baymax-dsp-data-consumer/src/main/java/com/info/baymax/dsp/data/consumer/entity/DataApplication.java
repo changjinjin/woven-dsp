@@ -135,4 +135,10 @@ public class DataApplication extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.VARCHAR)
     @ColumnDefault("'DATASET'")
     private String sourceType;
+    
+    @ApiModelProperty("描述")
+    @Comment("描述")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String description;
 }

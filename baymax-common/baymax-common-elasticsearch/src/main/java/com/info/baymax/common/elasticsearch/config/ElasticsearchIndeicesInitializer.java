@@ -31,7 +31,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @EnableConfigurationProperties(value = MybatisElasticsearchJdbcClientProperties.class)
-public class EsIndeicesInitializer implements Initializer {
+public class ElasticsearchIndeicesInitializer implements Initializer {
     @Autowired
     private MybatisElasticsearchJdbcClientProperties properties;
 

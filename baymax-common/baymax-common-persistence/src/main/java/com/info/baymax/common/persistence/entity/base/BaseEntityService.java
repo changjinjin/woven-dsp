@@ -12,7 +12,9 @@ import java.util.List;
  * @author jingwei.yang
  * @date 2019年7月2日 上午10:20:47
  */
-public interface BaseEntityService<T extends BaseEntity> extends CommonEntityService<Long, T> {
+public interface BaseEntityService<T extends BaseEntity> extends BaseCommonEntityService<Long, T> {
+    public static final String PROPERTY_EXPIREDTIME = "expireTime";
+
     default int countExpired(Long expireTime) {
         return selectCount(ExampleQuery.builder(getEntityClass())//
             .fieldGroup(FieldGroup.builder().andLessThan(PROPERTY_EXPIREDTIME, expireTime)//

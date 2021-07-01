@@ -75,7 +75,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar {
 
 		String sqlSessionTemplateRef = annoAttrs.getString("sqlSessionTemplateRef");
 		if (StringUtils.hasText(sqlSessionTemplateRef)) {
-			builder.addPropertyValue("mapperHelper", annoAttrs.getString("sqlSessionTemplateRef"));
+			builder.addPropertyValue("sqlSessionTemplateBeanName", annoAttrs.getString("sqlSessionTemplateRef"));
 		}
 
 		String sqlSessionFactoryRef = annoAttrs.getString("sqlSessionFactoryRef");

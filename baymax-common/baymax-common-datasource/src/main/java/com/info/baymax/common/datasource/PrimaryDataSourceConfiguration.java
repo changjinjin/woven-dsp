@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 @Primary
 @Configuration
 @ConditionalOnPropertyNotEmpty("spring.datasource.url")
-@MapperScan(basePackages = "${spring.datasource.mapper.base-packages}", sqlSessionFactoryRef = "sqlSessionFactory", sqlSessionTemplateRef = "sqlSessionTemplate", mapperHelperRef = "mapperHelper")
+@MapperScan(basePackages = "${spring.mybatis.mapper.base-packages}", sqlSessionFactoryRef = "sqlSessionFactory", sqlSessionTemplateRef = "sqlSessionTemplate", mapperHelperRef = "mapperHelper")
 public class PrimaryDataSourceConfiguration extends AbstractDataSourceConfiguration {
 
 	@Primary
@@ -67,7 +67,7 @@ public class PrimaryDataSourceConfiguration extends AbstractDataSourceConfigurat
 	@Primary
 	@Bean(name = "sqlSessionTemplate")
 	public SqlSessionTemplate sqlSessionTemplate(@Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory)
-		throws Exception {
+			throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory);
 	}
 
@@ -76,19 +76,19 @@ public class PrimaryDataSourceConfiguration extends AbstractDataSourceConfigurat
 	public static class PrimaryDataSourceMapperConfiguration {
 
 		@Primary
-		@Bean(name = "dataSourceMapperProperties")
-		@ConfigurationProperties(prefix = "spring.datasource.mapper")
-		public MapperProperties dataSourceMapperProperties() {
+		@Bean(name = "mybatisMapperProperties")
+		@ConfigurationProperties(prefix = "spring.mybatis.mapper")
+		public MapperProperties mybatisMapperProperties() {
 			return new MapperProperties();
 		}
 
 		@Primary
 		@Bean(name = "mapperHelper")
 		public MapperHelper mapperHelper(@Qualifier("mapperProperties") @Nullable MapperProperties mapperProperties,
-										 @Qualifier("dataSourceMapperProperties") MapperProperties dataSourceMapperProperties) {
+				@Qualifier("mybatisMapperProperties") MapperProperties mybatisMapperProperties) {
 			MapperHelper mapperHelper = new MapperHelper();
-			if (dataSourceMapperProperties != null) {
-				mapperHelper.setConfig(dataSourceMapperProperties);
+			if (mybatisMapperProperties != null) {
+				mapperHelper.setConfig(mybatisMapperProperties);
 			} else {
 				mapperHelper.setConfig(mapperProperties);
 			}

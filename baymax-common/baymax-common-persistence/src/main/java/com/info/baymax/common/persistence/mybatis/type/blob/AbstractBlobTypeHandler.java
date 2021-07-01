@@ -5,7 +5,10 @@ import org.apache.ibatis.type.JdbcType;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Blob数据类型处理器抽象
@@ -43,26 +46,6 @@ public abstract class AbstractBlobTypeHandler<T> extends AbstractComplexTypeHand
     @Override
     public T getNullableResult(ResultSet rs, int columnName) throws SQLException {
         return getNullableResult(rs.getBlob(columnName));
-    }
-
-    /**
-     * 将blob字段转化为实体对象
-     *
-     * @param blob blob字段值
-     * @return 结果实体对象
-     * @throws SQLException
-     */
-    public T getNullableResult(Blob blob) throws SQLException {
-        if (null == blob) {
-            return null;
-        }
-
-        try {
-            // 把byte转化成string，并将字符串反序列化成需要的java bean对象
-            return translate2Bean(new String(blob.getBytes(1, (int) blob.length()), DEFAULT_CHARSET));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Blob Encoding Error!");
-        }
     }
 
 }

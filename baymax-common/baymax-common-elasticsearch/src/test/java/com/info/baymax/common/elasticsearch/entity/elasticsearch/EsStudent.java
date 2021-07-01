@@ -18,6 +18,8 @@ import java.util.Date;
 public class EsStudent extends TStudent {
 	private static final long serialVersionUID = 1438013543314550814L;
 
+	private String tags;
+
 	@ColumnType(jdbcType = JdbcType.VARCHAR, typeHandler = VarcharVsDateTimeTypeHandler.class)
 	@Override
 	public Date getBirth() {

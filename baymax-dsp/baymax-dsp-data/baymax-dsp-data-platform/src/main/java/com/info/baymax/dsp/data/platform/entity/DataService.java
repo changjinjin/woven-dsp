@@ -175,4 +175,10 @@ public class DataService extends BaseEntity {
     @ColumnType(jdbcType = JdbcType.BIGINT)
     @ColumnDefault("0")
     protected Long serviceId;
+
+    @ApiModelProperty("描述")
+    @Comment("描述")
+    @Column(length = 255)
+    @ColumnType(jdbcType = JdbcType.VARCHAR)
+    private String description;
 }

@@ -1,22 +1,30 @@
 package com.info.baymax.common.elasticsearch.entity;
 
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+
+import org.apache.ibatis.type.JdbcType;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.info.baymax.common.persistence.entity.gene.Idable;
 import com.info.baymax.common.persistence.mybatis.genid.SnowflakeGenId;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.ibatis.type.JdbcType;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Comment;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
-
-import javax.persistence.*;
-import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -62,7 +70,7 @@ public class TStudent implements Idable<Long> {
 	@Comment("生日")
 	@Column
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	@Field(type = FieldType.Date)
+	@Field(type = FieldType.Date, format = DateFormat.basic_date_time)
 	private Date birth;
 
 	@ApiModelProperty("年级")
@@ -90,6 +98,6 @@ public class TStudent implements Idable<Long> {
 	@Comment("更新时间")
 	@Column
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@Field(name = "update_time", type = FieldType.Date)
+	@Field(name = "update_time", type = FieldType.Date, format = DateFormat.basic_date_time)
 	private Date updateTime;
 }

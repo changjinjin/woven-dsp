@@ -712,8 +712,6 @@ public class FlowGenUtil {
         flow.setResourceId(dataserviceFlowRes.getId());
         flow.setTenantId(dataService.getTenantId());
         flow.setOwner(dataService.getOwner());
-        flow.setDescription("dataserviceId:" + dataService.getId());
-        flow.setOid("$null");
         flow.setIsHide(1);// qa flow不显示在Flows目录下
         flow.setVersion(1);
 

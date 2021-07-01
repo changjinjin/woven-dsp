@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -26,9 +28,11 @@ public class BaseEntity extends CommonEntity<Long> implements PreEntity {
     @ApiModelProperty("主键")
     @Comment("主键")
     @Id
+    @org.springframework.data.annotation.Id
     @KeySql(genId = SnowflakeGenId.class)
     @Column(length = 20)
     @ColumnType(jdbcType = JdbcType.BIGINT)
+    @Field(type = FieldType.Long)
     protected Long id;
 
 }
