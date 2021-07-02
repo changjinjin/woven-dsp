@@ -1,5 +1,7 @@
 package com.info.baymax.common.datasource.routing.lookup;
 
+import com.info.baymax.common.persistence.mybatis.Dialect;
+
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;

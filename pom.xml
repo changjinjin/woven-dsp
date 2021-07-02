@@ -157,6 +157,7 @@
 	<modules>
 		<module>baymax-common</module>
 		<module>baymax-starters</module>
+		<module>baymax-data</module>
 		<module>baymax-dsp</module>
 		<module>baymax-security</module>
 		<module>baymax-sentinel-dashboard</module>

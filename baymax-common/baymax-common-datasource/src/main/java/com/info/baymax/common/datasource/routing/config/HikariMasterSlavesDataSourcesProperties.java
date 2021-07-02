@@ -1,8 +1,8 @@
 package com.info.baymax.common.datasource.routing.config;
 
 import com.info.baymax.common.datasource.multiple.MapperProperties;
-import com.info.baymax.common.datasource.routing.lookup.Dialect;
 import com.info.baymax.common.datasource.routing.lookup.MasterSlavesDataSources;
+import com.info.baymax.common.persistence.mybatis.Dialect;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.Setter;

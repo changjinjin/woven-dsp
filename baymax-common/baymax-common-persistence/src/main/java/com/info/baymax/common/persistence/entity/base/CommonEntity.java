@@ -6,6 +6,7 @@ import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.persistence.entity.gene.Enabled;
 import com.info.baymax.common.persistence.entity.gene.Idable;
 import com.info.baymax.common.persistence.entity.preprocess.PreEntity;
+import com.info.baymax.common.persistence.mybatis.type.routing.DateTypeRoutingHandler;
 import com.info.baymax.common.validation.constraints.MustIn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import tk.mybatis.mapper.annotation.ColumnType;
@@ -62,8 +62,8 @@ public abstract class CommonEntity<ID extends Serializable> extends OwnerEntity<
 	@ApiModelProperty(value = "创建时间", required = false)
 	@Comment("创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@ColumnType(jdbcType = JdbcType.TIMESTAMP)
-	@Field(name = "create_time", type = FieldType.Date, format = DateFormat.basic_date_time)
+	@ColumnType(jdbcType = JdbcType.TIMESTAMP, typeHandler = DateTypeRoutingHandler.class)
+	@Field(name = "create_time", type = FieldType.Text)
 	protected Date createTime;
 
 	@ApiModelProperty(value = "修改人", required = false)
@@ -77,8 +77,8 @@ public abstract class CommonEntity<ID extends Serializable> extends OwnerEntity<
 	@Comment("修改时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@Temporal(TemporalType.TIMESTAMP)
-	@ColumnType(jdbcType = JdbcType.TIMESTAMP)
-	@Field(name = "last_modified_time", type = FieldType.Date, format = DateFormat.basic_date_time)
+	@ColumnType(jdbcType = JdbcType.TIMESTAMP, typeHandler = DateTypeRoutingHandler.class)
+	@Field(name = "last_modified_time", type = FieldType.Text)
 	protected Date lastModifiedTime;
 
 	@Override
@@ -104,21 +104,21 @@ public abstract class CommonEntity<ID extends Serializable> extends OwnerEntity<
 				this.setLastModifier(SaasContext.getCurrentUsername());
 			}
 		}
-    }
+	}
 
-    @Override
-    public void preUpdate() {
-        this.setLastModifiedTime(new Date());
-        String currentUserId = SaasContext.getCurrentUserId();
-        if (StringUtils.isNotEmpty(currentUserId)) {
-            this.setLastModifier(SaasContext.getCurrentUsername());
-        }
-    }
+	@Override
+	public void preUpdate() {
+		this.setLastModifiedTime(new Date());
+		String currentUserId = SaasContext.getCurrentUserId();
+		if (StringUtils.isNotEmpty(currentUserId)) {
+			this.setLastModifier(SaasContext.getCurrentUsername());
+		}
+	}
 
-    public void copyCommonProperties(BaseEntity other) {
-        this.tenantId = other.tenantId;
-        this.owner = other.owner;
-        this.creator = other.creator;
-        this.lastModifier = other.lastModifier;
-    }
+	public void copyCommonProperties(BaseEntity other) {
+		this.tenantId = other.tenantId;
+		this.owner = other.owner;
+		this.creator = other.creator;
+		this.lastModifier = other.lastModifier;
+	}
 }
