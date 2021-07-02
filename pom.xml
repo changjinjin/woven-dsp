@@ -323,12 +323,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.info.baymax</groupId>
-				<artifactId>baymax-common-elasticsearch</artifactId>
+				<artifactId>baymax-common-datasource</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.info.baymax</groupId>
-				<artifactId>baymax-common-datasource</artifactId>
+				<artifactId>baymax-common-elasticsearch</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>

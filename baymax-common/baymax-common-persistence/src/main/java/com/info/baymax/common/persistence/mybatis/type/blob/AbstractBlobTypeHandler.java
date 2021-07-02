@@ -47,5 +47,4 @@ public abstract class AbstractBlobTypeHandler<T> extends AbstractComplexTypeHand
     public T getNullableResult(ResultSet rs, int columnName) throws SQLException {
         return getNullableResult(rs.getBlob(columnName));
     }
-
 }

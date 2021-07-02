@@ -1,8 +1,8 @@
 package com.info.baymax.common.elasticsearch.config;
 
 import com.info.baymax.common.core.annotation.condition.ConditionalOnPropertyNotEmpty;
-import com.info.baymax.common.datasource.AbstractDataSourceConfiguration;
-import com.info.baymax.common.datasource.MapperProperties;
+import com.info.baymax.common.datasource.multiple.AbstractDataSourceConfiguration;
+import com.info.baymax.common.datasource.multiple.MapperProperties;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
