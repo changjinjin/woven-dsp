@@ -103,8 +103,8 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
      */
     default IPage<T> selectPageByExample(Example example, IPageable pageable) {
         IPage<T> page = IPage.<T>of(pageable);
+        int totalCount = selectCountByExample(example);
         if (pageable == null || !pageable.isPageable()) {// 查询所有
-            int totalCount = selectCountByExample(example);
             page.setPageNum(1);
             page.setPageSize(totalCount);
             page.setTotalCount(totalCount);
@@ -115,7 +115,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
         } else {// 分页查询
             Page<T> selectPage = (Page<T>) selectByExampleAndPage(example, pageable);
             if (selectPage != null) {
-                page.setTotalCount(selectPage.getTotal());
+                page.setTotalCount(totalCount);
                 page.setList(converPageToList(selectPage.getResult()));
             }
         }
@@ -139,8 +139,8 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
 
     default IPage<Map<String, Object>> selectMapPageByExample(Example example, IPageable pageable) {
         IPage<Map<String, Object>> page = IPage.<Map<String, Object>>of(pageable);
+        int totalCount = selectCountByExample(example);
         if (pageable == null || !pageable.isPageable()) {// 查询所有
-            int totalCount = selectCountByExample(example);
             page.setPageNum(1);
             page.setPageSize(totalCount);
             page.setTotalCount(totalCount);
@@ -152,7 +152,7 @@ public interface BaseExampleService<T> extends BasePageService<T>, BaseExampleMa
             startPage(pageable);
             Page<Map<String, Object>> selectPage = (Page<Map<String, Object>>) selectMapByExample(example);
             if (selectPage != null) {
-                page.setTotalCount(selectPage.getTotal());
+                page.setTotalCount(totalCount);
                 page.setList(converPageToList(selectPage.getResult()));
             }
         }

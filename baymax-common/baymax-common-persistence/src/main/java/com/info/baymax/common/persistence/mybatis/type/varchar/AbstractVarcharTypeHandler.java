@@ -1,7 +1,6 @@
 package com.info.baymax.common.persistence.mybatis.type.varchar;
 
 import com.info.baymax.common.persistence.mybatis.type.AbstractComplexTypeHandler;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.JdbcType;
 
 import java.sql.CallableStatement;
@@ -36,23 +35,4 @@ public abstract class AbstractVarcharTypeHandler<T> extends AbstractComplexTypeH
     public T getNullableResult(ResultSet rs, int columnName) throws SQLException {
         return getNullableResult(rs.getString(columnName));
     }
-
-    /**
-     * 将Varchar数据转化为实体对象. <br>
-     *
-     * @param result 字符字段值
-     * @return 转化后实体对象
-     * @throws SQLException
-     */
-    public T getNullableResult(String result) throws SQLException {
-        try {
-            if (StringUtils.isNotEmpty(result)) {
-                return translate2Bean(result);
-            }
-        } catch (Exception e) {
-            throw new SQLException(e);
-        }
-        return null;
-    }
-
 }

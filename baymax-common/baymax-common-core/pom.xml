@@ -22,12 +22,12 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
-			<artifactId>commons-io</artifactId>
 			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<artifactId>commons-beanutils</artifactId>
 			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
@@ -36,8 +36,8 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<artifactId>guava</artifactId>
 			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -62,6 +62,11 @@
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

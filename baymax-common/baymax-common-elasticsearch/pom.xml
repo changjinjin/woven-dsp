@@ -14,55 +14,62 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+        <dependency>
+            <groupId>com.info.baymax</groupId>
+            <artifactId>baymax-common-persistence</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 		<dependency>
 			<groupId>com.info.baymax</groupId>
-			<artifactId>baymax-common-persistence</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.amazon.opendistroforelasticsearch.client</groupId>
-            <artifactId>opendistro-sql-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-webflux-spring-boot-starter</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-swagger</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.springfox</groupId>
-                    <artifactId>springfox-spring-webflux</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.info.baymax</groupId>
-                    <artifactId>baymax-common-web</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.info.baymax</groupId>
-            <artifactId>baymax-persistence-spring-boot-starter</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-jpa</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+			<artifactId>baymax-common-datasource</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.amazon.opendistroforelasticsearch.client</groupId>
+			<artifactId>opendistro-sql-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-common-config</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.info.baymax</groupId>
+			<artifactId>baymax-persistence-spring-boot-starter</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.info.baymax</groupId>
+					<artifactId>baymax-common-persistence</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

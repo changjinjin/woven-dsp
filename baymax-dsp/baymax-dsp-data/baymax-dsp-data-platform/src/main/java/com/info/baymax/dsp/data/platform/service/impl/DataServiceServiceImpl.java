@@ -12,7 +12,6 @@ import com.info.baymax.common.queryapi.query.sql.SqlQuery;
 import com.info.baymax.common.utils.ICollections;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
 import com.info.baymax.dsp.data.consumer.service.CustDataSourceService;
-import com.info.baymax.dsp.data.consumer.service.DataApplicationService;
 import com.info.baymax.dsp.data.dataset.bean.FieldMapping;
 import com.info.baymax.dsp.data.dataset.entity.core.DataSource;
 import com.info.baymax.dsp.data.dataset.entity.core.Dataset;
@@ -66,8 +65,6 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
     private CustomerService consumerService;
     @Autowired
     private DatasetService datasetService;
-    @Autowired
-    private DataApplicationService dataApplicationService;
     @Autowired
     private CustDataSourceService custDataSourceService;
     @Autowired

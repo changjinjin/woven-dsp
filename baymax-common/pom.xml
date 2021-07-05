@@ -21,12 +21,13 @@
         <module>baymax-common-validation</module>
         <module>baymax-common-persistence</module>
         <module>baymax-common-swagger</module>
-        <module>baymax-common-jdbc</module>
         <module>baymax-common-config</module>
         <module>baymax-common-feign</module>
         <module>baymax-common-webflux</module>
         <module>baymax-common-webmvc</module>
         <module>baymax-common-web</module>
         <module>baymax-common-elasticsearch</module>
+        <module>baymax-common-httpfsclient</module>
+        <module>baymax-common-datasource</module>
     </modules>
 </project>

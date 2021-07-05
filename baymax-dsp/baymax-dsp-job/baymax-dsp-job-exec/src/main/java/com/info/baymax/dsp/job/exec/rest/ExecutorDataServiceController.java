@@ -1,15 +1,5 @@
 package com.info.baymax.dsp.job.exec.rest;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.info.baymax.common.utils.JsonUtils;
 import com.info.baymax.dsp.data.consumer.constant.DataServiceType;
 import com.info.baymax.dsp.data.consumer.entity.CustDataSource;
@@ -21,9 +11,13 @@ import com.info.baymax.dsp.data.platform.entity.DataService;
 import com.info.baymax.dsp.data.platform.service.DataResourceService;
 import com.info.baymax.dsp.data.platform.service.DataServiceService;
 import com.info.baymax.dsp.job.exec.service.JobExecutorService;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("dataservice")
@@ -55,9 +49,9 @@ public class ExecutorDataServiceController {
 
         DataService dataService = dataServiceEntityService.findOne(tenantId, serviceId);
         if(type == DataServiceType.SERVICE_TYPE_PUSH && dataService != null){
-            DataResource dataResource = dataResourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getDataResId());
-            Dataset dataset = datasetService.findOne(dataResource.getDatasetId());
-            CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(),dataService.getApplyConfiguration().getCustDataSourceId());
+            DataResource dataResource = dataResourceService.findOne(dataService.getTenantId(), dataService.getApplyConfiguration().getDataResId());
+            Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
+            CustDataSource custDataSource = custDataSourceService.findOne(dataService.getTenantId(), dataService.getApplyConfiguration().getCustDataSourceId());
             jobExecutorService.executePushServiceAsync(dataset, dataService, dataResource, custDataSource);
         }
         log.info("response to job-scheduler OK, dataService id = "+ serviceId);

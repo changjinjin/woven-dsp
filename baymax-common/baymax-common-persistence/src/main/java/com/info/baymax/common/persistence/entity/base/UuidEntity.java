@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -22,12 +24,14 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"}, ignoreUnknown = true)
 public class UuidEntity implements Idable<String> {
-    private static final long serialVersionUID = 8199030533526416114L;
+	private static final long serialVersionUID = 8199030533526416114L;
 
-    @ApiModelProperty("主键")
-    @Id
-    @KeySql(genId = UuidGenId.class)
-    @Column(length = 50)
-    @ColumnType(jdbcType = JdbcType.VARCHAR)
-    protected String id;
+	@ApiModelProperty("主键")
+	@Id
+	@org.springframework.data.annotation.Id
+	@KeySql(genId = UuidGenId.class)
+	@Column(length = 50)
+	@ColumnType(jdbcType = JdbcType.VARCHAR)
+	@Field(type = FieldType.Keyword)
+	protected String id;
 }

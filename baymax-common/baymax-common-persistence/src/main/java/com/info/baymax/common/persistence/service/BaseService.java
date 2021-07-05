@@ -174,8 +174,8 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
      */
     default IPage<T> selectPage(T s, IPageable pageable) {
         IPage<T> page = IPage.<T>of(pageable);
+        int totalCount = selectCount(s);
         if (pageable == null || !pageable.isPageable()) {// 查询所有
-            int totalCount = selectCount(s);
             page.setPageNum(1);
             page.setPageSize(totalCount);
             page.setTotalCount(totalCount);
@@ -185,7 +185,7 @@ public interface BaseService<T> extends BaseExampleService<T>, MyBaseMapper<T>, 
         } else {// 分页查询
             Page<T> selectPage = (Page<T>) selectByPage(s, pageable);
             if (selectPage != null) {
-                page.setTotalCount(selectPage.getTotal());
+                page.setTotalCount(totalCount);
                 page.setList(converPageToList(selectPage.getResult()));
             }
         }

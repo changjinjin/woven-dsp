@@ -17,7 +17,7 @@
 		<java.version>1.8</java.version>
 
 		<baymax-common.version>0.1.6-SNAPSHOT</baymax-common.version>
-		<baymax-woven.version>3.1</baymax-woven.version>
+		<baymax-woven.version>1.2.3-SNAPSHOT</baymax-woven.version>
 
 		<!-- spring boot -->
 		<spring-boot.version>2.4.4</spring-boot.version>
@@ -30,7 +30,7 @@
 
 		<dubbo-spring-boot.version>2.7.3</dubbo-spring-boot.version>
 
-		<!-- commons dependencies -->
+		<!-- commons libs dependencies -->
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-chain.version>1.2</commons-chain.version>
 		<commons-cli.version>1.4</commons-cli.version>
@@ -62,13 +62,14 @@
 		<!-- mybatis dependencies -->
 		<mybatis.version>3.5.6</mybatis.version>
 		<mybatis-ehcache.version>1.2.1</mybatis-ehcache.version>
-		<mapper-module.version>1.1.5</mapper-module.version>
+		<mybatis-spring.version>2.0.6</mybatis-spring.version>
 		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
+		<mapper-module.version>1.1.5</mapper-module.version>
 		<mapper-spring-boot.version>2.1.5</mapper-spring-boot.version>
-		<pagehelper-spring-boot.version>1.3.0</pagehelper-spring-boot.version>
 		<pagehelper.version>5.2.0</pagehelper.version>
+		<pagehelper-spring-boot.version>1.3.0</pagehelper-spring-boot.version>
 
-		<!-- db dependencies -->
+		<!-- jdbc driver dependencies -->
 		<mysql.version>5.1.48</mysql.version>
 		<oracle.version>12.1.0.1.0</oracle.version>
 		<snowball.version>1.1.0</snowball.version>
@@ -83,6 +84,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<sensitive.version>0.0.9</sensitive.version>
 		<joda.version>2.10.10</joda.version>
+		<jodd.version>5.3.0</jodd.version>
 		<guava.version>22.0</guava.version>
 		<guava-retrying.version>2.0.0</guava-retrying.version>
 		<jest.version>6.3.1</jest.version>
@@ -124,7 +126,10 @@
 		<classmate.version>1.5.1</classmate.version>
 		<log4j2.version>2.11.2</log4j2.version>
 
-		<elasticsearch.version>7.12.1</elasticsearch.version>
+		<es5.version>5.6.16</es5.version>
+		<es6.version>6.8.15</es6.version>
+		<es7.version>7.10.1</es7.version>
+		<elasticsearch.version>${es7.version}</elasticsearch.version>
 
 		<!-- docker plugin properties -->
 		<docker.verbose>true</docker.verbose>
@@ -152,6 +157,7 @@
 	<modules>
 		<module>baymax-common</module>
 		<module>baymax-starters</module>
+		<module>baymax-data</module>
 		<module>baymax-dsp</module>
 		<module>baymax-security</module>
 		<module>baymax-sentinel-dashboard</module>
@@ -185,7 +191,7 @@
 			</activation>
 			<properties>
 				<profileActive>es5</profileActive>
-				<elasticsearch.version>5.6.16</elasticsearch.version>
+				<elasticsearch.version>${es5.version}</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -195,7 +201,7 @@
 			</activation>
 			<properties>
 				<profileActive>es6</profileActive>
-				<elasticsearch.version>6.8.15</elasticsearch.version>
+				<elasticsearch.version>${es6.version}</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -205,7 +211,7 @@
 			</activation>
 			<properties>
 				<profileActive>es7</profileActive>
-				<elasticsearch.version>7.12.1</elasticsearch.version>
+				<elasticsearch.version>${es7.version}</elasticsearch.version>
 			</properties>
 		</profile>
 		<profile>
@@ -286,37 +292,7 @@
 			<!-- woven common dependencies -->
 			<dependency>
 				<groupId>com.merce.woven</groupId>
-				<artifactId>woven-common</artifactId>
-				<version>${baymax-woven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.merce.woven</groupId>
-				<artifactId>woven-data</artifactId>
-				<version>${baymax-woven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.merce.woven</groupId>
-				<artifactId>woven-rpc</artifactId>
-				<version>${baymax-woven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.merce.woven</groupId>
-				<artifactId>woven-client</artifactId>
-				<version>${baymax-woven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.merce.woven</groupId>
 				<artifactId>woven-metrics</artifactId>
-				<version>${baymax-woven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.merce.woven</groupId>
-				<artifactId>woven-dataflow-spark</artifactId>
-				<version>${baymax-woven.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.merce.woven</groupId>
-				<artifactId>woven-rtcflow-flink</artifactId>
 				<version>${baymax-woven.version}</version>
 			</dependency>
 			<dependency>
@@ -348,7 +324,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.info.baymax</groupId>
-				<artifactId>baymax-common-jdbc</artifactId>
+				<artifactId>baymax-common-datasource</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-common-elasticsearch</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
@@ -379,6 +360,11 @@
 			<dependency>
 				<groupId>com.info.baymax</groupId>
 				<artifactId>baymax-common-webmvc</artifactId>
+				<version>${baymax-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.info.baymax</groupId>
+				<artifactId>baymax-common-httpfsclient</artifactId>
 				<version>${baymax-common.version}</version>
 			</dependency>
 			<dependency>
@@ -649,9 +635,25 @@
 				<version>${mybatis-ehcache.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>${mybatis-spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis-spring-boot.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>tk.mybatis</groupId>
 				<artifactId>mapper-core</artifactId>
 				<version>${mapper-module.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.persistence</groupId>
+						<artifactId>persistence-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>tk.mybatis</groupId>
@@ -669,19 +671,19 @@
 				<version>${mapper-module.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.pagehelper</groupId>
-				<artifactId>pagehelper</artifactId>
-				<version>${pagehelper.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis.spring.boot</groupId>
-				<artifactId>mybatis-spring-boot-starter</artifactId>
-				<version>${mybatis-spring-boot.version}</version>
+				<groupId>tk.mybatis</groupId>
+				<artifactId>mapper-spring</artifactId>
+				<version>${mapper-module.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>tk.mybatis</groupId>
 				<artifactId>mapper-spring-boot-starter</artifactId>
 				<version>${mapper-spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper</artifactId>
+				<version>${pagehelper.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.pagehelper</groupId>
@@ -791,6 +793,11 @@
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${joda.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jodd</groupId>
+				<artifactId>jodd-core</artifactId>
+				<version>${jodd.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.rholder</groupId>
