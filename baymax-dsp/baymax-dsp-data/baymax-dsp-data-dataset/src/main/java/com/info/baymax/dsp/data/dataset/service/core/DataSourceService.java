@@ -25,5 +25,5 @@ public interface DataSourceService extends BaseMaintableService<DataSource>,
 
     IPage<MapEntity> previewBySql(String dataSourceId, SqlQuery query);
 
-    DataSource selectEntityByName(String name);
+    DataSource findOneByName(String tenant, String name);
 }

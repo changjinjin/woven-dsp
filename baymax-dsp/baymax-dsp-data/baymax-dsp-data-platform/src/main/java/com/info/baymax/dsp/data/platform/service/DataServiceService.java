@@ -59,4 +59,6 @@ public interface DataServiceService extends BaseEntityService<DataService> {
      * 根据用户id和服务类型查询数据服务信息
      */
     List<DataService> selectByCustIdAndType(String custId, int type);
+
+    DataService findOneByName(String tenant, String name);
 }

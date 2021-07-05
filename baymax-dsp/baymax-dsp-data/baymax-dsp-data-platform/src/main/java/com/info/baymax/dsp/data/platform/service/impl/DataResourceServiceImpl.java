@@ -75,7 +75,15 @@ public class DataResourceServiceImpl extends EntityClassServiceImpl<DataResource
     }
 
     @Override
-    public DataResource selectEntityByName(String name) {
-        return resourceMapper.selectEntityByName(name);
+    public DataResource findOneByName(String tenant, String name) {
+        List<DataResource> list = selectList(ExampleQuery.builder(getEntityClass())//
+                .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", tenant).andEqualTo("name", name))//
+                .orderByDesc("lastModifiedTime"));
+
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 }

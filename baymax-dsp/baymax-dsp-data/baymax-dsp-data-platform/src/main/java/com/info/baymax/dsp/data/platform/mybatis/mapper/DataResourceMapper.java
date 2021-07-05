@@ -21,7 +21,4 @@ public interface DataResourceMapper extends MyIdableMapper<DataResource> {
             "</script>"
     })
     List<DataResource> selectDataResourceListByIds(@Param("ids") List<Long> ids);
-
-    @Select("select * from dsp_data_resource where name = #{name,jdbcType=VARCHAR}")
-    DataResource selectEntityByName(@Param("name") String name);
 }

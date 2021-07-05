@@ -7,6 +7,7 @@ import com.info.baymax.common.core.exception.ServiceException;
 import com.info.baymax.common.core.page.IPage;
 import com.info.baymax.common.core.result.ErrType;
 import com.info.baymax.common.core.result.MapEntity;
+import com.info.baymax.common.core.saas.SaasContext;
 import com.info.baymax.common.queryapi.query.aggregate.AggField;
 import com.info.baymax.common.queryapi.query.aggregate.AggQuery;
 import com.info.baymax.common.queryapi.query.field.Field;
@@ -330,7 +331,7 @@ public class PullServiceImpl implements PullService {
                     //修改查询条件(先用ID查询，如果查不到，再用name查)
                     DataSource dataSource = dataSourceService.selectByPrimaryKey(dataResource.getDatasetId());
                     if (dataSource == null) {
-                        dataSource = dataSourceService.selectEntityByName(dataResource.getDatasetName());
+                        dataSource = dataSourceService.findOneByName(SaasContext.getCurrentTenantId(), dataResource.getDatasetName());
                         if (dataSource == null) {
                             throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
                                     String.format("The datasource with ID %s does not exist", dataResource.getDatasetId()));
@@ -343,7 +344,7 @@ public class PullServiceImpl implements PullService {
                     //修改查询条件(先用ID查询，如果查不到，再用name查)
                     Dataset dataset = datasetService.selectByPrimaryKey(dataResource.getDatasetId());
                     if (dataset == null) {
-                        dataset = datasetService.selectEntityByName(dataResource.getDatasetName());
+                        dataset = datasetService.findOneByName(SaasContext.getCurrentTenantId(), dataResource.getDatasetName());
                         if (dataset == null) {
                             throw new ServiceException(ErrType.ENTITY_NOT_EXIST,
                                     String.format("The dataset with ID %s does not exist", dataResource.getDatasetId()));

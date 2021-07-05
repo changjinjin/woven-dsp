@@ -20,5 +20,5 @@ public interface DataResourceService extends BaseEntityService<DataResource> {
 
     List<DataResource> selectDataResourceListByIds(List<Long> ids);
 
-    DataResource selectEntityByName(String name);
+    DataResource findOneByName(String tenant, String name);
 }

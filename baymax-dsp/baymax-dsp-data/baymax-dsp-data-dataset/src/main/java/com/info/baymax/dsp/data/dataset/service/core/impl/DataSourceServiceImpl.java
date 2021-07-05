@@ -174,7 +174,15 @@ public class DataSourceServiceImpl extends QueryObjectByResourceOrProjectService
     }
 
     @Override
-    public DataSource selectEntityByName(String name) {
-        return dataSourceMapper.selectEntityByName(name);
+    public DataSource findOneByName(String tenant, String name) {
+        List<DataSource> list = selectList(ExampleQuery.builder(getEntityClass())//
+                .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", tenant).andEqualTo("name", name))//
+                .orderByDesc("lastModifiedTime"));
+
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 }

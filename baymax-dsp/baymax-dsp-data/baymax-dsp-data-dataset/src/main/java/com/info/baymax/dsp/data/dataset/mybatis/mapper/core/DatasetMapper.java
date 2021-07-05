@@ -10,7 +10,4 @@ import org.apache.ibatis.annotations.*;
 		@Property(name = "cacheType", value = "${cacheType}") })
 public interface DatasetMapper extends MyIdableMapper<Dataset> {
 
-	@Options(useCache = false)
-	@Select("select * from merce_dataset t where t.name = #{name,jdbcType=VARCHAR}")
-	Dataset selectEntityByName(@Param("name") String name);
 }

@@ -392,7 +392,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                                     uselessDataResourceIds.add(Long.parseLong(dataList.get(i).get(0)));
                                 }
                                 if("DATASOURCE".equals(sourceType)){
-                                    DataSource dataSource = dataSourceService.selectEntityByName(name);
+                                    DataSource dataSource = dataSourceService.findOneByName(SaasContext.getCurrentTenantId(), name);
                                     if(null == dataSource){
                                         errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 数据源信息记录不存在;");
                                         isError = true;
@@ -401,7 +401,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                                         dataResource.setDatasetName(dataList.get(i).get(j));
                                     }
                                 } else if("DATASET".equals(sourceType)){
-                                    Dataset dataset = datasetService.selectEntityByName(name);
+                                    Dataset dataset = datasetService.findOneByName(SaasContext.getCurrentTenantId(), name);
                                     if(null == dataset){
                                         errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 数据集信息记录不存在;");
                                         isError = true;
@@ -551,6 +551,19 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
     @Override
     public List<DataService> selectByCustIdAndType(String custId, int type) {
         return dataServiceMapper.selectByCustIdAndType(custId, type);
+    }
+
+    @Override
+    public DataService findOneByName(String tenant, String name) {
+        List<DataService> list = selectList(ExampleQuery.builder(getEntityClass())//
+                .fieldGroup(FieldGroup.builder().andEqualTo("tenantId", tenant).andEqualTo("name", name))//
+                .orderByDesc("lastModifiedTime"));
+
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 
     private String exportExcel(List<DataService> dataServiceList, List<DataResource> dataResourceList, Integer type) {
@@ -814,14 +827,14 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                 String name = dataResourceEntity.getDatasetName();
                 System.out.println("sourceType = " + sourceType);
                 if("DATASET".equals(sourceType.toString())){
-                    Dataset dataset = datasetService.selectEntityByName(name);
+                    Dataset dataset = datasetService.findOneByName(SaasContext.getCurrentTenantId(), name);
                     if(null == dataset){
                         iterator.remove();
                         dataResourceIds.add(dataResourceEntity.getId());
                     }
                 }
                 if("DATASOURCE".equals(sourceType.toString())){
-                    DataSource dataSource = dataSourceService.selectEntityByName(name);
+                    DataSource dataSource = dataSourceService.findOneByName(SaasContext.getCurrentTenantId(), name);
                     if(null == dataSource){
                         iterator.remove();
                         dataResourceIds.add(dataResourceEntity.getId());
@@ -877,7 +890,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
             DataService dataServiceSource = dataServiceMapper.selectEntityByCustIdAndSourceId(dspCustomerId, serviceId);
             if(null != dataServiceSource){
                 if(!dataServiceSource.getName().equals(dataService.getName())){
-                    DataService entity = dataServiceMapper.selectEntityByName(dataService.getName());
+                    DataService entity = findOneByName(SaasContext.getCurrentTenantId(), dataService.getName());
                     if(null != entity){
                         dataService.setName(dataService.getName() + "_" + GenerateRandomStr.generateStr(6));
                     }
@@ -903,7 +916,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                 dataService.setServiceId(serviceId);
                 dataService.setCreateTime(new Date());
                 dataService.setCreator(SaasContext.getCurrentUsername());
-                DataService entity = dataServiceMapper.selectEntityByName(dataService.getName());
+                DataService entity = findOneByName(SaasContext.getCurrentTenantId(), dataService.getName());
                 if(null != entity){
                     dataService.setName(dataService.getName() + "_" + GenerateRandomStr.generateStr(6));
                 }else{
@@ -925,7 +938,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
             if(null != oldDataResource){
                 //update
                 if(!oldDataResource.getName().equals(dataResource.getName())){
-                    DataResource entity = dataResourceService.selectEntityByName(dataResource.getName());
+                    DataResource entity = dataResourceService.findOneByName(SaasContext.getCurrentTenantId(), dataResource.getName());
                     if(null != entity){
                         dataResource.setName(dataResource.getName() + "_" + GenerateRandomStr.generateStr(6));
                     }
@@ -955,7 +968,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                 log.info("update dataResource: " + dataResource.toString());
                 updateDataResourceCount++;
             }else{
-                DataResource entity = dataResourceService.selectEntityByName(dataResource.getName());
+                DataResource entity = dataResourceService.findOneByName(SaasContext.getCurrentTenantId(), dataResource.getName());
                 if(null != entity){
                     dataResource.setName(dataResource.getName() + "_" + GenerateRandomStr.generateStr(6));
                 }else{
@@ -1204,7 +1217,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                                     uselessDataResourceIds.add(Long.parseLong(dataList.get(i).get(0)));
                                 }
                                 if("DATASOURCE".equals(sourceType)){
-                                    DataSource dataSource = dataSourceService.selectEntityByName(name);
+                                    DataSource dataSource = dataSourceService.findOneByName(SaasContext.getCurrentTenantId(), name);
                                     if(null == dataSource){
                                         errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 数据源信息记录不存在;");
                                         isError = true;
@@ -1213,7 +1226,7 @@ public class DataServiceServiceImpl extends EntityClassServiceImpl<DataService> 
                                         dataResource.setDatasetName(dataList.get(i).get(j));
                                     }
                                 } else if("DATASET".equals(sourceType)){
-                                    Dataset dataset = datasetService.selectEntityByName(name);
+                                    Dataset dataset = datasetService.findOneByName(SaasContext.getCurrentTenantId(), name);
                                     if(null == dataset){
                                         errorStringList.add("数据资源信息表,第" + (i + 1) + "行, 数据集信息记录不存在;");
                                         isError = true;
